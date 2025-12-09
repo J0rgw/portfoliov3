@@ -2,6 +2,8 @@
 
 > Once again I'm here rebuilding my portfolio as I always think I can do better.
 
+SO FAR: only a staggered menu and a revamped version of my logo has been developed
+
 ## Live Demo
 
 🔗 [View Portfolio](https://j0rgw.github.io/portfoliov3) *(coming soon)*
