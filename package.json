@@ -15,11 +15,13 @@
   "dependencies": {
     "gsap": "^3.13.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "three": "^0.181.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.181.0",
     "@vitejs/plugin-react": "^5.1.1",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",

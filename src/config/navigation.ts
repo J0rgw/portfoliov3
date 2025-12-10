@@ -16,10 +16,10 @@ export const menuConfig = {
   position: 'right' as const,
   displaySocials: true,
   displayItemNumbering: true,
-  menuButtonColor: '#fff',
+  menuButtonColor: '#000',
   openMenuButtonColor: '#000',
   changeMenuColorOnOpen: true,
-  colors: ['#efcd9eff', '#d48e60ff'],
+  colors: ['#98c7ecff', '#168eebff'],
   logoUrl: './src/images/LogobgB2.png',
-  accentColor: '#ff6b6b'
+  accentColor: '#409fea'
 };
