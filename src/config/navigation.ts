@@ -20,6 +20,6 @@ export const menuConfig = {
   openMenuButtonColor: '#000',
   changeMenuColorOnOpen: true,
   colors: ['#98c7ecff', '#168eebff'],
-  logoUrl: './src/images/LogobgB2.png',
+  logoUrl: '/images/LogobgB2.png',
   accentColor: '#409fea'
 };

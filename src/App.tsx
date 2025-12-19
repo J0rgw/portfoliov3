@@ -3,7 +3,9 @@ import { menuItems, socialItems, menuConfig } from "./config/navigation";
 import ColorBends from "./components/ColorBends/ColorBends";
 import { colorBendsConfig } from "./config/colorBends";
 import { heroTitleConfig } from "./config/shinyText";
+import { logoLoopConfig, logoLoopLogos } from "./config/logoLoop";
 import ShinyText from "./components/ShinyText/ShinyText";
+import LogoLoop from "./components/LogoLoop/LogoLoop";
 import "./App.css";
 
 const App = () => {
@@ -23,7 +25,7 @@ const App = () => {
         <ColorBends {...colorBendsConfig} />
       </div>
       {/* Content layer */}
-      <div style={{ position: "relative", zIndex: 1, minHeight: "100vh", height: "100vh" }}>
+      <div style={{ position: "relative", zIndex: 1, minHeight: "100vh", height: "100dvh" }}>
         <StaggeredMenu
           {...menuConfig}
           items={menuItems}
@@ -31,6 +33,10 @@ const App = () => {
         />
         {/* Hero Title */}
         <ShinyText {...heroTitleConfig} />
+      </div>
+      {/* Logo Loop - visible on scroll */}
+      <div className="logo-loop-section">
+        <LogoLoop {...logoLoopConfig} logos={logoLoopLogos} />
       </div>
     </div>
   );
