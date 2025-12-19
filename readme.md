@@ -2,7 +2,9 @@
 
 > Once again I'm here rebuilding my portfolio as I always think I can do better.
 
-SO FAR: only a staggered menu and a revamped version of my logo has been developed
+SO FAR: only a hero and about section has been developed
+
+** I'll update the rest of the readme.md later **
 
 ## Live Demo
 
