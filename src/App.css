@@ -1,6 +1,35 @@
+@font-face {
+  font-family: 'Estrella';
+  src: url('./fonts/estrella-early.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .App {
   min-height: 100vh;
   background-color: #282c34;
+}
+
+.hero-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Estrella', sans-serif;
+  font-size: clamp(4rem, 15vw, 12rem);
+  text-align: center;
+  pointer-events: none;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(2.5rem, 18vw, 6rem);
+    white-space: normal;
+    width: 90%;
+    line-height: 1.1;
+  }
 }
 
 main {

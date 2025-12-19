@@ -2,6 +2,8 @@ import StaggeredMenu from "./components/StaggeredMenu/StaggeredMenu";
 import { menuItems, socialItems, menuConfig } from "./config/navigation";
 import ColorBends from "./components/ColorBends/ColorBends";
 import { colorBendsConfig } from "./config/colorBends";
+import { heroTitleConfig } from "./config/shinyText";
+import ShinyText from "./components/ShinyText/ShinyText";
 import "./App.css";
 
 const App = () => {
@@ -27,6 +29,8 @@ const App = () => {
           items={menuItems}
           socialItems={socialItems}
         />
+        {/* Hero Title */}
+        <ShinyText {...heroTitleConfig} />
       </div>
     </div>
   );

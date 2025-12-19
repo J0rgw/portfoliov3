@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import './ColorBends.css';
 
@@ -137,9 +137,32 @@ export default function ColorBends({
   const pointerTargetRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0));
   const pointerCurrentRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0));
   const pointerSmoothRef = useRef<number>(8);
+  const [webglFailed, setWebglFailed] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current!;
+
+    // Check WebGL support
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) {
+      setWebglFailed(true);
+      return;
+    }
+
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: false,
+        powerPreference: 'default',
+        alpha: true,
+        failIfMajorPerformanceCaveat: false
+      });
+    } catch {
+      setWebglFailed(true);
+      return;
+    }
+
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
@@ -172,14 +195,11 @@ export default function ColorBends({
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: false,
-      powerPreference: 'high-performance',
-      alpha: true
-    });
     rendererRef.current = renderer;
     (renderer as any).outputColorSpace = (THREE as any).SRGBColorSpace;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    // Lower pixel ratio on mobile for better performance
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2));
     renderer.setClearColor(0x000000, transparent ? 0 : 1);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -304,6 +324,18 @@ export default function ColorBends({
       container.removeEventListener('pointermove', handlePointerMove);
     };
   }, []);
+
+  // Fallback gradient when WebGL fails
+  if (webglFailed) {
+    const fallbackColors = colors.length > 0 ? colors : ['#ff5c7a', '#8a5cff', '#00ffd1'];
+    const gradientStyle: React.CSSProperties = {
+      ...style,
+      background: `linear-gradient(${rotation}deg, ${fallbackColors.join(', ')})`,
+      animation: 'colorBendsFallback 8s ease infinite',
+      backgroundSize: '200% 200%'
+    };
+    return <div className={`color-bends-container color-bends-fallback ${className}`} style={gradientStyle} />;
+  }
 
   return <div ref={containerRef} className={`color-bends-container ${className}`} style={style} />;
 }
