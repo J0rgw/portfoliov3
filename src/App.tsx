@@ -4,8 +4,10 @@ import ColorBends from "./components/ColorBends/ColorBends";
 import { colorBendsConfig } from "./config/colorBends";
 import { heroTitleConfig } from "./config/shinyText";
 import { logoLoopConfig, logoLoopLogos } from "./config/logoLoop";
+import { aboutSectionConfig } from "./config/aboutSection";
 import ShinyText from "./components/ShinyText/ShinyText";
 import LogoLoop from "./components/LogoLoop/LogoLoop";
+import AboutSection from "./components/AboutSection/AboutSection";
 import "./App.css";
 
 const App = () => {
@@ -38,6 +40,8 @@ const App = () => {
       <div className="logo-loop-section">
         <LogoLoop {...logoLoopConfig} logos={logoLoopLogos} />
       </div>
+      {/* About Section */}
+      <AboutSection {...aboutSectionConfig} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Estrella';
-  src: url('./fonts/estrella-early.otf') format('opentype');
+  src: url('/fonts/estrella-early.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }

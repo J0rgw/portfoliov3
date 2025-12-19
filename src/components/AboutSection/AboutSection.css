@@ -1,0 +1,60 @@
+.about-section {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 2rem;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.about-card {
+  flex: 0 0 auto;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-heading {
+  font-family: 'Estrella', sans-serif;
+  font-size: clamp(5rem, 9vw, 7rem) !important;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+}
+
+.about-paragraph {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #b5b5b5;
+  margin: 0 0 1rem 0;
+}
+
+.about-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .about-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .about-container {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .about-card {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-text {
+    text-align: center;
+  }
+}
