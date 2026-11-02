@@ -1,7 +1,8 @@
+import { ui } from '../config/ui';
 import { useEffect, type ReactNode } from 'react';
-import SiteFooter from '../components/SiteFooter/SiteFooter';
-import SiteHeader from '../components/SiteHeader/SiteHeader';
-import { RevealController } from '../motion/RevealController';
+import SiteFooter from '../components/ui/SiteFooter/SiteFooter';
+import SiteHeader from '../components/ui/SiteHeader/SiteHeader';
+import { RevealController } from '../components/ui/motion/RevealController';
 import { routeMeta, type Route } from '../routes';
 
 /**
@@ -17,9 +18,7 @@ export function PageShell({ route, children }: { route: Route; children: ReactNo
 
   return (
     <>
-      <a className="skip-link" href="#contenido">
-        Saltar al contenido
-      </a>
+      <a className="skip-link" href="#contenido">{ui.navigation.skip} </a>
       <div id="top" />
       <SiteHeader path={route.path} />
       <main id="contenido" tabIndex={-1}>

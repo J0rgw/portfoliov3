@@ -22,3 +22,5 @@ export function render(url: string): { html: string; head: string; status: numbe
 export function renderOgCard(key: string): string {
   return renderToStaticMarkup(<OgCard cardKey={key} />);
 }
+
+export { site } from './config/site';

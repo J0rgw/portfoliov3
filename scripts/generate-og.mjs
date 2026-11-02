@@ -33,7 +33,7 @@ const { renderOgCard, ogKeys } = await import(pathToFileURL(join(ROOT, 'dist-ssr
 
 const cssFile = readdirSync(join(ROOT, 'dist', 'assets')).find((file) => file.endsWith('.css'));
 const siteCss = readFileSync(join(ROOT, 'dist', 'assets', cssFile), 'utf8');
-const ogCss = readFileSync(join(ROOT, 'src', 'seo', 'og.css'), 'utf8');
+const ogCss = readFileSync(join(ROOT, 'src', 'design', 'seo', 'og.css'), 'utf8');
 
 // Inline the fonts: the card is loaded with setContent, so relative URLs would not resolve.
 const font = (file) => `data:font/woff2;base64,${readFileSync(join(ROOT, 'public', 'fonts', file)).toString('base64')}`;

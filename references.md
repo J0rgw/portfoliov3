@@ -1,3 +1,10 @@
+> TASK 02 update · 2026-11-02: [DESIGN.md](DESIGN.md) now owns the artistic language.
+> Keep A24's disc interaction, Jorge's original hero composition and marker arrow, Kyoosang's
+> physical narrative, the booklet and back-cover references. The old serif title, forced
+> word breaks, uniform hairlines and decoration-only handwriting are superseded by Poppins,
+> printed inserts and the composition rules of TASK 02. Detailed observations below remain
+> a dated research record, not instructions to reproduce those interfaces.
+
 # references.md — Visual research and reference matrix
 
 The single source of truth for visual inspiration. Every reference below is mapped to
@@ -200,15 +207,14 @@ it contains **only** `estrella-early.otf`; no Poppins files existed before this 
   - Nominee, 25 Oct 2026: *"A life and a design practice, told in one continuous line"*, a
     tribute to Cavandoli's *La Linea*. White ground, Helvetica Neue.
   - One continuous SVG line draws the story as you scroll (native scroll, ~52,000 px).
-  - Small caps kicker (*MADE IN ITALY. STILL DRAWING.*) above a large plain sentence (*I started
-    with what I had.*). Nav: `Story`, `Work 09` (superscript count), `CV ↗`, `Contact`. Chapter
+  - A large plain sentence (*I started with what I had.*). Nav: `Story`, `Work 09` (superscript count), `CV ↗`, `Contact`. Chapter
     indicator bottom-left: `00 The beginning +`.
   - A **"Read the story without animation"** link at the very top. An analytics consent dialog
     drawn with the same line. A reduced-motion rule exists.
 - **Proposed**:
   - A single continuous thread: the hairline "timeline rule" that runs through the milestones
     and the liner-notes steps, so chapters read as one story.
-  - Counts in navigation (`Proyectos 06`), chapter kickers with numbers.
+  - Counts in navigation (`Proyectos 06`).
   - Reduced-motion parity: every animated story beat is fully readable without animation.
   - Consent and privacy copy designed as part of the identity (Bonus Track waitlist).
 - **Do not replicate**: putting essential information at the end of a very long scroll.
@@ -237,8 +243,7 @@ it contains **only** `estrella-early.otf`; no Poppins files existed before this 
   - Hero headline in RocGrotesk 700 condensed capitals at ~219 px, mixing upright and *italic*
     within one statement, with a slanted image set **inline between words**.
   - Nav: condensed caps links and a world clock (`AMS 21:19`) in a bordered box. Square bordered
-    scroll button. Section label chips (`WORK`) above giant headlines (`GLOBAL CAMPAIGNS`).
-    Rectangular `LEARN MORE →` buttons.
+    scroll button. Rectangular `LEARN MORE →` buttons.
   - Mobile menu: light ground, huge condensed capitals, **current item in italic**, social tiles,
     office list.
   - Lenis and an intro animation; the wheel did not scroll during the intro. ~17 MB.
@@ -246,7 +251,6 @@ it contains **only** `estrella-early.otf`; no Poppins files existed before this 
 - **Proposed**:
   - Back cover: an oversized statement with an inline object (the disc) set between words.
   - Square, bordered, uppercase CTAs with an arrow (`components/Button`).
-  - Kicker chips above big headings (`ChapterHeading`).
   - Menu active state by style (weight / marker), not colour alone.
 - **Do not replicate**: intro animations that block scrolling; faking a condensed face by
   stretching Poppins (explicitly forbidden).

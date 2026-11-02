@@ -1,8 +1,9 @@
-import Button from '../../components/Button/Button';
-import ChapterHeading from '../../components/ChapterHeading/ChapterHeading';
-import { chapterById } from '../../content/chapters';
-import { library } from '../../content/library';
-import './BonusTrack.css';
+import { ui } from '../../config/ui';
+import Button from '../../components/ui/Button/Button';
+import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
+import { chapterById } from '../../config/navigation';
+import { library } from '../../config/library';
+import '../../design/sections/BonusTrack/BonusTrack.css';
 
 const chapter = chapterById('libreria');
 
@@ -16,7 +17,7 @@ export function BonusTrack() {
     <section id={chapter.id} className="chapter bonus" aria-labelledby="bonus-title">
       <div className="container bonus__grid">
         <div className="bonus__intro">
-          <ChapterHeading id="bonus-title" kicker={chapter.kicker} title={library.heading} handwriting="Bonus" />
+          <ChapterHeading id="bonus-title" title={library.heading} handwriting={ui.bonus.annotation} />
           <p className="bonus__body" data-reveal="up">
             {library.body}
           </p>
@@ -24,15 +25,15 @@ export function BonusTrack() {
             {library.audience}
           </p>
           <p className="bonus__status" data-reveal="up">
-            <span className="bonus__status-label">Estado</span>
+            <span className="bonus__status-label">{ui.labels.status}</span>
             {library.status}
           </p>
         </div>
 
         <div className="bonus__card" data-reveal="up">
           <span className="bonus__sticker" aria-hidden="true">
-            <span>Bonus</span>
-            <span>track</span>
+            <span>{ui.bonus.annotation}</span>
+            <span>{ui.bonus.track}</span>
           </span>
           <p className="bonus__headline" aria-hidden="true">
             {library.headline}

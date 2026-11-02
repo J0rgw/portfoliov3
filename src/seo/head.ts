@@ -1,4 +1,4 @@
-import { site } from '../content/site';
+import { site } from '../config/site';
 import { routeMeta, type Route } from '../routes';
 import { schemaFor } from './schema';
 
@@ -15,12 +15,13 @@ const escapeJson = (value: unknown): string => JSON.stringify(value).replace(/</
 export const buildHead = (route: Route): string => {
   const meta = routeMeta(route);
   const tags = [
+    `<meta name="author" content="${escapeHtml(site.name)}" />`,
     `<title>${escapeHtml(meta.title)}</title>`,
     `<meta name="description" content="${escapeHtml(meta.description)}" />`,
     `<link rel="canonical" href="${meta.url}" />`,
     meta.noindex ? '<meta name="robots" content="noindex" />' : '<meta name="robots" content="index, follow" />',
     `<meta property="og:type" content="${meta.type}" />`,
-    `<meta property="og:site_name" content="${escapeHtml(`${site.name} · Portfolio`)}" />`,
+    `<meta property="og:site_name" content="${escapeHtml(`${site.name} · ${site.portfolioLabel}`)}" />`,
     `<meta property="og:locale" content="${site.locale}" />`,
     `<meta property="og:title" content="${escapeHtml(meta.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(meta.description)}" />`,

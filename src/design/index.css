@@ -1,0 +1,7 @@
+/* Design system entry. Import order matters: tokens → fonts → base → layout → motion. */
+@import './tokens.css';
+@import './typography.css';
+@import './base.css';
+@import './layout.css';
+@import './motion.css';
+@import './themes/paper.css';

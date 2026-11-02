@@ -1,0 +1,405 @@
+/* Chapter 00, the cover. Composition: docs/ART_DIRECTION.md §5.1 (Jorge's
+   sketch, 2026-10-29). Motion: docs/MOTION_SYSTEM.md §2.1. The scene reads the
+   variables written by useScrollScene (--scene-split, --scene-solo,
+   --scene-exit and the disc anchor's --scene-disc-dx/dy); the defaults below are
+   the resting composition, which is also what no-JS and reduced-motion
+   visitors see. */
+
+.hero {
+  /* One viewport, from the top of the page: the fixed header is transparent
+     type over it (SiteHeader.css), so the frame starts at 0 and nothing in the
+     hero is cut by an invisible line under the header. */
+  --frame-h: max(100svh, 30rem);
+  /* Extra scroll the pinned frame plays over (JavaScript, motion allowed). */
+  --scene-run: 0px;
+  --scene: 0;
+  --scene-split: 0;
+  --scene-solo: 0;
+  --scene-exit: 0;
+  --scene-disc-dx: 0px;
+  --scene-disc-dy: 0px;
+  position: relative;
+  /* Clip without creating a scroll container, so the frame can stay sticky. */
+  overflow: clip;
+}
+
+.hero__track {
+  position: relative;
+  height: calc(var(--frame-h) + var(--scene-run));
+}
+
+.hero__frame {
+  position: relative;
+  height: var(--frame-h);
+  /* Its bottom edge is where the forearm leaves the picture. */
+  overflow: clip;
+  container-type: size;
+}
+
+/* ---- Credit: name, role and statement collapsed into the bottom-left corner -- */
+
+.hero__credit {
+  position: absolute;
+  z-index: 2;
+  bottom: clamp(var(--space-5), 6cqh, var(--space-8));
+  inset-inline-start: max(var(--margin), (100% - var(--content-max)) / 2 + var(--margin));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: min(29rem, calc(100% - 2 * var(--margin)));
+}
+
+.hero__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: 0;
+  text-wrap: initial;
+}
+
+/* Plain Poppins credit directly on the page background; no label or card. */
+.hero__name {
+  display: inline-block;
+  margin-inline-start: 0;
+  padding-inline: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-hero-name);
+  font-weight: var(--weight-black);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  max-width: 15ch;
+  text-wrap: balance;
+}
+
+.hero__name::first-letter {
+  text-transform: uppercase;
+}
+
+.hero__role {
+  max-width: 32ch;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.hero__statement {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+/* ---- The set: disc behind the sleeve, a hand holding the sleeve ---------------
+   Everything is measured in the disc's diameter (--d). The set stands on the
+   frame's bottom edge, which crosses the forearm: the photo's own cut never
+   shows. */
+
+.hero__set {
+  --d: min(68cqh, 40cqw);
+  /* The sleeve (printed cover in its film). */
+  --w: calc(var(--d) * 0.8);
+  /* The hand photo: its thumb is ~0.36 of the sleeve, a real hand on a real case. */
+  --hand: calc(var(--w) * 0.89);
+  /* Where the hand holds the right edge, as a fraction of its height. The
+     film's pressure creases (film-*.webp) are drawn for this value. */
+  --grip: 0.62;
+  --tilt: 3.5deg;
+  --sleeve-x: calc(var(--d) * 0.66);
+  --sleeve-y: calc(var(--d) * 0.4);
+  /* How far the disc slides out of the sleeve, and where it settles below
+     the frame's centre when it takes the lead. */
+  --split-dx: calc(var(--d) * -0.06);
+  --solo-dy: 0px;
+  position: absolute;
+  bottom: 0;
+  left: calc(45cqw - var(--d) / 2);
+  width: calc(var(--sleeve-x) + var(--w) + var(--hand) * 0.62);
+  /* 1.08 sleeves below its top: under the sleeve's lowest corner (1.03 at
+     this tilt) and above the photo's cut across the forearm (~1.12 at this
+     grip and hand size). Re-check both if --grip, --hand or --tilt change. */
+  height: calc(var(--sleeve-y) + var(--w) * 1.08);
+  pointer-events: none;
+}
+
+/* Layout boxes: measured by useScrollScene, never transformed. */
+.hero__disc,
+.hero__sleeve {
+  position: absolute;
+  aspect-ratio: 1;
+}
+
+.hero__disc {
+  left: 0;
+  top: 0;
+  width: var(--d);
+}
+
+.hero__sleeve {
+  left: var(--sleeve-x);
+  top: var(--sleeve-y);
+  width: var(--w);
+}
+
+/* ---- The disc: scroll moves the body, a separate layer turns the label ------- */
+
+.hero__disc-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: var(--shadow-object);
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  /* split: slides out of the sleeve · solo: to the middle of the frame, a
+     little larger · exit: lifts away a touch faster than the page. */
+  translate:
+    calc(var(--scene-split) * var(--split-dx) + var(--scene-solo) * (var(--scene-disc-dx) - var(--split-dx)))
+    calc(
+      var(--scene-split) * var(--d) * -0.03 + var(--scene-solo) * (var(--scene-disc-dy) + var(--solo-dy) + var(--d) * 0.03) -
+        var(--scene-exit) * var(--d) * 0.24
+    );
+  scale: calc(1 + var(--scene-solo) * 0.06 - var(--scene-exit) * 0.1);
+}
+
+.hero__disc-spin {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* The turn lives on its own layer, apart from the scroll transforms, and only
+   with JavaScript (which provides the pause). It starts upright. */
+.js .hero__disc-spin {
+  animation: disc-spin var(--dur-spin) linear infinite;
+  will-change: rotate;
+}
+
+@keyframes disc-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+.hero__disc-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* A lamp's highlight: it stays still while the label turns under it. */
+.hero__disc-body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 300deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--color-paper-raised) 16%, transparent) 22deg,
+    transparent 48deg,
+    transparent 180deg,
+    color-mix(in srgb, var(--color-paper-raised) 10%, transparent) 202deg,
+    transparent 228deg
+  );
+  /* Keep the centre hole clear. */
+  mask: radial-gradient(circle, transparent 10.9%, black 11.2%);
+  pointer-events: none;
+}
+
+/* ---- The sleeve and the hand that holds it: one body ---------------------------- */
+
+.hero__sleeve-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* split: the hand pulls it off the disc, along the forearm · solo: on out of
+     the frame, the way the arm goes. It never moves up, so the frame's edge
+     always hides the end of the arm. */
+  translate:
+    calc((var(--scene-split) * 0.14 + var(--scene-solo) * 0.5) * var(--d))
+    calc((var(--scene-split) * 0.16 + var(--scene-solo) * 0.8) * var(--d));
+  rotate: calc(var(--tilt) + var(--scene-split) * 3deg + var(--scene-solo) * 4deg);
+}
+
+/* The printed cover inside a clear film a little larger than the print. The
+   film (film-*.webp, white crests and dark troughs with alpha) carries the
+   folded edges, the heat seal, corner wrinkles, the creases where the thumb
+   presses and the lamp's streaks; the filter gives the sleeve its thickness,
+   contact and cast shadows. */
+.hero__case {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  filter: var(--filter-sleeve);
+}
+
+.hero__cover,
+.hero__film {
+  position: absolute;
+  max-width: none;
+}
+
+.hero__cover {
+  inset: 2.2%;
+  width: 95.6%;
+  height: 95.6%;
+}
+
+.hero__film {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The lamp's broad reflection on the film, from the top left. A gradient
+   here rather than in film-*.webp: lossy WebP alpha bands smooth ramps. */
+.hero__case::after {
+  content: '';
+  position: absolute;
+  inset: 0.4%;
+  background:
+    linear-gradient(
+      118deg,
+      transparent 16%,
+      color-mix(in srgb, var(--color-paper-raised) 9%, transparent) 25%,
+      color-mix(in srgb, var(--color-paper-raised) 17%, transparent) 31%,
+      color-mix(in srgb, var(--color-paper-raised) 6%, transparent) 39%,
+      transparent 47%
+    ),
+    linear-gradient(
+      118deg,
+      transparent 50%,
+      color-mix(in srgb, var(--color-paper-raised) 9%, transparent) 52.5%,
+      transparent 55%
+    );
+  pointer-events: none;
+}
+
+/* The straight cut beside the palm is where the photo's card ran: it lies on
+   the sleeve's right edge, so the thumb is on the film and the fingers are
+   behind the sleeve. Pivot on the foot of that cut (photo px 112, 88), turned
+   7.1° so the cut runs along the edge. */
+.hero__hand {
+  position: absolute;
+  left: calc(var(--w) - var(--hand) * 0.3875 - 1px);
+  top: calc(var(--w) * var(--grip) - var(--hand) * 0.3045);
+  width: var(--hand);
+  max-width: none;
+  height: auto;
+  transform-origin: 38.75% 29.73%;
+  rotate: -7.1deg;
+  filter: var(--filter-hand);
+}
+
+/* ---- Pause control (WCAG 2.2.2) ------------------------------------------------
+   Pointers stop the disc by resting on it or tapping it; keyboards get this
+   control, out of sight until it has focus. */
+
+.hero__spin-toggle {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--header-h) + var(--space-4));
+  right: var(--margin);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding-inline: var(--space-3);
+  background: var(--color-paper);
+  border: var(--hairline) solid var(--rule-strong);
+  font-family: var(--font-body);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.hero__spin-toggle:not(:focus-visible) {
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+html:not(.js) .hero__spin-toggle {
+  display: none;
+}
+
+/* ---- Portrait: the credit on top, the set below it, the sleeve lower and the
+   hand mostly beyond the right edge -------------------------------------------- */
+
+@container (orientation: portrait) {
+  /* The bottom belongs to the set (the forearm leaves through it): the credit
+     takes the free space above. */
+  .hero__credit {
+    top: calc(var(--header-h) + clamp(var(--space-5), 4cqh, var(--space-8)));
+    bottom: auto;
+  }
+
+  .hero__name {
+    max-width: 18ch;
+  }
+
+  /* Room for the credit above (12rem), the sleeve kept inside the right margin,
+     the disc allowed to crop a little at the left edge, where its label is
+     plain blue. */
+  .hero__set {
+    --d: min(86cqw, (100cqh - var(--header-h) - 12rem) / 1.41);
+    --w: calc(var(--d) * 0.74);
+    --sleeve-x: calc(var(--d) * 0.42);
+    --sleeve-y: calc(var(--d) * 0.61);
+    /* Its left edge is already at the screen's edge: it slides up, not out. */
+    --split-dx: 0px;
+    --solo-dy: calc(var(--d) * 0.12);
+    left: min((100cqw - var(--d) * 1.2) / 2, 100cqw - var(--margin) - var(--d) * 1.16);
+  }
+}
+
+/* ---- Pinned scene: JavaScript, motion allowed and room for the frame ------------- */
+
+@media (prefers-reduced-motion: no-preference) and (min-height: 34rem) {
+  .js .hero {
+    --scene-run: 100svh;
+  }
+
+  .js .hero__frame {
+    position: sticky;
+    top: 0;
+  }
+
+  .js .hero__disc-body,
+  .js .hero__sleeve-body {
+    will-change: translate, scale, rotate;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-height: 34rem) and (max-width: 767px) {
+  .js .hero {
+    --scene-run: 80svh;
+  }
+}
+
+/* ---- Reduced motion: a still, complete composition ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hero__disc-spin {
+    animation: none;
+  }
+
+  .hero__spin-toggle {
+    display: none;
+  }
+}
+
+@media (max-height: 600px) and (min-width: 768px) {
+  .hero__credit {
+    max-width: 19rem;
+  }
+}

@@ -59,18 +59,18 @@ Slugs: `moneyman`, `client-leads`, `mathgeon`, `disco-download`, `gitchange`, `p
 Each chapter adds something new. Order is intentional: identity → proof → method → offer →
 person → extra → action.
 
-| # | Chapter (`id`) | Visible H2 | Kicker | Purpose |
-|---|----------------|-----------|--------|---------|
-| 00 | Cover (`inicio`) | (H1) Jorge Arcas Verdejo, Freelance Software Developer | none (the object is the kicker) | Who, and the identity as an object |
-| 01 | Projects (`proyectos`) | Proyectos seleccionados | Pista 01 · Selección | Prove capability |
-| 02 | Liner notes (`proceso`) | Cómo trabajo | Pista 02 · Notas del libreto | Earn trust in the method |
-| 03 | Services (`servicios`) | Qué puedo construir para ti | Pista 03 · Servicios | Turn skills into offers |
-| 04 | About (`sobre-mi`) | Sobre mí | Pista 04 · Créditos | Human connection, credibility |
-| 05 | Bonus track (`libreria`) | Una librería de componentes, en preparación | Bonus track | Introduce the library, honestly |
-| 06 | Back cover (`contacto`) | ¿Tienes un proyecto en mente? | Contraportada | Convert |
+| # | Chapter (`id`) | Visible H2 | Purpose |
+|---|----------------|-----------|---------|
+| 00 | Cover (`inicio`) | (H1) Jorge Arcas Verdejo, Freelance Software Developer | Who, and the identity as an object |
+| 01 | Projects (`proyectos`) | Proyectos seleccionados | Prove capability |
+| 02 | Liner notes (`proceso`) | Cómo trabajo | Earn trust in the method |
+| 03 | Services (`servicios`) | Qué puedo construir para ti | Turn skills into offers |
+| 04 | About (`sobre-mi`) | Sobre mí | Human connection, credibility |
+| 05 | Bonus track (`libreria`) | Una librería de componentes, en preparación | Introduce the library, honestly |
+| 06 | Back cover (`contacto`) | ¿Tienes un proyecto en mente? | Convert |
 
-The chapter list lives in `src/content/chapters.ts` and drives the menu panel
-and the footer tracklist. A chapter flagged `ready: false` is not linked anywhere.
+The chapter list lives in `src/config/navigation.ts` and drives the menu panel
+and the footer tracklist. Array order also controls the rendered chapters; `ready: false` removes the section and its navigation entries. Calls to chapterHref for a hidden chapter safely return to the cover.
 
 ### Section contracts
 
@@ -80,8 +80,9 @@ Every chapter below must keep its contract when edited.
 - Narrative purpose: introduce the person and the identity through one physical object, in one
   viewport; the offer is told by the chapters that follow.
 - Content (Jorge's sketch and corrections, 2026-10-29): a credit collapsed into the bottom-left
-  corner, `h1` with the full name (Estrella) and the role "Freelance Software Developer", then
-  "Software con carácter."; the scene: Jorge's printed disc behind his cover in a clear plastic film, a
+  corner, `h1` with the full name (Poppins) and the role "Freelance Software Developer", then
+  "Software con carácter.". Render this credit as plain text directly on the background, without
+  a card, coloured border, shadow or tilt. The scene: Jorge's printed disc behind his cover in a clear plastic film, a
   hand holding the sleeve by its edge (ART_DIRECTION §5.1). No headline, lede, CTAs, spec strip
   or tracklist: contact and chapters are in the header (Hablemos, Índice, Menú).
 - References: Jorge's sketch (primary), Kyoosang Choi (a hand holding the object), A24 (the disc
@@ -100,8 +101,7 @@ Every chapter below must keep its contract when edited.
 - SEO: the only `h1`, containing the name and the role. The service phrases live in Services and
   in the meta description; the Person JSON-LD description is `site.summary`. The artwork is
   decorative and adds no claims.
-- Accessibility: all text is real HTML, visible without JavaScript; the name's lowercase "a" is
-  `text-transform` only. The disc, the sleeve and the hand are `aria-hidden` (the name and role
+- Accessibility: all text is real HTML, visible without JavaScript; the name is typeset in its original case. The disc, the sleeve and the hand are `aria-hidden` (the name and role
   printed on them are the `h1`). The turn can be paused by keyboard (focus-revealed button),
   mouse and touch (WCAG 2.2.2).
 - Conversion: the header's "Hablemos" (always visible) and the menu; the hero itself has no CTA,
@@ -125,7 +125,7 @@ Every chapter below must keep its contract when edited.
   pen loop turns round the hovered disc. No wheel capture: the wheel scrolls the page everywhere.
 - Responsive: one viewport-high frame on wide landscape screens (credits top left, discs on an
   arc, a second previous disc only on frames ≥ 940 px tall); credits above the discs on portrait
-  and narrow screens, the title area kept two lines tall so the discs never jump (ART_DIRECTION
+  and narrow screens, the title wraps naturally within the paper insert so the discs never jump (ART_DIRECTION
   §5.2, MOTION_SYSTEM §2.2). No horizontal overflow: the section clips its discs.
 - SEO: every disc is a real link to `/proyectos/<slug>/` with descriptive text ("MoneyMan,
   proyecto 1 de 6. Ver el caso de estudio"); the selected title is an `h3` under the chapter
@@ -206,13 +206,13 @@ One coherent system: **a conventional information architecture dressed as a trac
 
 ## 5. Content model
 
-All content is typed TypeScript in `src/content/` (types in `src/content/types.ts`). Components
+All content is typed TypeScript in `src/config/` (types in `src/config/types.ts`). Components
 never hard-code copy that a content editor would change.
 
 | File | Holds |
 |------|-------|
 | `site.ts` | Identity, contact, socials, catalog number, availability, base URL, default SEO |
-| `chapters.ts` | Home chapters (id, number, label, kicker, readiness) |
+| `navigation.ts` | Home chapters (id, number, label, readiness) |
 | `projects.ts` | Releases and case-study content |
 | `services.ts` | Offers |
 | `process.ts` | Liner-notes steps |
@@ -222,15 +222,21 @@ never hard-code copy that a content editor would change.
 **Project schema** (`Project` in `types.ts`, abridged):
 
 ```ts
-slug, track, catalog, title, tagline, summary,
-projectType: 'product' | 'internal-tool' | 'team' | 'tool' | 'portfolio',
-typeLabel, role, team?, status: { kind, label }, year, technologies[], services[],
-accent, cover: { motif, ... }, gallery?: Media[],
+id, slug, order, visible, title, tagline, summary,
+projectType, typeLabel, role, team?, status: { kind, label }, year,
+technologies[], services[], assets?: { disc?, sleeve?, social? },
 overview[], context?[], challenge?[], goals?[], responsibilities?[],
-architecture?: { summary[], diagram?, stack[] }, decisions?: { title, body }[],
-outcome?[], evidence?: (Media | CodeExcerpt)[], links: { repo?, live? },
-seo: { title, description }
+architecture?: { summary[], stack[] }, decisions?: { title, body }[],
+outcome?[], evidence?: Evidence[], links: { repo?, live? }, seo: { title, description }
 ```
+
+`projectCatalog` is editable; `selectProjects` filters/sorts without mutation and derives track
+numbers. `projects`, `projectSummaries`, routes, menu, index, schema and OG keys share this selection.
+Hidden/removed releases have no public detail route. References through projectHref fall back to
+the index, so old process/service evidence links do not become dead local URLs. Private work
+has its own `visible` flag. Zero projects renders an empty state; a single release has no self-link
+as “next”. Assets are optional; missing custom art uses the existing generated cover theme.
+Graphic themes live in design; their project assignment is a rendering adapter in CoverArt.
 
 Sections are optional. A case study renders only the parts that have content, in this order:
 cover and credits → resumen → contexto → el problema → objetivos y restricciones → mi papel →
@@ -241,12 +247,11 @@ without `responsibilities`, "Solución" without `architecture` and `decisions`, 
 "Pendiente de documentar." Today only Portfolio v2's "Mi papel" is pending. Every case study
 opens with "Volver a proyectos" (`/#proyectos`, the gallery reopens on that disc).
 
-**Gallery view of a project** (`ProjectSummary`, derived by `summarizeProject` in
-`projects.ts`, never written by hand, so the gallery and the case study read one source): the
-brief's fields map to `slug` (also the stable id, URL segment and view-transition name),
-`title`, `shortDescription` (the tagline), `stack` (first three `technologies`), `disc` (the
-cover art spec, the "disc asset" until final art exists), `track`, `year`, `href`; the detail
-content is the `Project` itself, found by slug.
+**Gallery view** (`ProjectSummary`): derived id, slug, track, title,
+shortDescription (tagline), stack (first three technologies), year, href and optional assets.
+No colour, geometry, motif or React type belongs in the editorial model.
+Shared labels and functional messages are in `ui.ts`; identity, hero, contact and SEO have
+named config files. `assets.ts` contains reusable original/derived asset references.
 
 ---
 
@@ -276,7 +281,7 @@ claim. Anything unverified goes to "Open questions" in the implementation plan, 
 ## 7. SEO map
 
 - `lang="es"` everywhere. English is not published yet; the content model keeps copy in
-  `src/content` so an `/en/` tree with `hreflang` can be added without duplicating components.
+  `src/config` so an `/en/` tree with `hreflang` can be added without duplicating components.
   No machine-translated pages.
 - Unique `<title>` and meta description per route (`seo` fields), canonical with trailing slash on
   `https://portfolio.jarcas.dev`, Open Graph and Twitter cards with a 1200×630 image per page.

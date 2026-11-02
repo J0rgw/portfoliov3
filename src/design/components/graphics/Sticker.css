@@ -1,0 +1,1 @@
+.sticker { display: inline-flex; padding: var(--space-1) var(--space-3); background: var(--color-ink); color: var(--color-paper); border: var(--hairline) solid currentColor; font-family: var(--font-metadata); font-size: var(--text-xs); line-height: var(--leading-body); rotate: var(--label-tilt); }

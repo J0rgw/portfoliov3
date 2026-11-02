@@ -1,5 +1,6 @@
-import { projectBySlug, projectHref, projects } from './content/projects';
-import { site } from './content/site';
+import { seoTemplates } from './config/seo';
+import { projectBySlug, projectHref, projects } from './config/projects';
+import { site } from './config/site';
 
 /**
  * Route table. Every route here is prerendered by scripts/prerender.mjs and
@@ -64,12 +65,12 @@ export const routeMeta = (route: Route): RouteMeta => {
       };
     case 'projects':
       return {
-        title: `Proyectos · ${site.name}`,
+        title: seoTemplates.projectsTitle(site.name),
         description:
-          'Índice de proyectos de Jorge Arcas: aplicaciones web, automatización con CRM, herramientas y frontend, cada uno con su caso de estudio, su papel y su tecnología.',
+          seoTemplates.projectsDescription,
         url: absolute('/proyectos/'),
         image: absolute(site.seo.image),
-        imageAlt: `Proyectos de ${site.name}`,
+        imageAlt: seoTemplates.projectsImageAlt(site.name),
         type: 'website',
       };
     case 'project': {
@@ -78,15 +79,15 @@ export const routeMeta = (route: Route): RouteMeta => {
         title: project.seo.title,
         description: project.seo.description,
         url: absolute(projectHref(project.slug)),
-        image: absolute(`/images/og/${project.slug}.jpg`),
-        imageAlt: `Portada del caso de estudio ${project.title}`,
+        image: absolute(project.assets?.social ?? `/images/og/${project.slug}.jpg`),
+        imageAlt: seoTemplates.projectImageAlt(project.title),
         type: 'article',
       };
     }
     default:
       return {
-        title: `Pista no encontrada · ${site.name}`,
-        description: 'Esta página no existe. Vuelve a la portada o al índice de proyectos.',
+        title: seoTemplates.notFoundTitle(site.name),
+        description: seoTemplates.notFoundDescription,
         url: absolute('/404.html'),
         image: absolute(site.seo.image),
         imageAlt: site.name,

@@ -1,11 +1,13 @@
+import Paper from '../../components/graphics/Paper/Paper';
+import { ui } from '../../config/ui';
 import type { CSSProperties } from 'react';
-import Button from '../../components/Button/Button';
-import ChapterHeading from '../../components/ChapterHeading/ChapterHeading';
-import { ArrowRight } from '../../components/Icon/Icon';
-import { chapterById, chapterHref } from '../../content/chapters';
-import { processIntro, processSteps } from '../../content/process';
-import { useScrollSpy } from '../../motion/useScrollSpy';
-import './LinerNotes.css';
+import Button from '../../components/ui/Button/Button';
+import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
+import { ArrowRight } from '../../components/ui/Icon/Icon';
+import { chapterById, chapterHref } from '../../config/navigation';
+import { processIntro, processSteps } from '../../config/process';
+import { useScrollSpy } from '../../components/ui/motion/useScrollSpy';
+import '../../design/sections/LinerNotes/LinerNotes.css';
 
 const chapter = chapterById('proceso');
 const stepId = (number: string) => `paso-${number}`;
@@ -27,16 +29,15 @@ export function LinerNotes() {
         <div className="liner__aside">
           <ChapterHeading
             id="process-title"
-            kicker={chapter.kicker}
             title={processIntro.heading}
-            handwriting="Proceso"
+            handwriting={ui.process.annotation}
             lede={processIntro.lede}
           />
           <div className="liner__booklet" aria-hidden="true">
             <div className="liner__page liner__page--back" />
             <div className="liner__page liner__page--mid" />
             <div className="liner__page liner__page--front">
-              <span className="liner__page-label">Notas del libreto</span>
+              <span className="liner__page-label">{ui.process.booklet}</span>
               <span className="liner__page-count mono">
                 <span className="liner__page-current">{active.number}</span> / {String(processSteps.length).padStart(2, '0')}
               </span>
@@ -60,8 +61,8 @@ export function LinerNotes() {
               <div className="liner__step-body">
                 <h3 className="liner__step-title">{step.title}</h3>
                 <p className="liner__step-text">{step.body}</p>
-                <div className="liner__note">
-                  <p className="liner__note-label">Nota técnica</p>
+                <Paper variant="note" className="liner__note">
+                  <p className="liner__note-label">{ui.process.technicalNote}</p>
                   <p className="liner__note-text">{step.note.text}</p>
                   <a
                     className="liner__note-link"
@@ -71,7 +72,7 @@ export function LinerNotes() {
                     {step.note.source.label}
                     <ArrowRight size={16} aria-hidden="true" />
                   </a>
-                </div>
+                </Paper>
               </div>
             </li>
           ))}
@@ -79,8 +80,8 @@ export function LinerNotes() {
       </div>
 
       <div className="container liner__close" data-reveal="up">
-        <p className="liner__close-text">¿Te encaja esta forma de trabajar?</p>
-        <Button href={chapterHref('contacto')}>Cuéntame tu proyecto</Button>
+        <p className="liner__close-text">{ui.process.closing}</p>
+        <Button href={chapterHref('contacto')}>{ui.process.cta}</Button>
       </div>
     </section>
   );

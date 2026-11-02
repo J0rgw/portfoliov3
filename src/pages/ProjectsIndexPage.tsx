@@ -1,11 +1,14 @@
+import { ui } from '../config/ui';
+import { coverThemes } from '../design/themes/covers';
+import { projectTheme } from '../components/cd/CoverArt/projectTheme';
 import type { CSSProperties } from 'react';
-import CoverArt from '../components/CoverArt/CoverArt';
-import CreditsTable from '../components/CreditsTable/CreditsTable';
-import Disc from '../components/Disc/Disc';
-import { chapterHref } from '../content/chapters';
-import { formatTrack, privateWork, projectHref, projects, trackTotal } from '../content/projects';
-import { site } from '../content/site';
-import './ProjectsIndexPage.css';
+import CoverArt from '../components/cd/CoverArt/CoverArt';
+import CreditsTable from '../components/editorial/CreditsTable/CreditsTable';
+import Disc from '../components/cd/Disc/Disc';
+import { chapterHref } from '../config/navigation';
+import { formatTrack, privateWork, projectHref, projects, trackTotal } from '../config/projects';
+import { site } from '../config/site';
+import '../design/pages/ProjectsIndexPage.css';
 
 /**
  * /proyectos/: the full index (A24's "Index" view). Every release with its
@@ -15,21 +18,16 @@ export function ProjectsIndexPage() {
   return (
     <div className="index-page">
       <header className="container index-page__head">
-        <nav className="case-crumbs" aria-label="Migas de pan">
+        <nav className="case-crumbs" aria-label={ui.navigation.breadcrumbs}>
           <ol role="list">
             <li>
-              <a href="/">Inicio</a>
+              <a href="/">{ui.navigation.home}</a>
             </li>
-            <li aria-current="page">Proyectos</li>
+            <li aria-current="page">{ui.navigation.projects}</li>
           </ol>
         </nav>
-        <p className="label enter" style={{ '--enter-index': 0 } as CSSProperties}>
-          Índice · {formatTrack(trackTotal)} pistas · {site.catalog}
-        </p>
-        <h1 className="index-page__title enter enter--still">Proyectos</h1>
-        <p className="lede enter" style={{ '--enter-index': 1 } as CSSProperties}>
-          Cada lanzamiento con sus créditos: qué es, qué parte hice yo, con qué está construido y en qué estado está.
-        </p>
+        <h1 className="index-page__title enter enter--still">{ui.navigation.projects}</h1>
+        <p className="lede enter" style={{ '--enter-index': 0 } as CSSProperties}>{ui.projects.indexIntro} </p>
       </header>
 
       <ol className="container index-grid" role="list">
@@ -45,11 +43,11 @@ export function ProjectsIndexPage() {
                 <Disc
                   variant="pressed"
                   transitionName={`disc-${project.slug}`}
-                  ink={project.cover.ink}
+                  ink={projectTheme(project.id).ink}
                   rimText={`${project.title} · ${site.catalog}`}
                 >
                   <CoverArt
-                    cover={project.cover}
+                    cover={projectTheme(project.id)} assets={project.assets}
                     title={project.title}
                     track={formatTrack(project.track)}
                     catalog={site.catalog}
@@ -65,20 +63,20 @@ export function ProjectsIndexPage() {
             <CreditsTable
               density="compact"
               rows={[
-                { label: 'Tipo', value: project.typeLabel },
-                { label: 'Año', value: project.year },
-                { label: 'Estado', value: project.status.label },
-                { label: 'Stack', value: project.technologies.slice(0, 3).join(' · ') },
+                { label: ui.labels.type, value: project.typeLabel },
+                { label: ui.labels.year, value: project.year },
+                { label: ui.labels.status, value: project.status.label },
+                { label: ui.labels.stack, value: project.technologies.slice(0, 3).join(' · ') },
               ]}
             />
           </li>
         ))}
-        <li className="index-card index-card--private" data-reveal="up">
+        {privateWork.visible && <li className="index-card index-card--private" data-reveal="up">
           <a className="index-card__link" href={chapterHref('contacto')}>
             <span className="index-card__disc" aria-hidden="true">
               <Disc variant="pressed">
                 <CoverArt
-                  cover={privateWork.cover}
+                  cover={coverThemes.private}
                   title={privateWork.title}
                   track={formatTrack(trackTotal)}
                   catalog={site.catalog}
@@ -90,7 +88,7 @@ export function ProjectsIndexPage() {
             <span className="index-card__title">{privateWork.title}</span>
             <span className="index-card__tagline">{privateWork.tagline}</span>
           </a>
-        </li>
+        </li>}
       </ol>
     </div>
   );

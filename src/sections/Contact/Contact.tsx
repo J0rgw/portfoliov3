@@ -1,10 +1,11 @@
+import { ui } from '../../config/ui';
 import { useEffect, useRef, useState } from 'react';
-import Button from '../../components/Button/Button';
-import CreditsTable from '../../components/CreditsTable/CreditsTable';
-import Disc from '../../components/Disc/Disc';
-import { chapterById } from '../../content/chapters';
-import { mailto, site, socials } from '../../content/site';
-import './Contact.css';
+import Button from '../../components/ui/Button/Button';
+import CreditsTable from '../../components/editorial/CreditsTable/CreditsTable';
+import Disc from '../../components/cd/Disc/Disc';
+import { chapterById } from '../../config/navigation';
+import { mailto, site, socials } from '../../config/site';
+import '../../design/sections/Contact/Contact.css';
 
 const chapter = chapterById('contacto');
 
@@ -15,11 +16,13 @@ const chapter = chapterById('contacto');
  */
 export function Contact() {
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   const copyEmail = async () => {
+    setCopyFailed(false);
     try {
       await navigator.clipboard.writeText(site.email);
       setCopied(true);
@@ -28,6 +31,7 @@ export function Contact() {
     } catch {
       // Clipboard can be blocked; the address stays visible and selectable.
       setCopied(false);
+      setCopyFailed(true);
     }
   };
 
@@ -37,45 +41,37 @@ export function Contact() {
   return (
     <section id={chapter.id} className="chapter contact on-night" aria-labelledby="contact-title">
       <div className="container">
-        <p className="contact__kicker label">{chapter.kicker}</p>
-
         <div className="contact__statement" aria-hidden="true">
-          <span className="contact__hand">Hablemos</span>
+          <span className="contact__hand">{ui.navigation.talk}</span>
           <span className="contact__inline-disc">
-            <Disc variant="cdr" handwriting="Jarcas" />
+            <Disc variant="cdr" handwriting={site.signature} />
           </span>
         </div>
 
         <div className="contact__grid">
           <div className="contact__main">
-            <h2 id="contact-title" className="contact__title">
-              ¿Tienes un proyecto en mente?
-            </h2>
-            <p className="contact__lede lede">
-              Cuéntame qué necesitas, en qué punto está y qué plazo tienes. Te respondo personalmente.
-            </p>
+            <h2 id="contact-title" className="contact__title">{ui.contact.heading} </h2>
+            <p className="contact__lede lede">{ui.contact.body} </p>
             <div className="contact__actions">
-              <Button href={mailto(site.contact.subject, site.contact.body)} icon="mail">
-                Escríbeme
-              </Button>
+              <Button href={mailto(site.contact.subject, site.contact.body)} icon="mail">{ui.actions.write} </Button>
               <Button variant="secondary" icon="copy" onClick={copyEmail}>
-                {copied ? 'Email copiado' : 'Copiar email'}
+                {copied ? ui.contact.copied : ui.contact.copy}
               </Button>
             </div>
             <p className="contact__email mono">{site.email}</p>
             <p className="visually-hidden" role="status" aria-live="polite">
-              {copied ? 'Email copiado al portapapeles' : ''}
+              {copied ? ui.contact.copySuccess : copyFailed ? ui.contact.copyFailed : ''}
             </p>
           </div>
 
           <div className="contact__spec">
             <CreditsTable
               rows={[
-                { label: 'Estado', value: site.availability.open ? site.availability.label : 'Agenda completa' },
-                { label: 'Base', value: site.location },
-                { label: 'Idiomas', value: site.languages },
+                { label: ui.labels.status, value: site.availability.open ? site.availability.label : ui.contact.closed },
+                { label: ui.labels.base, value: site.location },
+                { label: ui.labels.languages, value: site.languages },
                 {
-                  label: 'LinkedIn',
+                  label: ui.labels.linkedin,
                   value: linkedIn ? (
                     <a href={linkedIn.href} target="_blank" rel="noopener noreferrer">
                       {linkedIn.detail}
@@ -83,7 +79,7 @@ export function Contact() {
                   ) : null,
                 },
                 {
-                  label: 'GitHub',
+                  label: ui.labels.github,
                   value: gitHub ? (
                     <a href={gitHub.href} target="_blank" rel="noopener noreferrer">
                       {gitHub.detail}

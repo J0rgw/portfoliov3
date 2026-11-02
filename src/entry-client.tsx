@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import App from './App';
 import { matchRoute, routeKey } from './routes';
-import './styles/index.css';
+import './design/index.css';
 
 const container = document.getElementById('root')!;
 const path = window.location.pathname;

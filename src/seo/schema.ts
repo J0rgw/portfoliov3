@@ -1,6 +1,8 @@
-import { projectBySlug, projectHref, projects } from '../content/projects';
-import { services } from '../content/services';
-import { site, socials } from '../content/site';
+import { ui } from '../config/ui';
+import { personSeo } from '../config/seo';
+import { projectBySlug, projectHref, projects } from '../config/projects';
+import { services } from '../config/services';
+import { site, socials } from '../config/site';
 import type { Route } from '../routes';
 
 /**
@@ -17,14 +19,14 @@ const person = () => ({
   '@id': personId,
   name: site.name,
   url: url('/'),
-  image: url('/images/brand/avatar.webp'),
+  image: url(personSeo.image),
   jobTitle: site.roleShort,
   description: site.summary,
   email: `mailto:${site.email}`,
-  nationality: { '@type': 'Country', name: 'España' },
-  knowsLanguage: ['es', 'en'],
+  nationality: { '@type': 'Country', name: personSeo.nationality },
+  knowsLanguage: personSeo.languages,
   sameAs: socials.filter((social) => social.href.startsWith('http')).map((social) => social.href),
-  knowsAbout: ['Desarrollo web a medida', 'React', 'TypeScript', 'Node.js', 'Python', 'Integración de CRM', 'Automatización de procesos'],
+  knowsAbout: personSeo.topics,
   makesOffer: services.map((service) => ({
     '@type': 'Offer',
     itemOffered: {
@@ -54,7 +56,7 @@ export const schemaFor = (route: Route): object[] => {
         {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: `${site.name} · Portfolio`,
+          name: `${site.name} · ${site.portfolioLabel}`,
           url: url('/'),
           inLanguage: site.lang,
           author: { '@id': personId },
@@ -65,7 +67,7 @@ export const schemaFor = (route: Route): object[] => {
         {
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
-          name: 'Proyectos',
+          name: ui.navigation.projects,
           url: url('/proyectos/'),
           inLanguage: site.lang,
           author: { '@id': personId },
@@ -79,7 +81,7 @@ export const schemaFor = (route: Route): object[] => {
             })),
           },
         },
-        { '@context': 'https://schema.org', ...breadcrumb([{ name: 'Inicio', path: '/' }, { name: 'Proyectos', path: '/proyectos/' }]) },
+        { '@context': 'https://schema.org', ...breadcrumb([{ name: ui.navigation.home, path: '/' }, { name: ui.navigation.projects, path: '/proyectos/' }]) },
       ];
     case 'project': {
       const project = projectBySlug(route.slug)!;
@@ -101,8 +103,8 @@ export const schemaFor = (route: Route): object[] => {
         {
           '@context': 'https://schema.org',
           ...breadcrumb([
-            { name: 'Inicio', path: '/' },
-            { name: 'Proyectos', path: '/proyectos/' },
+            { name: ui.navigation.home, path: '/' },
+            { name: ui.navigation.projects, path: '/proyectos/' },
             { name: project.title, path: projectHref(project.slug) },
           ]),
         },

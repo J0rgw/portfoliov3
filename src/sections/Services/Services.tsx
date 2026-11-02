@@ -1,10 +1,11 @@
+import { ui } from '../../config/ui';
 import type { CSSProperties } from 'react';
-import ChapterHeading from '../../components/ChapterHeading/ChapterHeading';
-import { ArrowRight } from '../../components/Icon/Icon';
-import { chapterById } from '../../content/chapters';
-import { services, servicesIntro } from '../../content/services';
-import { mailto } from '../../content/site';
-import './Services.css';
+import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
+import { ArrowRight } from '../../components/ui/Icon/Icon';
+import { chapterById } from '../../config/navigation';
+import { services, servicesIntro } from '../../config/services';
+import { mailto } from '../../config/site';
+import '../../design/sections/Services/Services.css';
 
 const chapter = chapterById('servicios');
 
@@ -19,9 +20,8 @@ export function Services() {
       <div className="container">
         <ChapterHeading
           id="services-title"
-          kicker={chapter.kicker}
           title={servicesIntro.heading}
-          handwriting="Servicios"
+          handwriting={ui.services.annotation}
           lede={servicesIntro.lede}
         />
 
@@ -34,7 +34,6 @@ export function Services() {
               style={{ '--reveal-index': index % 2 } as CSSProperties}
             >
               <article className="service__card" aria-labelledby={`service-${service.id}`}>
-                <p className="service__number mono">Formato {service.number}</p>
                 <h3 id={`service-${service.id}`} className="service__title">
                   {service.title}
                 </h3>
@@ -46,7 +45,7 @@ export function Services() {
                   ))}
                 </ul>
                 <p className="service__evidence">
-                  <span className="service__evidence-label">Lo he hecho en</span>
+                  <span className="service__evidence-label">{ui.services.evidence}</span>
                   {service.evidence.map((item, i) => (
                     <span key={item.href}>
                       {i > 0 && ', '}

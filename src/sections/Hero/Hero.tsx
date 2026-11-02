@@ -1,9 +1,12 @@
+import { ui } from '../../config/ui';
+import { motion } from '../../design/motion';
+import { assets } from '../../config/assets';
 import { useRef, useState, type CSSProperties } from 'react';
-import { Pause, Play } from '../../components/Icon/Icon';
-import { site } from '../../content/site';
-import { useScrollScene, type ScenePhases } from '../../motion/useScrollScene';
-import { useSpin } from '../../motion/useSpin';
-import './Hero.css';
+import { Pause, Play } from '../../components/ui/Icon/Icon';
+import { site } from '../../config/site';
+import { useScrollScene } from '../../components/ui/motion/useScrollScene';
+import { useSpin } from '../../components/ui/motion/useSpin';
+import '../../design/sections/Hero/Hero.css';
 
 const enter = (index: number) => ({ '--enter-index': index }) as CSSProperties;
 
@@ -13,8 +16,7 @@ const enter = (index: number) => ({ '--enter-index': index }) as CSSProperties;
  * Fractions of the scene's scroll narrative; split and solo overlap so the
  * movement never stops halfway.
  */
-const SCENE_PHASES: ScenePhases = { split: [0.06, 0.46], solo: [0.36, 0.8], exit: [0.8, 1] };
-const SCENE = { phases: SCENE_PHASES };
+
 
 /**
  * Chapter 00, the cover. Contract: docs/INFORMATION_ARCHITECTURE.md §3.
@@ -35,7 +37,7 @@ export function Hero() {
   const discRef = useRef<HTMLDivElement>(null);
   const spinRef = useRef<HTMLPictureElement>(null);
   const [spinPaused, setSpinPaused] = useState(false);
-  useScrollScene(heroRef, SCENE);
+  useScrollScene(heroRef, motion.hero);
   useSpin(spinRef, { hoverRef: discRef, paused: spinPaused });
   const toggleSpin = () => setSpinPaused((value) => !value);
 
@@ -63,10 +65,10 @@ export function Hero() {
               {/* Tapping the disc holds it still (touch has no hover); the control below does the same for keyboards. */}
               <div className="hero__disc-body" ref={discRef} onClick={toggleSpin}>
                 <picture className="hero__disc-spin" ref={spinRef}>
-                  <source type="image/avif" srcSet="/images/hero/disc.avif" />
+                  <source type="image/avif" srcSet={assets.hero.discAvif} />
                   <img
                     className="hero__disc-art"
-                    src="/images/hero/disc.webp"
+                    src={assets.hero.disc}
                     alt=""
                     width={512}
                     height={512}
@@ -82,9 +84,9 @@ export function Hero() {
                 <div className="hero__case">
                   <img
                     className="hero__cover"
-                    src="/images/hero/cover-720.webp"
-                    srcSet="/images/hero/cover-480.webp 480w, /images/hero/cover-720.webp 720w, /images/hero/cover-880.webp 880w, /images/hero/cover-1024.webp 1024w"
-                    sizes="(orientation: portrait) 61vw, min(calc(52vh - 2.4rem), 31vw)"
+                    src={assets.hero.cover}
+                    srcSet={assets.hero.coverSet}
+                    sizes={motion.heroImageSizes}
                     alt=""
                     width={1024}
                     height={1024}
@@ -92,23 +94,23 @@ export function Hero() {
                   />
                   <img
                     className="hero__film"
-                    src="/images/hero/film-1024.webp"
-                    srcSet="/images/hero/film-640.webp 640w, /images/hero/film-1024.webp 1024w"
-                    sizes="(orientation: portrait) 61vw, min(calc(52vh - 2.4rem), 31vw)"
+                    src={assets.hero.film}
+                    srcSet={assets.hero.filmSet}
+                    sizes={motion.heroImageSizes}
                     alt=""
                     width={1024}
                     height={1024}
                     decoding="async"
                   />
                 </div>
-                <img className="hero__hand" src="/images/hero/hand.webp" alt="" width={289} height={296} decoding="async" />
+                <img className="hero__hand" src={assets.hero.hand} alt="" width={289} height={296} decoding="async" />
               </div>
             </div>
           </div>
 
           <button type="button" className="hero__spin-toggle" onClick={toggleSpin}>
             {spinPaused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}
-            {spinPaused ? 'Reanudar giro del disco' : 'Pausar giro del disco'}
+            {spinPaused ? ui.hero.resume : ui.hero.pause}
           </button>
         </div>
       </div>

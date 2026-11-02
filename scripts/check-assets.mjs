@@ -20,7 +20,7 @@ const PUBLIC = join(ROOT, 'public');
 const PENDING = new Set([]);
 
 const SCAN_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.css', '.html']);
-const ASSET_PATTERN = /["'`(]\s*(\/(?:images|fonts)\/[A-Za-z0-9_\-./]+?\.[A-Za-z0-9]{2,5})\s*["'`)]/g;
+const ASSET_PATTERN = /(\/(?:images|fonts)\/[A-Za-z0-9_\-./]+?\.[A-Za-z0-9]{2,5})(?=[\s"'`),])/g;
 
 /** Recursively collect scannable source files. */
 function collectFiles(dir) {

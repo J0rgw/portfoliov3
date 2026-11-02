@@ -1,20 +1,22 @@
+import { motion } from '../../design/motion';
+import { ui } from '../../config/ui';
 import type { CSSProperties } from 'react';
-import ChapterHeading from '../../components/ChapterHeading/ChapterHeading';
-import LogoLoop from '../../components/LogoLoop/LogoLoop';
-import ProfileCard from '../../components/ProfileCard/ProfileCard';
-import { aboutIntro, aboutNarrative, instrumentLogos, instruments, milestones, passCard, principles } from '../../content/about';
-import { chapterById, chapterHref } from '../../content/chapters';
-import { site } from '../../content/site';
-import './About.css';
+import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
+import LogoLoop from '../../components/ui/LogoLoop/LogoLoop';
+import ProfileCard from '../../components/editorial/ProfileCard/ProfileCard';
+import { aboutIntro, aboutNarrative, instrumentLogos, instruments, milestones, passCard, principles } from '../../config/about';
+import { chapterById, chapterHref } from '../../config/navigation';
+import { site } from '../../config/site';
+import '../../design/sections/About/About.css';
 
 const chapter = chapterById('sobre-mi');
 
 const KIND_LABEL: Record<string, string> = {
-  education: 'Formación',
-  community: 'Comunidad',
-  work: 'Trabajo',
-  talk: 'Charla',
-  projects: 'Proyectos',
+  education: ui.about.education,
+  community: ui.about.community,
+  work: ui.about.work,
+  talk: ui.about.talk,
+  projects: ui.navigation.projects,
 };
 
 /**
@@ -26,7 +28,7 @@ export function About() {
   return (
     <section id={chapter.id} className="chapter about" aria-labelledby="about-title">
       <div className="container">
-        <ChapterHeading id="about-title" kicker={chapter.kicker} title={aboutIntro.heading} />
+        <ChapterHeading id="about-title" title={aboutIntro.heading} />
       </div>
       <div className="container about__grid">
         <div className="about__pass" data-reveal="up">
@@ -37,12 +39,12 @@ export function About() {
             title={passCard.title}
             handle={passCard.handle}
             status={site.availability.open ? site.availability.short : undefined}
-            badge={`${site.catalog} · Créditos`}
+            badge={`${site.catalog} · ${ui.about.credits}`}
             contactText={passCard.contactLabel}
             contactHref={chapterHref('contacto')}
           />
           <span className="about__pass-note handwriting" aria-hidden="true">
-            Jorge
+            {site.name.split(' ')[0]}
           </span>
         </div>
 
@@ -68,7 +70,7 @@ export function About() {
 
       <div className="container about__credits">
         <div className="about__timeline">
-          <h3 className="about__subhead label">Trayectoria</h3>
+          <h3 className="about__subhead label">{ui.about.timeline}</h3>
           <ol className="about__milestones" role="list">
             {milestones.map((milestone, index) => (
               <li
@@ -93,7 +95,7 @@ export function About() {
         </div>
 
         <div className="about__instruments">
-          <h3 className="about__subhead label">Instrumentos</h3>
+          <h3 className="about__subhead label">{ui.about.instruments}</h3>
           <dl className="about__instrument-list">
             {instruments.map((group) => (
               <div key={group.label} className="about__instrument-group">
@@ -102,7 +104,7 @@ export function About() {
               </div>
             ))}
             <div className="about__instrument-group">
-              <dt>Idiomas</dt>
+              <dt>{ui.labels.languages}</dt>
               <dd>{site.languages}</dd>
             </div>
           </dl>
@@ -112,14 +114,14 @@ export function About() {
       <div className="about__loop">
         <LogoLoop
           logos={instrumentLogos}
-          speed={60}
-          logoHeight={34}
-          gap={56}
+          speed={motion.logoLoop.speed}
+          logoHeight={motion.logoLoop.height}
+          gap={motion.logoLoop.gap}
           pauseOnHover
           fadeOut
-          fadeOutColor="#f3f1ec"
+          fadeOutColor="var(--color-paper)"
           scaleOnHover
-          ariaLabel="Tecnologías con las que trabajo"
+          ariaLabel={ui.about.technologies}
         />
       </div>
     </section>

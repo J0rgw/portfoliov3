@@ -1,0 +1,157 @@
+/* ==========================================================================
+   Design tokens. The only place raw values live.
+   Rationale and contrast measurements: docs/ART_DIRECTION.md §3–4.
+   Motion tokens: docs/MOTION_SYSTEM.md §3.
+   ========================================================================== */
+
+:root {
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --accent: var(--color-accent);
+  --muted: var(--color-ink-muted);
+  --surface: var(--color-paper-raised);
+  --border: var(--rule-strong);
+  --decorative: var(--color-brand);
+  --paper-tilt: -1.2deg;
+  --label-tilt: -2deg;
+  --paper-edge: polygon(0 1%, 16% 0, 35% 1%, 58% 0, 79% 1%, 100% 0, 99% 100%, 78% 99%, 54% 100%, 28% 99%, 0 100%);
+  --material-ring-shadow: #24262d;
+  --material-terminal: #0b1724;
+  --material-stop: #ff6b5e;
+  --material-wait: #ffc34a;
+  /* ---- Colour: grounds ---------------------------------------------------- */
+  --color-paper: #f3f1ec;
+  --color-paper-raised: #fbfaf7;
+  --color-paper-sunken: #e8e5de;
+  --color-night: #121213;
+  --color-night-raised: #1c1c1e;
+
+  /* ---- Colour: ink -------------------------------------------------------- */
+  --color-ink: #141414;          /* 16.3:1 on paper */
+  --color-ink-soft: #3b3b40;     /*  9.9:1 */
+  --color-ink-muted: #5f5f66;    /*  5.6:1 (5.0:1 on sunken) */
+  --color-night-ink: #f3f1ec;    /* 16.6:1 on night */
+  --color-night-muted: #a3a3a8;  /*  7.5:1 on night */
+
+  /* ---- Colour: accents ---------------------------------------------------- */
+  --color-accent: #1b62ae;           /* links, focus. 5.5:1 on paper */
+  --color-accent-on-night: #7cc0f5;  /* 9.6:1 on night */
+  --color-brand: #409fea;            /* frog mark. Decorative only, 2.5:1: never text */
+  --color-signal: #1f9d55;           /* "available" status dot. Non-text, 3.4:1 */
+
+  /* ---- Colour: lines ------------------------------------------------------ */
+  --rule: rgb(20 20 20 / 0.14);
+  --rule-strong: rgb(20 20 20 / 0.32);
+  --rule-night: rgb(243 241 236 / 0.18);
+
+  /* ---- Materials ---------------------------------------------------------- */
+  /* Iridescence keeps the old ColorBends palette (#ff5c7a, #8a5cff, #00ffd1)
+     but mixed into silver, as the data side of a disc reflects it. */
+  --irid-pink: #ffd3dd;
+  --irid-violet: #ddd2ff;
+  --irid-aqua: #c9fff3;
+  --irid-gold: #fff1c4;
+  --irid-silver: #e6e7eb;
+  --material-disc: conic-gradient(
+    from var(--irid-angle, 210deg),
+    var(--irid-silver) 0deg,
+    var(--irid-pink) 28deg,
+    var(--irid-violet) 58deg,
+    var(--irid-aqua) 92deg,
+    #f7f8fa 128deg,
+    var(--irid-gold) 160deg,
+    var(--irid-silver) 196deg,
+    var(--irid-pink) 222deg,
+    var(--irid-violet) 252deg,
+    var(--irid-aqua) 290deg,
+    #f4f5f7 326deg,
+    var(--irid-silver) 360deg
+  );
+  --material-silver: linear-gradient(145deg, #f6f6f8 0%, #d9dbe0 46%, #eef0f3 54%, #c9ccd3 100%);
+  --material-foil: linear-gradient(
+    115deg,
+    rgb(255 92 122 / 0.28) 0%,
+    rgb(138 92 255 / 0.22) 30%,
+    rgb(0 255 209 / 0.22) 58%,
+    rgb(255 236 170 / 0.26) 82%,
+    rgb(255 92 122 / 0.2) 100%
+  );
+  --material-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.06;
+  /* Printed stock: raised paper over a faint grain. */
+  --material-paper: linear-gradient(rgb(251 250 247 / 0.94), rgb(251 250 247 / 0.94)), var(--material-grain);
+
+  /* ---- Space (4px base) --------------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --space-11: 10rem;
+  --space-12: 12rem;
+
+  --section-pad: clamp(5rem, 3rem + 7vw, 10rem);
+  --gutter: clamp(1rem, 0.6rem + 1.6vw, 1.75rem);
+  --margin: clamp(1rem, 0.2rem + 3.6vw, 3.5rem);
+  --content-max: 90rem;
+  --header-h: 4.5rem;
+
+  /* ---- Shape -------------------------------------------------------------- */
+  --radius-0: 0;
+  --radius-1: 4px;
+  --radius-case: 10px;
+  --radius-card: 18px;
+  --radius-round: 999px;
+  --hairline: 1px;
+
+  /* ---- Depth: physical objects only --------------------------------------- */
+  --shadow-object: 0 1px 1px rgb(20 20 20 / 0.08), 0 14px 30px -12px rgb(20 20 20 / 0.32),
+    0 40px 80px -40px rgb(20 20 20 / 0.35);
+  --shadow-object-soft: 0 1px 1px rgb(20 20 20 / 0.06), 0 10px 24px -14px rgb(20 20 20 / 0.28);
+  --shadow-press: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 1px 0 rgb(20 20 20 / 0.2);
+  /* Hero packaging, lit from the top left (filters follow the film's alpha):
+     the sleeve's thickness, its contact shadow and its cast shadow; the hand's
+     contact on the plastic and its softer cast shadow. */
+  --filter-sleeve: drop-shadow(1px 1.5px 0 rgb(20 20 20 / 0.2)) drop-shadow(0 0 1.5px rgb(20 20 20 / 0.3))
+    drop-shadow(10px 18px 22px rgb(20 20 20 / 0.24));
+  --filter-hand: drop-shadow(1px 2px 1.5px rgb(20 20 20 / 0.3)) drop-shadow(5px 12px 14px rgb(20 20 20 / 0.2));
+  /* The transparent header's legibility: a halo of the ground behind its
+     letters (text-shadow) and marks (filter). Invisible on the plain ground. */
+  --halo-paper: 0 0 1px var(--color-paper), 0 0 4px var(--color-paper), 0 0 10px var(--color-paper);
+  --halo-night: 0 0 1px var(--color-night), 0 0 4px var(--color-night), 0 0 10px var(--color-night);
+  --halo-paper-filter: drop-shadow(0 0 1px var(--color-paper)) drop-shadow(0 0 5px var(--color-paper));
+  --halo-night-filter: drop-shadow(0 0 1px var(--color-night)) drop-shadow(0 0 5px var(--color-night));
+
+  /* ---- Layers ------------------------------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-header: 40;
+  --z-menu: 50;
+  --z-skip: 100;
+
+  /* ---- Motion ------------------------------------------------------------- */
+  --dur-instant: 100ms;
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 600ms;
+  --dur-reveal: 800ms;
+  --dur-identity: 1100ms;
+  /* One turn of the hero disc: slow enough to read its print while it turns. */
+  --dur-spin: 75s;
+  /* One turn of the pen loop round a hovered disc (Projects): calm, but seen to move. */
+  --dur-orbit: 10s;
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-soft: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-press: cubic-bezier(0.2, 0, 0, 1);
+  --stagger: 70ms;
+
+  /* ---- Breakpoints (reference only: custom media is not native yet) -------
+     sm 480px · md 768px · lg 1024px · xl 1280px                              */
+}

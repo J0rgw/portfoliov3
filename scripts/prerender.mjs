@@ -13,7 +13,6 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
-const BASE_URL = 'https://portfolio.jarcas.dev';
 
 const template = readFileSync(join(DIST, 'index.html'), 'utf8');
 if (!template.includes('<!--app-html-->') || !/<!--app-head-->[\s\S]*?<!--\/app-head-->/.test(template)) {
@@ -21,7 +20,7 @@ if (!template.includes('<!--app-html-->') || !/<!--app-head-->[\s\S]*?<!--\/app-
   process.exit(1);
 }
 
-const { render, prerenderPaths } = await import(pathToFileURL(join(ROOT, 'dist-ssr', 'entry-server.js')).href);
+const { render, prerenderPaths, site } = await import(pathToFileURL(join(ROOT, 'dist-ssr', 'entry-server.js')).href);
 
 // Inline the stylesheet: it is render-blocking and small (~13 kB gzip), and
 // removing the round trip measurably lowers LCP on slow connections.
@@ -48,11 +47,12 @@ const lastmod = new Date().toISOString().slice(0, 10);
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...indexable.map((path) => `  <url><loc>${BASE_URL}${path}</loc><lastmod>${lastmod}</lastmod></url>`),
+  ...indexable.map((path) => `  <url><loc>${site.baseUrl}${path}</loc><lastmod>${lastmod}</lastmod></url>`),
   '</urlset>',
   '',
 ].join('\n');
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
+writeFileSync(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.baseUrl}/sitemap.xml\n`);
 
 console.log(`  prerendered ${written.length} page(s):`);
 for (const file of written) console.log(`    ${file}`);

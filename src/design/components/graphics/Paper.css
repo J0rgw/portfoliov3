@@ -1,0 +1,5 @@
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ''; position: absolute; z-index: -1; inset: 0; background: var(--material-paper); border: var(--hairline) solid var(--border); box-shadow: var(--shadow-object-soft); pointer-events: none; }
+.paper--insert::before { rotate: var(--paper-tilt); }
+.paper--note::before { clip-path: var(--paper-edge); }
+@media (max-width: 767px) { .paper--insert::before { rotate: 0deg; } }

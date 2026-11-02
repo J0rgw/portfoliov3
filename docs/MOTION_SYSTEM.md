@@ -37,12 +37,11 @@ or a new library needs an entry in this file first.
 - Buttons sink 1 px on press; links thicken their underline; focus rings appear instantly.
 - Copy-email feedback.
 
-Anything else (perpetual floating, cursor followers, magnetic buttons, auto-rotating objects,
-looping background shaders) is **not** part of this system. The hero disc's slow turn (§2.1) is
-the one documented exception: Jorge asked for it (2026-10-29), it carries the readable print of
-the disc, and it can be paused. The pen loop round a hovered gallery disc (§2.2) also turns, but
-only while a pointer rests on that disc (TASK 01, 2026-10-30, after A24): it stops the moment the
-pointer leaves and never runs on its own.
+The vocabulary also includes bounded float, drift and rotate gestures in design/motion.css.
+They are opt-in, not perpetual background animation. Existing spin/hover/draw and page
+transitions remain progressive enhancements. Parameters belong to design/motion.ts and
+CSS tokens; lifecycle and interaction state belong to components/ui/motion. New expressions
+are allowed when they carry the physical identity and preserve the technical contract.
 
 ### 2.1 Hero scene (owner's brief, 2026-10-29; recomposed the same day from his sketch)
 
@@ -98,7 +97,7 @@ primitive (`useDiscCarousel`) owns a fractional position and the selected index;
 buttons, the arrow keys (`←` `→` `Inicio` `Fin` while focus is in the gallery) and clicks on
 discs all go through it, so the selection, the credits and the discs can never disagree.
 
-- **Path** (TASK 01, 2026-10-30; `TRACK` in `src/sections/Projects/discPose.ts`, every value
+- **Path** (TASK 01, 2026-10-30; `TRACK` in `src/design/discPose.ts`, every value
   named there, nothing set per disc). One continuous function of a disc's offset `u` (its index
   minus the carousel position, fractional mid-drag) returns `x`, `y`, scale, bank, yaw, the
   printed face's turn, opacity and depth. Units are the selected disc's diameter `--d`.
@@ -162,7 +161,7 @@ discs all go through it, so the selection, the credits and the discs can never d
 
 ---
 
-## 3. Tokens (`src/styles/tokens.css`)
+## 3. Tokens (`src/design/tokens.css`)
 
 | Token | Value | Use |
 |-------|-------|-----|
@@ -188,15 +187,15 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 
 | Primitive | File | What it does |
 |-----------|------|--------------|
-| Reveal controller | `src/motion/RevealController.tsx` | One `IntersectionObserver` for every `[data-reveal]` element on the page. Marks them `data-revealed` once. |
-| Reveal styles | `src/styles/motion.css` | `data-reveal="up" \| "fade" \| "mask"`, delays via `--reveal-delay` or `data-reveal-index`. |
-| Scroll scene | `src/motion/useScrollScene.ts` | Writes `--scene` (0 → 1) and one eased `--scene-<phase>` per named phase on a root holding a `[data-scene-pin]`. Pin-aware: the narrative splits between the stuck run and the scroll-out when CSS makes the pin sticky, and plays over the scroll-out alone when it is static. Measures `[data-scene-anchor]` boxes on resize (`--scene-<name>-dx/dy` to the pin's centre). One passive listener, one frame at most per scroll, nothing off-screen or under reduced motion. |
-| Spin | `src/motion/useSpin.ts` | Drives a CSS keyframe loop: pauses it off-screen, eases `playbackRate` to 0 on mouse/pen hover and back, holds it while a `paused` flag is set. Does nothing under reduced motion (the CSS declares no loop). |
-| Disc carousel | `src/motion/useDiscCarousel.ts` | Drag with inertia and snapping for a row of items (§2.2): one position, one selection, a stable controller (`goTo`, `step`, `index`), `render(position)` at most once per frame, `onIndex` / `onMotion` callbacks for React. No loop while idle; instant under reduced motion. |
-| Scroll spy | `src/motion/useScrollSpy.ts` | Returns the id of the section currently being read. |
-| Reduced-motion hook | `src/motion/useReducedMotion.ts` | Live `prefers-reduced-motion` value for effects (never for markup). |
-| GSAP on demand | `src/motion/gsap.ts` | `loadGsap()` / `prefetchGsap()`: GSAP is a separate chunk fetched on idle or first use. Closed and resting states live in CSS so nothing waits for it. |
-| View transitions | `src/styles/motion.css` | `@view-transition { navigation: auto }` and the named elements. |
+| Reveal controller | `src/components/ui/motion/RevealController.tsx` | One `IntersectionObserver` for every `[data-reveal]` element on the page. Marks them `data-revealed` once. |
+| Reveal styles | `src/design/motion.css` | `data-reveal="up" \| "fade" \| "mask"`, delays via `--reveal-delay` or `data-reveal-index`. |
+| Scroll scene | `src/components/ui/motion/useScrollScene.ts` | Writes `--scene` (0 → 1) and one eased `--scene-<phase>` per named phase on a root holding a `[data-scene-pin]`. Pin-aware: the narrative splits between the stuck run and the scroll-out when CSS makes the pin sticky, and plays over the scroll-out alone when it is static. Measures `[data-scene-anchor]` boxes on resize (`--scene-<name>-dx/dy` to the pin's centre). One passive listener, one frame at most per scroll, nothing off-screen or under reduced motion. |
+| Spin | `src/components/ui/motion/useSpin.ts` | Drives a CSS keyframe loop: pauses it off-screen, eases `playbackRate` to 0 on mouse/pen hover and back, holds it while a `paused` flag is set. Does nothing under reduced motion (the CSS declares no loop). |
+| Disc carousel | `src/components/ui/motion/useDiscCarousel.ts` | Drag with inertia and snapping for a row of items (§2.2): one position, one selection, a stable controller (`goTo`, `step`, `index`), `render(position)` at most once per frame, `onIndex` / `onMotion` callbacks for React. No loop while idle; instant under reduced motion. |
+| Scroll spy | `src/components/ui/motion/useScrollSpy.ts` | Returns the id of the section currently being read. |
+| Reduced-motion hook | `src/components/ui/motion/useReducedMotion.ts` | Live `prefers-reduced-motion` value for effects (never for markup). |
+| GSAP on demand | `src/components/ui/motion/gsap.ts` | `loadGsap()` / `prefetchGsap()`: GSAP is a separate chunk fetched on idle or first use. Closed and resting states live in CSS so nothing waits for it. |
+| View transitions | `src/design/motion.css` | `@view-transition { navigation: auto }` and the named elements. |
 
 ### How reveal stays safe
 
@@ -236,7 +235,7 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 - Logo loop: stopped, and its animation loop does not run.
 - Smooth scrolling: off.
 
-The global rule in `src/styles/base.css` is a backstop, not the mechanism: each primitive
+The global rule in `src/design/base.css` is a backstop, not the mechanism: each primitive
 checks the preference itself so no JavaScript loop keeps running behind a frozen CSS rule.
 
 ---
@@ -246,7 +245,7 @@ checks the preference itself so no JavaScript loop keeps running behind a frozen
 - No Three.js or WebGL. The previous full-screen shader (`ColorBends`) rendered every frame, even
   off-screen; removing it with Three.js took the bundle from 228 kB to 124 kB gzip, and loading
   GSAP on demand brought the initial JavaScript to 96.7 kB gzip (measured 2026-10-26).
-- No perpetual animation. Anything that loops (the logo loop) runs only while visible and in
+- No uncontrolled perpetual animation. Anything that loops (the logo loop) runs only while visible and in
   view; the Projects gallery runs a frame loop only while its row is moving. The hero disc's turn (§2.1) is a CSS `rotate` animation on its
   own compositor layer (`will-change: rotate`), so it costs no main-thread work; it still pauses
   off-screen and can be paused by the visitor.

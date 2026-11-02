@@ -214,7 +214,7 @@ motion: MOTION_SYSTEM §2.2; contract: IA §3. Results in §7.4.
    `scripts/generate-hand-circle.mjs`.
 5. *AGENTS §8 / MOTION_SYSTEM §2*: "nothing loops forever" had one exception (the hero disc);
    the hover loop's turn is a second, bounded by the hover. Worth stating in AGENTS too.
-6. *The credits limit the composition*: their height is fixed in rem (kicker, h2, a two-line
+6. *The credits limit the composition*: their height is fixed in rem (h2, a two-line
    serif title, two rows), so on wide screens under ~940 px tall only one previous disc fits
    beside them. A typographic pass in TASK 02 changes that budget; `--shown-prev` is the knob.
 7. *The base reset* (`img, svg, video, canvas { max-width: 100% }`, base.css) clips any
@@ -313,9 +313,9 @@ These are kept **off the site** until confirmed:
     from `public/images/gallery/cd7e159e….jpg` (17 kB). The JPEG itself is not referenced but is
     copied into `dist/` and would be published. Move it out of `public/` (and update `SRC` in
     `scripts/extract-marker-arrow.py`) or delete it once the WebP is approved.
-21. **Counts**: the gallery shows `03 / 06` (six discs, each opens a case study); case studies
-    and the footer count seven tracks (`Pista 03 / 07`, the private row included). Keep both, or
-    drop the private track from the numbering, or give it a disc that opens contact?
+21. **Counts**: the gallery shows `03 / 06` (six discs, each opens a case study); the footer
+    counts seven tracks (the private row included). Keep both, or drop the private track from
+    the numbering, or give it a disc that opens contact?
 22. **Social cards**: `OgCard` still prints the track number under the rim credits (fixed in the
     site with `CoverArt rim`). Changing it needs `npm run og` (Playwright), not run here.
 23. **Copy to confirm**: "Haz clic para saber más" stays on touch screens (as written in the
@@ -543,3 +543,14 @@ the repo). Not checked in Safari or Firefox, and not on the GPU at 120 Hz.
 Captures: `2026-10-30-task01-before-desktop.webp` / `-after-desktop.webp` (1440×900, third disc),
 `-before-mobile.webp` / `-after-mobile.webp` (390×844), `-after-desktop-1920.webp` (two previous
 discs), `-hover-ring.webp`.
+
+
+## TASK 02 — 2026-11-02
+
+Migration diagnosis: TASK02_AUDIT.md. Artistic authority moved to ../DESIGN.md; technical
+architecture to ../AGENTS.md. Config and design are independent; all existing sections and
+routes retained. Previous measurements and aesthetic descriptions above are historical.
+Updated validation and delivered-file inventory are in TASK02_REPORT.md.
+Missing art remains explicit: original paper scans, brush/sticker collection and final
+project cover art. Existing generated artwork is provisional. Estrella licence and factual
+content review questions remain open; TASK 02 does not resolve or invent them.

@@ -23,12 +23,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run check:assets && tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && npm run check:seo",
+    "build": "npm run check:architecture && npm run test:config && npm run check:assets && tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && npm run check:seo",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "check:assets": "node scripts/check-assets.mjs",
     "check:seo": "node scripts/check-seo.mjs",
-    "og": "node scripts/generate-og.mjs"
+    "og": "node scripts/generate-og.mjs",
+    "check:architecture": "node scripts/check-architecture.mjs",
+    "test:config": "tsx scripts/test-config.ts"
   },
   "dependencies": {
     "gsap": "^3.13.0",

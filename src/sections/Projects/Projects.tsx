@@ -1,11 +1,12 @@
+import { ui } from '../../config/ui';
 import { useCallback, useState } from 'react';
-import { ArrowRight } from '../../components/Icon/Icon';
-import { chapterById, chapterHref } from '../../content/chapters';
-import { privateWork, projectSummaries } from '../../content/projects';
-import { site } from '../../content/site';
-import DiscGallery from './DiscGallery';
-import QuickResume from './QuickResume';
-import './Projects.css';
+import { ArrowRight } from '../../components/ui/Icon/Icon';
+import { chapterById, chapterHref } from '../../config/navigation';
+import { privateWork, projectSummaries } from '../../config/projects';
+import { site } from '../../config/site';
+import DiscGallery from '../../components/cd/DiscGallery/DiscGallery';
+import QuickResume from '../../components/editorial/QuickResume/QuickResume';
+import '../../design/sections/Projects/Projects.css';
 
 const chapter = chapterById('proyectos');
 const total = projectSummaries.length;
@@ -34,18 +35,15 @@ export function Projects() {
     <section id={chapter.id} className="chapter projects" aria-labelledby="projects-title">
       <div className="projects__frame">
         <header className="projects__info">
-          <p className="projects__kicker label">{chapter.kicker}</p>
-          <h2 id="projects-title" className="projects__heading">
-            Proyectos seleccionados
-          </h2>
-          <QuickResume key={project.slug} project={project} total={total} animate={animate} />
+          <h2 id="projects-title" className="projects__heading">{ui.projects.heading} </h2>
+          {project ? <QuickResume key={project.id} project={project} total={total} animate={animate} /> : <p className="lede">{ui.projects.empty}</p>}
         </header>
 
-        <DiscGallery items={projectSummaries} credit={site.name} catalog={site.catalog} onSelect={handleSelect} />
+        {project && <DiscGallery items={projectSummaries} credit={site.name} catalog={site.catalog} onSelect={handleSelect} />}
       </div>
 
-      <nav className="projects__all container" aria-label="Todos los proyectos">
-        <p className="label">Todas las pistas</p>
+      <nav className="projects__all container" aria-label={ui.actions.allProjects}>
+        <p className="label">{ui.projects.allTracks}</p>
         <ol role="list">
           {projectSummaries.map((item) => (
             <li key={item.slug}>
@@ -61,14 +59,10 @@ export function Projects() {
 
       <div className="projects__foot container">
         <p>
-          {privateWork.tagline}{' '}
-          <a className="text-link" href={chapterHref('contacto')}>
-            Escríbeme
-          </a>
+          {privateWork.visible && privateWork.tagline}{' '}
+          <a className="text-link" href={chapterHref('contacto')}>{ui.actions.write} </a>
         </p>
-        <a className="projects__index-link" href="/proyectos/">
-          Índice de proyectos
-          <ArrowRight size={16} aria-hidden="true" />
+        <a className="projects__index-link" href="/proyectos/">{ui.actions.projectIndex} <ArrowRight size={16} aria-hidden="true" />
         </a>
       </div>
     </section>
