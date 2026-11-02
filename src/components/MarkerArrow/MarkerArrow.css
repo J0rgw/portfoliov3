@@ -1,0 +1,30 @@
+/* Marker arrow: handwriting layer, decorative only (ART_DIRECTION §5).
+   The artwork is shown as it is: no border, shadow, blend or filter. */
+
+.marker-arrow {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.marker-arrow--up-left {
+  scale: -1 1;
+}
+
+/* Laid on the page by hand: it lands a few degrees off and settles. The
+   turn is on `rotate`, so it composes with the mirror on `scale`. */
+@media (prefers-reduced-motion: no-preference) {
+  .marker-arrow {
+    animation: marker-place var(--dur-slow) var(--ease-out) both;
+  }
+}
+
+@keyframes marker-place {
+  from {
+    opacity: 0;
+    rotate: -4deg;
+    translate: 0 0.5rem;
+  }
+}

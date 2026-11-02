@@ -1,49 +1,24 @@
-import StaggeredMenu from "./components/StaggeredMenu/StaggeredMenu";
-import { menuItems, socialItems, menuConfig } from "./config/navigation";
-import ColorBends from "./components/ColorBends/ColorBends";
-import { colorBendsConfig } from "./config/colorBends";
-import { heroTitleConfig } from "./config/shinyText";
-import { logoLoopConfig, logoLoopLogos } from "./config/logoLoop";
-import { aboutSectionConfig } from "./config/aboutSection";
-import ShinyText from "./components/ShinyText/ShinyText";
-import LogoLoop from "./components/LogoLoop/LogoLoop";
-import AboutSection from "./components/AboutSection/AboutSection";
-import "./App.css";
+import HomePage from './pages/HomePage';
+import NotFoundPage from './pages/NotFoundPage';
+import PageShell from './pages/PageShell';
+import ProjectPage from './pages/ProjectPage';
+import ProjectsIndexPage from './pages/ProjectsIndexPage';
+import { matchRoute } from './routes';
 
-const App = () => {
+/**
+ * Renders the page for a path. The same component runs on the server
+ * (prerender) and in the browser (hydration), so it must render
+ * deterministically from `path` alone.
+ */
+export default function App({ path }: { path: string }) {
+  const route = matchRoute(path);
+
   return (
-    <div style={{ position: "relative", minHeight: "100vh" }}>
-      {/* Background layer */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 0,
-        }}
-      >
-        <ColorBends {...colorBendsConfig} />
-      </div>
-      {/* Content layer */}
-      <div style={{ position: "relative", zIndex: 1, minHeight: "100vh", height: "100dvh" }}>
-        <StaggeredMenu
-          {...menuConfig}
-          items={menuItems}
-          socialItems={socialItems}
-        />
-        {/* Hero Title */}
-        <ShinyText {...heroTitleConfig} />
-      </div>
-      {/* Logo Loop - visible on scroll */}
-      <div className="logo-loop-section">
-        <LogoLoop {...logoLoopConfig} logos={logoLoopLogos} />
-      </div>
-      {/* About Section */}
-      <AboutSection {...aboutSectionConfig} />
-    </div>
+    <PageShell route={route}>
+      {route.page === 'home' && <HomePage />}
+      {route.page === 'projects' && <ProjectsIndexPage />}
+      {route.page === 'project' && <ProjectPage slug={route.slug} />}
+      {route.page === 'not-found' && <NotFoundPage />}
+    </PageShell>
   );
-};
-
-export default App;
+}

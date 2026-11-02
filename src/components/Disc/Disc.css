@@ -1,0 +1,197 @@
+/* Compact disc object. Anatomy and rules: docs/ART_DIRECTION.md §5.
+   All sizes are relative to the disc (container units), so one component
+   works from a 120px thumbnail to the hero. */
+
+.disc {
+  --disc-rotate: 0deg;
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+/* A soft ring of shadow under the disc. Static: no filter on moving layers. */
+.disc__shadow {
+  position: absolute;
+  inset: 4% -1% -5% 3%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    transparent 12%,
+    rgb(20 20 20 / 0.2) 34%,
+    rgb(20 20 20 / 0.12) 72%,
+    transparent 100%
+  );
+}
+
+.disc__spin {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform: rotate(var(--disc-rotate));
+}
+
+/* Printed face: an annulus from the stacking ring to the outer rim. */
+.disc__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
+  mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
+}
+
+.disc__face > svg,
+.disc__face > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fixed reflection: the iridescent data-side colour mixed into the print. */
+.disc__sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 42% at 30% 22%, rgb(255 255 255 / 0.55), transparent 70%),
+    var(--material-disc);
+  mix-blend-mode: soft-light;
+  opacity: var(--disc-sheen, 0.6);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
+  mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
+}
+
+/* Clear stacking ring around the hole; the hole itself is simply empty. */
+.disc__hub {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle closest-side,
+      transparent 12.4%,
+      rgb(120 124 132 / 0.55) 12.5%,
+      rgb(255 255 255 / 0.62) 13.4%,
+      rgb(233 235 240 / 0.42) 17%,
+      rgb(255 255 255 / 0.18) 20.6%,
+      rgb(255 255 255 / 0.7) 21%,
+      rgb(225 228 234 / 0.4) 21.6%,
+      rgb(240 242 246 / 0.5) 27%,
+      rgb(150 155 165 / 0.6) 27.6%,
+      transparent 28.2%
+    );
+}
+
+.disc__edge {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle closest-side,
+    transparent 96.9%,
+    rgb(255 255 255 / 0.8) 97.5%,
+    rgb(176 180 190 / 0.75) 99%,
+    rgb(120 124 132 / 0.4) 99.7%,
+    transparent 100%
+  );
+}
+
+.disc__rim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.disc__rim text {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  fill: currentColor;
+  opacity: 0.78;
+}
+
+/* ---- CD-R label --------------------------------------------------------- */
+
+.disc--cdr {
+  color: var(--color-ink);
+  --disc-sheen: 0.85;
+}
+
+.disc__cdr {
+  position: absolute;
+  inset: 0;
+  background: var(--material-silver);
+}
+
+.disc__cdr-brand,
+.disc__cdr-spec,
+.disc__cdr-catalog {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-ink-soft);
+}
+
+.disc__cdr-brand {
+  top: 14%;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-black);
+  font-size: 7.5cqw;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.disc__cdr-spec {
+  top: 24%;
+  font-size: 2.2cqw;
+  letter-spacing: 0.18em;
+}
+
+.disc__cdr-catalog {
+  bottom: 12%;
+  font-size: 2.4cqw;
+  letter-spacing: 0.2em;
+}
+
+/* The writing band: thin printed lines where a marker label goes. */
+.disc__cdr-lines {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 64%;
+  height: 16%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 calc(33.33% - 0.25cqw),
+    rgb(20 20 20 / 0.28) calc(33.33% - 0.25cqw) 33.33%
+  );
+}
+
+.disc__cdr-hand {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  translate: -50% 0;
+  rotate: -7deg;
+  font-family: var(--font-display);
+  font-size: 15cqw;
+  line-height: 1;
+  white-space: nowrap;
+  word-spacing: var(--estrella-word-space);
+  color: var(--color-ink);
+}

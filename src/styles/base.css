@@ -1,0 +1,143 @@
+/* ==========================================================================
+   Base: reset, document defaults, typography defaults, focus.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Anchor jumps land below the fixed header. */
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-paper);
+  /* Printed-stock grain. Not fixed: a fixed background repaints on scroll. */
+  background-image: linear-gradient(rgb(243 241 236 / calc(1 - var(--grain-opacity))), rgb(243 241 236 / calc(1 - var(--grain-opacity)))),
+    var(--material-grain);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* `clip` contains any stray overflow without creating a scroll container,
+     so position: sticky keeps working (overflow-x: hidden on body broke it). */
+  overflow-x: clip;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+  text-wrap: balance;
+}
+
+p,
+li,
+dd,
+figcaption {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: var(--hairline);
+  text-underline-offset: 0.18em;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: var(--color-ink);
+}
+
+/* Visible keyboard focus everywhere, never removed. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.on-night :focus-visible {
+  outline-color: var(--color-accent-on-night);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Backstop only. Each motion primitive also checks the preference itself so
+   no JavaScript loop keeps running behind a frozen rule (MOTION_SYSTEM §5). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

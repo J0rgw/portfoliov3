@@ -1,0 +1,59 @@
+.chapter-heading {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: clamp(var(--space-7), 6vw, var(--space-9));
+}
+
+.chapter-heading__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.chapter-heading__kicker::before {
+  content: '';
+  width: 2.5rem;
+  height: var(--hairline);
+  background: currentColor;
+}
+
+.chapter-heading__title-wrap {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2) var(--space-3);
+}
+
+.chapter-heading__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  max-width: 18ch;
+}
+
+/* Blue marker scrawl next to the heading: decorative, so brand blue is allowed. */
+.chapter-heading__hand {
+  font-size: clamp(2.75rem, 2rem + 3vw, 5rem);
+  color: var(--color-brand);
+  transform: rotate(-6deg) translateY(0.12em);
+  transform-origin: left bottom;
+  margin-left: -0.2em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.on-night .chapter-heading__hand {
+  color: var(--color-accent-on-night);
+}
+
+.chapter-heading__lede {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 767px) {
+  .chapter-heading__hand {
+    font-size: 2.75rem;
+  }
+}

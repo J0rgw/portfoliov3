@@ -1,0 +1,195 @@
+.evidence {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.evidence figcaption {
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  max-width: 60ch;
+}
+
+/* ---- Screenshots ----------------------------------------------------------- */
+
+.evidence__frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-paper-sunken);
+}
+
+.evidence__frame img {
+  width: 100%;
+  height: auto;
+}
+
+.evidence__frame img.is-pixelated {
+  image-rendering: pixelated;
+}
+
+.evidence--browser .evidence__frame {
+  border: var(--hairline) solid var(--rule-strong);
+  border-radius: var(--radius-1);
+  padding-top: 1.75rem;
+}
+
+.evidence__chrome {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-inline: var(--space-3);
+  border-bottom: var(--hairline) solid var(--rule);
+  background: var(--color-paper-raised);
+}
+
+.evidence__chrome span {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  border: var(--hairline) solid var(--rule-strong);
+}
+
+.evidence--phone .evidence__frame {
+  width: min(100%, 20rem);
+  padding: 0.6rem;
+  border-radius: 2.2rem;
+  background: var(--color-ink);
+  box-shadow: var(--shadow-object-soft);
+}
+
+.evidence--phone .evidence__frame img {
+  border-radius: 1.7rem;
+}
+
+.evidence--none .evidence__frame {
+  background: transparent;
+}
+
+/* ---- Code -------------------------------------------------------------------- */
+
+.evidence--code {
+  gap: 0;
+}
+
+.evidence__code-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-night-raised);
+  color: var(--color-night-ink);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.evidence__code-lang {
+  font-family: var(--font-mono);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-night-muted);
+}
+
+.evidence--code pre {
+  padding: var(--space-4);
+  overflow-x: auto;
+  background: var(--color-night);
+  color: var(--color-night-ink);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+.evidence--code figcaption {
+  margin-top: var(--space-3);
+}
+
+/* ---- Diagram ------------------------------------------------------------------- */
+
+.evidence__diagram-title {
+  font-weight: var(--weight-bold);
+}
+
+.evidence__flow {
+  display: grid;
+  gap: 0;
+  border: var(--hairline) solid var(--rule-strong);
+}
+
+.evidence__flow li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--hairline) solid var(--rule);
+}
+
+.evidence__flow li:last-child {
+  border-bottom: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.evidence__flow-index {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+}
+
+.evidence__flow li:last-child .evidence__flow-index,
+.evidence__flow li:last-child .evidence__flow-detail {
+  color: var(--color-night-muted);
+}
+
+.evidence__flow-label {
+  font-weight: var(--weight-semibold);
+}
+
+.evidence__flow-detail {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  text-align: right;
+}
+
+/* ---- States table ------------------------------------------------------------- */
+
+.evidence--states table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.evidence--states caption {
+  padding-bottom: var(--space-3);
+  text-align: left;
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+}
+
+.evidence--states th {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  border-bottom: var(--hairline) solid var(--rule-strong);
+}
+
+.evidence--states td {
+  padding: var(--space-3);
+  border-bottom: var(--hairline) solid var(--rule);
+}
+
+.evidence--states code {
+  padding: 0.15em 0.45em;
+  background: var(--color-paper-sunken);
+}

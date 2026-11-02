@@ -1,0 +1,190 @@
+/* Chapter 04: the credits. */
+
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: start;
+}
+
+.about__pass {
+  grid-column: 1 / span 4;
+  position: relative;
+  justify-self: center;
+}
+
+/* Marker note beside the lanyard, never over the card's text. */
+.about__pass-note {
+  position: absolute;
+  right: -3.5rem;
+  top: 0.5rem;
+  font-size: clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--color-brand);
+  rotate: -12deg;
+  pointer-events: none;
+}
+
+.about__story {
+  grid-column: 6 / -1;
+}
+
+.about__narrative {
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  max-width: 58ch;
+}
+
+.about__narrative > p:first-child {
+  color: var(--color-ink);
+}
+
+.about__principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gutter);
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: var(--hairline) solid var(--rule-strong);
+}
+
+.about__principles p {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+.about__principle-title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-snug);
+}
+
+/* ---- Credits: timeline + instruments ------------------------------------------- */
+
+.about__credits {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  margin-top: var(--space-10);
+}
+
+.about__timeline {
+  grid-column: 1 / span 7;
+}
+
+.about__instruments {
+  grid-column: 9 / -1;
+}
+
+.about__subhead {
+  padding-bottom: var(--space-3);
+  border-bottom: var(--hairline) solid var(--rule-strong);
+}
+
+.about__milestones {
+  position: relative;
+}
+
+.about__milestone {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-block: var(--space-4);
+  border-bottom: var(--hairline) solid var(--rule);
+}
+
+.about__milestone-period {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+}
+
+.about__milestone-title {
+  font-weight: var(--weight-semibold);
+}
+
+.about__milestone-org {
+  font-weight: var(--weight-regular);
+  color: var(--color-ink-soft);
+}
+
+.about__milestone-detail {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+}
+
+.about__milestone-kind {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.about__milestone[data-kind='talk'] .about__milestone-kind,
+.about__milestone[data-kind='work'] .about__milestone-kind {
+  color: var(--color-accent);
+}
+
+.about__instrument-list {
+  display: grid;
+}
+
+.about__instrument-group {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-4);
+  border-bottom: var(--hairline) solid var(--rule);
+}
+
+.about__instrument-group dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.about__instrument-group dd {
+  font-weight: var(--weight-semibold);
+  line-height: 1.5;
+}
+
+.about__loop {
+  margin-top: var(--space-8);
+}
+
+@media (max-width: 1023px) {
+  .about__pass,
+  .about__story,
+  .about__timeline,
+  .about__instruments {
+    grid-column: 1 / -1;
+  }
+
+  .about__story {
+    margin-top: var(--space-8);
+  }
+
+  .about__instruments {
+    margin-top: var(--space-8);
+  }
+}
+
+@media (max-width: 767px) {
+  .about__pass-note {
+    right: -1.25rem;
+    font-size: 2.75rem;
+  }
+
+  .about__principles {
+    grid-template-columns: 1fr;
+  }
+
+  .about__milestone {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}

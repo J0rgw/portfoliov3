@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useReducedMotion } from '../../motion/useReducedMotion';
 import './LogoLoop.css';
 
 export type LogoItem =
@@ -121,7 +122,9 @@ const useAnimationLoop = (
   seqHeight: number,
   isHovered: boolean,
   hoverSpeed: number | undefined,
-  isVertical: boolean
+  isVertical: boolean,
+  /** False while off-screen or under reduced motion: no loop runs at all. */
+  active: boolean
 ) => {
   const rafRef = useRef<number | null>(null);
   const lastTimestampRef = useRef<number | null>(null);
@@ -141,6 +144,8 @@ const useAnimationLoop = (
         : `translate3d(${-offsetRef.current}px, 0, 0)`;
       track.style.transform = transformValue;
     }
+
+    if (!active) return;
 
     const animate = (timestamp: number) => {
       if (lastTimestampRef.current === null) {
@@ -178,7 +183,7 @@ const useAnimationLoop = (
       }
       lastTimestampRef.current = null;
     };
-  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical]);
+  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, active]);
 };
 
 export const LogoLoop = React.memo<LogoLoopProps>(
@@ -207,6 +212,17 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const [seqHeight, setSeqHeight] = useState<number>(0);
     const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [inView, setInView] = useState<boolean>(false);
+    const reducedMotion = useReducedMotion();
+
+    // Only animate while visible (docs/MOTION_SYSTEM.md §6: nothing loops off-screen).
+    useEffect(() => {
+      const container = containerRef.current;
+      if (!container || typeof IntersectionObserver === 'undefined') return;
+      const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+      observer.observe(container);
+      return () => observer.disconnect();
+    }, []);
 
     const effectiveHoverSpeed = useMemo(() => {
       if (hoverSpeed !== undefined) return hoverSpeed;
@@ -258,7 +274,16 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
     useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight, isVertical]);
 
-    useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical);
+    useAnimationLoop(
+      trackRef,
+      targetVelocity,
+      seqWidth,
+      seqHeight,
+      isHovered,
+      effectiveHoverSpeed,
+      isVertical,
+      inView && !reducedMotion
+    );
 
     const cssVariables = useMemo(
       () =>

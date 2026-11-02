@@ -1,0 +1,225 @@
+/* Chapter 02: liner notes. The booklet is an object (depth allowed); the
+   steps are interface (flat, hairlines, one continuous thread). */
+
+.liner__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: start;
+}
+
+.liner__aside {
+  grid-column: 1 / span 5;
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-5));
+}
+
+.liner__steps {
+  grid-column: 7 / -1;
+  position: relative;
+  padding-top: var(--space-2);
+}
+
+/* The continuous thread through every step (references.md #5). */
+.liner__steps::before {
+  content: '';
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0;
+  left: 1.05rem;
+  width: var(--hairline);
+  background: var(--rule-strong);
+}
+
+/* ---- Booklet ---------------------------------------------------------------- */
+
+.liner__booklet {
+  position: relative;
+  width: min(100%, 22rem);
+  aspect-ratio: 1;
+  margin-top: var(--space-4);
+}
+
+.liner__page {
+  position: absolute;
+  inset: 0;
+  background: var(--color-paper-raised);
+  border: var(--hairline) solid var(--rule);
+  box-shadow: var(--shadow-object-soft);
+}
+
+.liner__page--back {
+  transform: translate(10px, 10px) rotate(3deg);
+  background: var(--color-paper-sunken);
+}
+
+.liner__page--mid {
+  transform: translate(5px, 5px) rotate(1.4deg);
+}
+
+.liner__page--front {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: linear-gradient(90deg, rgb(20 20 20 / 0.06), transparent 6%), var(--material-paper);
+}
+
+.liner__page-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.liner__page-count {
+  margin-top: auto;
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+}
+
+.liner__page-current {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: clamp(4rem, 3rem + 4vw, 7rem);
+  font-weight: var(--weight-black);
+  line-height: 0.85;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.liner__page-title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+}
+
+.liner__page-rule {
+  height: 3px;
+  width: 3rem;
+  background: var(--color-brand);
+}
+
+/* ---- Steps ---------------------------------------------------------------------- */
+
+.liner__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  column-gap: var(--space-5);
+  padding-bottom: var(--space-9);
+}
+
+.liner__step:last-child {
+  padding-bottom: var(--space-4);
+}
+
+.liner__step-number {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: var(--hairline) solid var(--rule-strong);
+  border-radius: 50%;
+  background: var(--color-paper);
+  font-size: var(--text-xs);
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+
+.liner__step[data-active] .liner__step-number {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-color: var(--color-ink);
+}
+
+.liner__step-title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-snug);
+}
+
+.liner__step-text {
+  margin-top: var(--space-3);
+  max-width: 52ch;
+  color: var(--color-ink-soft);
+}
+
+.liner__note {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  max-width: 52ch;
+  background: var(--color-paper-sunken);
+  border-left: 3px solid var(--color-ink);
+}
+
+.liner__note-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.liner__note-text {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.liner__note-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 32px;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.liner__note-link:hover {
+  text-decoration: underline;
+}
+
+.liner__close {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: var(--hairline) solid var(--rule-strong);
+}
+
+.liner__close-text {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-snug);
+}
+
+@media (max-width: 1023px) {
+  .liner__aside,
+  .liner__steps {
+    grid-column: 1 / -1;
+  }
+
+  .liner__aside {
+    position: static;
+  }
+
+  .liner__booklet {
+    display: none;
+  }
+
+  .liner__step {
+    padding-bottom: var(--space-8);
+  }
+}

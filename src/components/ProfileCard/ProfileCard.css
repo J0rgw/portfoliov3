@@ -1,409 +1,197 @@
-:root {
+/* Backstage pass: a laminated card on a lanyard (ART_DIRECTION §5).
+   A physical object, so it may carry depth and foil. */
+
+.pass {
   --pointer-x: 50%;
   --pointer-y: 50%;
-  --pointer-from-center: 0;
-  --pointer-from-top: 0.5;
-  --pointer-from-left: 0.5;
-  --card-opacity: 0;
   --rotate-x: 0deg;
   --rotate-y: 0deg;
-  --behind-glow-color: rgba(147, 197, 253, 0.5);
-  --behind-glow-size: 50%;
-  --inner-gradient: linear-gradient(145deg, rgba(241, 245, 249, 0.9) 0%, rgba(148, 163, 184, 0.6) 50%, rgba(125, 211, 252, 0.4) 100%);
-  --card-radius: 30px;
-}
-
-.pc-card-wrapper {
-  perspective: 500px;
-  transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  width: clamp(16rem, 24vw, 21rem);
+  padding-top: 4.5rem;
+  perspective: 900px;
 }
 
-.pc-behind {
+/* The lanyard strap, printed with the catalog number. */
+.pass__lanyard {
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at var(--pointer-x) var(--pointer-y),
-    var(--behind-glow-color) 0%,
-    transparent var(--behind-glow-size)
-  );
-  filter: blur(50px) saturate(1.1);
-  opacity: calc(0.8 * var(--card-opacity));
-  transition: opacity 200ms ease;
-}
-
-.pc-card-wrapper:hover,
-.pc-card-wrapper.active {
-  --card-opacity: 1;
-}
-
-.pc-card {
-  height: 80svh;
-  max-height: 540px;
-  display: grid;
-  aspect-ratio: 0.718;
-  border-radius: var(--card-radius);
-  position: relative;
-  box-shadow:
-    rgba(148, 163, 184, 0.3) calc((var(--pointer-from-left) * 10px) - 3px)
-    calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px,
-    rgba(125, 211, 252, 0.2) 0 0 40px 0;
-  transition: transform 1s ease;
-  transform: translateZ(0) rotateX(0deg) rotateY(0deg);
-  background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
-  backface-visibility: hidden;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  mask-image: radial-gradient(white, black);
-  transform-style: preserve-3d;
-  isolation: isolate;
-}
-
-.pc-card:hover,
-.pc-card.active {
-  transition: none;
-  transform: translateZ(0) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
-}
-
-.pc-card-shell.entering .pc-card {
-  transition: transform 180ms ease-out;
-}
-
-.pc-card-shell {
-  position: relative;
-  z-index: 1;
-}
-
-.pc-card * {
-  display: grid;
-  grid-area: 1/-1;
-  border-radius: var(--card-radius);
-  pointer-events: none;
-}
-
-.pc-inside {
-  inset: 0;
-  position: absolute;
-  background-image: var(--inner-gradient);
-  background-color: #f1f5f9;
-  transform: none;
-}
-
-.pc-shine {
-  display: none;
-}
-
-.pc-glare {
-  transform: translate3d(0, 0, 1.1px);
-  overflow: hidden;
-  background-image: radial-gradient(
-    farthest-corner circle at var(--pointer-x) var(--pointer-y),
-    hsl(210, 50%, 90%) 12%,
-    hsla(210, 40%, 70%, 0.8) 90%
-  );
-  mix-blend-mode: overlay;
-  filter: brightness(0.8) contrast(1.2);
-  z-index: 4;
-}
-
-.pc-avatar-content {
-  mix-blend-mode: luminosity;
-  overflow: visible;
-  transform: translateZ(2);
-  backface-visibility: hidden;
-  position: absolute;
-  inset: 0;
-}
-
-.pc-avatar-content .avatar {
-  display: block !important;
-  grid-area: unset !important;
-  width: auto;
-  height: 100%;
-  position: absolute;
+  top: 0;
   left: 50%;
-  bottom: -25%;
-  transform: translateX(-50%);
-  object-fit: contain;
-  z-index: 2;
-  border-radius: 0 !important;
-  pointer-events: none;
-  
-  opacity: 0.9;
+  width: 2rem;
+  height: 5.5rem;
+  translate: -50% 0;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 14px, rgb(255 255 255 / 0.28) 14px 16px),
+    var(--color-brand);
+  box-shadow: inset 2px 0 0 rgb(20 20 20 / 0.12), inset -2px 0 0 rgb(20 20 20 / 0.12);
 }
 
-.pc-avatar-content::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  backdrop-filter: none;
-  pointer-events: none;
+.pass__shell {
+  position: relative;
 }
 
-.pc-user-info {
+.pass__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 0.64;
+  padding: 2.4rem 1.25rem 1.25rem;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.7), transparent 40%),
+    var(--color-paper-raised);
+  border: var(--hairline) solid rgb(20 20 20 / 0.16);
+  box-shadow: var(--shadow-object);
+  transform: rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+  transition: transform var(--dur-slow) var(--ease-out);
+  container-type: inline-size;
+}
+
+.pass.is-active .pass__card {
+  transition: none;
+}
+
+.pass__slot {
   position: absolute;
-  --ui-inset: 20px;
-  --ui-radius-bias: 6px;
-  bottom: var(--ui-inset);
-  left: var(--ui-inset);
-  right: var(--ui-inset);
-  z-index: 2;
+  top: 0.9rem;
+  left: 50%;
+  width: 26%;
+  height: 0.7rem;
+  translate: -50% 0;
+  border-radius: var(--radius-round);
+  background: var(--color-paper-sunken);
+  box-shadow: inset 0 1px 2px rgb(20 20 20 / 0.28);
+}
+
+.pass__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(30px);
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  border-radius: calc(max(0px, var(--card-radius) - var(--ui-inset) + var(--ui-radius-bias)));
-  padding: 12px 14px;
-  pointer-events: auto;
+  gap: var(--space-3);
 }
 
-.pc-user-details {
+.pass__badge {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.pass__icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+/* Duotone portrait, the same print treatment as the hero insert. */
+.pass__photo {
+  position: relative;
+  flex: 1;
+  margin-top: var(--space-3);
+  overflow: hidden;
+  background: var(--color-brand);
+}
+
+.pass__photo img {
+  position: absolute;
+  left: 50%;
+  bottom: -4%;
+  width: 92%;
+  translate: -50% 0;
+  filter: grayscale(1) contrast(1.15);
+  mix-blend-mode: multiply;
+}
+
+.pass__body {
+  padding-top: var(--space-4);
+}
+
+.pass__name {
+  font-size: 10cqw;
+  font-weight: var(--weight-black);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+}
+
+.pass__role {
+  margin-top: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.pass__meta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: var(--hairline) solid var(--rule);
+  font-size: var(--text-xs);
 }
 
-.pc-mini-avatar {
-  width: 48px;
-  height: 48px;
+.pass__handle {
+  font-family: var(--font-mono);
+}
+
+.pass__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-semibold);
+}
+
+.pass__status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  flex-shrink: 0;
+  background: var(--color-signal);
 }
 
-.pc-mini-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.pc-user-text {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.pc-handle {
-  font-size: 14px;
-  font-weight: 500;
-  color: #1e293b;
-  line-height: 1;
-}
-
-.pc-status {
-  font-size: 14px;
-  color: #64748b;
-  line-height: 1;
-}
-
-.pc-contact-btn {
-  background: linear-gradient(135deg, #a1d7fb 0%, #73c6f3 100%);
-  border: 1px solid rgba(61, 190, 249, 0.5);
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #0369a1;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pc-contact-btn:hover {
-  background: linear-gradient(135deg, #5fbef2 0%, #7dd3fc 100%);
-  border-color: rgba(56, 189, 248, 0.6);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
-}
-
-.pc-content:not(.pc-avatar-content) {
-  max-height: 100%;
-  overflow: hidden;
-  text-align: center;
+.pass__contact {
   position: relative;
-  transform: translate3d(
-    calc(var(--pointer-from-left) * -6px + 3px),
-    calc(var(--pointer-from-top) * -6px + 3px),
-    0.1px
-  );
-  z-index: 5;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  margin-top: var(--space-3);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-ui);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
-.pc-details {
-  width: 100%;
+.pass__contact:hover {
+  background: var(--color-accent);
+}
+
+/* Holographic laminate: follows the pointer, still otherwise. */
+.pass__foil {
   position: absolute;
-  top: 3em;
-  display: flex;
-  flex-direction: column;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgb(255 255 255 / 0.55), transparent 42%),
+    var(--material-foil);
+  background-size: 100% 100%, 220% 220%;
+  background-position: center, var(--pointer-x) var(--pointer-y);
+  mix-blend-mode: soft-light;
+  opacity: 0.7;
 }
 
-.pc-details h3 {
-  font-weight: 600;
-  margin: 0;
-  font-size: min(5svh, 3em);
-  background-image: linear-gradient(to bottom, #1e293b, #475569);
-  background-size: 1em 1.5em;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-}
-
-.pc-details p {
-  font-weight: 600;
-  position: relative;
-  top: 4px;
-  white-space: nowrap;
-  font-size: 16px;
-  margin: 0 auto;
-  width: min-content;
-  background-image: linear-gradient(to bottom, #0284c7, #0369a1);
-  background-size: 1em 1.5em;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-}
-
-@media (max-width: 768px) {
-  .pc-card {
-    height: 70svh;
-    max-height: 450px;
-  }
-
-  .pc-details {
-    top: 2em;
-  }
-
-  .pc-details h3 {
-    font-size: min(4svh, 2.5em);
-  }
-
-  .pc-details p {
-    font-size: 14px;
-  }
-
-  .pc-user-info {
-    --ui-inset: 15px;
-    padding: 10px 12px;
-  }
-
-  .pc-mini-avatar {
-    width: 28px;
-    height: 28px;
-  }
-
-  .pc-user-details {
-    gap: 10px;
-  }
-
-  .pc-handle {
-    font-size: 13px;
-  }
-
-  .pc-status {
-    font-size: 10px;
-  }
-
-  .pc-contact-btn {
-    padding: 6px 12px;
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 480px) {
-  .pc-card {
-    height: 60svh;
-    max-height: 380px;
-  }
-
-  .pc-details {
-    top: 1.5em;
-  }
-
-  .pc-details h3 {
-    font-size: min(3.5svh, 2em);
-  }
-
-  .pc-details p {
-    font-size: 12px;
-    top: -8px;
-  }
-
-  .pc-user-info {
-    --ui-inset: 12px;
-    padding: 8px 10px;
-  }
-
-  .pc-mini-avatar {
-    width: 24px;
-    height: 24px;
-  }
-
-  .pc-user-details {
-    gap: 8px;
-  }
-
-  .pc-handle {
-    font-size: 12px;
-  }
-
-  .pc-status {
-    font-size: 9px;
-  }
-
-  .pc-contact-btn {
-    padding: 5px 10px;
-    font-size: 10px;
-    border-radius: 50px;
-  }
-}
-
-@media (max-width: 320px) {
-  .pc-card {
-    height: 55svh;
-    max-height: 320px;
-  }
-
-  .pc-details h3 {
-    font-size: min(3svh, 1.5em);
-  }
-
-  .pc-details p {
-    font-size: 11px;
-  }
-
-  .pc-user-info {
-    padding: 6px 8px;
-  }
-
-  .pc-mini-avatar {
-    width: 20px;
-    height: 20px;
-  }
-
-  .pc-user-details {
-    gap: 6px;
-  }
-
-  .pc-handle {
-    font-size: 11px;
-  }
-
-  .pc-status {
-    font-size: 8px;
-  }
-
-  .pc-contact-btn {
-    padding: 4px 8px;
-    font-size: 9px;
-    border-radius: 50px;
+@media (prefers-reduced-motion: reduce) {
+  .pass__card {
+    transform: none;
   }
 }

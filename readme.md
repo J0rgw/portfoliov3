@@ -1,66 +1,63 @@
-# Portfolio V3
+# Portfolio V3 · JRG-003
 
-> Once again I'm here rebuilding my portfolio as I always think I can do better.
+Portfolio of **Jorge Arcas**, freelance full-stack developer, designed as an album: each chapter a
+track, each project a release with its own cover, credits and liner notes.
 
-SO FAR: only a hero and about section has been developed
+- Domain: [portfolio.jarcas.dev](https://portfolio.jarcas.dev) (currently serves v2; this
+  version is not deployed yet).
+- Language: Spanish (Spain).
 
-** I'll update the rest of the readme.md later **
+## Stack
 
-## Live Demo
+Vite 7 · React 19 · TypeScript (strict) · plain CSS with design tokens · GSAP (loaded on demand)
+· [reicon](https://reicon.dev) icons. Every route is **prerendered to static HTML** at build time
+and hydrated in the browser: the content is readable without JavaScript and every project has its
+own indexable URL.
 
-🔗 [View Portfolio](https://j0rgw.github.io/portfoliov3) *(coming soon)*
+## Scripts
 
-## Built With
-
-- **React** + **TypeScript** + **GSAP**
-
-## Customization System
-
-Creating a config folder to **fully and easily customize** the UI as much as I want.
-
-### Configuration Options
-
-The config system allows you to modify the entire portfolio without touching component code:
-
-| Config Property | Description | Example Values |
-|----------------|-------------|----------------|
-| `menuItems` | Navigation links and labels | Home, About, Projects, Experience, Contact |
-| `socialItems` | Social media links | GitHub, LinkedIn, Mail |
-| `position` | Menu position | `'left'` or `'right'` |
-| `displaySocials` | Show/hide social links | `true` / `false` |
-| `displayItemNumbering` | Number menu items | `true` / `false` |
-| `menuButtonColor` | Default button color | `'#fff'` |
-| `openMenuButtonColor` | Button color when open | `'#000'` |
-| `colors` | Theme gradient colors | `['#efcd9eff', '#d48e60ff']` |
-| `logoUrl` | Portfolio logo path | `'./src/images/logo.png'` |
-| `accentColor` | Accent color theme | `'#ff6b6b'` |
-
-## Project Structure
-
-```
-portfolio/
-├── src/
-│   ├── components/
-│   │   └── StaggeredMenu/
-│   │       ├── StaggeredMenu.tsx
-│   │       └── StaggeredMenu.css
-│   ├── config/
-│   │   └── navigation.ts        # ⚙️ Customize everything here
-│   ├── images/
-│   │   ├── logo.png
-│   │   ├── Logo2.png
-│   │   ├── LogobgB.png
-│   │   └── favicon.ico
-│   ├── App.tsx
-│   ├── App.css
-│   ├── main.tsx
-│   └── index.css
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
+```bash
+npm install
+npm run dev          # development server (client-side render)
+npm run build        # asset check → types → client + SSR builds → prerender → SEO check
+npm run preview      # serve dist/ locally
+npm run og           # regenerate social cards (needs: npm i --no-save playwright-core)
 ```
 
----
+`npm run build` fails if a referenced image or font is missing, or if any page lacks a title,
+description, canonical URL, Open Graph image, `lang` or exactly one `h1`.
 
-*Continuously developing and improving myself.*
+## Where things live
+
+```
+src/content/      all copy and data (projects, services, process, about, site identity)
+src/styles/       design tokens and base styles
+src/components/   primitives and objects (Disc, CoverArt, CreditsTable, Button, menu, header…)
+src/sections/     home chapters: Hero, Projects, LinerNotes, Services, About, BonusTrack, Contact
+src/pages/        Home, project index, case study, 404
+src/motion/       reveal, scroll scene, disc spin, scroll spy, reduced motion, on-demand GSAP
+src/seo/          head tags, JSON-LD, social cards
+scripts/          prerender, asset and SEO checks, social-card generator
+```
+
+To change copy or add a project, edit `src/content/`. Every factual claim must trace to a source
+listed in `docs/INFORMATION_ARCHITECTURE.md` §6.
+
+## Documentation
+
+| File | Purpose |
+|------|---------|
+| [`AGENTS.md`](AGENTS.md) | Canonical guide for anyone (or any agent) changing the code |
+| [`references.md`](references.md) | Visual research and how each reference is used |
+| [`docs/ART_DIRECTION.md`](docs/ART_DIRECTION.md) | Concept, typography, colour, objects, composition |
+| [`docs/INFORMATION_ARCHITECTURE.md`](docs/INFORMATION_ARCHITECTURE.md) | Chapters, routes, content model, SEO |
+| [`docs/MOTION_SYSTEM.md`](docs/MOTION_SYSTEM.md) | Motion principles, primitives, reduced motion |
+| [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md) | Audit, status, budgets, measurements, open questions |
+
+## Credits
+
+- Fonts: **Estrella Early** (designer field: Uncarving; licence to be confirmed, see the open
+  questions in the implementation plan) and **Poppins** (SIL Open Font License 1.1,
+  `public/fonts/Poppins-OFL.txt`).
+- Technology logos in `public/images/logo/` follow [SVGL](https://svgl.app/).
+- `package.json` declares the code as MIT; a `LICENSE` file has not been added yet.

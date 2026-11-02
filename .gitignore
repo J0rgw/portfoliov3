@@ -1,9 +1,9 @@
 # Dependencies
 node_modules/
-package-lock.json
 
 # Build outputs
 dist/
+dist-ssr/
 build/
 *.local
 

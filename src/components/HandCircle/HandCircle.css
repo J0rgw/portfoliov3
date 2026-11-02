@@ -1,0 +1,17 @@
+/* A pen loop round a round object: handwriting layer, decorative only
+   (ART_DIRECTION §5). Geometry and ink here; motion belongs to the consumer. */
+
+.hand-circle {
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hand-circle__stroke {
+  fill: none;
+  stroke: currentColor;
+  /* A fine pen: ~2.4 px round a 440 px disc. */
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

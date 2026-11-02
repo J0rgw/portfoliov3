@@ -1,5 +1,8 @@
 .logoloop {
   position: relative;
+  /* The track is wider than the viewport by design; clip it here so it can
+     never widen the page (it was the source of the 3,482px-wide body). */
+  overflow-x: clip;
 
   --logoloop-gap: 32px;
   --logoloop-logoHeight: 28px;

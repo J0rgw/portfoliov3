@@ -1,0 +1,120 @@
+/* The header is type over the page, not a bar: no ground, no rules, no blur
+   (Jorge's brief, 2026-10-29; ART_DIRECTION §9). Legibility is handled per
+   element: the navigation takes the ink of the ground it sits on
+   (`data-tone`, followed by SiteHeader.tsx over `.on-night` sections) and a
+   halo of that ground around its letters and marks, invisible on the plain
+   ground, readable over whatever scrolls beneath. */
+.site-header {
+  --nav-ink: var(--color-ink);
+  --nav-ink-hover: var(--color-accent);
+  --nav-halo: var(--halo-paper);
+  --nav-halo-filter: var(--halo-paper-filter);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  height: var(--header-h);
+  color: var(--nav-ink);
+  view-transition-name: site-header;
+}
+
+.site-header[data-tone='night'] {
+  --nav-ink: var(--color-paper);
+  --nav-ink-hover: var(--color-accent-on-night);
+  --nav-halo: var(--halo-night);
+  --nav-halo-filter: var(--halo-night-filter);
+}
+
+.site-header[data-tone='night'] :focus-visible {
+  outline-color: var(--color-accent-on-night);
+}
+
+/* The open menu panel is paper, whatever was behind the header. */
+html.menu-open .site-header {
+  --nav-ink: var(--color-ink);
+  --nav-ink-hover: var(--color-accent);
+  --nav-halo: var(--halo-paper);
+  --nav-halo-filter: var(--halo-paper-filter);
+}
+
+html.menu-open .site-header :focus-visible {
+  outline-color: var(--color-accent);
+}
+
+.site-header__bar {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--margin);
+  pointer-events: none;
+}
+
+.site-header__bar > * {
+  pointer-events: auto;
+}
+
+.site-header__logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.site-header__logo img {
+  width: auto;
+  height: 30px;
+  filter: var(--nav-halo-filter);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.site-header__cta,
+.site-header__index {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-ui);
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: var(--hairline);
+  text-underline-offset: 0.35em;
+  text-shadow: var(--nav-halo);
+}
+
+.site-header__cta:hover {
+  color: var(--nav-ink-hover);
+}
+
+/* The index link is the no-JavaScript stand-in for the menu toggle. */
+.js .site-header__index {
+  display: none;
+}
+
+/* Small screens keep the contact action visible: it is the primary action. */
+@media (max-width: 639px) {
+  .site-header__actions {
+    gap: var(--space-2);
+  }
+
+  .site-header__cta {
+    padding-inline: var(--space-1);
+    font-size: var(--text-xs);
+  }
+
+  .site-header__logo img {
+    height: 24px;
+  }
+}

@@ -1,0 +1,21 @@
+.cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.cover__title {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-black);
+  letter-spacing: -0.02em;
+}
+
+.cover__mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+}
+
+.cover__hand {
+  font-family: var(--font-display);
+}

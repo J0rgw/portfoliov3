@@ -1,0 +1,110 @@
+/* ==========================================================================
+   Motion presets. Rules and rationale: docs/MOTION_SYSTEM.md.
+   Only transform, opacity and (rarely) clip-path animate.
+   ========================================================================== */
+
+/* ---- Level 2: reveal on scroll ---------------------------------------------
+   `.js` is added to <html> by an inline script before first paint, so without
+   JavaScript nothing is ever hidden. RevealController marks elements with
+   [data-revealed] once they enter the viewport and adds .reveal-ready to <html>. */
+
+[data-reveal] {
+  transition:
+    opacity var(--dur-reveal) var(--ease-out-soft),
+    transform var(--dur-reveal) var(--ease-out),
+    clip-path var(--dur-reveal) var(--ease-out);
+  transition-delay: calc(var(--reveal-index, 0) * var(--stagger));
+}
+
+.js [data-reveal='up']:not([data-revealed]) {
+  opacity: 0;
+  transform: translate3d(0, 2rem, 0);
+}
+
+.js [data-reveal='fade']:not([data-revealed]) {
+  opacity: 0;
+}
+
+.js [data-reveal='mask']:not([data-revealed]) {
+  clip-path: inset(0 0 100% 0);
+}
+
+.js [data-reveal='mask'] {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Failsafe: if the controller never starts (slow or failed bundle), show
+   everything after 2.5s instead of stranding content. */
+.js:not(.reveal-ready) [data-reveal]:not([data-revealed]) {
+  animation: reveal-failsafe 1ms linear 2.5s forwards;
+}
+
+@keyframes reveal-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---- Level 1: first-paint entrance (hero) -----------------------------------
+   Pure CSS, starts with the first frame, needs no JavaScript. The h1 only
+   moves (never fades) so it is painted, and measured, immediately.
+   Animates the individual `translate` property so it composes with the
+   scroll-linked `transform` the same elements may carry. */
+
+.enter {
+  animation: enter-up var(--dur-identity) var(--ease-out) both;
+  animation-delay: calc(var(--enter-index, 0) * 90ms + 60ms);
+}
+
+.enter--still {
+  animation-name: enter-rise;
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+@keyframes enter-rise {
+  from {
+    translate: 0 0.6rem;
+  }
+}
+
+/* ---- Level 1: cross-document page transitions -------------------------------
+   Progressive enhancement: unsupported browsers navigate normally. */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-base);
+  animation-timing-function: var(--ease-in-out);
+}
+
+::view-transition-group(*) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-in-out);
+}
+
+/* ---- Reduced motion: complete, static experience ---------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .enter {
+    animation: none;
+  }
+}
