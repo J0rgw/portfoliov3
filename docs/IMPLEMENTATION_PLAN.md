@@ -1020,3 +1020,36 @@ Later the same day, Jorge's answers (Q50, Q51):
   and 320 × 640. Every title fits one row of the iPod's screen; no horizontal overflow; the
   wheel, click, keys, menu link, reduced motion, no-JS and phone checks rerun with the same
   results as above; no console errors.
+
+## Hero: the disc holds still on scroll — 2026-11-11
+
+Brief: Jorge saw a bounce on the hero's disc while scrolling and asked to remove it so the disc is
+static on scroll, keeping the animation of the rest of the stickers and assets.
+
+- Cause: the disc's body read the scene. It slid out of the sleeve in the split (−6 % `--d` x,
+  −3 % y), came back while it grew to 106 % in the solo (in portrait it went to the frame's centre
+  instead), then lifted 24 % `--d` faster than the page while it shrank to 96 % on the exit: out
+  and back, larger then smaller.
+- `Hero.css`: `.hero__disc-body` keeps only the pointer's lean (`--px` / `--py`, depth 0.25); its
+  `scale` and the `--split-dx`, `--solo-dx` and `--solo-dy` offsets are gone, and with them the
+  disc's scene anchor (`data-scene-anchor="disc"` in `Hero.tsx`, the `--scene-disc-dx/dy`
+  defaults); its `will-change` is `translate` only. Unchanged: the turn and its pause, the
+  entrance, the reflections, the sleeve and the hand, the sticker, the headphones, the knob, the
+  credit's exit parallax and the snap. `useScrollScene` still measures anchors; none is left.
+- Docs: MOTION_SYSTEM §2.1 (the table, the measured gap, the exit parallax, whose "−0.25 in
+  portrait" was never in the CSS) and §2.4, INFORMATION_ARCHITECTURE §3.
+- Validation: `npm run build` passes (architecture, config, assets, types, client + SSR,
+  prerender, SEO). Against the previous production build, 21 scroll steps through the hero at
+  1512 × 734, 1440 × 900, 1024 × 768, 768 × 1024 and 390 × 844: sleeve, headphones, knob and scene
+  values identical; the disc keeps one position and size per viewport for the whole run. Wheel
+  input through Lenis and the snap at 1512 × 734: the disc used to move 26 px across, 13 px up and
+  down and 27 px in size during the pinned run, and 87 px against the frame while it left; now
+  0 px on each. Disc to the name's glyphs at rest: 96, 71, 87, 31 and 129 px at 1024 × 768,
+  1280 × 800, 1440 × 900, 1512 × 734 and 1920 × 1080 (the split used to bring it to 14 px at
+  1512 × 734). Pointer lean ±5.6 px. Reduced motion and no-JS: the same resting composition, no
+  extra scroll length, no horizontal overflow, no console errors. Frames at rest, mid split, end
+  of the pinned run and mid exit, light at 1512 × 734 and 390 × 844, dark at 1440 × 900, compared
+  side by side with the previous build; the renders and a side-by-side video live in the session
+  scratchpad, not in the repo.
+- On phones the disc no longer goes to the centre at the end of the pinned run: it stays where it
+  rests, cropped a little at the left edge as the composition already allowed.

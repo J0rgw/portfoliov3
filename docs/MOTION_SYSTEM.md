@@ -57,7 +57,8 @@ are allowed when they carry the physical identity and preserve the technical con
 ### 2.1 Hero scene (owner's brief, 2026-10-29; recomposed the same day from his sketch)
 
 The disc is a lead object from the first frame, not something scroll reveals. Scroll takes the
-package apart: the hand pulls the sleeve off the disc, the disc takes the centre, then it leaves.
+package apart round it: the hand pulls the sleeve off the disc and the cut-outs leave, so the disc
+ends alone, then the frame leaves with the page. The disc itself holds still (2026-11-11, below).
 A spatial change tied to scroll progress and reversible, not a scale or fade. **Priority: the
 first frame and the disc's legibility over spectacle.**
 
@@ -77,7 +78,7 @@ sticker lifts under the pointer like the other handled cut-outs.
 
 **Disc turn.** One turn per `--dur-spin` (75 s, the brief allows 60–90 s), clockwise, starting
 upright, linear, no motion blur. It lives on its own element (`.hero__disc-spin`), apart from
-the scroll transforms on its parent. It eases to a stop (≈0.6 s, `playbackRate`, never a jump)
+the pointer's lean on its parent. It eases to a stop (≈0.6 s, `playbackRate`, never a jump)
 while a mouse or pen rests on the disc and eases back on leave; a tap or click on the disc holds
 it still until the next one (touch has no hover); it pauses while off-screen. Keyboards get a
 **Pausar / Reanudar giro del disco** button that stays out of sight until it has focus (the brief
@@ -90,14 +91,26 @@ asked for no permanent button; WCAG 2.2.2 still needs a mechanism, as the turn l
 | Narrative | Phase | Disc | Sleeve, with the arm holding it |
 |-----------|-------|------|----------------------------------|
 | 0–6 % | Rest | 80 % visible behind the sleeve, print upright | In its film, tilted 3.5°, held by its right edge |
-| 6–46 % | Split | Slides out of the sleeve, −6 % `--d` x, −3 % y (portrait: up only, it already touches the left edge) | Pulled down by the hand, +8 % / +18 % `--d`, turns to 6.5° |
-| 36–80 % | Solo | Landscape (2026-11-10): stays where it rests, tucked under the name, and grows to 106 % from its top down; portrait: to the centre of the frame, 12 % `--d` lower, clear of the credit. Still turning | On out of the frame the way the forearm runs (down, a little right: +22 % / +115 % `--d` more, sticker and all), 10.5° |
-| 80–100 % | Exit | Lifts 24 % `--d` faster than the page, down to 96 % | Already gone |
+| 6–46 % | Split | Still: the sleeve slides off it | Pulled down by the hand, +8 % / +18 % `--d`, turns to 6.5° |
+| 36–80 % | Solo | Still, where it rests, alone once the sleeve has gone. Still turning | On out of the frame the way the forearm runs (down, a little right: +22 % / +115 % `--d` more, sticker and all), 10.5° |
+| 80–100 % | Exit | Leaves at the page's pace, no parallax of its own | Already gone |
+
+**The disc holds still** (2026-11-11: Jorge asked to "remove the bounce from the scroll animation
+so it's static when scrolling", keeping the rest of the stickers and assets moving). Until then it
+slid out of the sleeve (−6 % `--d` x, −3 % y), came back while it grew to 106 % (in portrait it
+went to the frame's centre instead), then lifted 24 % `--d` faster than the page while it shrank to
+96 %: out and back, larger then smaller. Its body (`.hero__disc-body`) no longer reads
+`--scene-*`; only the pointer leans it. The sleeve, the hand and the cut-outs are unchanged
+(their positions measured identical at every scroll step, at five sizes). Wheel input through
+Lenis and the snap at 1512 × 734: during the pinned run the disc used to move 26 px across,
+13 px up and down and 27 px in size, and 87 px against the frame while it left; now 0 px on each.
 
 The sleeve only ever moves down and outwards, so the frame's edges keep hiding the end of the
 forearm. Measured on 2026-11-10 at 1024 × 768, 1280 × 800, 1440 × 900, 1512 × 734 and
-1920 × 1080: the disc keeps at least 14 px from the name's glyphs through the whole run (the
-least at 1512 × 734, during the split), and the sleeve has left the frame when solo ends.
+1920 × 1080: the sleeve has left the frame when solo ends. With the disc still, its distance from
+the name's glyphs is the resting one through the whole pinned run (2026-11-11: 96, 71, 87, 31 and
+129 px at those sizes; a fine pointer can bring it 5.6 px closer) and only grows while the credit
+runs ahead on the exit. The split used to bring it down to 14 px at 1512 × 734.
 
 - **JavaScript, motion allowed and a viewport at least 34 rem tall:** the hero grows by
   `--scene-run` (100 svh; 80 svh below 768 px) and the whole frame is sticky at the top of the
@@ -108,8 +121,8 @@ least at 1512 × 734, during the split), and the sleeve has left the frame when 
   §2.3. Anchors and keyboard scrolling behave as usual.
 - **Exit parallax** (2026-11-09): while the frame scrolls out (`--scene-exit`), the credit moves
   against the page by `--credit-depth` × the frame's height: −0.15 since 2026-11-10 (the name
-  is on top now), running ahead up about as fast as the disc under it lifts off, so the two
-  keep their distance; −0.25 in portrait, where the disc is right under the credit.
+  is on top now), in both orientations. It runs ahead (up), away from the disc under it, which
+  leaves at the page's pace since 2026-11-11.
 - **Shorter viewports** (landscape phones): no pin and no extra length; the same narrative plays
   as the frame leaves the viewport.
 - **Bounds** (checked 2026-10-29 at 1440 and 390 px): the narrative starts at scroll 0 and ends
@@ -257,7 +270,7 @@ Depth while chapters scroll past, never at rest. `useParallax` writes `--paralla
 section: −1 a viewport before its top meets the viewport's, 0 at that point (the snapped,
 measured composition), 1 a viewport later. Layers multiply it by their own depth in CSS.
 
-- **Hero**: the exit parallax on the credit (§2.1); the disc already lifts faster than the page.
+- **Hero**: the exit parallax on the credit (§2.1); the disc leaves at the page's pace (2026-11-11).
 - **Projects**: the credits column trails the page (`6svh` per viewport); the gallery (discs,
   keys, arrow) runs ahead of it (`−14svh`). At rest both are exactly in place, so the credit /
   disc clearances measured in §2.2 hold.

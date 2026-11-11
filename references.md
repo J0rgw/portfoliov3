@@ -90,6 +90,11 @@ The same evening, at Jorge's request, Proceso's hold became the iPod's wheel (sc
 the song and its credits) and the iPod moved right so longer copy fits at eye level, then took
 Jorge's own copy and the place he picked for the iPod; checked at 320 to 1920 px in both themes,
 with reduced motion and without JavaScript (plan, "Proceso: the scroll turns the playlist").
+Later that night, at Jorge's request, the hero disc stopped moving with the scroll (sliding out
+and back, growing then shrinking, it read as a bounce); the sleeve, the hand and the cut-outs
+still take the package apart. Checked at 1512 × 734, 1440 × 900, 1024 × 768, 768 × 1024 and
+390 × 844, in both themes, with wheel input, reduced motion and without JavaScript (plan, "Hero:
+the disc holds still on scroll").
 
 Supporting resources: [SVGL](https://svgl.app/) (technology logos; the files in
 `public/images/logo/` follow that source), [Fontpair](https://fontpair.co/) (not needed, the

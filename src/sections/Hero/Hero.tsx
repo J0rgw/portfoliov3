@@ -27,9 +27,9 @@ const rise = (index: number) => ({ '--rise-index': index }) as CSSProperties;
  * Everything readable is real HTML, visible on first paint without JavaScript.
  * The objects are decorative: the name and role printed on them are the h1 in
  * plain text. With JavaScript and motion allowed the disc turns slowly (eased stop
- * on hover, tap or the focus-revealed control), scroll takes the package apart
- * (`--scene-*`, useScrollScene; MOTION_SYSTEM §2.1) and every layer leans by its
- * depth under a fine pointer (usePointerDepth).
+ * on hover, tap or the focus-revealed control) and holds its place while scroll
+ * takes the package apart round it (`--scene-*`, useScrollScene; MOTION_SYSTEM
+ * §2.1), and every layer leans by its depth under a fine pointer (usePointerDepth).
  */
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -88,7 +88,7 @@ export function Hero() {
 
           {/* First paint: the disc lands spinning while the hand brings the sleeve up from below. */}
           <div className="hero__set" aria-hidden="true">
-            <div className="hero__disc" data-scene-anchor="disc">
+            <div className="hero__disc">
               {/* Tapping the disc holds it still (touch has no hover); the control below does the same for keyboards. */}
               <div className="hero__disc-body" ref={discRef} onClick={toggleSpin}>
                 <ThemeImage

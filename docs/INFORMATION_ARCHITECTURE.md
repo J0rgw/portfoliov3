@@ -96,11 +96,12 @@ Every chapter below must keep its contract when edited.
 - Motion: Level 1. CSS-only entrance on first paint (no JavaScript dependency): the name rises
   line by line, the disc lands spinning, the hand brings the sleeve up from below; the disc turns
   slowly (75 s a turn; eased stop on hover, held by a tap, paused off-screen, and a pause button
-  revealed on keyboard focus); scroll takes the package apart (rest → split → solo → exit) in a
-  pinned frame (MOTION_SYSTEM §2.1); the credit parallaxes as the frame leaves, and the end of
+  revealed on keyboard focus); scroll takes the package apart round the disc, which holds still
+  (rest → split → solo → exit, since 2026-11-11 without moving or scaling the disc), in a pinned
+  frame (MOTION_SYSTEM §2.1); the credit parallaxes as the frame leaves, and the end of
   the pinned run is a snap point (§2.3). The cut-outs slap down after the scene's entrance,
   lean by their depth under a fine pointer, drift apart as the hand pulls and leave through
-  their nearest edge while the disc takes the lead; the knob turns up with the scroll. Reduced
+  their nearest edge, so the disc ends alone; the knob turns up with the scroll. Reduced
   motion and no-JS: a still, complete composition with no extra scroll length.
 - Responsive: the frame is one full viewport, under the transparent header. Landscape: the name
   top left, role and statement bottom left, the disc under the name's first line, the sleeve to

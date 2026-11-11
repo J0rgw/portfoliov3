@@ -1,9 +1,8 @@
 /* Chapter 00, the cover. Composition: the diagonal study Jorge chose on
    2026-11-10 (DESIGN.md "Composition"). Motion: docs/MOTION_SYSTEM.md §2.1. The
    scene reads the variables written by useScrollScene (--scene-split,
-   --scene-solo, --scene-exit and the disc anchor's --scene-disc-dx/dy); the
-   defaults below are the resting composition, which is also what no-JS and
-   reduced-motion visitors see. */
+   --scene-solo and --scene-exit); the defaults below are the resting
+   composition, which is also what no-JS and reduced-motion visitors see. */
 
 .hero {
   /* One viewport, from the top of the page: the fixed header is transparent
@@ -16,8 +15,6 @@
   --scene-split: 0;
   --scene-solo: 0;
   --scene-exit: 0;
-  --scene-disc-dx: 0px;
-  --scene-disc-dy: 0px;
   position: relative;
   /* Clip without creating a scroll container, so the frame can stay sticky. */
   overflow: clip;
@@ -98,8 +95,8 @@
      pointer, so the disc keeps its hover and tap. */
   pointer-events: none;
   /* Parallax while the frame scrolls out (exit): a share of the frame's height
-     the credit moves against the page. It runs ahead (up) as fast as the disc
-     under the name lifts off, so the two keep their distance. */
+     the credit moves against the page. It runs ahead (up), away from the disc
+     under the name, which leaves at the page's pace. */
   --credit-depth: -0.15;
 }
 
@@ -172,13 +169,6 @@
   --tilt: 3.5deg;
   --sleeve-x: calc(var(--d) * 0.66);
   --sleeve-y: calc(var(--d) * 0.26);
-  /* How far the disc slides out of the sleeve, and where it settles when it
-     takes the lead. Landscape: it is already near the middle, tucked under the
-     name, so it stays where it rests (the offsets cancel the move to the frame's
-     centre) and grows from its top down, never towards the name. */
-  --split-dx: calc(var(--d) * -0.06);
-  --solo-dx: calc(var(--scene-disc-dx) * -1);
-  --solo-dy: calc(var(--d) * 0.03 - var(--scene-disc-dy));
   position: absolute;
   /* Just under the name's first line, centred down the room left below it. */
   top: calc(
@@ -191,7 +181,7 @@
   pointer-events: none;
 }
 
-/* Layout boxes: measured by useScrollScene, never transformed. */
+/* Layout boxes: the scroll never moves them. */
 .hero__disc,
 .hero__sleeve {
   position: absolute;
@@ -210,7 +200,7 @@
   width: var(--w);
 }
 
-/* ---- The disc: scroll moves the body, a separate layer turns the label ------- */
+/* ---- The disc: the body holds still, a separate layer turns the label -------- */
 
 .hero__disc-body {
   position: relative;
@@ -220,18 +210,10 @@
   box-shadow: var(--shadow-object);
   pointer-events: auto;
   -webkit-tap-highlight-color: transparent;
-  /* split: slides out of the sleeve · solo: towards the middle of the frame, a
-     little larger · exit: lifts away a touch faster than the page. */
-  translate:
-    calc(
-      var(--scene-split) * var(--split-dx) + var(--scene-solo) * (var(--scene-disc-dx) + var(--solo-dx) - var(--split-dx)) +
-        var(--px) * var(--reach) * 0.25
-    )
-    calc(
-      var(--scene-split) * var(--d) * -0.03 + var(--scene-solo) * (var(--scene-disc-dy) + var(--solo-dy) + var(--d) * 0.03) -
-        var(--scene-exit) * var(--d) * 0.24 + var(--py) * var(--reach) * 0.25
-    );
-  scale: calc(1 + var(--scene-solo) * 0.06 - var(--scene-exit) * 0.1);
+  /* The scroll leaves it where it rests while the package comes apart round it
+     (Jorge, 2026-11-11: sliding out and back, growing then shrinking, read as a
+     bounce). Only a fine pointer leans it, by its depth. */
+  translate: calc(var(--px) * var(--reach) * 0.25) calc(var(--py) * var(--reach) * 0.25);
 }
 
 .hero__disc-spin {
@@ -241,7 +223,7 @@
   border-radius: 50%;
 }
 
-/* The turn lives on its own layer, apart from the scroll transforms, and only
+/* The turn lives on its own layer, apart from the pointer's lean, and only
    with JavaScript (which provides the pause). It starts upright. */
 .js .hero__disc-spin {
   animation: disc-spin var(--dur-spin) linear infinite;
@@ -388,8 +370,7 @@
 /* ---- The collage: Jorge's cut-outs round the scene -------------------------------
    graphics/Cutout. Each one lies at its own depth, leans that far under the
    pointer, drifts off the set as the hand pulls (split) and leaves through its
-   nearest edge while the disc takes the centre (solo), so the disc ends alone.
-   Measured in --d, like the set. */
+   nearest edge (solo), so the disc ends alone. Measured in --d, like the set. */
 
 .hero__collage {
   position: absolute;
@@ -524,10 +505,6 @@ html:not(.js) .hero__spin-toggle {
     --w: calc(var(--d) * 0.74);
     --sleeve-x: calc(var(--d) * 0.42);
     --sleeve-y: calc(var(--d) * 0.61);
-    /* Its left edge is already at the screen's edge: it slides up, not out. */
-    --split-dx: 0px;
-    --solo-dx: 0px;
-    --solo-dy: calc(var(--d) * 0.12);
     top: auto;
     bottom: calc(var(--d) * 0.06);
     left: min((100cqw - var(--d) * 1.2) / 2, 100cqw - var(--margin) - var(--d) * 1.16);
@@ -601,7 +578,11 @@ html:not(.js) .hero__spin-toggle {
     top: 0;
   }
 
-  .js .hero__disc-body,
+  /* The disc moves only with the pointer; the sleeve with the scroll as well. */
+  .js .hero__disc-body {
+    will-change: translate;
+  }
+
   .js .hero__sleeve-body {
     will-change: translate, scale, rotate;
   }
