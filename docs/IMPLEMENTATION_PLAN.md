@@ -407,9 +407,9 @@ These are kept **off the site** until confirmed:
 5. **Location**: only "España" is stated. A city would help local search.
 6. **About narrative and principles** are drafted from public facts; Jorge should review the voice.
 7. **Component library**: name, scope and whether a real waitlist is wanted (see §5).
-8. **Deployment**: replacing v2 on GitHub Pages is an owner decision (see §5). The workflow is
-   ready (`.github/workflows/deploy.yml`, 2026-11-11); the cut-over (Pages on `Portfoliov3`, the
-   domain moved from `portfoliov2`) waits for Jorge's go-ahead.
+8. ~~**Deployment**~~ Answered 2026-11-11: Jorge approved the cut-over. Pages on `Portfoliov3`
+   (Actions, `.github/workflows/deploy.yml`) serves `portfolio.jarcas.dev`; details in "Upload
+   and deploy — 2026-11-11" at the end of this file.
 10. **Availability** (`site.availability` in `src/content/site.ts`) says "Disponible para nuevos
     proyectos", carried over from the previous config. Flip it when that changes.
 11. ~~Hero brief, sections 1–4~~: answered by the full brief and the sketch (2026-10-29, Phase D3).
@@ -552,8 +552,7 @@ These are kept **off the site** until confirmed:
   static), double opt-in, a privacy notice and an RGPD consent line. Until then the CTA is a
   `mailto:`.
 - **English edition** under `/en/` with `hreflang`, written (not machine translated).
-- **Deploy** (workflow added 2026-11-11, `.github/workflows/deploy.yml`; cut-over pending, §4
-  Q8): GitHub Actions workflow building `dist/` and publishing to Pages on
+- ~~**Deploy**~~ Done 2026-11-11 (§4 Q8): GitHub Actions workflow building `dist/` and publishing to Pages on
   `portfolio.jarcas.dev`; set `og:image` URLs absolute (already absolute in the head builder).
 - Case-study screenshots for `client-leads`, `gitchange` and `Disco Download` (today they use
   diagrams and real command excerpts).
@@ -852,3 +851,33 @@ references.md #18.
   unthrottled. CSS 16.8 kB gzip, initial JS 110.7 kB gzip (both in budget). Images: Q34.
   Not verified: Safari/Firefox, real devices, a screen reader, a GPU trace of the pinned scene.
 
+## Upload and deploy — 2026-11-11
+
+Brief: Jorge asked to upload only the minimum necessary content to GitHub, with only the images
+the site uses, and to move GitHub Pages to this version.
+
+- Audit: the built site (HTML, CSS, JS, sitemap) and the literal references in `src/` request
+  110 files in `public/`; the one runtime-built path is `/images/og/${slug}.jpg`, and its six
+  cards exist. 59 images were never requested: 16 are sources the `scripts/` regenerators read
+  (now `private/originals/`, script paths updated) and 43 nothing reads (now `private/unused/`);
+  `fonts/estrella-early.otf`, the monogram's outline source, moved with the originals. All 17
+  images carrying EXIF, device data, edit history or AI-generation credentials (C2PA) were among
+  them; no served file carries any. `public/` went from 175 files (14 MB) to 115 (3.6 MB), the
+  deployed site from 20 MB to 5.7 MB.
+- `.gitignore`: the unanchored `private/` also hid `public/images/projects/private/`, so a clean
+  checkout failed `check:assets` on `broken-disc.webp`; it is now `/private/`. `.impeccable/`,
+  the TASK 02 reports and `docs/evidence/` stay on Jorge's disk (his answer).
+- Deploy: `.github/workflows/deploy.yml` (checkout v7, setup-node v7 on Node 24,
+  configure-pages v6, upload-pages-artifact v5, deploy-pages v5) runs `npm ci` and
+  `npm run build` and publishes `dist/`. Pages on `Portfoliov3` builds from Actions;
+  `portfolio.jarcas.dev` moved from `portfoliov2` (GitHub deleted its `CNAME` file, e0feedf;
+  v2 now answers at `j0rgw.github.io/portfoliov2/`). The certificate carried over and HTTPS is
+  enforced. Rollback: remove the domain here and set it back on `portfoliov2`.
+- Validation: a fresh copy of exactly the committed files passes `npm ci` and `npm run build`;
+  the first Actions run (827fc03) passed build and deploy. Live: the 110 requested files answer
+  200; the home, `/proyectos/` and a case study answer 200; a case study without its trailing
+  slash 301s to it; an unknown path serves the site's own 404; http 301s to https.
+  `npm audit`: no vulnerability in runtime dependencies; 9 (7 high) in the build toolchain
+  (vite, rollup, postcss and their dependencies), all with fixes available, not applied.
+- Still open: Q32 (rights to the downloaded cut-outs) applies to the derived files that are
+  served.

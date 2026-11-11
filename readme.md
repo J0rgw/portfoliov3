@@ -3,8 +3,8 @@
 Portfolio of **Jorge Arcas**, freelance full-stack developer, designed as an album: each chapter a
 track, each project a release with its own cover, credits and liner notes.
 
-- Domain: [portfolio.jarcas.dev](https://portfolio.jarcas.dev) (currently serves v2; this
-  version is not deployed yet).
+- Domain: [portfolio.jarcas.dev](https://portfolio.jarcas.dev), deployed from this repository by
+  `.github/workflows/deploy.yml` since 2026-11-11 (v2 remains at `j0rgw.github.io/portfoliov2`).
 - Language: Spanish (Spain).
 
 ## Stack
