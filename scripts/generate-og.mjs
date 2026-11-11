@@ -10,7 +10,12 @@
  *   npm run og                          # CHROME_PATH overrides the Chrome binary
  *
  * Re-run whenever a project's title, tagline, cover or the hero copy changes,
- * then rebuild so the check-seo step sees the new files.
+ * then rebuild so the check-seo step sees the new files. Social cards are always
+ * rendered in the light theme (blue identity), whatever the machine prefers.
+ *
+ * The cards carry real images (the printed discs' hub, rim and wear, their label
+ * cut-outs): the page gets a base URL whose /images/… requests are served from
+ * public/, and every image is decoded before the capture.
  */
 import { mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -48,13 +53,17 @@ const fontFaces = [
   .join('\n');
 
 mkdirSync(OUT, { recursive: true });
+const ORIGIN = 'http://og.local';
 const browser = await chromium.launch({ executablePath: CHROME, headless: true });
-const page = await (await browser.newContext({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 })).newPage();
+const context = await browser.newContext({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1, colorScheme: 'light' });
+await context.route(`${ORIGIN}/**`, (route) => route.fulfill({ path: join(ROOT, 'public', decodeURIComponent(new URL(route.request().url()).pathname)) }));
+const page = await context.newPage();
 
 for (const key of ogKeys) {
-  const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><style>${siteCss}\n${fontFaces}\n${ogCss}</style></head><body>${renderOgCard(key)}</body></html>`;
+  const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><base href="${ORIGIN}/"><style>${siteCss}\n${fontFaces}\n${ogCss}</style></head><body>${renderOgCard(key)}</body></html>`;
   await page.setContent(html, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => Promise.all([...document.images].map((image) => image.decode().catch(() => {}))));
   const file = join(OUT, `${key}.jpg`);
   await page.screenshot({ path: file, type: 'jpeg', quality: 86 });
   console.log(`  og: public/images/og/${key}.jpg`);

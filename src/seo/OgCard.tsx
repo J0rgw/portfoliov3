@@ -48,11 +48,11 @@ export function OgCard({ cardKey }: { cardKey: string }) {
       </div>
       <div className="og__object">
         <div className="og__sleeve">
-          <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} />
+          <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} loading="eager" />
         </div>
         <div className="og__disc">
-          <Disc variant="pressed" ink={projectTheme(project.id).ink} rimText={`${project.title} · ${site.name} · ${project.year} · ${site.catalog}`}>
-            <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} shape="disc" />
+          <Disc variant="pressed" transitionName={`disc-${project.slug}`}>
+            <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} shape="disc" loading="eager" />
           </Disc>
         </div>
       </div>

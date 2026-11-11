@@ -1,0 +1,73 @@
+/* A photographed cut-out (graphics/Cutout, DESIGN.md "Graphics and assets").
+   The section places and moves the outer box; these rules only make the paper
+   lie on the page. Shadows are tokens: deeper in the dark theme. */
+
+.cutout {
+  display: block;
+  pointer-events: none;
+}
+
+.cutout__lay {
+  display: block;
+}
+
+.cutout__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* The base reset caps media at their container; cut-outs overhang theirs. */
+  max-width: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cutout--paper .cutout__lay {
+  filter: var(--filter-cutout);
+}
+
+.cutout--sticker .cutout__lay {
+  filter: var(--filter-sticker);
+}
+
+/* `transform`, not `scale`: the entrance animates `scale` and `rotate`, which
+   compose with it instead of undoing the flip. */
+.cutout__img--mirror {
+  transform: scaleX(-1);
+}
+
+.cutout__img--pixel {
+  image-rendering: pixelated;
+}
+
+/* Picked at under a fine pointer: it lifts off the page, its shadow falls further. */
+@media (hover: hover) and (pointer: fine) {
+  .cutout--handled {
+    pointer-events: auto;
+  }
+
+  .cutout--handled .cutout__img {
+    transition:
+      scale var(--dur-base) var(--ease-out),
+      rotate var(--dur-base) var(--ease-out);
+  }
+
+  .cutout--handled .cutout__lay {
+    transition: filter var(--dur-base) var(--ease-out);
+  }
+
+  .cutout--handled:hover .cutout__img {
+    scale: 1.035;
+    rotate: -1.2deg;
+  }
+
+  .cutout--handled:hover .cutout__lay {
+    filter: var(--filter-cutout-lift);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cutout--handled .cutout__img,
+  .cutout--handled .cutout__lay {
+    transition: none;
+  }
+}

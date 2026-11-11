@@ -98,5 +98,4 @@
   --font-metadata: var(--font-mono);
   --font-annotation: var(--font-display);
   --text-index-title: clamp(2.6rem, 9vw, 10rem);
-  --text-hero-name: clamp(1.7rem, 1.2rem + 1.2vw, 2.6rem);
 }

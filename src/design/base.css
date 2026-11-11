@@ -18,7 +18,6 @@ html {
   text-size-adjust: 100%;
   /* Anchor jumps land below the fixed header. */
   scroll-padding-top: calc(var(--header-h) + var(--space-4));
-  color-scheme: light;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -29,11 +28,10 @@ html {
 
 body {
   min-height: 100vh;
-  background-color: var(--color-paper);
+  background-color: var(--background);
   /* Printed-stock grain. Not fixed: a fixed background repaints on scroll. */
-  background-image: linear-gradient(rgb(243 241 236 / calc(1 - var(--grain-opacity))), rgb(243 241 236 / calc(1 - var(--grain-opacity)))),
-    var(--material-grain);
-  color: var(--color-ink);
+  background-image: linear-gradient(color-mix(in srgb, var(--background) var(--grain-veil), transparent) 0 0), var(--material-grain);
+  color: var(--foreground);
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: var(--weight-regular);
@@ -110,19 +108,15 @@ pre {
 }
 
 ::selection {
-  background: var(--color-brand);
-  color: var(--color-ink);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 /* Visible keyboard focus everywhere, never removed. */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--accent-functional);
   outline-offset: 3px;
   border-radius: 2px;
-}
-
-.on-night :focus-visible {
-  outline-color: var(--color-accent-on-night);
 }
 
 [hidden] {

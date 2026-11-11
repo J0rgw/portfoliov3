@@ -1,6 +1,6 @@
 """Jorge's blue marker arrow with real transparency: public/images/gallery/marker-arrow.webp.
 
-The source (public/images/gallery/cd7e159e….jpg, 450×300) is a JPEG with the
+The source (private/originals/gallery/cd7e159e….jpg, 450×300) is a JPEG with the
 "transparent" checkerboard painted into it: 15 px squares, white (255) and light grey
 (~245). Nothing is redrawn: every pixel of the stroke is the original's.
 
@@ -20,7 +20,7 @@ Not part of the build (Python 3 with Pillow and NumPy):
 import numpy as np
 from PIL import Image
 
-SRC = 'public/images/gallery/cd7e159e71e5f37d1b0dc37067c65d32.jpg'
+SRC = 'private/originals/gallery/cd7e159e71e5f37d1b0dc37067c65d32.jpg'
 OUT = 'public/images/gallery/marker-arrow.webp'
 SQUARE = 15                 # checkerboard square, px
 LIGHT, GREY = 255.0, 245.0  # its two levels

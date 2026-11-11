@@ -1,0 +1,36 @@
+/* A release's stack on the Projects pages (ADR-001): the gallery's grey marks
+   (--mark-filter), then the unmarked technologies in words. */
+
+.stack-marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.stack-marks__marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+/* One height for every mark; the width follows the drawing. */
+.stack-marks__mark img {
+  display: block;
+  width: auto;
+  max-width: 4rem;
+  height: 1.5rem;
+  object-fit: contain;
+  filter: var(--mark-filter);
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+
+.stack-marks__mark:hover img {
+  filter: var(--mark-filter-hover);
+}
+
+.stack-marks__names {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}

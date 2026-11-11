@@ -1,46 +1,26 @@
-.chapter-heading {
-  display: grid;
-  gap: var(--space-4);
-  margin-bottom: clamp(var(--space-7), 6vw, var(--space-9));
-}
+/* Every chapter opens like Projects (ADR-001): the heading in the frame's
+   top-left corner, Poppins 800 at the size of Projects' heading, and at most a
+   short lede at body size. The chapter's object, not its heading, is the
+   loudest thing in the frame. */
 
-.chapter-heading__title-wrap {
+.chapter-heading {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-2) var(--space-3);
+  z-index: 2;
+  display: grid;
+  gap: var(--space-3);
+  max-width: 34rem;
 }
 
 .chapter-heading__title {
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-tight);
+  max-width: 20ch;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-black);
   letter-spacing: var(--tracking-tight);
-  max-width: 18ch;
 }
 
-/* Blue marker scrawl next to the heading: decorative, so brand blue is allowed. */
-.chapter-heading__hand {
-  font-size: clamp(2.75rem, 2rem + 3vw, 5rem);
-  color: var(--color-accent);
-  transform: rotate(-6deg) translateY(0.12em);
-  transform-origin: left bottom;
-  margin-left: -0.2em;
-  pointer-events: none;
-  user-select: none;
-}
-
-.on-night .chapter-heading__hand {
-  color: var(--color-accent-on-night);
-}
-
-.chapter-heading__lede {
-  margin-top: var(--space-2);
-}
-
-@media (max-width: 767px) {
-  .chapter-heading__hand {
-    font-size: 2.75rem;
-  }
+.chapter-heading .chapter-heading__lede {
+  /* Two classes: the global .lede is bundled after component styles. */
+  max-width: 40ch;
+  font-size: var(--text-base);
+  line-height: 1.5;
 }

@@ -16,25 +16,17 @@ export const ui = {
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
     "chapters": "Capítulos",
-    "breadcrumbs": "Migas de pan",
     "pageContents": "En esta página"
   },
   "labels": {
-    "project": "Proyecto",
-    "description": "Descripción",
     "stack": "Stack",
     "role": "Rol",
     "team": "Equipo",
     "type": "Tipo",
     "year": "Año",
     "status": "Estado",
-    "technology": "Tecnología",
     "languages": "Idiomas",
-    "base": "Base",
-    "meaning": "Qué significa",
-    "github": "GitHub",
-    "linkedin": "LinkedIn",
-    "content": "Contenido"
+    "meaning": "Qué significa"
   },
   "actions": {
     "write": "Escríbeme",
@@ -49,12 +41,14 @@ export const ui = {
   },
   "projects": {
     "heading": "Proyectos seleccionados",
+    "headingMark": "seleccionados",
     "allTracks": "Todas las pistas",
     "discs": "Discos de los proyectos",
     "hint": "Haz clic para saber más",
+    "hintTouch": "Toca para saber más",
     "previous": "Proyecto anterior",
     "next": "Siguiente proyecto",
-    "indexIntro": "Cada lanzamiento con sus créditos: qué es, qué parte hice yo, con qué está construido y en qué estado está.",
+    "indexIntro": "Cada lanzamiento con sus créditos. Cada disco abre su caso de estudio.",
     "empty": "No hay proyectos publicados por el momento."
   },
   "detail": {
@@ -70,7 +64,7 @@ export const ui = {
     "decisions": "Decisiones técnicas",
     "outcome": "Resultado",
     "evidence": "Evidencias",
-    "nextTrack": "Siguiente pista ·",
+    "nextTrack": "Siguiente pista",
     "contactHeading": "¿Necesitas algo parecido?",
     "contactBody": "Cuéntame tu caso: qué tienes hoy, qué te falta y para cuándo lo necesitas."
   },
@@ -81,46 +75,36 @@ export const ui = {
     "copy": "Copiar email",
     "copySuccess": "Email copiado al portapapeles",
     "copyFailed": "No se ha podido copiar. Puedes seleccionar la dirección o abrir tu correo.",
-    "closed": "Agenda completa"
+    "closed": "Agenda completa",
+    "talkHidden": "por email"
   },
   "hero": {
     "resume": "Reanudar giro del disco",
     "pause": "Pausar giro del disco"
   },
+  "theme": {
+    "dark": "Tema oscuro"
+  },
   "about": {
-    "education": "Formación",
-    "community": "Comunidad",
-    "work": "Trabajo",
-    "talk": "Charla",
     "timeline": "Trayectoria",
-    "instruments": "Instrumentos",
-    "technologies": "Tecnologías con las que trabajo",
-    "credits": "Créditos"
+    "instruments": "Instrumentos"
   },
   "process": {
-    "annotation": "Proceso",
-    "booklet": "Notas del libreto",
-    "technicalNote": "Nota técnica",
-    "closing": "¿Te encaja esta forma de trabajar?",
-    "cta": "Cuéntame tu proyecto"
+    "playlist": "Proceso",
+    "steps": "Fases del proceso"
   },
   "services": {
-    "annotation": "Servicios",
-    "evidence": "Lo he hecho en"
-  },
-  "bonus": {
-    "annotation": "Bonus",
-    "track": "track"
+    "evidence": "Lo he hecho en:"
   },
   "notFound": {
     "annotation": "Nada",
     "heading": "Pista no encontrada",
-    "body": "Esta pista no está en el disco. Puede que el enlace haya cambiado o que nunca existiera.",
+    "body": "Puede que el enlace haya cambiado o que nunca existiera.",
     "back": "Volver a la portada"
   },
   "footer": {
     "credit": "Diseño y desarrollo:",
-    "tools": ". Hecho con React, TypeScript y Vite. Tipografía principal: Poppins (OFL); anotaciones: Estrella (Uncarving)."
+    "tools": ". Hecho con React, TypeScript y Vite, en Poppins (OFL) y Estrella (Uncarving)."
   },
   "media": {
     "logos": "Logos de tecnologías",
@@ -134,6 +118,7 @@ export const messages = {
   portrait: (name: string) => `Retrato de ${name}`,
   projectAnnouncement: (position: number, total: number, title: string) => `Proyecto ${position} de ${total}: ${title}`,
   projectLink: (position: number, total: number, title: string) => `${title}, proyecto ${position} de ${total}. Ver el caso de estudio`,
+  privateLink: (position: number, total: number, title: string) => `${title}, proyecto ${position} de ${total}. Escríbeme para hablarlo`,
   homeLabel: (name: string) => `${name}, inicio`,
   projectSubject: (title: string) => `Proyecto parecido a ${title}`,
 };

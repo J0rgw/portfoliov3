@@ -1,193 +1,147 @@
-/* Chapter 04: the credits. */
+/* Chapter 04, Sobre mí (ADR-001). One frame: the heading top left, Jorge's
+   portrait cut-out standing on the frame's lower edge at the right, the
+   signed paragraph under the heading and the credits (timeline, instruments)
+   in the bottom-left corner, as Projects keeps its credits. Type on the
+   ground: no pass, no rules, no small capitals. */
 
-.about__grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  align-items: start;
-}
-
-.about__pass {
-  grid-column: 1 / span 4;
+.about__portrait {
   position: relative;
-  justify-self: center;
+  z-index: 1;
+  align-self: flex-end;
+  width: min(44%, 11rem);
+  /* Phones: level with the heading's line, at the right. */
+  margin-top: calc(-1 * var(--space-7));
+  rotate: 2.5deg;
 }
 
-/* Marker note beside the lanyard, never over the card's text. */
-.about__pass-note {
-  position: absolute;
-  right: -3.5rem;
-  top: 0.5rem;
-  font-size: clamp(3rem, 2rem + 3vw, 5rem);
-  color: var(--color-brand);
-  rotate: -12deg;
-  pointer-events: none;
+.about__notes {
+  position: relative;
+  z-index: 2;
+  max-width: 36rem;
+  margin-top: var(--space-4);
 }
 
-.about__story {
-  grid-column: 6 / -1;
-}
-
-.about__narrative {
+.about__bio {
   font-size: var(--text-lg);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-  max-width: 58ch;
+  line-height: 1.5;
+  text-wrap: pretty;
 }
 
-.about__narrative > p:first-child {
-  color: var(--color-ink);
+/* The notes are signed (Estrella: letters only). A readable word, so the
+   functional accent (DESIGN.md, accent rules). */
+.about__signature {
+  margin-top: var(--space-1);
+  font-size: clamp(2.25rem, 1.8rem + 1.4vw, 3.25rem);
+  line-height: 1;
+  color: var(--accent-functional);
+  rotate: -5deg;
+  transform-origin: left bottom;
+  pointer-events: none;
+  user-select: none;
 }
 
-.about__principles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--gutter);
-  margin-top: var(--space-8);
-  padding-top: var(--space-5);
-  border-top: var(--hairline) solid var(--rule-strong);
-}
-
-.about__principles p {
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--color-ink-soft);
-}
-
-.about__principle-title {
-  font-size: var(--text-base);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-snug);
-}
-
-/* ---- Credits: timeline + instruments ------------------------------------------- */
+/* ---- Credits: the timeline, then the instruments and languages ----------------------
+   One block on shared columns: when (or what), the role, where. */
 
 .about__credits {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  margin-top: var(--space-10);
-}
-
-.about__timeline {
-  grid-column: 1 / span 7;
-}
-
-.about__instruments {
-  grid-column: 9 / -1;
+  position: relative;
+  z-index: 2;
+  margin-top: var(--space-7);
+  --about-label: 6.5rem;
 }
 
 .about__subhead {
-  padding-bottom: var(--space-3);
-  border-bottom: var(--hairline) solid var(--rule-strong);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0;
+  color: var(--muted-foreground);
 }
 
 .about__milestones {
-  position: relative;
+  display: grid;
+  gap: var(--space-2);
 }
 
-.about__milestone {
+.about__milestone,
+.about__instrument-group {
   display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr) auto;
-  gap: var(--space-4);
+  grid-template-columns: var(--about-label) minmax(0, 1fr);
+  column-gap: var(--space-4);
   align-items: baseline;
-  padding-block: var(--space-4);
-  border-bottom: var(--hairline) solid var(--rule);
+  font-size: var(--text-sm);
+  line-height: 1.4;
 }
 
 .about__milestone-period {
+  grid-row: span 2;
   font-size: var(--text-xs);
-  color: var(--color-ink-muted);
+  color: var(--muted-foreground);
 }
 
 .about__milestone-title {
   font-weight: var(--weight-semibold);
 }
 
+/* Where, beside or under the role: weight and colour tell them apart. */
 .about__milestone-org {
-  font-weight: var(--weight-regular);
-  color: var(--color-ink-soft);
+  color: var(--muted-foreground);
 }
 
-.about__milestone-detail {
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  color: var(--color-ink-muted);
-}
-
-.about__milestone-kind {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-.about__milestone[data-kind='talk'] .about__milestone-kind,
-.about__milestone[data-kind='work'] .about__milestone-kind {
-  color: var(--color-accent);
-}
-
-.about__instrument-list {
+.about__instruments {
   display: grid;
-}
-
-.about__instrument-group {
-  display: grid;
-  gap: var(--space-1);
-  padding-block: var(--space-4);
-  border-bottom: var(--hairline) solid var(--rule);
+  gap: var(--space-2);
+  margin-top: var(--space-5);
 }
 
 .about__instrument-group dt {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
+  color: var(--muted-foreground);
 }
 
 .about__instrument-group dd {
   font-weight: var(--weight-semibold);
-  line-height: 1.5;
 }
 
-.about__loop {
-  margin-top: var(--space-8);
-}
+/* ---- Wide screens: one line per milestone ----------------------------------------- */
 
-@media (max-width: 1023px) {
-  .about__pass,
-  .about__story,
-  .about__timeline,
-  .about__instruments {
-    grid-column: 1 / -1;
-  }
-
-  .about__story {
-    margin-top: var(--space-8);
-  }
-
-  .about__instruments {
-    margin-top: var(--space-8);
-  }
-}
-
-@media (max-width: 767px) {
-  .about__pass-note {
-    right: -1.25rem;
-    font-size: 2.75rem;
-  }
-
-  .about__principles {
-    grid-template-columns: 1fr;
-  }
-
+@media (min-width: 768px) {
   .about__milestone {
-    grid-template-columns: 1fr;
-    gap: var(--space-1);
+    grid-template-columns: var(--about-label) minmax(0, 0.75fr) minmax(0, 1.25fr);
+  }
+
+  .about__milestone-period {
+    grid-row: auto;
+  }
+
+  .about__milestones {
+    row-gap: var(--space-1);
   }
 }
 
-.about__story { border-left: var(--space-2) solid var(--decorative); padding-left: var(--space-5); }
-.about__narrative { padding-block: var(--space-4); }
+/* One frame: the portrait stands on the frame's lower edge at the right (its
+   scissor-cut foot runs past it, under the clip), the notes under the heading,
+   the credits at the foot of the left side, clear of the portrait. */
+@media (min-width: 1024px) and (orientation: landscape) {
+  .about__frame {
+    --portrait-w: min(23rem, 26vw);
+  }
+
+  .about__portrait {
+    position: absolute;
+    right: var(--margin);
+    bottom: calc(-1 * var(--space-5));
+    width: var(--portrait-w);
+    margin: 0;
+    rotate: 2deg;
+  }
+
+  .about__notes {
+    max-width: 44rem;
+  }
+
+  .about__credits {
+    width: min(100% - var(--portrait-w) - var(--space-8), 56rem);
+    margin-top: auto;
+    padding-top: var(--space-5);
+  }
+}

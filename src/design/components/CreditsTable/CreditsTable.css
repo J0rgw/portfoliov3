@@ -1,39 +1,34 @@
+/* Liner-note credits (A24's table), in the site's current voice (ADR-001):
+   the label in sentence case and muted, the value beside it in the type's own
+   weight. No small capitals and no rules: the columns do the grouping. */
+
 .credits {
-  border-top: var(--hairline) solid var(--rule-strong);
+  display: grid;
+  gap: var(--space-2);
 }
 
 .credits__row {
   display: grid;
-  grid-template-columns: minmax(7rem, 0.8fr) minmax(0, 1.6fr);
+  grid-template-columns: minmax(6rem, 0.5fr) minmax(0, 1.5fr);
   gap: var(--space-4);
   align-items: baseline;
-  padding-block: var(--space-3);
-  border-bottom: var(--hairline) solid var(--rule);
+  font-size: var(--text-sm);
+  line-height: 1.45;
 }
 
-.credits--compact .credits__row {
-  padding-block: var(--space-2);
+.credits--compact {
+  gap: var(--space-1);
 }
 
 .credits__label {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
+  color: var(--muted-foreground);
 }
 
 .credits__value {
-  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
-  text-align: right;
   overflow-wrap: anywhere;
 }
 
 .credits__value a {
-  color: var(--color-accent);
-}
-
-.on-night .credits__label {
-  color: var(--color-night-muted);
+  color: var(--accent-functional);
 }

@@ -1,230 +1,281 @@
-/* Chapter 02: liner notes. The booklet is an object (depth allowed); the
-   steps are interface (flat, hairlines, one continuous thread). */
+/* Chapter 02, Proceso (ADR-001). One frame: the heading top left, Jorge's
+   iPod with the five steps as its playlist, the selected step's credits in
+   the bottom-left corner like the selected disc's in Projects. The iPod is a
+   photographed cut-out (graphics/Cutout); its screen is live HTML laid on the
+   dark glass, printed in the object's own inks (they do not change with the
+   theme, only the accent does, like a disc's print). */
 
-.liner__grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  align-items: start;
+.process__frame {
+  --info-w: min(24rem, 32vw);
 }
 
-.liner__aside {
-  grid-column: 1 / span 5;
-  position: sticky;
-  top: calc(var(--header-h) + var(--space-5));
-}
+/* ---- The iPod ------------------------------------------------------------------ */
 
-.liner__steps {
-  grid-column: 7 / -1;
-  position: relative;
-  padding-top: var(--space-2);
-}
-
-/* The continuous thread through every step (references.md #5). */
-.liner__steps::before {
-  content: '';
-  position: absolute;
-  top: 0.4rem;
-  bottom: 0;
-  left: 1.05rem;
-  width: var(--hairline);
-  background: var(--rule-strong);
-}
-
-/* ---- Booklet ---------------------------------------------------------------- */
-
-.liner__booklet {
-  position: relative;
-  width: min(100%, 22rem);
-  aspect-ratio: 1;
-  margin-top: var(--space-4);
-}
-
-.liner__page {
-  position: absolute;
-  inset: 0;
-  background: var(--color-paper-raised);
-  border: var(--hairline) solid var(--rule);
-  box-shadow: var(--shadow-object-soft);
-}
-
-.liner__page--back {
-  transform: translate(10px, 10px) rotate(3deg);
-  background: var(--color-paper-sunken);
-}
-
-.liner__page--mid {
-  transform: translate(5px, 5px) rotate(1.4deg);
-}
-
-.liner__page--front {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-6);
-  background: linear-gradient(90deg, rgb(20 20 20 / 0.06), transparent 6%), var(--material-paper);
-}
-
-.liner__page-label {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-.liner__page-count {
-  margin-top: auto;
-  font-size: var(--text-sm);
-  color: var(--color-ink-muted);
-}
-
-.liner__page-current {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-size: clamp(4rem, 3rem + 4vw, 7rem);
-  font-weight: var(--weight-black);
-  line-height: 0.85;
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-ink);
-}
-
-.liner__page-title {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-snug);
-}
-
-.liner__page-rule {
-  height: 3px;
-  width: 3rem;
-  background: var(--color-brand);
-}
-
-/* ---- Steps ---------------------------------------------------------------------- */
-
-.liner__step {
-  position: relative;
-  display: grid;
-  grid-template-columns: 2.2rem minmax(0, 1fr);
-  column-gap: var(--space-5);
-  padding-bottom: var(--space-9);
-}
-
-.liner__step:last-child {
-  padding-bottom: var(--space-4);
-}
-
-.liner__step-number {
+.process__player {
   position: relative;
   z-index: 1;
+  width: min(100%, 19rem);
+  margin-top: var(--space-6);
+  /* The screen is placed in the player's width (cqw): the cut-out's height is
+     1.6446 of its width, whatever part of it the frame shows. */
+  container-type: inline-size;
+  /* Phones and portrait screens: the iPod rises out of the frame's next
+     edge, its screen and the top of the wheel in view (the crop is the
+     cut-out's negative margin, below). */
+  overflow: clip;
+}
+
+/* 1.6446 widths tall; 0.87 of a width shows: the rest hangs below the clip. */
+.process__ipod {
+  width: 100%;
+  margin-bottom: -77.5%;
+}
+
+/* The screen's box in the cut-out (measured on ipod-920.webp: the glass runs
+   9.67 to 89.89 % across and 5.55 to 43.29 % down), a hair inside the glass:
+   5.85 % down is 9.62cqw, a height of 37.15 % is 61.1cqw. */
+.process__screen {
+  position: absolute;
+  left: 10%;
+  top: 9.62cqw;
+  width: 79.6%;
+  height: 61.1cqw;
   display: grid;
-  place-items: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  border: var(--hairline) solid var(--rule-strong);
-  border-radius: 50%;
-  background: var(--color-paper);
-  font-size: var(--text-xs);
-  transition:
-    background-color var(--dur-base) var(--ease-out),
-    color var(--dur-base) var(--ease-out);
+  grid-template-rows: auto minmax(0, 1fr);
+  border-radius: 1.6cqw;
+  overflow: hidden;
+  background: var(--print-light);
+  color: var(--print-dark);
+  /* Glass over the panel: a dark hairline at its edge, a little shade at the top. */
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-ink) 55%, transparent),
+    inset 0 0.35rem 0.6rem -0.3rem color-mix(in srgb, var(--shadow-ink) 35%, transparent);
+  /* In the player's width: about 4.6 % of the screen's. */
+  font-size: clamp(0.75rem, 3.7cqw, 1.125rem);
+  line-height: 1.2;
 }
 
-.liner__step[data-active] .liner__step-number {
-  background: var(--color-ink);
-  color: var(--color-paper);
-  border-color: var(--color-ink);
+.process__screen-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  padding: 0.35em 0.75em;
+  border-bottom: var(--hairline) solid var(--print-silver);
+  background: color-mix(in srgb, var(--print-silver) 40%, var(--print-light));
+  font-size: 0.78em;
+  font-weight: var(--weight-semibold);
 }
 
-.liner__step-title {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-snug);
+.process__screen-bar .mono {
+  font-weight: var(--weight-regular);
+  color: var(--print-shade);
 }
 
-.liner__step-text {
+.process__tracks {
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+}
+
+.process__track {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  min-height: 0;
+  padding: 0 0.75em;
+  text-align: start;
+  color: var(--print-dark);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.process__track-number {
+  flex: none;
+  font-size: 0.82em;
+  color: var(--print-shade);
+}
+
+.process__track-title {
+  overflow-wrap: anywhere;
+  font-weight: var(--weight-semibold);
+}
+
+/* The selected track, as the iPod marks it: a bar of the accent, ink on it. */
+.process__track[aria-selected='true'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.process__track[aria-selected='true'] .process__track-number {
+  color: var(--on-accent);
+}
+
+@media (hover: hover) {
+  .process__track:not([aria-selected='true']):hover {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+  }
+}
+
+/* On the light screen in both themes: the ring takes the screen's ink. */
+.process__track:focus-visible {
+  outline: 2px solid var(--print-dark);
+  outline-offset: -3px;
+  border-radius: 0;
+}
+
+/* Without JavaScript the playlist cannot select: it is a list to read. */
+html:not(.js) .process__track {
+  pointer-events: none;
+}
+
+/* ---- The selected step's credits ------------------------------------------------- */
+
+.process__credits {
+  position: relative;
+  z-index: 2;
+  max-width: 32rem;
+  margin-top: var(--space-6);
+}
+
+/* With JavaScript every step shares one cell, so the block keeps the height of
+   the longest and nothing under it moves when the selection changes; only the
+   selected one is visible (and in the accessibility tree). */
+.js .process__credits {
+  display: grid;
+}
+
+.js .process__step {
+  grid-area: 1 / 1;
+  align-self: end;
+}
+
+.js .process__step:not([data-active]) {
+  visibility: hidden;
+}
+
+html:not(.js) .process__step + .process__step {
+  margin-top: var(--space-7);
+}
+
+/* Without JavaScript the steps follow the heading as a list, not at the
+   frame's foot (they run longer than the frame). */
+html:not(.js) .process__frame .process__credits {
+  margin-top: var(--space-7);
+}
+
+.process__title {
+  font-size: clamp(1.85rem, 2.5vw, 3rem);
+  font-weight: var(--weight-black);
+  line-height: var(--leading-tight);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+/* The rise's clip leaves room for accents above and descenders below. */
+.process__line {
+  display: block;
+  clip-path: inset(-0.5em -0.5em -0.35em -0.5em);
+}
+
+.process__line > span {
+  display: block;
+}
+
+.process__text {
+  max-width: 36ch;
   margin-top: var(--space-3);
-  max-width: 52ch;
-  color: var(--color-ink-soft);
-}
-
-.liner__note {
-  margin-top: var(--space-5);
-  padding: var(--space-4) var(--space-5);
-  max-width: 52ch;
-  background: var(--color-paper-sunken);
-  border-left: 3px solid var(--color-ink);
-}
-
-.liner__note-label {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-.liner__note-text {
-  margin-top: var(--space-2);
-  font-family: var(--font-body);
   font-size: var(--text-sm);
-  line-height: 1.6;
+  line-height: 1.45;
+  color: var(--muted-foreground);
 }
 
-.liner__note-link {
+.process__note {
+  max-width: 36ch;
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.process__source {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  min-height: 32px;
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
+  gap: var(--space-1);
   font-weight: var(--weight-semibold);
-  color: var(--color-accent);
+  color: var(--accent-functional);
   text-decoration: none;
+  white-space: nowrap;
 }
 
-.liner__note-link:hover {
+.process__source svg {
+  transition: translate var(--dur-fast) var(--ease-out);
+}
+
+.process__source:hover {
   text-decoration: underline;
 }
 
-.liner__close {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-5);
-  margin-top: var(--space-8);
-  padding-top: var(--space-6);
-  border-top: var(--hairline) solid var(--rule-strong);
+.process__source:hover svg {
+  translate: 0.2em 0;
 }
 
-.liner__close-text {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-snug);
-}
-
-@media (max-width: 1023px) {
-  .liner__aside,
-  .liner__steps {
-    grid-column: 1 / -1;
+/* The change-over, as in Projects: the new title rises, the lines follow.
+   Not on first load (data-animate comes with the first selection). */
+@media (prefers-reduced-motion: no-preference) {
+  .process__credits[data-animate] .process__step[data-active] .process__line > span {
+    animation: process-rise var(--dur-slow) var(--ease-out) both;
   }
 
-  .liner__aside {
-    position: static;
-  }
-
-  .liner__booklet {
-    display: none;
-  }
-
-  .liner__step {
-    padding-bottom: var(--space-8);
+  .process__credits[data-animate] .process__step[data-active] :is(.process__text, .process__note) {
+    animation: process-fade var(--dur-base) var(--ease-out-soft) both;
+    animation-delay: calc((var(--row, 0) + 1) * var(--stagger));
   }
 }
 
-.liner { background: var(--color-paper-raised); }
-.liner__note { padding: var(--space-5); border: 0; background: transparent; }
-.liner__note::before { background: var(--color-paper); }
-.liner__step-number { font-weight: var(--weight-bold); color: var(--color-accent); }
+@keyframes process-rise {
+  from {
+    translate: 0 150%;
+  }
+}
+
+@keyframes process-fade {
+  from {
+    opacity: 0;
+    translate: 0 0.4rem;
+  }
+}
+
+/* ---- Wide landscape: one frame ------------------------------------------------------
+   The heading top left, the credits bottom left (as in Projects), the iPod
+   whole, standing a little to the right of the middle and turned like a thing
+   put down by hand. */
+
+@media (min-width: 1024px) and (orientation: landscape) {
+  .process__frame {
+    --frame-h: clamp(40rem, 100svh, 64rem);
+    /* The iPod's height: the frame under the header's line, less a margin. */
+    --ipod-h: calc(var(--frame-h) - var(--header-h) - var(--space-7));
+  }
+
+  /* The heading and its lede keep to the credits' column, clear of the iPod. */
+  .process__frame .chapter-heading {
+    max-width: var(--info-w);
+  }
+
+  .process__player {
+    position: absolute;
+    top: calc(var(--header-h) + var(--space-3));
+    left: max(63% - var(--ipod-h) * 920 / 1513 / 2, var(--margin) + var(--info-w) + var(--space-7));
+    width: calc(var(--ipod-h) * 920 / 1513);
+    margin: 0;
+    overflow: visible;
+    rotate: -3deg;
+  }
+
+  .process__ipod {
+    margin-bottom: 0;
+  }
+
+  .process__credits {
+    width: var(--info-w);
+    margin-top: auto;
+  }
+}

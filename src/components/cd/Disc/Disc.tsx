@@ -1,5 +1,9 @@
+import { assets } from '../../../config/assets';
 import { useId, type CSSProperties, type ReactNode } from 'react';
 import '../../../design/components/Disc/Disc.css';
+
+/** A turn from the disc's name: the same disc wears the same scratches on every page. */
+const turnOf = (name: string) => [...name].reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) >>> 0, 7) % 360;
 
 interface DiscProps {
   /** `cdr`: silver CD-R with a marker label. `pressed`: printed cover art. */
@@ -21,13 +25,17 @@ interface DiscProps {
 }
 
 /**
- * The compact disc, drawn with CSS and SVG (ART_DIRECTION §5).
+ * The compact disc (DESIGN.md "Materials").
  *
- * Anatomy, as fractions of the radius: centre hole 12.5 %, clear stacking ring
- * to 28 %, printed face to 97 %, clear outer rim. The face and the rim text
- * turn with `--disc-rotate`; the iridescent reflection stays still, as it does
- * under a lamp. Always decorative: the content it stands for is real text
- * elsewhere on the page.
+ * Pressed discs are printed singles with a photographic finish: the clear hub and
+ * the rim are the real plastic of Jorge's hero disc (public/images/disc/shell.webp),
+ * so the print runs from 19.5 % to 96.5 % of the radius, as on that disc; real
+ * scratches from the broken disc (wear.webp) and print grain lie on the label. The
+ * label and its wear turn with `--disc-rotate`; the hub, the rim and the lamp's
+ * reflection stay still, as they do under a lamp.
+ *
+ * The CD-R is drawn with CSS: hole 12.5 %, clear stacking ring to 28 %, silver face
+ * to 97 %. Always decorative: the content a disc stands for is real text elsewhere.
  */
 export function Disc({
   variant = 'pressed',
@@ -47,11 +55,14 @@ export function Disc({
   const unit = rimText ? `${rimText} · ` : '';
   const rim = unit ? unit.repeat(Math.max(1, Math.round(124 / unit.length))) : '';
 
+  const pressed = variant === 'pressed';
+  const finish = pressed ? ({ '--wear-turn': `${turnOf(transitionName ?? '')}deg` } as CSSProperties) : {};
+
   // Spans only: a disc may sit inside links and paragraphs (phrasing content).
   return (
     <span
       className={`disc disc--${variant} ${className}`.trim()}
-      style={{ ...style, ...(ink ? { color: ink } : {}), ...(transitionName ? { viewTransitionName: transitionName } : {}) }}
+      style={{ ...style, ...finish, ...(ink ? { color: ink } : {}), ...(transitionName ? { viewTransitionName: transitionName } : {}) }}
       aria-hidden="true"
     >
       <span className="disc__shadow" />
@@ -72,6 +83,12 @@ export function Disc({
           ) : (
             children
           )}
+          {pressed && (
+            <>
+              <span className="disc__grain" />
+              <img className="disc__wear" src={assets.disc.wear} width={640} height={640} alt="" loading="lazy" decoding="async" draggable={false} />
+            </>
+          )}
         </span>
         {rim && (
           <svg className="disc__rim" viewBox="0 0 1000 1000" focusable="false">
@@ -87,8 +104,14 @@ export function Disc({
         )}
       </span>
       <span className="disc__sheen" />
-      <span className="disc__hub" />
-      <span className="disc__edge" />
+      {pressed ? (
+        <img className="disc__shell" src={assets.disc.shell} width={512} height={512} alt="" loading="lazy" decoding="async" draggable={false} />
+      ) : (
+        <>
+          <span className="disc__hub" />
+          <span className="disc__edge" />
+        </>
+      )}
     </span>
   );
 }

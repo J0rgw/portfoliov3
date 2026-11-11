@@ -1,12 +1,12 @@
 import { ui, messages } from '../config/ui';
 import { projectTheme } from '../components/cd/CoverArt/projectTheme';
 import { useEffect, type CSSProperties, type ReactNode } from 'react';
-import Button from '../components/ui/Button/Button';
 import CoverArt from '../components/cd/CoverArt/CoverArt';
 import CreditsTable, { type CreditRow } from '../components/editorial/CreditsTable/CreditsTable';
 import Disc from '../components/cd/Disc/Disc';
 import Evidence from '../components/editorial/Evidence/Evidence';
-import { ArrowLeft, ArrowRight } from '../components/ui/Icon/Icon';
+import StackMarks from '../components/editorial/StackMarks/StackMarks';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from '../components/ui/Icon/Icon';
 import { chapterHref } from '../config/navigation';
 import { formatTrack, nextProject, projectBySlug, projectHref } from '../config/projects';
 import { mailto, site } from '../config/site';
@@ -20,6 +20,10 @@ interface CaseSection {
   title: string;
   content: ReactNode;
 }
+
+/** "A, B y C", the way Spanish writes a list (DESIGN.md "Typography"). */
+const listFormat = (items: string[]) =>
+  items.length > 1 ? `${items.slice(0, -1).join(', ')} y ${items[items.length - 1]}` : items.join('');
 
 const paragraphs = (items: string[]) => items.map((text, index) => <p key={index}>{text}</p>);
 const bullets = (items: string[]) => (
@@ -69,7 +73,7 @@ const buildSections = (project: Project): CaseSection[] => {
               {paragraphs(project.architecture.summary)}
               <CreditsTable
                 className="case-stack"
-                rows={project.architecture.stack.map((group) => ({ label: group.label, value: group.items.join(' · ') }))}
+                rows={project.architecture.stack.map((group) => ({ label: group.label, value: listFormat(group.items) }))}
               />
             </>
           ),
@@ -129,62 +133,57 @@ export function ProjectPage({ slug }: { slug: string }) {
 
   const credits: CreditRow[] = [
     { label: ui.labels.role, value: project.role },
-    ...(project.team ? [{ label: ui.labels.team, value: project.team.join(', ') }] : []),
+    ...(project.team ? [{ label: ui.labels.team, value: listFormat(project.team) }] : []),
     { label: ui.labels.type, value: project.typeLabel },
     { label: ui.labels.year, value: project.year },
     { label: ui.labels.status, value: project.status.label },
-    { label: ui.labels.technology, value: project.technologies.join(' · ') },
   ];
 
   return (
     <article className="case" aria-labelledby="case-title">
-      <header className="case-cover">
+      <header className="case-cover" data-ground="paper">
         <div className="container case-cover__grid">
           <div className="case-cover__text">
+            {/* One way back (the breadcrumb trail lives in the page's JSON-LD). */}
             <a className="case-back" href={chapterHref('proyectos')}>
-              <ArrowLeft size={16} aria-hidden="true" />{ui.actions.backProjects} </a>
-            <nav className="case-crumbs" aria-label={ui.navigation.breadcrumbs}>
-              <ol role="list">
-                <li>
-                  <a href="/">{ui.navigation.home}</a>
-                </li>
-                <li>
-                  <a href="/proyectos/">{ui.navigation.projects}</a>
-                </li>
-                <li aria-current="page">{project.title}</li>
-              </ol>
-            </nav>
+              <ArrowLeft size={16} aria-hidden="true" />
+              {ui.actions.backProjects}
+            </a>
             <h1 id="case-title" className="case-cover__title enter enter--still">
               {project.title}
             </h1>
-            <p className="case-cover__summary lede enter" style={{ '--enter-index': 0 } as CSSProperties}>
+            <p className="case-cover__summary enter" style={{ '--enter-index': 0 } as CSSProperties}>
               {project.summary}
             </p>
-            <div className="enter" style={{ '--enter-index': 1 } as CSSProperties}>
-              <CreditsTable rows={credits} className="case-cover__credits" />
+            <div className="case-cover__credits enter" style={{ '--enter-index': 1 } as CSSProperties}>
+              <CreditsTable rows={credits} density="compact" />
+              <StackMarks technologies={project.technologies} className="case-cover__stack" />
             </div>
-            <div className="case-cover__links enter" style={{ '--enter-index': 2 } as CSSProperties}>
-              {project.links.repo && (
-                <Button href={project.links.repo} external icon="arrow-up-right">{ui.actions.code} </Button>
-              )}
-              {project.links.live && (
-                <Button href={project.links.live} external variant="secondary" icon="arrow-up-right">{ui.actions.live} </Button>
-              )}
-            </div>
+            {(project.links.repo || project.links.live) && (
+              <p className="case-cover__links enter" style={{ '--enter-index': 2 } as CSSProperties}>
+                {project.links.repo && (
+                  <a className="case-link" href={project.links.repo} target="_blank" rel="noopener noreferrer">
+                    {ui.actions.code}
+                    <ArrowUpRight size={18} aria-hidden="true" />
+                  </a>
+                )}
+                {project.links.live && (
+                  <a className="case-link" href={project.links.live} target="_blank" rel="noopener noreferrer">
+                    {ui.actions.live}
+                    <ArrowUpRight size={18} aria-hidden="true" />
+                  </a>
+                )}
+              </p>
+            )}
           </div>
 
           <div className="case-cover__object" aria-hidden="true">
             <div className="case-cover__sleeve">
-              <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} />
+              <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} artSize="29rem" loading="eager" />
             </div>
             <div className="case-cover__disc">
-              <Disc
-                variant="pressed"
-                transitionName={`disc-${project.slug}`}
-                ink={projectTheme(project.id).ink}
-                rimText={`${project.title} · ${site.name} · ${project.year} · ${site.catalog}`}
-              >
-                <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} shape="disc" rim />
+              <Disc variant="pressed" transitionName={`disc-${project.slug}`}>
+                <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} shape="disc" loading="eager" />
               </Disc>
             </div>
           </div>
@@ -193,13 +192,11 @@ export function ProjectPage({ slug }: { slug: string }) {
 
       <div className="container case-body">
         <nav className="case-toc" aria-label={ui.navigation.pageContents}>
-          <p className="case-toc__title label">{ui.labels.content}</p>
           <ol role="list">
-            {sections.map((section, index) => (
+            {sections.map((section) => (
               <li key={section.id}>
                 <a href={`#${section.id}`} aria-current={activeId === section.id ? 'location' : undefined}>
                   <span className="case-toc__dash" aria-hidden="true" />
-                  <span className="case-toc__number mono">{String(index + 1).padStart(2, '0')}</span>
                   {section.title}
                 </a>
               </li>
@@ -231,11 +228,13 @@ export function ProjectPage({ slug }: { slug: string }) {
         <a className="container case-next__link" href={projectHref(next.slug)}>
           <span className="case-next__disc" aria-hidden="true">
             <Disc variant="pressed" transitionName={`disc-${next.slug}`}>
-              <CoverArt cover={projectTheme(next.id)} assets={next.assets} title={next.title} track={formatTrack(next.track)} catalog={site.catalog} shape="disc" />
+              <CoverArt cover={projectTheme(next.id)} assets={next.assets} title={next.title} track={formatTrack(next.track)} catalog={site.catalog} shape="disc" artSize="8rem" />
             </Disc>
           </span>
           <span className="case-next__text">
-            <span className="label">{ui.detail.nextTrack} {formatTrack(next.track)}</span>
+            <span className="case-next__label">
+              {ui.detail.nextTrack} <span className="mono">{formatTrack(next.track)}</span>
+            </span>
             <span className="case-next__title">{next.title}</span>
             <span className="case-next__tagline">{next.tagline}</span>
           </span>
@@ -250,8 +249,14 @@ export function ProjectPage({ slug }: { slug: string }) {
             <p className="lede">{ui.detail.contactBody}</p>
           </div>
           <div className="case-contact__actions">
-            <Button href={mailto(messages.projectSubject(project.title), site.contact.body)} icon="mail">{ui.actions.write} </Button>
-            <Button href="/proyectos/" variant="secondary">{ui.actions.allProjects} </Button>
+            <a className="case-contact__write" href={mailto(messages.projectSubject(project.title), site.contact.body)}>
+              {ui.actions.write}
+              <ArrowRight aria-hidden="true" />
+            </a>
+            <a className="case-link" href="/proyectos/">
+              {ui.actions.allProjects}
+              <ArrowRight size={18} aria-hidden="true" />
+            </a>
           </div>
         </div>
       </section>

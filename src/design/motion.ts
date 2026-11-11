@@ -3,9 +3,16 @@ export const motion = {
   menu: { layer: 0.5, layerStagger: 0.07, panel: 0.65, label: 1, number: 0.6,
     reveal: 0.55, close: 0.32, spinOpen: 0.8, spinClose: 0.35,
     labelStagger: 0.1, numberStagger: 0.08, revealStagger: 0.05 },
+  /** Hero scene (MOTION_SYSTEM §2.1): split and solo overlap so the movement never stalls. */
   hero: { phases: { split: [0.06, 0.46], solo: [0.36, 0.8], exit: [0.8, 1] } },
-  logoLoop: { speed: 60, height: 34, gap: 56 },
-  heroImageSizes: '(orientation: portrait) 61vw, min(calc(52vh - 2.4rem), 31vw)',
+  /** Cut-outs lean towards a fine pointer by their depth (usePointerDepth, §4):
+   *  share of the remaining distance eased per frame. */
+  pointerDepth: { ease: 0.08 },
+  /** The sleeve's width (Hero.css --w) and the arm's (--arm, 1.853 sleeves), for `sizes`. */
+  heroImageSizes: '(orientation: portrait) 64vw, min(50vh, 29vw)',
+  heroArmSizes: '(orientation: portrait) 118vw, min(92vh, 54vw)',
+  /** The disc's diameter (Hero.css --d). */
+  heroDiscSizes: '(orientation: portrait) 86vw, min(62vh, 34vw)',
   spinEaseMs: 160,
   reveal: { durationMs: 800, distance: '1.5rem' },
   float: { durationMs: 600, distance: '0.4rem' },
@@ -14,6 +21,8 @@ export const motion = {
   draw: { durationMs: 600 },
   slide: { durationMs: 320 },
   snap: { omega: 11 },
+  /** Page scroll (MOTION_SYSTEM §2.3): Lenis easing, chapter snap on the home page. */
+  smoothScroll: { lerp: 0.1, snap: { threshold: '25%', debounceMs: 400, duration: 0.8 } },
   hover: { durationMs: 180 },
   pageTransition: { durationMs: 1100 },
 } as const;

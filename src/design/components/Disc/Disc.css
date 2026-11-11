@@ -22,8 +22,8 @@
   background: radial-gradient(
     closest-side,
     transparent 12%,
-    rgb(20 20 20 / 0.2) 34%,
-    rgb(20 20 20 / 0.12) 72%,
+    color-mix(in srgb, var(--shadow-ink) 20%, transparent) 34%,
+    color-mix(in srgb, var(--shadow-ink) 12%, transparent) 72%,
     transparent 100%
   );
 }
@@ -41,8 +41,8 @@
   inset: 0;
   border-radius: 50%;
   overflow: hidden;
-  -webkit-mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
-  mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 27.6%, black 28%, black 97.2%, transparent 97.6%);
+  mask: radial-gradient(circle closest-side, transparent 27.6%, black 28%, black 97.2%, transparent 97.6%);
 }
 
 .disc__face > svg,
@@ -63,8 +63,66 @@
     var(--material-disc);
   mix-blend-mode: soft-light;
   opacity: var(--disc-sheen, 0.6);
-  -webkit-mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
-  mask: radial-gradient(circle closest-side, transparent 27.6%, #000 28%, #000 97.2%, transparent 97.6%);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 27.6%, black 28%, black 97.2%, transparent 97.6%);
+  mask: radial-gradient(circle closest-side, transparent 27.6%, black 28%, black 97.2%, transparent 97.6%);
+}
+
+/* ---- Printed single: the hero disc's real plastic and a worn print ------------
+   The shell (hub and rim cut from the hero disc photo) and the lamp stay still;
+   the label, its grain and its scratches turn. The print band matches that
+   disc's: 19.5 % to 96.5 % of the radius. */
+
+.disc--pressed .disc__face,
+.disc--pressed .disc__sheen {
+  -webkit-mask: radial-gradient(circle closest-side, transparent 19.2%, black 19.6%, black 96.4%, transparent 96.8%);
+  mask: radial-gradient(circle closest-side, transparent 19.2%, black 19.6%, black 96.4%, transparent 96.8%);
+}
+
+/* Ink on a label is never flat: the stock's grain under it. */
+.disc__grain {
+  position: absolute;
+  inset: 0;
+  background: var(--material-print-grain);
+  background-size: 160px;
+  mix-blend-mode: multiply;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Real scratches and dust (from the broken disc), catching the light: brightest
+   on dark fields, gone on white ones, as on a real print. Turned per disc. */
+.disc__wear {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  rotate: var(--wear-turn, 0deg);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Small discs (index rows, the next track): wear would read as noise. */
+@container (max-width: 12rem) {
+  .disc__wear {
+    opacity: 0.2;
+  }
+}
+
+.disc__shell {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* A printed label is glossy, not iridescent (the rainbow is the data side): the
+   lamp's broad streak, and only a trace of the pastel. */
+.disc--pressed {
+  --disc-sheen: 0.35;
 }
 
 /* Clear stacking ring around the hole; the hole itself is simply empty. */
@@ -125,7 +183,7 @@
 /* ---- CD-R label --------------------------------------------------------- */
 
 .disc--cdr {
-  color: var(--color-ink);
+  color: var(--print-dark);
   --disc-sheen: 0.85;
 }
 
@@ -144,7 +202,7 @@
   font-family: var(--font-mono);
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--color-ink-soft);
+  color: color-mix(in srgb, var(--print-dark) 80%, transparent);
 }
 
 .disc__cdr-brand {
@@ -153,7 +211,7 @@
   font-weight: var(--weight-black);
   font-size: 7.5cqw;
   letter-spacing: -0.02em;
-  color: var(--color-ink);
+  color: var(--print-dark);
 }
 
 .disc__cdr-spec {
@@ -178,7 +236,7 @@
   background: repeating-linear-gradient(
     to bottom,
     transparent 0 calc(33.33% - 0.25cqw),
-    rgb(20 20 20 / 0.28) calc(33.33% - 0.25cqw) 33.33%
+    color-mix(in srgb, var(--print-dark) 28%, transparent) calc(33.33% - 0.25cqw) 33.33%
   );
 }
 
@@ -193,5 +251,5 @@
   line-height: 1;
   white-space: nowrap;
   word-spacing: var(--estrella-word-space);
-  color: var(--color-ink);
+  color: var(--print-dark);
 }

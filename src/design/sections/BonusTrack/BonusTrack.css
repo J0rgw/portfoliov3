@@ -1,137 +1,96 @@
-/* Chapter 05: bonus track. A small extension, not the main conversion. */
+/* Chapter 05, the bonus track (ADR-001). A small extension, not the main
+   conversion: the heading keeps the corner, the oversized "Avísame*" is the
+   action itself, set in the frame's open side with its footnote, and stays
+   under the back cover's "Hablemos" in size (the waitlist never outshouts
+   contact, INFORMATION_ARCHITECTURE §3, 05). No card, sticker or button. */
 
-.bonus {
-  /* The headline bleeds out of its card by design; never out of the page. */
-  overflow-x: clip;
-}
-
-.bonus__grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  align-items: center;
-}
-
-.bonus__intro {
-  grid-column: 1 / span 6;
-}
-
-.bonus__body {
-  max-width: 52ch;
-  color: var(--color-ink-soft);
-}
-
-.bonus__audience {
-  margin-top: var(--space-4);
-  max-width: 52ch;
-  font-weight: var(--weight-semibold);
-}
-
-.bonus__status {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-3);
-  margin-top: var(--space-5);
-  padding: var(--space-2) var(--space-4);
-  border: var(--hairline) solid var(--rule-strong);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-}
-
-.bonus__status-label {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  font-weight: var(--weight-regular);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-/* The card: a tinted insert whose headline bleeds past its edge. */
-.bonus__card {
-  grid-column: 8 / -1;
+.bonus__action {
   position: relative;
-  padding: clamp(var(--space-6), 4vw, var(--space-8));
-  padding-top: clamp(var(--space-8), 8vw, var(--space-10));
-  background:
-    radial-gradient(ellipse 80% 60% at 85% 10%, rgb(255 255 255 / 0.55), transparent 70%),
-    linear-gradient(140deg, var(--irid-violet), var(--irid-pink) 55%, var(--irid-gold));
-  border: var(--hairline) solid rgb(20 20 20 / 0.12);
-  overflow: visible;
+  z-index: 1;
+  margin-top: var(--space-8);
 }
 
 .bonus__headline {
-  position: absolute;
-  top: 0;
-  left: clamp(var(--space-5), 3vw, var(--space-7));
-  translate: 0 -55%;
-  font-size: clamp(3.5rem, 1.6rem + 5vw, 6.75rem);
+  display: inline-flex;
+  align-items: baseline;
+  font-size: clamp(2.6rem, 1rem + 7vw, 7.8rem);
   font-weight: var(--weight-black);
-  line-height: 1;
+  line-height: 0.95;
   letter-spacing: -0.05em;
-  color: var(--color-ink);
-  pointer-events: none;
-  white-space: nowrap;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
+/* A glyph that refers to the footnote: the functional accent. */
 .bonus__asterisk {
-  color: var(--color-brand);
+  color: var(--accent-functional);
 }
 
-/* Promo sticker, as on a shrink-wrapped jewel case. An object: depth allowed. */
-.bonus__sticker {
-  position: absolute;
-  bottom: -1.75rem;
-  right: clamp(var(--space-4), 3vw, var(--space-6));
-  display: grid;
-  place-content: center;
-  width: 5.5rem;
-  height: 5.5rem;
-  border-radius: 50%;
-  background: var(--color-brand);
-  box-shadow: var(--shadow-object-soft);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-black);
-  line-height: 1.05;
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  rotate: 12deg;
+/* The arrow says the word is a way out, as on Projects' heading. */
+.bonus__arrow {
+  align-self: center;
+  width: 0.36em;
+  height: 0.36em;
+  margin-left: 0.12em;
+  transition: translate var(--dur-base) var(--ease-out);
 }
 
-.bonus__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
+.bonus__headline:hover {
+  color: var(--accent-functional);
+}
+
+.bonus__headline:hover .bonus__arrow {
+  translate: 0.08em 0;
+}
+
+.bonus__headline:focus-visible {
+  outline-offset: 0.1em;
 }
 
 .bonus__footnote {
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
 }
 
 .bonus__privacy {
-  margin-top: var(--space-2);
+  max-width: 46ch;
+  margin-top: var(--space-1);
   font-size: var(--text-sm);
-  color: var(--color-ink-soft);
-  max-width: 48ch;
+  color: var(--muted-foreground);
 }
 
-@media (max-width: 1023px) {
-  .bonus__intro,
-  .bonus__card {
-    grid-column: 1 / -1;
-  }
-
-  .bonus__card {
-    margin-top: var(--space-10);
-  }
+.bonus__talk {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--space-2);
+  min-height: 44px;
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
 }
 
-@media (max-width: 479px) {
-  .bonus__actions .btn {
-    width: 100%;
+.bonus__talk:hover {
+  color: var(--accent-functional);
+  text-decoration: underline;
+}
+
+/* One frame: the heading top left, the talk under it at the foot of the
+   frame, the word and its notes on the open right side, centred in the
+   frame's height. */
+@media (min-width: 1024px) and (orientation: landscape) {
+  .bonus__action {
+    align-self: flex-end;
+    width: min(100%, 40rem);
+    margin-block: auto;
+  }
+
+  .bonus__talk {
+    margin-top: 0;
   }
 }

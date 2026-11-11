@@ -20,16 +20,77 @@
   padding-block: var(--section-pad);
 }
 
-.chapter + .chapter {
-  border-top: var(--hairline) solid var(--rule);
+.chapter + .chapter,
+.chapter-hold + .chapter-hold > .chapter {
+  border-top: var(--hairline) solid var(--border);
 }
 
-/* Night chapters (the back cover) invert the ground. */
+/* Chapter hold (home, MOTION_SYSTEM §2.5, after atlaxia.es's sticky stages):
+   the wrapper is the chapter plus --chapter-hold of extra scroll, and the
+   chapter sticks to the top while that extra scroll is used up, then leaves
+   with the page. At least one viewport tall, so nothing empty shows under a
+   short chapter while it is held. The last chapter runs into the footer and
+   is not held. Without JavaScript, with reduced motion or on short viewports
+   (landscape phones, where a held chapter would hide its own lower half for
+   too long) the page is a plain flow. A chapter taller than the viewport is
+   not held either (`data-unheld`, useChapterHold; ADR-001): it would be
+   frozen half-read. */
+@media (prefers-reduced-motion: no-preference) and (min-height: 34rem) {
+  /* A spacer, not padding: sticky travels inside its container's content box. */
+  .js .chapter-hold:not(:last-child, [data-unheld])::after {
+    content: '';
+    display: block;
+    height: var(--chapter-hold);
+  }
+
+  .js .chapter-hold:not(:last-child, [data-unheld]) > .chapter {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+  }
+}
+
+/* A chapter composed as one frame (ADR-001), like Projects: the heading in
+   the top-left corner under the header's line, the rest of the frame for the
+   chapter's object and its copy. On wide landscape screens the frame is a
+   viewport high (within Projects' bounds), so a held chapter is read whole. */
+.chapter--frame {
+  padding-block: 0;
+  overflow: clip;
+  /* The frame leaves room for the fixed header itself. */
+  scroll-margin-top: calc(-1 * (var(--header-h) + var(--space-4)));
+}
+
+.frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-block: calc(var(--header-h) + var(--space-4)) var(--space-8);
+}
+
+@media (min-width: 1024px) and (orientation: landscape) {
+  .frame {
+    min-height: clamp(40rem, 100svh, 64rem);
+    padding-bottom: var(--space-7);
+  }
+}
+
+/* Night chapters (the back cover): tokens.css remaps every role inside the
+   scope, so components need no night-specific rules. */
 .on-night {
-  background: var(--color-night);
-  color: var(--color-night-ink);
-  --rule: var(--rule-night);
-  --rule-strong: rgb(243 241 236 / 0.34);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Grounds. A section that does not sit on the page ground names its ground
+   once, here; the fixed header reads the same attribute to lay a veil of that
+   ground under its type (SiteHeader). Night grounds are `.on-night`. */
+[data-ground='secondary'] {
+  background: var(--surface-secondary);
+}
+
+[data-ground='paper'] {
+  background: var(--material-paper);
 }
 
 .prose {
@@ -43,16 +104,12 @@
 .lede {
   font-size: var(--text-lg);
   line-height: 1.5;
-  color: var(--color-ink-soft);
+  color: var(--muted-foreground);
   max-width: var(--measure-narrow);
 }
 
-.on-night .lede {
-  color: var(--color-night-muted);
-}
-
 .text-link {
-  color: var(--color-accent);
+  color: var(--accent-functional);
   text-decoration-line: underline;
   transition: text-decoration-thickness var(--dur-fast) var(--ease-out);
 }
@@ -61,22 +118,17 @@
   text-decoration-thickness: 2px;
 }
 
-.on-night .text-link {
-  color: var(--color-accent-on-night);
-}
-
-/* Small uppercase mono label: credits, meta. */
+/* Small uppercase mono label: printed metadata only, what a real object would
+   print (a catalog line, a running head, a spec row on the back cover, the menu
+   panel's index). Headings, categories and lead-ins speak in sentence case
+   (2026-11-10, DESIGN.md "Typography"). */
 .label {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: var(--weight-regular);
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-.on-night .label {
-  color: var(--color-night-muted);
+  color: var(--muted-foreground);
 }
 
 .mono {
@@ -113,8 +165,8 @@
   left: var(--space-3);
   z-index: var(--z-skip);
   padding: var(--space-3) var(--space-4);
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--foreground);
+  color: var(--background);
   font-weight: var(--weight-semibold);
   text-decoration: none;
   transform: translateY(-200%);

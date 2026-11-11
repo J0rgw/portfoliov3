@@ -70,10 +70,46 @@ export type ProjectType = 'product' | 'internal-tool' | 'team' | 'tool' | 'portf
 
 export type ServiceId = 'web' | 'apps' | 'automation' | 'frontend';
 
+/* ---- Cut-outs ---------------------------------------------------------------- */
+
+/** Jorge's photographed cut-outs (public/images/cutouts/, scripts/extract-cutouts.py),
+ *  plus Mathgeon's own sprite. Registered in config/assets.ts. */
+export type CutoutId =
+  | 'not-ai'
+  | 'scribble'
+  | 'bang'
+  | 'headphones'
+  | 'knob'
+  | 'phone'
+  | 'pin'
+  | 'https'
+  | 'hash'
+  | 'barcode'
+  | 'skull'
+  | 'ipod'
+  | 'jorge';
+
+export interface Cutout {
+  /** The smallest file; `srcSet` lists every width. */
+  src: string;
+  srcSet: string;
+  /** Intrinsic size of the largest file: every file shares its aspect ratio. */
+  width: number;
+  height: number;
+  /** Generated dark-theme ink (scripts/generate-theme-variants.mjs), for ink only. */
+  dark?: { src: string; srcSet?: string };
+  /** Pixel art: scaled without smoothing. */
+  pixel?: boolean;
+}
+
 export interface ProjectAssets {
   disc?: { src: string; width: number; height: number };
   sleeve?: { src: string; width: number; height: number };
   social?: string;
+  /** Cut-outs printed on the release's label, in the order of its cover theme's slots. */
+  label?: CutoutId[];
+  /** An object that comes with the disc in the gallery (the private disc's phone). */
+  prop?: CutoutId;
 }
 
 export interface Project {
@@ -134,6 +170,10 @@ export interface ProjectSummary {
   href: string;
   /** Original optional artwork; the renderer supplies a generated fallback. */
   assets?: ProjectAssets;
+  /** `private`: the closing NDA disc. No case study, no stack; it opens Contact. */
+  kind?: 'release' | 'private';
+  /** Replaces the gallery's "click to learn more" annotation. */
+  hint?: string;
 }
 
 export interface PrivateWork {
@@ -141,6 +181,10 @@ export interface PrivateWork {
   tagline: string;
   meta: string;
   note: string;
+  /** The broken disc that closes the gallery (a cut-out photo, transparent ground). */
+  disc: { src: string; width: number; height: number };
+  /** Hangs beside the broken disc when it is selected: the phone, "call me". */
+  prop?: CutoutId;
   visible: boolean;
 }
 
@@ -149,10 +193,8 @@ export interface PrivateWork {
 export interface Service {
   id: ServiceId;
   title: string;
-  /** The client's problem, in their words. */
-  problem: string;
+  /** What the client gets, in one line (also the offer's JSON-LD description). */
   outcome: string;
-  scope: string[];
   evidence: { label: string; href: string }[];
   cta: { label: string; subject: string };
 }
@@ -168,11 +210,6 @@ export interface Milestone {
   period: string;
   title: string;
   org: string;
-  detail?: string;
   kind: 'education' | 'community' | 'work' | 'talk' | 'projects';
 }
 
-export interface Principle {
-  title: string;
-  body: string;
-}

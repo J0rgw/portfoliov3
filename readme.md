@@ -22,10 +22,22 @@ npm run dev          # development server (client-side render)
 npm run build        # asset check → types → client + SSR builds → prerender → SEO check
 npm run preview      # serve dist/ locally
 npm run og           # regenerate social cards (needs: npm i --no-save playwright-core)
+node scripts/generate-theme-variants.mjs   # dark-theme variants of the blue raster art (same need)
+uv run scripts/extract-cutouts.py          # key Jorge's cut-outs (private/originals/assets/) into public/images/cutouts/
+uv run scripts/generate-disc-finish.py     # the printed discs' real hub, rim and wear (public/images/disc/)
 ```
 
 `npm run build` fails if a referenced image or font is missing, or if any page lacks a title,
 description, canonical URL, Open Graph image, `lang` or exactly one `h1`.
+
+`public/` holds only what the built site requests, plus licence notices. The originals the
+regeneration scripts read live in `private/originals/`, retired images in `private/unused/`;
+both are git-ignored and never served.
+
+## Deploy
+
+`.github/workflows/deploy.yml` runs `npm ci` and `npm run build` on every push to `main` and
+publishes `dist/` to GitHub Pages. The custom domain is set in the repository's Pages settings.
 
 ## Where things live
 
@@ -36,7 +48,7 @@ src/
   design/        tokens.css, typography.css, base/layout/motion.css, motion.ts,
                  discPose.ts, themes/, components/, sections/, pages/, seo/
   components/
-    ui/          Button, Icon, SiteHeader, SiteFooter, StaggeredMenu, LogoLoop, motion/
+    ui/          Button, Icon, SiteHeader, SiteFooter, StaggeredMenu, motion/
     editorial/   ChapterHeading, CreditsTable, Evidence, ProfileCard, QuickResume
     graphics/    HandCircle, MarkerArrow, Monogram, Barcode, Paper, Sticker
     cd/          Disc, CoverArt, DiscGallery (including selection persistence)
@@ -88,16 +100,19 @@ For an intentionally distinct generated theme, the optional adapter is
 ## Checks and documentation
 
 `npm run typecheck`, `npm run check:architecture`, `npm run test:config`, `npm run build`.
-Build checks imports/layer boundaries/cycles, catalogue integrity, assets (including srcset),
-strict types, prerender and SEO. Browser QA also covers responsive widths, keyboard, reduced
+Build checks imports/layer boundaries/cycles, banned patterns (eyebrow labels, raw colours,
+middots between data), catalogue integrity, assets (including srcset), strict types, prerender
+and SEO. Browser QA also covers responsive widths, keyboard, reduced
 motion and no JavaScript; see the TASK 02 report for actual results.
 
 - `AGENTS.md`: technical reference.
 - `DESIGN.md`: artistic reference (1995–2005 musical packaging).
-- `docs/TASK02_AUDIT.md`: diagnosis before migration.
+- `docs/TASK02_AUDIT.md`: diagnosis before migration (local only, git-ignored).
 - `docs/INFORMATION_ARCHITECTURE.md`: section contracts, routes, authentic facts.
 - `docs/MOTION_SYSTEM.md`: interactions and motion contract.
 - `docs/IMPLEMENTATION_PLAN.md`: historical measurements and remaining content questions.
+- `docs/adr/`: decision records for changes that span several sections, each with its status
+  table (ADR-001: every chapter after Projects as one frame, and the Projects pages).
 - `references.md`: research; earlier aesthetic choices are historical, not new restrictions.
 
 ## Credits

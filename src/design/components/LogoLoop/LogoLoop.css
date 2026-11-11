@@ -6,7 +6,7 @@
 
   --logoloop-gap: 32px;
   --logoloop-logoHeight: 28px;
-  --logoloop-fadeColorAuto: #ffffff;
+  --logoloop-fadeColorAuto: var(--background);
 }
 
 .logoloop--vertical {
@@ -17,12 +17,6 @@
 .logoloop--scale-hover {
   padding-top: calc(var(--logoloop-logoHeight) * 0.1);
   padding-bottom: calc(var(--logoloop-logoHeight) * 0.1);
-}
-
-@media (prefers-color-scheme: dark) {
-  .logoloop {
-    --logoloop-fadeColorAuto: #0b0b0b;
-  }
 }
 
 .logoloop__track {
@@ -87,11 +81,13 @@
   -webkit-user-drag: none;
   pointer-events: none;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
-  filter: grayscale(1) brightness(0.8) contrast(1.2);
+  filter: var(--mark-filter);
 }
 
+/* Theme filters live in tokens.css (--mark-filter*). The one black mark
+   (GitHub) swaps to its light file in dark through the item's `darkSrc`. */
 .logoloop__item:hover img {
-  filter: grayscale(0) brightness(1) contrast(1);
+  filter: var(--mark-filter-hover);
 }
 
 .logoloop--scale-hover .logoloop__item {
@@ -141,7 +137,7 @@
   background: linear-gradient(
     to right,
     var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
-    rgba(0, 0, 0, 0) 100%
+    transparent 100%
   );
 }
 
@@ -150,7 +146,7 @@
   background: linear-gradient(
     to left,
     var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
-    rgba(0, 0, 0, 0) 100%
+    transparent 100%
   );
 }
 
@@ -168,7 +164,7 @@
   background: linear-gradient(
     to bottom,
     var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
-    rgba(0, 0, 0, 0) 100%
+    transparent 100%
   );
 }
 
@@ -178,7 +174,7 @@
   background: linear-gradient(
     to top,
     var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
-    rgba(0, 0, 0, 0) 100%
+    transparent 100%
   );
 }
 

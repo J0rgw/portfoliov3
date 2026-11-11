@@ -3,6 +3,7 @@ import { ui } from '../../../config/ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { socialIcons, type SocialIconName } from '../Icon/Icon';
 import { loadGsap, prefetchGsap, type Gsap } from '../motion/gsap';
+import { scrollToTarget } from '../motion/SmoothScroll';
 import { prefersReducedMotion } from '../motion/useReducedMotion';
 import '../../../design/components/StaggeredMenu/StaggeredMenu.css';
 
@@ -32,6 +33,8 @@ export interface StaggeredMenuProps {
   availability?: string;
   /** Path of the current page, to mark the current project. */
   currentPath?: string;
+  /** Href of the home chapter in view (`/#proceso`), to mark it like the current project. */
+  currentHref?: string;
 }
 
 type Animation = { kill: () => void };
@@ -54,6 +57,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   socialItems = [],
   availability,
   currentPath = '/',
+  currentHref,
 }) => {
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
@@ -287,7 +291,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       if (!target) return;
       event.preventDefault();
       closeMenu();
-      target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+      scrollToTarget(target);
       if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
     },
@@ -335,9 +339,11 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           aria-modal="true"
           aria-label={ui.navigation.menu}
           inert={!open}
+          data-lenis-prevent
         >
           <div className="sm-panel-inner">
-            <p className="sm-panel-heading label" data-menu-reveal>{ui.navigation.tracklist} </p>
+            {/* No label over the chapters: the rows say what they are. The projects
+                below keep theirs, as a second list of a different kind. */}
             <nav aria-label={ui.navigation.chapters}>
               <ol className="sm-panel-list" role="list">
                 {items.map((item) => (
@@ -346,6 +352,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                       className="sm-panel-item"
                       href={item.href}
                       data-number={item.number}
+                      aria-current={item.href === currentHref ? 'location' : undefined}
                       onClick={(event) => handleNavClick(event, item.href)}
                     >
                       <span className="sm-panel-itemLabel">{item.label}</span>

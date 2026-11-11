@@ -4,14 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <!--app-head--><title></title><!--/app-head-->
-    <meta name="theme-color" content="#f3f1ec" />
+    <!-- The first canvas already follows the theme (tokens.css), before any CSS loads. -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)" data-scheme="light" />
+    <meta name="theme-color" content="#111318" media="(prefers-color-scheme: dark)" data-scheme="dark" />
     <link rel="icon" type="image/png" sizes="32x32" href="/images/brand/favicon-32.png" />
     <link rel="apple-touch-icon" href="/images/brand/apple-touch-icon.png" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" href="/fonts/poppins-regular-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/poppins-extrabold-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- Before first paint: lets CSS gate reveal states on JavaScript being available. -->
-    <script>document.documentElement.classList.add('js')</script>
+    <!-- Before first paint: lets CSS gate reveal states on JavaScript being available,
+         and restores a theme forced from the header toggle (components/ui/theme). -->
+    <script>
+      (function (root) {
+        root.classList.add('js');
+        try {
+          var theme = sessionStorage.getItem('theme');
+          if (theme === 'light' || theme === 'dark') root.dataset.theme = theme;
+        } catch (e) {}
+      })(document.documentElement);
+    </script>
   </head>
   <body>
     <div id="root"><!--app-html--></div>

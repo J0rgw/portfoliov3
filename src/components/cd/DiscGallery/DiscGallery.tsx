@@ -3,6 +3,7 @@ import { projectTheme } from '../CoverArt/projectTheme';
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import CoverArt from '../CoverArt/CoverArt';
 import Disc from '../Disc/Disc';
+import Cutout from '../../graphics/Cutout/Cutout';
 import HandCircle from '../../graphics/HandCircle/HandCircle';
 import { SquareArrowsLeft, SquareArrowsRight } from '../../ui/Icon/Icon';
 import MarkerArrow from '../../graphics/MarkerArrow/MarkerArrow';
@@ -13,8 +14,6 @@ import { rememberedProject } from './selection';
 
 interface DiscGalleryProps {
   items: ProjectSummary[];
-  /** Printed on every disc's rim with the title and year. */
-  credit: string;
   catalog: string;
   /**
    * The selection changed; the carousel is the single source of truth.
@@ -32,10 +31,14 @@ interface DiscGalleryProps {
  * clicks all drive one carousel (useDiscCarousel), which renders the poses
  * imperatively; React re-renders only when the selection changes.
  *
+ * The last disc may be the private work (`kind: 'private'`): a broken disc
+ * that opens Contact instead of a case study. Its prop (the phone) drops in on
+ * its cord beside it when it is selected and the row is at rest.
+ *
  * Without JavaScript the first disc is selected, the others stay where the
  * server put them, and the section's text list links every case study.
  */
-export function DiscGallery({ items, credit, catalog, onSelect }: DiscGalleryProps) {
+export function DiscGallery({ items, catalog, onSelect }: DiscGalleryProps) {
   const listId = useId();
   const stageRef = useRef<HTMLOListElement>(null);
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
@@ -76,7 +79,7 @@ export function DiscGallery({ items, credit, catalog, onSelect }: DiscGalleryPro
         // The selected disc is never hidden, even while it is still far
         // away: keyboard focus moves to it as soon as it is chosen.
         item.style.visibility = pose.opacity < 0.01 && i !== selectedRef.current ? 'hidden' : '';
-        const face = item.querySelector<HTMLElement>('.disc__spin');
+        const face = item.querySelector<HTMLElement>('.disc__spin, .disc-broken');
         if (face) face.style.transform = `rotate(${pose.turn.toFixed(2)}deg)`;
       });
     },
@@ -168,6 +171,7 @@ export function DiscGallery({ items, credit, catalog, onSelect }: DiscGalleryPro
       <ol className="disc-gallery__stage" id={listId} ref={stageRef} aria-label={ui.projects.discs}>
         {items.map((item, i) => {
           const active = i === selected;
+          const broken = item.kind === 'private';
           return (
             <li
               key={item.slug}
@@ -181,20 +185,33 @@ export function DiscGallery({ items, credit, catalog, onSelect }: DiscGalleryPro
               <a
                 className="disc-gallery__disc"
                 href={item.href}
-                aria-label={messages.projectLink(i + 1, count, item.title)}
+                aria-label={(broken ? messages.privateLink : messages.projectLink)(i + 1, count, item.title)}
                 tabIndex={active ? 0 : -1}
                 draggable={false}
                 onClick={(event) => handleDiscClick(event, i)}
               >
-                <Disc
-                  variant="pressed"
-                  ink={projectTheme(item.id).ink}
-                  rimText={`${item.title} · ${credit} · ${item.year} · ${catalog}`}
-                  transitionName={`disc-${item.slug}`}
-                  style={{ '--disc-rotate': `${discPose(i).turn}deg` } as CSSProperties}
-                >
-                  <CoverArt cover={projectTheme(item.id)} assets={item.assets} title={item.title} track={item.track} catalog={catalog} shape="disc" rim />
-                </Disc>
+                {/* The private work: a photographed broken disc, cut out, no print or rim. */}
+                {broken && item.assets?.disc ? (
+                  <img
+                    className="disc-broken"
+                    src={item.assets.disc.src}
+                    width={item.assets.disc.width}
+                    height={item.assets.disc.height}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    style={{ transform: `rotate(${discPose(i).turn}deg)` }}
+                  />
+                ) : (
+                  <Disc
+                    variant="pressed"
+                    transitionName={`disc-${item.slug}`}
+                    style={{ '--disc-rotate': `${discPose(i).turn}deg` } as CSSProperties}
+                  >
+                    <CoverArt cover={projectTheme(item.id)} assets={item.assets} title={item.title} track={item.track} catalog={catalog} shape="disc" />
+                  </Disc>
+                )}
               </a>
               {/* After the link: CSS draws it when the link is hovered. */}
               <HandCircle className="disc-gallery__ring" />
@@ -214,8 +231,31 @@ export function DiscGallery({ items, credit, catalog, onSelect }: DiscGalleryPro
         draggable={false}
       >
         <MarkerArrow className="disc-gallery__arrow" direction="up-left" />
-        <span className="disc-gallery__hint-text">{ui.projects.hint}</span>
+        <span className="disc-gallery__hint-text">
+          {current.hint ?? (
+            // "Clic" for a mouse, "toca" for a finger: CSS shows the one that fits the input.
+            <>
+              <span className="disc-gallery__hint-pointer">{ui.projects.hint}</span>
+              <span className="disc-gallery__hint-touch">{ui.projects.hintTouch}</span>
+            </>
+          )}
+        </span>
       </a>
+
+      {/* The selected disc's prop: another pointer-only way to its link, dropped in
+          again each time the row comes to rest on it. */}
+      {current.assets?.prop && (
+        <a
+          key={`prop-${rested}`}
+          className="disc-gallery__prop"
+          href={current.href}
+          tabIndex={-1}
+          aria-hidden="true"
+          draggable={false}
+        >
+          <Cutout id={current.assets.prop} sizes="6rem" gesture="hang" />
+        </a>
+      )}
 
       {/* The icon is the key: its rounded square is the button's only outline.
           At either end the key stays focusable (aria-disabled), so focus is

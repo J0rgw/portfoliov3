@@ -22,8 +22,11 @@ import { Play } from 'reicon-react/icons/Play';
 // Double chevrons in a rounded square: the Projects gallery's keys (the square is the key).
 import { SquareArrowsLeft } from 'reicon-react/icons/SquareArrowsLeft';
 import { SquareArrowsRight } from 'reicon-react/icons/SquareArrowsRight';
+// The header's theme toggle.
+import { Moon } from 'reicon-react/icons/Moon';
+import { Sun } from 'reicon-react/icons/Sun';
 
-export { ArrowLeft, ArrowRight, ArrowDown, ArrowUpRight, Envelope, ArrowUp, Copy, Pause, Play, SquareArrowsLeft, SquareArrowsRight };
+export { ArrowLeft, ArrowRight, ArrowDown, ArrowUpRight, Envelope, ArrowUp, Copy, Pause, Play, SquareArrowsLeft, SquareArrowsRight, Moon, Sun };
 
 type BrandIconProps = SVGProps<SVGSVGElement> & { size?: number | string };
 

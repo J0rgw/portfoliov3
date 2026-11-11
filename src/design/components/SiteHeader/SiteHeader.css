@@ -5,10 +5,18 @@
    halo of that ground around its letters and marks, invisible on the plain
    ground, readable over whatever scrolls beneath. */
 .site-header {
-  --nav-ink: var(--color-ink);
-  --nav-ink-hover: var(--color-accent);
-  --nav-halo: var(--halo-paper);
-  --nav-halo-filter: var(--halo-paper-filter);
+  --nav-ground: var(--background);
+  --nav-ink: var(--foreground);
+  --nav-ink-hover: var(--accent-functional);
+  /* The track number's ink (a readable glyph: the functional accent). */
+  --nav-accent: var(--accent-functional);
+  /* Declared here, not in tokens, so each tone below re-resolves it. */
+  --nav-halo: 0 0 1px var(--nav-ground), 0 0 4px var(--nav-ground), 0 0 10px var(--nav-ground);
+  --nav-halo-filter: drop-shadow(0 0 1px var(--nav-ground)) drop-shadow(0 0 5px var(--nav-ground));
+  /* The veil's material: the ground's colour under the page's grain, as body
+     paints it (base.css), or the veil would read as a cleaner band. */
+  --nav-veil: linear-gradient(color-mix(in srgb, var(--nav-ground) var(--grain-veil), transparent) 0 0),
+    var(--material-grain), var(--nav-ground);
   position: fixed;
   top: 0;
   left: 0;
@@ -19,27 +27,68 @@
   view-transition-name: site-header;
 }
 
+/* The ground behind the header, named by the section there (layout.css).
+   Paper carries the grain like the page; the secondary ground is flat. */
+.site-header[data-ground='secondary'] {
+  --nav-ground: var(--surface-secondary);
+  --nav-veil: var(--nav-ground);
+}
+
+.site-header[data-ground='paper'] {
+  --nav-ground: var(--surface);
+}
+
+/* The veil (2026-11-10). Past the hero, a strip of the ground behind the
+   header, fading out below it: type scrolling beneath goes under it instead
+   of colliding with the mark and the links. No edge, rule, blur or shadow,
+   so over its own ground it cannot be seen; it is still type over the page,
+   the page just passes behind it. Off over the hero's pinned run, whose
+   composition was drawn under a clear header. Solid down to 54 px (the marks
+   end at 53), then a 34 px fade to 88 px, where the highest snapped heading
+   starts: art passing under it fades out instead of being sliced. */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(var(--header-h) + var(--space-4));
+  background: var(--nav-veil);
+  -webkit-mask-image: linear-gradient(to bottom, black 61%, transparent);
+  mask-image: linear-gradient(to bottom, black 61%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.site-header[data-veil]::before {
+  opacity: 1;
+}
+
+html.menu-open .site-header::before {
+  opacity: 0;
+}
+
 .site-header[data-tone='night'] {
-  --nav-ink: var(--color-paper);
-  --nav-ink-hover: var(--color-accent-on-night);
-  --nav-halo: var(--halo-night);
-  --nav-halo-filter: var(--halo-night-filter);
+  --nav-ground: var(--night-background);
+  --nav-veil: var(--nav-ground);
+  --nav-ink: var(--night-foreground);
+  --nav-ink-hover: var(--night-accent-functional);
+  --nav-accent: var(--night-accent-functional);
 }
 
 .site-header[data-tone='night'] :focus-visible {
-  outline-color: var(--color-accent-on-night);
+  outline-color: var(--night-accent-functional);
 }
 
-/* The open menu panel is paper, whatever was behind the header. */
+/* The open menu panel is the page ground, whatever was behind the header. */
 html.menu-open .site-header {
-  --nav-ink: var(--color-ink);
-  --nav-ink-hover: var(--color-accent);
-  --nav-halo: var(--halo-paper);
-  --nav-halo-filter: var(--halo-paper-filter);
+  --nav-ground: var(--background);
+  --nav-ink: var(--foreground);
+  --nav-ink-hover: var(--accent-functional);
+  --nav-accent: var(--accent-functional);
 }
 
 html.menu-open .site-header :focus-visible {
-  outline-color: var(--color-accent);
+  outline-color: var(--accent-functional);
 }
 
 .site-header__bar {
@@ -60,16 +109,61 @@ html.menu-open .site-header :focus-visible {
   pointer-events: auto;
 }
 
+.site-header__start {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
 .site-header__logo {
   display: inline-flex;
   align-items: center;
+  min-width: 44px;
   min-height: 44px;
 }
 
-.site-header__logo img {
+/* The JA monogram (graphics/Monogram, Estrella's J and A as one mark; since
+   2026-11-10 instead of the "Jorgw" wordmark, which read as a typo of the
+   name). A mark, so the decorative accent; it follows both themes as
+   currentColor. The link is named "Jorge Arcas…" for assistive technology. */
+.site-header__mark {
   width: auto;
-  height: 30px;
+  height: 2.25rem;
+  color: var(--accent);
   filter: var(--nav-halo-filter);
+}
+
+/* The track playing (2026-11-10): the chapter under the header, like a CD
+   player's display, in the printed mono. Home only; hidden over the hero and
+   without JavaScript. A new track slides in. */
+.site-header__track {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-shadow: var(--nav-halo);
+  pointer-events: none;
+}
+
+.site-header__track-number {
+  color: var(--nav-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-header__track {
+    animation: site-header-track var(--dur-base) var(--ease-out) both;
+  }
+}
+
+@keyframes site-header-track {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
 }
 
 .site-header__actions {
@@ -114,7 +208,18 @@ html.menu-open .site-header :focus-visible {
     font-size: var(--text-xs);
   }
 
-  .site-header__logo img {
-    height: 24px;
+  .site-header__start {
+    gap: var(--space-3);
+  }
+
+  .site-header__mark {
+    height: 1.9rem;
+  }
+}
+
+/* The narrowest phones keep the track number and drop its name. */
+@media (max-width: 379px) {
+  .site-header__track-label {
+    display: none;
   }
 }

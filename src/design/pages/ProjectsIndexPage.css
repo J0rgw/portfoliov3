@@ -1,34 +1,43 @@
+/* /proyectos/ (ADR-001): the releases as the gallery prints them. The page
+   opens like a chapter frame (the title in the top-left corner under the
+   header's line), then the discs in a loose grid, each with its credits
+   printed straight under it: no rules, no small capitals, no table. */
+
 .index-page {
-  padding-top: calc(var(--header-h) + var(--space-6));
+  padding-top: calc(var(--header-h) + var(--space-4));
   padding-bottom: var(--section-pad);
 }
 
 .index-page__head {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-3);
   padding-bottom: var(--space-8);
 }
 
 .index-page__title {
-  font-size: var(--text-index-title);
+  font-size: var(--text-3xl);
   font-weight: var(--weight-black);
-  line-height: 0.9;
-  letter-spacing: -0.05em;
-  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.index-page__lede {
+  max-width: 46ch;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--muted-foreground);
 }
 
 .index-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-9) var(--gutter);
-  padding-top: var(--space-7);
-  border-top: var(--hairline) solid var(--rule-strong);
 }
 
 .index-card {
   display: grid;
   align-content: start;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .index-card__link {
@@ -38,37 +47,62 @@
 }
 
 .index-card__disc {
+  display: block;
   width: min(100%, 17rem);
   margin-bottom: var(--space-4);
   transition: rotate var(--dur-slow) var(--ease-out);
 }
 
-.index-card__link:hover .index-card__disc,
-.index-card__link:focus-visible .index-card__disc {
-  rotate: 35deg;
+/* The broken disc is a photograph: no print, rim or hub of its own. */
+.index-card__broken {
+  width: 100%;
+  height: auto;
+}
+
+/* The title as the gallery sets it, with its track number in the margin. */
+.index-card__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-black);
+  line-height: var(--leading-tight);
+  letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .index-card__number {
+  flex: none;
   font-size: var(--text-xs);
-  color: var(--color-ink-muted);
-}
-
-.index-card__title {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-black);
-  line-height: 1.05;
-  letter-spacing: var(--tracking-tight);
-  text-transform: uppercase;
-}
-
-.index-card__link:hover .index-card__title {
-  color: var(--color-accent);
+  font-weight: var(--weight-regular);
+  color: var(--muted-foreground);
 }
 
 .index-card__tagline {
-  font-size: var(--text-sm);
-  color: var(--color-ink-soft);
   max-width: 40ch;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.index-card__link:hover .index-card__title {
+  color: var(--accent-functional);
+}
+
+/* Picked up: the disc turns a little under the pointer. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .index-card__link:hover .index-card__disc {
+    rotate: 12deg;
+  }
+}
+
+.index-card__stack {
+  margin-top: var(--space-1);
+}
+
+.index-card__meta {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
 }
 
 @media (max-width: 1023px) {
@@ -80,6 +114,7 @@
 @media (max-width: 599px) {
   .index-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-8);
   }
 
   .index-card__disc {

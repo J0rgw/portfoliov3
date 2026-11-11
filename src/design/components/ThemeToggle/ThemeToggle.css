@@ -1,0 +1,39 @@
+/* Theme toggle: icon-only, set in the header's type, so it takes the nav ink
+   and halo of the ground behind it (SiteHeader.css). The two icons share one
+   cell; --theme-dark (tokens.css) shows the moon in light and the sun in dark. */
+
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--nav-ink, var(--foreground));
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.theme-toggle:hover {
+  color: var(--nav-ink-hover, var(--accent-functional));
+}
+
+.theme-toggle__icon {
+  grid-area: 1 / 1;
+  filter: var(--nav-halo-filter, none);
+  transition:
+    scale var(--dur-base) var(--ease-out),
+    rotate var(--dur-base) var(--ease-out);
+}
+
+.theme-toggle__icon--moon {
+  scale: calc(1 - var(--theme-dark));
+  rotate: calc(var(--theme-dark) * 45deg);
+}
+
+.theme-toggle__icon--sun {
+  scale: var(--theme-dark);
+  rotate: calc((1 - var(--theme-dark)) * -90deg);
+}
+
+/* It needs JavaScript; without it the page follows the system theme. */
+html:not(.js) .theme-toggle {
+  display: none;
+}

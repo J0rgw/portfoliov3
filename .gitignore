@@ -42,6 +42,19 @@ Thumbs.db
 coverage/
 .nyc_output/
 
+# Private originals: never published (not under public/) and never committed. The hero's
+# grip photo lives here because the case Jorge holds in it frames a private photo.
+# private/originals/ holds the sources the scripts/ regenerators read; private/unused/ holds
+# retired images. Anchored to the root: public/images/projects/private/ is served.
+/private/
+
+# AI-process traces and validation screenshots: kept on Jorge's disk, never uploaded
+# (2026-11-11): design-critique logs, the TASK 02 reports, before/after evidence.
+.impeccable/
+/docs/TASK02_AUDIT.md
+/docs/TASK02_REPORT.md
+/docs/evidence/
+
 # Misc
 *.tsbuildinfo
 .cache/

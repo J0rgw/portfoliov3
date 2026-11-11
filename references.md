@@ -27,27 +27,59 @@ Borrow the *quality*, never the assets, layouts or branding. Nothing here is cop
 | # | Reference | Primary target | Borrowed quality (one line) | Priority | Status |
 |---|-----------|----------------|------------------------------|----------|--------|
 | 1 | [Cool Interaction](https://coolinteraction.framer.website/) | Projects, header | Index numeral with total (`01 /06`), credits columns, persistent inquiry link | High | Implemented (tracklist numerals, credits) |
-| 2 | [A24 by Ravi Klaassens](https://www.awwwards.com/sites/a24) | Projects, case studies, hero object | The disc as cover object, credits table, rim text, index ↔ detail morph, **the disc gallery** | **Highest (projects)** | Implemented (Disc, credits, view transition; hero disc is Jorge's printed CD since 2026-10-29; chapter 01 rebuilt as A24's disc gallery on 2026-10-30; arc path and hover pen loop in TASK 01 the same day) |
+| 2 | [A24 by Ravi Klaassens](https://www.awwwards.com/sites/a24) | Projects, case studies, hero object | The disc as cover object, credits table, rim text, index ↔ detail morph, **the disc gallery** | **Highest (projects)** | Implemented (Disc, credits, view transition; hero disc is Jorge's printed CD since 2026-10-29; chapter 01 rebuilt as A24's disc gallery on 2026-10-30; arc path and hover pen loop in TASK 01 the same day; 2026-11-09: credits unboxed and moved to the bottom left, stack as marks, keys under the selected disc, one previous disc only; the same day the discs became photographic printed singles with Jorge's cut-outs, #18) |
 | 3 | [Matt Jinn](https://www.awwwards.com/sites/matt-jinn) | Hero, bonus teaser | Type laid over the image, one clear action at the foot of the hero | High (hero) | Superseded in the hero (2026-10-29: Jorge's sketch has no headline or CTA; type sits beside the object, not over it). Promo-card idea kept for the bonus |
-| 4 | [Kyoosang Choi](https://www.awwwards.com/sites/kyoosang-choi) | About, contact, voice | Personal material culture as narrative objects; handwriting as voice | **Highest (concept)** | Implemented (pass, handwriting layer, back cover, hero hand gripping the sleeve) |
-| 5 | [Gianluca Boccia, Still Drawing](https://www.awwwards.com/sites/gianluca-boccia-still-drawing) | About, liner notes | One continuous thread through the story; accessible no-animation path | Medium | Implemented (timeline rule, reduced-motion parity) |
+| 4 | [Kyoosang Choi](https://www.awwwards.com/sites/kyoosang-choi) | About, contact, voice | Personal material culture as narrative objects; handwriting as voice | **Highest (concept)** | Implemented (handwriting layer, back cover, hero hand gripping the sleeve; since ADR-001, 2026-11-10, Jorge's portrait as a cut-out in About instead of the pass) |
+| 5 | [Gianluca Boccia, Still Drawing](https://www.awwwards.com/sites/gianluca-boccia-still-drawing) | About, liner notes | One continuous thread through the story; accessible no-animation path | Medium | Partial (reduced-motion parity; the thread left with the booklet, ADR-001) |
 | 6 | [Emma Portner, Islands](https://www.awwwards.com/sites/emma-portner-islands) | About, bonus atmosphere | Delicate, airy composition on a light ground | Low | Partial (negative space only) |
-| 7 | [The Romans](https://www.awwwards.com/sites/the-romans) | Contact, nav panel, headings | Oversized editorial type, inline image in a headline, square CTAs | High (contact) | Implemented (back cover, CTAs) |
+| 7 | [The Romans](https://www.awwwards.com/sites/the-romans) | Contact, nav panel, headings | Oversized editorial type, inline image in a headline, square CTAs | High (contact) | Implemented (back cover; since ADR-001 the oversized "Hablemos", with the CD-R between word and arrow, is the email link; no square CTAs on the home chapters or the Projects pages) |
 | 8 | [Huy Phan Vol.2](https://www.awwwards.com/sites/huy-phan-vol-2) | Header, about, contact | Positioning next to the name, inquiry always reachable, vertical spine | High | Implemented (role under the name in the hero, header CTA); obi-strip spine not built yet |
-| 9 | [Kerimov Designs](https://www.awwwards.com/sites/kerimov-designs) | Navigation | Label / value spec rows, numbered hairline menu rows, "open for work" status | High (nav) | Implemented (menu, back-cover spec rows; the hero spec strip was removed 2026-10-29) |
-| 10 | [CollectUI, Branding](https://collectui.com/designs/branding-ui-design-inspiration/2371740b-4137-44b8-acd9-de254f5392e1) | Brand details | Simple silhouette filled with tactile collage | Medium | Partial (paper grain, handwritten scraps) |
-| 11 | [CollectUI, Subscribe](https://collectui.com/designs/subscribe-ui-design-inspiration/00947ffb-a6fd-4933-a025-3ea35fa4aef3) | Bonus track | Oversized headline with asterisk on a tinted card, single action | Medium | Implemented (mailto CTA, no fake form) |
+| 9 | [Kerimov Designs](https://www.awwwards.com/sites/kerimov-designs) | Navigation | Label / value spec rows, numbered hairline menu rows, "open for work" status | High (nav) | Implemented (menu rows; the hero spec strip was removed 2026-10-29, the back cover's spec rows by ADR-001 on 2026-11-10) |
+| 10 | [CollectUI, Branding](https://collectui.com/designs/branding-ui-design-inspiration/2371740b-4137-44b8-acd9-de254f5392e1) | Brand details | Simple silhouette filled with tactile collage | Medium | Partial (paper grain, handwritten scraps); since 2026-11-09 real collage material in the hero and on the discs (#18) |
+| 11 | [CollectUI, Subscribe](https://collectui.com/designs/subscribe-ui-design-inspiration/00947ffb-a6fd-4933-a025-3ea35fa4aef3) | Bonus track | Oversized headline with asterisk on a tinted card, single action | Medium | Implemented (the oversized "Avísame*" is the mailto link itself, no card, no fake form; ADR-001) |
 | 12 | [CollectUI, Navigation 9f343652](https://collectui.com/designs/navigation-ui-design-inspiration/9f343652-7a1e-487e-b5ff-278ef0da84b6) | Case studies | Sticky case-study chapter list with a moving active marker | High (case studies) | Implemented (sticky tracklist TOC) |
 | 13 | [CollectUI, Navigation c00d3685](https://collectui.com/designs/navigation-ui-design-inspiration/c00d3685-8461-4712-902b-e4547da18729) | Case studies | TOC that compresses into a dash rail | Medium | Implemented (dash markers) |
-| 14 | [CollectUI, Navigation 21793fa2](https://collectui.com/designs/navigation-ui-design-inspiration/21793fa2-4d46-4191-ada2-5386883d89a1) | Navigation panel | Media-device UI nostalgia; selected item reveals a one-line description | Low | Partial (panel project list with taglines) |
+| 14 | [CollectUI, Navigation 21793fa2](https://collectui.com/designs/navigation-ui-design-inspiration/21793fa2-4d46-4191-ada2-5386883d89a1) | Navigation panel | Media-device UI nostalgia; selected item reveals a one-line description | Medium | Implemented 2026-11-10 (ADR-001): Proceso's five steps are the playlist on Jorge's iPod, the selected step's line in the credits; also the menu panel's project list with taglines |
 | 15 | [CollectUI, Header 1859d1a8](https://collectui.com/designs/header-navigation-ui-design-inspiration/1859d1a8-7cda-4d8b-9755-fcd8a605dceb) | Navigation | Active indicator that travels between items | Low | Not implemented (by design, see notes) |
 | 16 | [CollectUI, Header 733e9ab8](https://collectui.com/designs/header-navigation-ui-design-inspiration/733e9ab8-c15c-415c-8003-f4b194c85fef) | Page transitions | Navigation stays put while the page changes underneath | Medium | Implemented (persistent header across view transitions) |
-| 17 | Jorge's marker arrow (`public/images/gallery/cd7e159e….jpg`, supplied 2026-10-30) | Projects annotation | A blue marker stroke: a sweep, one loop, an arrowhead | High (projects) | Implemented (`MarkerArrow`). Since TASK 01 (2026-10-30) the original image itself, keyed out of its painted checkerboard into `marker-arrow.webp` by `scripts/extract-marker-arrow.py` (the SVG redrawing is gone) |
+| 17 | Jorge's marker arrow (`private/originals/gallery/cd7e159e….jpg`, supplied 2026-10-30) | Projects annotation | A blue marker stroke: a sweep, one loop, an arrowhead | High (projects) | Implemented (`MarkerArrow`). Since TASK 01 (2026-10-30) the original image itself, keyed out of its painted checkerboard into `marker-arrow.webp` by `scripts/extract-marker-arrow.py` (the SVG redrawing is gone). Dark theme: generated orange ink `marker-arrow-dark.webp` (2026-11-02, Q29). Label moved to the tail's free end (2026-11-09) |
+| 18 | Jorge's cut-out set (`private/originals/assets/`, supplied 2026-11-09) and his broken-disc screenshot ("the CDs are really different") | Hero, Projects | Realistic photographed objects cut out like a 2000s CD-cover collage; discs that read as photographs | **Highest (hero, projects)** | Implemented 2026-11-09: keyed by `scripts/extract-cutouts.py` into `graphics/Cutout`; a collage round the hero scene (headphones, knob, "!!", sticker and tape on the sleeve, ink loop, train); release discs reprinted as printed singles (a cut-out on each label, the hero disc's real hub and rim, real wear from the broken disc, no rim text); the phone beside the private disc. Megaphone and paper arrows not used yet. 2026-11-10: the hero recomposed as the diagonal study Jorge chose (large name top left, his arm photo holding the sleeve); the tape and the train removed at his request, the ink loop and "!!" with the small credit; then his own arm re-gripped, the disc at 1200 px and the handed-in entrance. With ADR-001 (same day) the iPod became Proceso's object and his portrait (the pass's photo) About's |
 
 Status reflects the build verified on 2026-10-26, the hero verified on 2026-10-29 after its
 recomposition from Jorge's hand-drawn sketch, which is now the hero's primary reference
 (see `docs/IMPLEMENTATION_PLAN.md` §7, §7.1 and §7.2, and ART_DIRECTION §5.1), and the Projects
-disc gallery verified on 2026-10-30 (§7.3, ART_DIRECTION §5.2).
+disc gallery verified on 2026-10-30 (§7.3, ART_DIRECTION §5.2). The light/dark colour system
+(blue by day, orange by night) was verified on 2026-11-02; it changes colour only, never a
+reference's layout (plan, "Colour system"). Smooth scroll, proximity chapter snap and the hero /
+Projects parallax were added and checked at 1512 × 734 and 390 × 844 on 2026-11-09
+(MOTION_SYSTEM §2.3–2.4), and the chapter hold modelled on atlaxia.es (§2.5); they move layers
+only, never a reference's resting layout. The cut-out collage (#18) was checked the same day at
+1024 × 768, 1280 × 800, 1440 × 900, 1512 × 734, 1920 × 1080, 768 × 1024 and 390 × 844, in both
+themes, with reduced motion and without JavaScript. The hero's diagonal recomposition
+(2026-11-10, from the layout study Jorge chose) was checked at 1024 × 768, 1280 × 800,
+1440 × 900, 1512 × 734, 1920 × 1080, 768 × 1024 and 390 × 844. The same day's critique fixes
+(`/impeccable critique`, 29/40; snapshot in `.impeccable/critique/`) carry the booklet and
+printed-insert references (#2, #4, #5) into the middle chapters: Process's saddle-stitched
+booklet and paper-slip notes, Services printed as a tracklist insert, the About notes signed,
+the handwritten words beside headings removed, the chapter hold's marker, the header's veil and
+the About portrait's face at every width. Checked at 1512 × 734 in both themes, at 320, 360,
+390, 768, 1024 and 1280 px wide (no horizontal overflow), and without JavaScript. The second
+critique (30/40, no P1) led the same evening to small mono capitals only where an object prints
+them (36 → 10 on home), a quieter bonus headline, the hero's name leaving under the header's
+veil, and paper edges in the dark (a lip of light, a spine crease for the staples); checked the
+same way. After the third run (30/40, no P0–P2), the header took the JA monogram, a CD
+player's track readout and a softer veil, lost its theme switch, and About lost its logo strip;
+checked at 1512 × 734 in both themes, at 320 and 390 px, and without JavaScript. The same
+day's deslop pass (brief in `.impeccable/critique/desloping.md`) kept every reference's object
+and removed what only decorated it: middots between data, the timeline's category column, the
+bonus's status badge, circled step numbers, card-footer and doubled rules, a dot's halo, the
+menu's self-naming label; checked at 320 to 1440 px in both themes, with reduced motion and
+without JavaScript. Later the same day, [ADR-001](docs/adr/ADR-001-chapter-frames.md) at Jorge's
+request: every chapter after Projects became one frame in the hero's and Projects' language (the
+iPod's playlist, the services tracklist, the portrait cut-out, "Avísame*" and "Hablemos" as the
+links themselves), the hold only holds what fits, and the Projects pages follow the gallery's
+credits; checked at 1024 × 768, 1280 × 720, 1440 × 900, 1512 × 734, 1920 × 1080, 768 × 1024,
+390 × 844 and 320 × 640, in both themes, with reduced motion and without JavaScript.
 
 Supporting resources: [SVGL](https://svgl.app/) (technology logos; the files in
 `public/images/logo/` follow that source), [Fontpair](https://fontpair.co/) (not needed, the
@@ -360,7 +392,9 @@ it contains **only** `estrella-early.otf`; no Poppins files existed before this 
 
 ## Rules derived from this research
 
-1. **No scroll hijacking.** Six of the nine Awwwards/Framer sites capture the wheel. We do not.
+1. **No scroll hijacking.** Six of the nine Awwwards/Framer sites capture the wheel. We do not page
+   or block it. Amended 2026-11-09 at Jorge's request: the wheel is eased (Lenis) and settles on
+   a nearby chapter start (proximity snap, home only); see MOTION_SYSTEM §2.3.
 2. **Weight budget.** References ranged from ~1 MB to ~269 MB. Our budget is in
    `docs/IMPLEMENTATION_PLAN.md` §Performance; every new media asset must fit it.
 3. **Headings and real text.** Several references ship no `<h1>`. Every page here has exactly one,

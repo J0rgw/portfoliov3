@@ -5,7 +5,7 @@
   gap: var(--space-5);
   min-height: 3.25rem;
   padding: 0 var(--space-5);
-  border: var(--hairline) solid var(--color-ink);
+  border: var(--hairline) solid var(--foreground);
   border-radius: var(--radius-0);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
@@ -36,45 +36,21 @@
 }
 
 .btn--primary {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--foreground);
+  color: var(--background);
 }
 
 .btn--primary:hover {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--accent-functional);
+  border-color: var(--accent-functional);
 }
 
 .btn--secondary {
   background: transparent;
-  color: var(--color-ink);
+  color: var(--foreground);
 }
 
 .btn--secondary:hover {
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
-
-.on-night .btn {
-  border-color: var(--color-night-ink);
-}
-
-.on-night .btn--primary {
-  background: var(--color-night-ink);
-  color: var(--color-night);
-}
-
-.on-night .btn--primary:hover {
-  background: var(--color-accent-on-night);
-  border-color: var(--color-accent-on-night);
-  color: var(--color-night);
-}
-
-.on-night .btn--secondary {
-  color: var(--color-night-ink);
-}
-
-.on-night .btn--secondary:hover {
-  background: var(--color-night-ink);
-  color: var(--color-night);
+  background: var(--foreground);
+  color: var(--background);
 }

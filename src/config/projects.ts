@@ -1,3 +1,4 @@
+import { chapterHref } from './navigation';
 import type { PrivateWork, Project, ProjectSummary } from './types';
 
 /**
@@ -14,6 +15,7 @@ export const projectCatalog: Project[] = [
     slug: 'moneyman',
     order: 1,
     visible: true,
+    assets: { label: ['barcode'] },
     title: 'MoneyMan',
     tagline: 'Finanzas personales sin conectar el banco ni enviar datos a un servidor',
     summary:
@@ -21,7 +23,7 @@ export const projectCatalog: Project[] = [
     projectType: 'product',
     typeLabel: 'Producto propio',
     role: 'Producto, interfaz y desarrollo',
-    status: { kind: 'in-progress', label: 'En desarrollo · sin desplegar' },
+    status: { kind: 'in-progress', label: 'En desarrollo, sin desplegar' },
     year: '2026',
     technologies: ['React 19', 'TypeScript', 'Vite', 'CSS Modules', 'Motion', 'PapaParse', 'vite-plugin-pwa'],
     services: ['apps', 'frontend'],
@@ -112,6 +114,7 @@ export const projectCatalog: Project[] = [
     slug: 'client-leads',
     order: 2,
     visible: true,
+    assets: { label: ['pin'] },
     title: 'Client Leads',
     tagline: 'Prospección B2B: de Google Maps a Twenty CRM con evidencias y puntuación',
     summary:
@@ -212,6 +215,7 @@ export const projectCatalog: Project[] = [
     slug: 'mathgeon',
     order: 3,
     visible: true,
+    assets: { label: ['skull'] },
     title: 'Mathgeon',
     tagline: 'Roguelite web de matemáticas para un aprendizaje gamificado',
     summary:
@@ -220,7 +224,7 @@ export const projectCatalog: Project[] = [
     typeLabel: 'Proyecto en equipo',
     role: 'Arquitectura inicial del frontend e interfaz',
     team: ['Jorge Arcas', 'A31Nesta'],
-    status: { kind: 'archived', label: 'Versión funcional · 2025' },
+    status: { kind: 'archived', label: 'Versión funcional' },
     year: '2025',
     technologies: ['React 19', 'TypeScript', 'Vite', 'React Router', 'Firebase Auth', 'Realtime Database'],
     services: ['apps', 'frontend'],
@@ -302,6 +306,7 @@ export const projectCatalog: Project[] = [
     slug: 'disco-download',
     order: 4,
     visible: true,
+    assets: { label: ['headphones', 'knob'] },
     title: 'Disco Download',
     tagline: 'Audio de YouTube a MP3 o WAV, con el BPM ya en la etiqueta',
     summary:
@@ -379,6 +384,7 @@ export const projectCatalog: Project[] = [
     slug: 'gitchange',
     order: 5,
     visible: true,
+    assets: { label: ['hash'] },
     title: 'gitchange',
     tagline: 'Cambia de cuenta de GitHub con un solo comando',
     summary:
@@ -456,6 +462,7 @@ export const projectCatalog: Project[] = [
     slug: 'portfolio-v2',
     order: 6,
     visible: true,
+    assets: { label: ['https'] },
     title: 'Portfolio v2',
     tagline: 'La versión anterior de este portfolio: HTML, CSS y JavaScript con GSAP',
     summary:
@@ -530,6 +537,8 @@ export const privateWork: PrivateWork = {
   tagline: 'Hay más trabajo que no puedo publicar. Te lo cuento en una conversación.',
   meta: 'Privado · NDA',
   note: 'pregúntame',
+  disc: { src: '/images/projects/private/broken-disc.webp', width: 800, height: 800 },
+  prop: 'phone',
   visible: true,
 };
 
@@ -572,4 +581,22 @@ export const summarizeProject = (project: (typeof projects)[number]): ProjectSum
   assets: project.assets,
 });
 
-export const projectSummaries: ProjectSummary[] = projects.map(summarizeProject);
+/** The private work closes the gallery as its last track: a broken disc that opens Contact. */
+const privateSummary: ProjectSummary = {
+  id: 'private',
+  slug: 'privado',
+  track: formatTrack(trackTotal),
+  title: privateWork.title,
+  shortDescription: privateWork.tagline,
+  stack: [],
+  year: '',
+  href: chapterHref('contacto'),
+  assets: { disc: privateWork.disc, prop: privateWork.prop },
+  kind: 'private',
+  hint: privateWork.note,
+};
+
+export const projectSummaries: ProjectSummary[] = [
+  ...projects.map(summarizeProject),
+  ...(privateWork.visible ? [privateSummary] : []),
+];

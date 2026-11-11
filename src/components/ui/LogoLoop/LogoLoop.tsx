@@ -1,6 +1,7 @@
 import { ui } from '../../../config/ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useReducedMotion } from '../motion/useReducedMotion';
+import { ThemeImage } from '../../graphics/ThemeImage/ThemeImage';
 import '../../../design/components/LogoLoop/LogoLoop.css';
 
 export type LogoItem =
@@ -17,6 +18,8 @@ export type LogoItem =
       title?: string;
       srcSet?: string;
       sizes?: string;
+      /** A light version for the dark theme, for marks that are black (GitHub). */
+      darkSrc?: string;
       width?: number;
       height?: number;
     };
@@ -332,7 +335,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             {(item as any).node}
           </span>
         ) : (
-          <img
+          <ThemeImage
+            dark={(item as any).darkSrc ? { src: (item as any).darkSrc } : undefined}
             src={(item as any).src}
             srcSet={(item as any).srcSet}
             sizes={(item as any).sizes}

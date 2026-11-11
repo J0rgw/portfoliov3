@@ -1,95 +1,142 @@
-/* Chapter 06: back cover (night ground). Continues into the footer. */
+/* Chapter 06: the back cover (night ground), continued by the footer
+   (ADR-001). The heading keeps the corner like every chapter; the oversized
+   "Hablemos" with the CD-R set between word and arrow is the email link (The
+   Romans); one line of details sits at the foot. */
 
-.contact {
-  padding-bottom: var(--space-9);
-}
-
-/* Oversized handwritten statement with a disc set inline (The Romans). */
-.contact__statement {
-  display: flex;
+.contact__talk {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 0.12em;
-  font-family: var(--font-heading);
+  align-self: flex-start;
+  gap: 0 0.1em;
+  margin-top: var(--space-8);
   font-size: clamp(2.9rem, 10vw, 10rem);
-  line-height: 1;
-  color: var(--color-night-ink);
-}
-
-.contact__hand {
-  padding-inline: 0;
-  margin-left: 0;
-  letter-spacing: var(--tracking-tight);
   font-weight: var(--weight-black);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--foreground);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
-.contact__inline-disc {
+.contact__disc {
   width: 0.92em;
   flex-shrink: 0;
   rotate: -8deg;
+  transition: rotate var(--dur-slow) var(--ease-out);
 }
 
-.contact__grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  margin-top: var(--space-7);
-  padding-top: var(--space-6);
-  border-top: var(--hairline) solid var(--rule);
+.contact__arrow {
+  width: 0.4em;
+  height: 0.4em;
+  margin-left: 0.08em;
+  transition: translate var(--dur-base) var(--ease-out);
 }
 
-.contact__main {
-  grid-column: 1 / span 7;
+.contact__talk:hover {
+  color: var(--accent-functional);
 }
 
-.contact__title {
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-black);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  max-width: 16ch;
+/* The disc turns a little under the pointer, like a record picked up. */
+.contact__talk:hover .contact__disc {
+  rotate: 24deg;
 }
 
-.contact__lede {
-  margin-top: var(--space-4);
+.contact__talk:hover .contact__arrow {
+  translate: 0.08em 0;
 }
 
-.contact__actions {
+.contact__talk:focus-visible {
+  outline-offset: 0.08em;
+}
+
+/* ---- One line of details ---------------------------------------------------------- */
+
+.contact__details {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
-  margin-top: var(--space-6);
+  align-items: center;
+  gap: var(--space-4) var(--space-7);
+  margin-top: var(--space-7);
 }
 
 .contact__email {
-  margin-top: var(--space-4);
-  font-size: var(--text-sm);
-  color: var(--color-night-muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+}
+
+.contact__address {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
   user-select: all;
+  overflow-wrap: anywhere;
 }
 
-.contact__spec {
-  grid-column: 9 / -1;
-  align-self: start;
+.contact__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent-functional);
 }
 
-.contact__spec .credits__value a {
-  color: var(--color-accent-on-night);
+.contact__copy:hover {
+  text-decoration: underline;
 }
 
-@media (max-width: 1023px) {
-  .contact__main,
-  .contact__spec {
-    grid-column: 1 / -1;
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+}
+
+.contact__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+}
+
+.contact__links a:hover {
+  color: var(--accent-functional);
+  text-decoration: underline;
+}
+
+.contact__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+
+/* Availability: a semantic state next to its words, never alone. */
+.contact__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+/* One frame: the word in the middle of the frame's height, the details at
+   its foot, spread across it. */
+@media (min-width: 1024px) and (orientation: landscape) {
+  .contact__talk {
+    margin-block: auto;
   }
 
-  .contact__spec {
-    margin-top: var(--space-8);
-  }
-}
-
-@media (max-width: 479px) {
-  .contact__actions .btn {
-    width: 100%;
+  .contact__details {
+    justify-content: space-between;
+    margin-top: 0;
   }
 }

@@ -1,5 +1,5 @@
 /**
- * The JA monogram: Estrella's J and A (public/fonts/estrella-early.otf) drawn as
+ * The JA monogram: Estrella's J and A (estrella-early.otf in private/originals) drawn as
  * one mark. The A sits 300 font units right and 300 down, tucked under the J's
  * hook, and a 22-unit gap is cut out of the A where the J crosses it so the
  * letters interlace instead of merging into a blot.

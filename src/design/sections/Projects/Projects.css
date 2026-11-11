@@ -8,7 +8,6 @@
   /* The frame sets its own rhythm; the section only clips, so no disc ever
      paints over the hero or the next chapter. */
   padding-block: 0;
-  background: var(--color-paper-sunken);
   overflow: clip;
   /* The frame already leaves room for the fixed header: anchor jumps
      (/#proyectos, the menu) land on its top edge, controls in view. */
@@ -20,7 +19,7 @@
   display: flex;
   flex-direction: column;
   container-type: inline-size;
-  padding-top: calc(var(--header-h) + var(--space-5));
+  padding-block: calc(var(--header-h) + var(--space-5)) var(--space-8);
 }
 
 /* ---- Credits: heading, the selected disc's resume ----------------------------- */
@@ -34,94 +33,128 @@
 }
 
 .projects__heading {
+  max-width: 20ch;
   font-size: var(--text-xl);
   font-weight: var(--weight-black);
   letter-spacing: var(--tracking-tight);
 }
 
+/* The heading is the way to the full index: the arrow says so. */
+.projects__heading-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.projects__heading-arrow {
+  display: inline-block;
+  vertical-align: -0.05em;
+  transition: translate var(--dur-fast) var(--ease-out);
+}
+
+.projects__heading-link:hover {
+  color: var(--accent-functional);
+}
+
+.projects__heading-link:hover .projects__heading-arrow {
+  translate: 0.2em 0;
+}
+
+/* Printed straight on the page, like the back of a disc's insert: no paper,
+   no labels. The name, the description tight under it, the stack as marks. */
 .quick-resume {
-  margin-top: var(--space-5);
-  padding: var(--space-4) var(--space-5);
-}
-
-.quick-resume__label {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-.quick-resume__head {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-block: var(--space-2);
-  border-top: var(--hairline) solid var(--rule-strong);
+  margin-top: var(--space-6);
 }
 
 .quick-resume__title {
   /* Narrow screens: room for two lines (every title has one or two words),
      so the discs under the credits never jump when the selection changes.
      The wide frame lets the credits breathe (they sit apart from the discs). */
-  min-height: calc(2lh + var(--space-1) + var(--space-4));
-  padding-block: var(--space-1) var(--space-4);
+  min-height: 2lh;
   font-family: var(--font-project);
   font-size: clamp(1.85rem, 2.5vw, 3rem);
   font-weight: var(--weight-black);
   line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-snug);
+  /* No negative tracking: at ExtraBold it pushes letters into each other
+     ("ch", "an", "ng" touched in gitchange). */
+  letter-spacing: 0;
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
 
 /* Each word is a line; the clip hides a word rising into it from below and
-   leaves room above for accents and the swash of the serif. */
+   leaves room above for accents and below for descenders (the g, p, y of
+   Poppins reach ~0.3em under the tight line box). */
 .quick-resume__line {
   display: block;
-  clip-path: inset(-0.5em -0.5em -0.04em -0.5em);
+  clip-path: inset(-0.5em -0.5em -0.35em -0.5em);
 }
 
 .quick-resume__line > span {
   display: block;
 }
 
-.quick-resume__row {
-  padding-block: var(--space-2) var(--space-3);
-  border-top: var(--hairline) solid var(--rule);
-}
-
-.quick-resume__row:last-child {
-  border-bottom: var(--hairline) solid var(--rule);
-}
-
-.quick-resume__text,
-.quick-resume__stack {
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  line-height: 1.5;
-}
-
 .quick-resume__text {
-  max-width: 38ch;
-  color: var(--color-ink-soft);
+  /* Three lines held (the longest tagline wraps to three) on narrow screens, for the same reason as the title. */
+  min-height: 3lh;
+  max-width: 30ch;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+  color: var(--muted-foreground);
 }
 
 .quick-resume__stack {
-  font-weight: var(--weight-semibold);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-4);
+  list-style: none;
+}
+
+/* The marks wear the logo strip's grey (tokens.css, --mark-filter), so the
+   stack adds no colour of its own; each takes its colour under the pointer. */
+/* One height for every mark; the width follows the drawing, so a wordmark
+   (yt-dlp) is not shrunk into a square. */
+.quick-resume__mark img {
+  display: block;
+  width: auto;
+  max-width: 4rem;
+  height: 1.75rem;
+  object-fit: contain;
+  filter: var(--mark-filter);
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+
+.quick-resume__mark:hover img {
+  filter: var(--mark-filter-hover);
+}
+
+/* A technology without a mark: its name, stamped. */
+.quick-resume__chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  padding-inline: var(--space-2);
+  border: var(--hairline) solid var(--control-border);
+  border-radius: 4px;
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--foreground);
 }
 
 /* The change-over: the new title rises line by line, the rows follow. The
    old text has already gone (the block is re-keyed), so no stale credit ever
    sits beside the new disc. */
 @media (prefers-reduced-motion: no-preference) {
-  .quick-resume [data-animate] .quick-resume__line > span {
+  .quick-resume[data-animate] .quick-resume__line > span {
     animation: resume-rise var(--dur-slow) var(--ease-out) both;
     animation-delay: calc(var(--line, 0) * var(--stagger));
   }
 
-  .quick-resume [data-animate] .quick-resume__head,
-  .quick-resume [data-animate] .quick-resume__row {
+  .quick-resume[data-animate] .quick-resume__text,
+  .quick-resume[data-animate] .quick-resume__stack {
     animation: resume-fade var(--dur-base) var(--ease-out-soft) both;
     animation-delay: calc((var(--row, 0) + 1) * var(--stagger));
   }
@@ -129,7 +162,8 @@
 
 @keyframes resume-rise {
   from {
-    translate: 0 112%;
+    /* Below the clip's extended bottom edge, so the word starts unseen. */
+    translate: 0 150%;
   }
 }
 
@@ -156,9 +190,11 @@
   --tilt-z: 0deg;
   /* The annotation, from the anchor, in diameters: its arrow's tip lands
      just outside the selected disc's rim, below and to the right. */
-  --hint-x: 0.15;
-  --hint-y: 0.5;
+  --hint-x: 0.02;
+  --hint-y: 0.56;
   --hint-w: 0.44;
+  /* Where the label starts over the tail; earlier here so it fits the width. */
+  --hint-label-x: 38%;
   /* Neighbours fully shown on each side (discPose fades the rest); read by
      DiscGallery. Narrow screens crop them at the edges anyway. */
   --shown-prev: 1;
@@ -206,8 +242,18 @@
    compositing only; otherwise every frame repaints six discs (masks, SVG,
    blend). Measured 2026-10-30 in Chrome at 120 Hz: ~20 frames of 58 ms per
    change without it, none over 10 ms with it. */
-.disc-gallery__item .disc__spin {
+.disc-gallery__item .disc__spin,
+.disc-gallery__item .disc-broken {
   will-change: transform;
+}
+
+/* The private work: a photographed broken disc, cut out on a transparent
+   ground (public/images/projects/private/). No print, rim or sheen: the
+   pieces are the picture. It turns with the row like the printed faces. */
+.disc-broken {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .disc-gallery__disc {
@@ -226,15 +272,6 @@
   cursor: pointer;
 }
 
-/* Reaching for the selected disc turns its label a little; the reflection
-   stays still, as under a lamp. Composes with the travel turn (transform). */
-.disc-gallery__disc .disc__spin {
-  transition: rotate var(--dur-slow) var(--ease-out);
-}
-
-.disc-gallery__item[data-disc-active] .disc-gallery__disc:hover .disc__spin {
-  rotate: 16deg;
-}
 
 /* ---- Hover: a pen loop round the disc under the pointer (A24) ---------------
    HandCircle's box is 1.2 discs, centred on the disc and in its plane, so it
@@ -251,7 +288,8 @@
   height: 120%;
   /* The base reset caps media at their container; this one overhangs it. */
   max-width: none;
-  color: var(--color-ink);
+  /* The pen loop is part of the handwriting layer: the accent's ink. */
+  color: var(--accent);
   opacity: 0;
   transition: opacity var(--dur-base) var(--ease-out);
   animation: ring-orbit var(--dur-orbit) linear infinite paused;
@@ -308,12 +346,7 @@
   left: calc(var(--cx) + var(--d) * var(--hint-x));
   top: calc(var(--cy) + var(--d) * var(--hint-y));
   width: calc(var(--d) * var(--hint-w));
-  display: grid;
-  /* The text sits under the arrow's tail, which is on the right once the
-     arrow is mirrored to point back at the disc. */
-  justify-items: end;
-  gap: var(--space-2);
-  color: var(--color-ink);
+  color: var(--foreground);
   text-decoration: none;
   transition: opacity var(--dur-fast) var(--ease-out);
 }
@@ -323,22 +356,51 @@
   pointer-events: none;
 }
 
+/* The label is where the pen started: just above the free end of the
+   arrow's tail (top right of the mirrored stroke, ~65 % across, ~17 % down),
+   so it reads label, loop, head, disc. */
 .disc-gallery__hint-text {
+  position: absolute;
+  left: var(--hint-label-x, 56%);
+  bottom: calc(100% - var(--hint-label-y, 14%));
   width: max-content;
-  max-width: 18ch;
-  text-align: end;
+  max-width: 14ch;
+  text-align: start;
   text-wrap: balance;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
+  /* A note at the arrow's tail, in sentence case (2026-11-10): small mono
+     capitals are kept for what a disc or a sleeve prints. */
+  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
-  line-height: 1.4;
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
+  line-height: 1.3;
 }
 
 .disc-gallery__hint:hover .disc-gallery__hint-text {
   text-decoration: underline;
   text-underline-offset: 0.3em;
+}
+
+/* The default label speaks to a mouse ("haz clic"); a finger reads "toca". */
+.disc-gallery__hint-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .disc-gallery__hint-pointer {
+    display: none;
+  }
+
+  .disc-gallery__hint-touch {
+    display: inline;
+  }
+}
+
+/* ---- The private disc's phone ------------------------------------------------
+   Jorge's cut-out handset, hanging on its cord into the room the last disc leaves
+   at its upper right; it drops in and swings to a stop (design/motion.css, `hang`).
+   Wide frames only: elsewhere the credits are above. */
+
+.disc-gallery__prop {
+  display: none;
 }
 
 /* ---- Controls: two keys, ReIcon's double chevrons in a rounded square ----------
@@ -352,9 +414,9 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  /* The key's square starts ~4px inside its 44px target: align the square,
-     not the target, with the text column. */
-  padding: var(--space-3) var(--margin) 0 calc(var(--margin) - 0.25rem);
+  /* Under the selected disc, which the stage centres on --cx. */
+  justify-content: center;
+  padding: var(--space-3) var(--margin) 0;
 }
 
 /* They need JavaScript; without it the list of every case study below stands in. */
@@ -367,7 +429,7 @@ html:not(.js) .disc-gallery__controls {
   place-items: center;
   width: 44px;
   height: 44px;
-  color: var(--color-ink);
+  color: var(--foreground);
   transition:
     color var(--dur-fast) var(--ease-out),
     translate var(--dur-fast) var(--ease-press);
@@ -380,7 +442,7 @@ html:not(.js) .disc-gallery__controls {
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-ui);
   text-align: center;
-  color: var(--color-ink-soft);
+  color: var(--muted-foreground);
 }
 
 /* Same drawing and stroke as the library ships (1.5 on a 24 grid). */
@@ -391,7 +453,7 @@ html:not(.js) .disc-gallery__controls {
 }
 
 .disc-gallery__button:hover:not([aria-disabled]) {
-  color: var(--color-accent);
+  color: var(--accent-functional);
 }
 
 /* Pressing sinks the key 1px, like the site's buttons. */
@@ -408,7 +470,7 @@ html:not(.js) .disc-gallery__controls {
 /* First or last disc: still focusable (focus is never dropped), greyed.
    The fade is on the icon, so a focus ring on the key keeps full contrast. */
 .disc-gallery__button[aria-disabled] {
-  color: var(--color-ink-muted);
+  color: var(--muted-foreground);
   cursor: default;
 }
 
@@ -428,7 +490,7 @@ html:not(.js) .disc-gallery__controls {
 
 .projects__all ol {
   margin-top: var(--space-3);
-  border-top: var(--hairline) solid var(--rule-strong);
+  border-top: var(--hairline) solid var(--border);
 }
 
 .projects__all a {
@@ -436,13 +498,13 @@ html:not(.js) .disc-gallery__controls {
   grid-template-columns: 2.5rem minmax(0, 1fr);
   column-gap: var(--gutter);
   padding-block: var(--space-3);
-  border-bottom: var(--hairline) solid var(--rule);
+  border-bottom: var(--hairline) solid var(--border);
   text-decoration: none;
 }
 
 .projects__all .mono {
   grid-row: span 2;
-  color: var(--color-ink-muted);
+  color: var(--muted-foreground);
   font-size: var(--text-sm);
 }
 
@@ -452,42 +514,11 @@ html:not(.js) .disc-gallery__controls {
 
 .projects__all-tagline {
   font-size: var(--text-sm);
-  color: var(--color-ink-soft);
+  color: var(--muted-foreground);
 }
 
 .projects__all a:hover .projects__all-title {
-  color: var(--color-accent);
-}
-
-/* ---- Foot: private work and the full index ---------------------------------- */
-
-.projects__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-3) var(--space-6);
-  padding-block: var(--space-6) var(--space-8);
-  font-size: var(--text-sm);
-  color: var(--color-ink-soft);
-}
-
-.projects__foot p {
-  max-width: 52ch;
-}
-
-.projects__index-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: 44px;
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink);
-  text-decoration: none;
-}
-
-.projects__index-link:hover {
-  color: var(--color-accent);
+  color: var(--accent-functional);
 }
 
 /* ---- Wide landscape: A24's frame ---------------------------------------------- */
@@ -495,27 +526,49 @@ html:not(.js) .disc-gallery__controls {
 @media (min-width: 1024px) and (orientation: landscape) {
   .projects__frame {
     --info-w: min(22rem, 28vw);
+    /* The keys' top edge under the selected disc, in diameters from its centre. */
+    --controls-y: 0.56;
     display: block;
     height: clamp(40rem, 100svh, 64rem);
-    padding-top: 0;
+    padding-block: 0;
     container-type: size;
   }
 
-  .quick-resume__title {
+  .quick-resume__title,
+  .quick-resume__text {
     min-height: 0;
   }
 
-  /* Same left edge as the hero's credit (Hero.css). */
+  /* Same left edge as the hero's credit (Hero.css). The column runs the
+     frame's height: the heading at the top, the credits pushed down to the
+     bottom-left corner, at eye level with the keys under the disc. The
+     column itself lets the pointer through to the discs. */
   .projects__info {
     position: absolute;
     top: calc(var(--header-h) + var(--space-4));
+    /* The credits' last line sits level with the keys' bottom edge. */
+    bottom: calc(100cqh - var(--cy) - var(--d) * var(--controls-y) - 44px);
     left: max(var(--margin), (100% - var(--content-max)) / 2 + var(--margin));
+    display: flex;
+    flex-direction: column;
     width: var(--info-w);
     max-width: none;
     padding-inline: 0;
+    pointer-events: none;
   }
 
-  .disc-gallery {
+  .projects__info > * {
+    pointer-events: auto;
+  }
+
+  .quick-resume {
+    margin-top: auto;
+  }
+
+  /* The selected disc's geometry, shared with the credits' column so it can
+     line up with the keys under the disc (container units: the frame). */
+  .disc-gallery,
+  .projects__info {
     /* Right of the credits by enough that the disc behind (lower left)
        never reaches under them, and small enough that the annotation still
        fits on the right (the last term, on narrow landscape screens). */
@@ -525,15 +578,18 @@ html:not(.js) .disc-gallery__controls {
     /* A little below the middle: the arc climbs to the right, so this keeps
        the previous discs low (clear of the credits) and the next in frame. */
     --cy: 53cqh;
+  }
+
+  .disc-gallery {
     --spread-x: 1;
     --tilt-x: 24deg;
     --tilt-y: -18deg;
     --hint-x: 0.4;
     --hint-y: 0.27;
     --hint-w: 0.42;
-    /* The second previous disc passes under the credits' column: only on
-       frames tall enough for it to clear them (measured 2026-10-30: clean
-       from ~940 px at every width; two-line titles need the room). */
+    --hint-label-x: 56%;
+    /* One previous disc only: a second one would run into the credits in
+       the bottom-left corner (measured 2026-11-09 at 1512 x 1000). */
     --shown-prev: 1;
     --shown-next: 2;
     position: absolute;
@@ -547,22 +603,49 @@ html:not(.js) .disc-gallery__controls {
     height: auto;
   }
 
-  /* Bottom-left corner, under the credits: the previous disc always passes
-     to the right of this column, so nothing ever covers the keys. */
+  /* From under the header line down to the disc's middle, beside its right rim:
+     the cord's scissor-cut end shows there, clear of the header's links. */
+  .disc-gallery__prop {
+    position: absolute;
+    z-index: 3;
+    top: var(--header-h);
+    left: calc(var(--cx) + var(--d) * 0.6);
+    display: block;
+    width: calc(var(--d) * 0.24);
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .disc-gallery[data-moving] .disc-gallery__prop {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Centred under the selected disc's rim: the disc leans back, so its
+     lowest point on screen is about half a diameter below the anchor. */
   .disc-gallery__controls {
     position: absolute;
-    left: calc(max(var(--margin), (100% - var(--content-max)) / 2 + var(--margin)) - 0.25rem);
-    bottom: var(--space-6);
+    left: var(--cx);
+    top: calc(var(--cy) + var(--d) * var(--controls-y));
+    translate: -50% 0;
     padding: 0;
   }
 }
 
-@media (min-width: 1024px) and (orientation: landscape) and (min-height: 940px) {
-  .disc-gallery {
-    --shown-prev: 2;
-  }
+/* ---- Depth on scroll (MOTION_SYSTEM §2.4) ------------------------------------
+   --parallax (useParallax) is 0 when the chapter's top meets the viewport's,
+   the resting composition every measurement above was made at. The credits
+   trail the page, the discs (with their keys and arrow) run ahead of it. */
+
+.projects {
+  --parallax: 0;
 }
 
-.projects__heading { max-width: 20ch; }
-.quick-resume__head { border-top: 0; align-items: center; }
-.quick-resume__title { min-height: 2.2em; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .projects__info {
+    translate: 0 calc(var(--parallax) * 6svh);
+  }
+
+  .js .disc-gallery {
+    translate: 0 calc(var(--parallax) * -14svh);
+  }
+}

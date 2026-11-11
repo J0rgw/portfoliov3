@@ -47,6 +47,32 @@
   }
 }
 
+/* ---- Smooth scroll (SmoothScroll, MOTION_SYSTEM §2.3) --------------------------
+   Lenis adds .lenis to <html> while it runs; it writes every frame, so the
+   native smooth behaviour from base.css must step aside. Elements marked
+   data-lenis-prevent (the menu panel) keep native wheel scrolling. */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 /* ---- Level 1: first-paint entrance (hero) -----------------------------------
    Pure CSS, starts with the first frame, needs no JavaScript. The h1 only
    moves (never fades) so it is painted, and measured, immediately.
@@ -114,7 +140,58 @@
   [data-gesture="float"] { animation: paper-float var(--dur-slow) var(--ease-out-soft) both; }
   [data-gesture="drift"] { animation: paper-drift var(--dur-reveal) var(--ease-out-soft) both; }
   [data-gesture="rotate"] { animation: paper-rotate var(--dur-slow) var(--ease-out) both; }
+
+  /* A cut-out slapped down on the page: it lands a little large and turned, squashes
+     and settles. CSS only, from the first frame, after the hero's own entrance;
+     `--slap-index` staggers a set. `backwards`: once it lands, `scale` and `rotate`
+     are free again (hover lift). */
+  [data-gesture="slap"] {
+    animation: paper-slap var(--dur-slow) var(--ease-out) backwards;
+    animation-delay: calc(var(--slap-index, 0) * 110ms + 520ms);
+  }
+
+  /* An object dropped in on a cord from the top edge: it falls into place and swings
+     to a stop (a few damped swings, never a loop). */
+  [data-gesture="hang"] {
+    transform-origin: 50% 0;
+    animation:
+      prop-drop var(--dur-slow) var(--ease-out) backwards,
+      prop-sway 2.6s var(--ease-in-out) var(--dur-base) backwards;
+  }
+
+  /* Ink drawn in: a loop revealed round its centre, once. */
+  [data-gesture="draw-loop"] {
+    mask: conic-gradient(from -90deg at 50% 62%, black var(--sweep, 360deg), transparent 0);
+    animation: ink-loop var(--dur-identity) var(--ease-in-out) backwards;
+    animation-delay: calc(var(--slap-index, 0) * 110ms + 520ms);
+  }
 }
 @keyframes paper-float { from { translate: 0 var(--space-2); } to { translate: 0 0; } }
 @keyframes paper-drift { from { translate: var(--space-3) 0; } to { translate: 0 0; } }
 @keyframes paper-rotate { from { rotate: 4deg; } to { rotate: 0deg; } }
+@keyframes paper-slap {
+  from { opacity: 0; scale: 1.16; rotate: 6deg; }
+  55% { opacity: 1; scale: 0.97; rotate: -1deg; }
+  to { scale: 1; rotate: 0deg; }
+}
+@keyframes prop-drop { from { translate: 0 -105%; } }
+@keyframes prop-sway {
+  0% { rotate: 0deg; }
+  18% { rotate: 4.5deg; }
+  42% { rotate: -2.8deg; }
+  66% { rotate: 1.4deg; }
+  84% { rotate: -0.5deg; }
+  100% { rotate: 0deg; }
+}
+
+/* The loop's sweep is an angle the browser can interpolate. Where @property is not
+   supported the ink is simply there (the mask's fallback is a full turn). */
+@property --sweep {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 360deg;
+}
+@keyframes ink-loop {
+  from { --sweep: 0deg; }
+  to { --sweep: 360deg; }
+}

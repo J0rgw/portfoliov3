@@ -14,8 +14,9 @@ interface CreditsTableProps {
 }
 
 /**
- * Liner-note credits: letterspaced label left, value right, hairline between
- * rows. The A24 "DIRECTED BY / YEAR / STARRING" table, as a description list.
+ * Liner-note credits: the A24 "DIRECTED BY / YEAR / STARRING" table as a
+ * description list. Since ADR-001 the label is sentence case beside its value,
+ * with no rules between rows.
  */
 export function CreditsTable({ rows, className = '', density = 'regular' }: CreditsTableProps) {
   return (

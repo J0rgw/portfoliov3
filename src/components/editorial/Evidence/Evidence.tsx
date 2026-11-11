@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { mediaTheme } from './mediaTheme';
 import { ui } from '../../../config/ui';
 import type { Evidence as EvidenceItem } from '../../../config/types';
@@ -29,6 +30,7 @@ export function Evidence({ item }: { item: EvidenceItem }) {
               loading="lazy"
               decoding="async"
               className={mediaTheme(item.src).pixelated ? 'is-pixelated' : undefined}
+              style={mediaTheme(item.src).pixelated ? ({ '--pixels': `${item.width}px` } as CSSProperties) : undefined}
             />
           </div>
           {item.caption && <figcaption>{item.caption}</figcaption>}

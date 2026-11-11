@@ -33,7 +33,7 @@ export const site = {
   locale: 'es_ES',
   location: 'España',
   portfolioLabel: 'Portfolio',
-  languages: 'Español (nativo) · Inglés (profesional)',
+  languages: 'Español nativo e inglés profesional',
   email,
   /** Flip `open` to false when not taking new work: copy updates everywhere. */
   availability: {

@@ -1,6 +1,6 @@
-import { ui } from '../../config/ui';
-import Button from '../../components/ui/Button/Button';
 import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
+import PenMark from '../../components/graphics/PenMark/PenMark';
+import { ArrowRight, ArrowUpRight } from '../../components/ui/Icon/Icon';
 import { chapterById } from '../../config/navigation';
 import { library } from '../../config/library';
 import '../../design/sections/BonusTrack/BonusTrack.css';
@@ -8,51 +8,40 @@ import '../../design/sections/BonusTrack/BonusTrack.css';
 const chapter = chapterById('libreria');
 
 /**
- * Chapter 05: the bonus track. A small, honest teaser: real status, a mailto
- * action instead of a fake subscription form, and a privacy note.
- * References: CollectUI Subscribe, Matt Jinn's promo card.
+ * Chapter 05, the bonus track (ADR-001). A small, honest teaser: the status
+ * in the heading, who it is for in one line, and the action as the
+ * oversized word itself ("Avísame*", a mailto link, never a fake form), its
+ * footnote and the privacy note under it. The talk it grew from is the one
+ * link out. References: CollectUI Subscribe, Matt Jinn's promo card.
  */
 export function BonusTrack() {
   return (
-    <section id={chapter.id} className="chapter bonus" aria-labelledby="bonus-title">
-      <div className="container bonus__grid">
-        <div className="bonus__intro">
-          <ChapterHeading id="bonus-title" title={library.heading} handwriting={ui.bonus.annotation} />
-          <p className="bonus__body" data-reveal="up">
-            {library.body}
-          </p>
-          <p className="bonus__audience" data-reveal="up">
-            {library.audience}
-          </p>
-          <p className="bonus__status" data-reveal="up">
-            <span className="bonus__status-label">{ui.labels.status}</span>
-            {library.status}
-          </p>
-        </div>
+    <section id={chapter.id} className="chapter chapter--frame bonus" aria-labelledby="bonus-title">
+      <div className="container frame bonus__frame">
+        <ChapterHeading
+          id="bonus-title"
+          title={<PenMark text={library.heading} mark={library.mark} />}
+          lede={library.body}
+        />
 
-        <div className="bonus__card" data-reveal="up">
-          <span className="bonus__sticker" aria-hidden="true">
-            <span>{ui.bonus.annotation}</span>
-            <span>{ui.bonus.track}</span>
-          </span>
-          <p className="bonus__headline" aria-hidden="true">
+        <div className="bonus__action" data-reveal="up">
+          <a className="bonus__headline" href={library.cta.href}>
             {library.headline}
-            <span className="bonus__asterisk">*</span>
-          </p>
-          <div className="bonus__actions">
-            <Button href={library.cta.href} icon="mail">
-              {library.cta.label}
-            </Button>
-            <Button href={library.talk.href} variant="secondary" icon="arrow-up-right" external>
-              {library.talk.label}
-            </Button>
-          </div>
+            <span className="visually-hidden"> {library.headlineHidden}</span>
+            <span className="bonus__asterisk" aria-hidden="true">*</span>
+            <ArrowRight className="bonus__arrow" aria-hidden="true" />
+          </a>
           <p className="bonus__footnote">
             <span aria-hidden="true">* </span>
             {library.footnote}
           </p>
           <p className="bonus__privacy">{library.privacy}</p>
         </div>
+
+        <a className="bonus__talk" href={library.talk.href} target="_blank" rel="noopener noreferrer">
+          {library.talk.label}
+          <ArrowUpRight size={16} aria-hidden="true" />
+        </a>
       </div>
     </section>
   );

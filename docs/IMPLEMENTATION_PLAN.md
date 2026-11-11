@@ -143,6 +143,47 @@ Full brief received with the sketch (`public/images/Imagen de ChatGPT 29 oct 202
 - [x] Checked at 1920, 1440, 1366×650, 1280, 1024, 768, 390 and 360 px, reduced motion, no JS,
       keyboard (results in §7.2)
 
+### Phase D4: the diagonal hero (2026-11-10) ✅
+Jorge picked one of three layout studies (name across the top, name stacked left, diagonal),
+supplied his arm photo and the cover at 1200 px, and asked for the tape and the train to go.
+- [x] Name in two lines of Poppins 800 top left, sized with the disc (`--name`, measured line
+      widths 5.716 em / 3.734 em); role and statement bottom left; the `h1` keeps both
+- [x] Disc under the name's first line, sleeve to its lower right; the arm photo replaces the
+      stock hand: thumb on the film, the sleeve's edge in the thumb's crotch (measured by
+      `scripts/prepare-hero-art.py`), forearm out through the frame's edges, so the set no
+      longer has to stand on the bottom edge; film creases regenerated for `--grip: 0.6`
+- [x] Headphones hung over the right edge under the header's controls (the study's spot hit
+      "Menú"); knob past the role; sticker on the film. Removed: tape, train (registry,
+      recipes, `train` phase), ink loop, "!!". The stock hand files stay on disk, unused
+- [x] Cover files rebuilt from the 1200 px original (+1200 w) with dark variants; landscape solo
+      keeps the disc where it rests; credit exit parallax −0.15
+- [x] Checked at 1024×768, 1280×800, 1440×900, 1512×734, 1920×1080, 768×1024, 390×844, both
+      themes, reduced motion, no JS: no overflow, no console errors, disc ≥ 14 px from the
+      name's glyphs through the run, sleeve out of the frame when solo ends
+
+### Phase D5: the hand that grips, the sharp disc, the handed-in entrance (2026-11-10) ✅
+Jorge confirmed the arm is his, flagged it as not adjusted (his palm stood off the sleeve with
+a gap under the thumb), supplied the disc at 1200 px and asked for a creative pass.
+- [x] Grip, after three rounds of Jorge's notes (palm standing off the sleeve; then a hand
+      turned 22°, crooked; then a hand hidden behind the sleeve, cut off): his photo's hand
+      hangs below the thumb, so it grips low. Final: `--grip: 0.74`, crotch 8 % inside the
+      edge, the photo turned −6° to follow the sleeve, `--arm` 1.94 sleeves (thumb a third of
+      the sleeve), one copy in front: thumb level across the lower cover, palm over the edge,
+      wrist out through the bottom-right corner. Jorge called it almost and sent a photo of
+      his hand holding a real case: the case and its private photo are cut away
+      (`scripts/prepare-hero-art.py`, skin kept inside the case's fitted outline, the cut-out
+      tool's white halo dropped), and the sleeve is laid where the case was (its top-right
+      corner, its 4.9° turn, its 650 px insert as the cover), so the grip is real; film
+      creases redrawn for it. The original photo lives in the git-ignored `private/` (not
+      served, not committed): the case frames a private photo
+- [x] Disc: `cdJorge_1200px.png` cut out of its black ground (centre, rim and hole measured on
+      72 rays), disc-560/800/1190 in WebP and AVIF plus dark files; ThemeImage now passes
+      `sizes` to its AVIF source. The old 512 px disc files stay on disk, unused
+- [x] First paint: name lines rise, disc lands spinning, hand brings the sleeve up, cut-outs
+      slapped after (MOTION_SYSTEM §2.1); film sheen and disc highlight follow the pointer
+- [x] Hidden track: an ASCII disc and a note in the console (`config/hiddenTrack.ts`,
+      `ui/HiddenTrack`, mounted in PageShell)
+
 ### Phase E: project experience ✅
 - [x] `CoverArt` motifs for the six releases + the private row
 - [x] Rows: case-study links, cover discs, marquee rendered on first hover only, focus state, touch fallback
@@ -228,6 +269,103 @@ motion: MOTION_SYSTEM §2.2; contract: IA §3. Results in §7.4.
 ### Phase F: supporting chapters ✅
 - [x] Liner notes, Services, About (pass, milestones, instruments), Bonus track, Back cover, Footer, 404
 
+### Phase F2: critique fixes (2026-11-10) ✅
+`/impeccable critique` of the home page scored 29/40 (snapshot in `.impeccable/critique/`);
+Jorge chose quick fixes first, all five issues, and a job for the hold rather than a shorter one.
+- [x] About pass portrait sized by its window's height: 7 % of the photo (the cap's crown) is
+  cropped at every width, against 38 % (the face) at 1024 px and below before.
+- [x] Removed: the About narrative's 8 px accent stripe, the dead 3 px stripe on the notes, the
+  Estrella words beside the Process, Services and Bonus headings, the second "Notas del libreto".
+- [x] Header veil past the hero, matched to the ground behind it (`data-ground`, layout.css).
+- [x] Middle chapters as objects: Process on the page ground with a saddle-stitched booklet whose
+  page turns, notes as paper slips; Services printed as a tracklist insert; About notes signed.
+  Paper's soft shadow made visible in dark (`--shadow-object-soft`).
+- [x] The hold's job: the marker underlines each chapter's phrase as the hold is used up
+  (`ChapterHold`, `useChapterHold`, `PenMark`; phrases in config, checked by `test:config`).
+- [x] Polish: the dark promo insert is the plain raised stock (`--accent-tint: 0%`), light
+  `--surface` is `#fcfdff` (not pure white), the gallery hint says "Toca" on touch screens,
+  the home footer drops the contact column the back cover has just listed.
+
+### Phase F3: second critique (2026-11-10) ✅
+The re-run scored 30/40 with no P1 (run 1's snap overshoot was a measurement artifact of the
+browser tool's single large wheel events; real 100 px notches snap only within ~280 px of a
+chapter start). Jorge chose the labels first, printed metadata only, all four issues.
+- [x] Small mono capitals only where an object prints them: 36 → 10 on home (the pass, the
+  booklet's running head, the back cover's spec rows, two controls); "Nota técnica" kept for
+  screen readers only; "Lo he hecho en:", the About credits, the bonus status, the gallery hint
+  and the footer headings in sentence case.
+- [x] "Avísame*" just under its heading (55 px against 60 px at 1512 px; it was 101 px).
+- [x] The header stays clear over the hero's pinned run only (`.hero__clear`): the name now
+  leaves under the veil, not under the logo.
+- [x] Dark paper: no outline but a lip of light on the top edge (`--paper-border`,
+  `--paper-lip`), and a hairline spine crease for the booklet's staples.
+
+### Phase F4: third critique and the open questions (2026-11-10) ✅
+The third run scored 30/40 with no P0–P2 issues; Jorge took two of its three P3s (the third,
+naming the stack logos, sits in the Projects section he will rework) and answered Q39–43.
+- [x] The header veil fades out by 88 px (solid to 54 px), so art passing under it fades
+  instead of being sliced.
+- [x] The track playing: "02 Proceso" beside the mark on home, from the header's observer,
+  and the same chapter marked in the menu (`aria-current="location"`).
+- [x] The JA monogram replaces the "Jorgw" wordmark; the theme switch is gone; About's logo
+  strip is gone; the timeline runs newest first.
+
+### Phase F5: deslop pass (2026-11-10) ✅
+Jorge's brief `.impeccable/critique/desloping.md` (remove AI-template patterns without
+redesigning); audit table and findings in `.impeccable/critique/2026-11-10T21-55-24Z__deslop-audit.md`.
+Base components first, then sections; the Projects section, `/proyectos/` and the case studies
+were audited but not touched (Q39: Jorge's own rework).
+- [x] Middots between data: About's timeline (role, then place on its own line), the projects
+  line ("MoneyMan, Client Leads, Disco Download y gitchange"), the instruments (comma lists),
+  the languages ("Español nativo e inglés profesional", About and back cover), the pass badge,
+  the footer's "··" before the full index (now a link with an arrow). `check:architecture`
+  fails on a middot in copy, with an allowlist for object print, titles, social cards and the
+  Projects pages.
+- [x] Redundant text: the timeline's category column (Charla, Trabajo…), "Créditos" on the
+  pass, the bonus's status badge (heading and body already say it), the menu's "Tracklist"
+  label, the 404's sentence that restated its heading.
+- [x] Badges and decoration: Process's circled step numbers are numerals on the thread (active:
+  functional accent and bold; the ground behind them carries the page grain), the booklet's
+  accent underline, the menu dot's halo.
+- [x] Rules: inside a Services track (outcome/scope, evidence/action) and the action's card
+  footer (now an inline sentence-case link), the doubled rule under the back cover's statement,
+  the rule after About's signed notes, the rule before Process's closing question.
+- [x] Prevention: DESIGN.md (separators, "Decisions"), AGENTS.md, IA §3–4, references status.
+- [x] Checked: build and all checks pass (CSS 16.79 → 16.66 kB gzip); no horizontal overflow
+  at 320, 360, 390, 768, 1024, 1280 and 1440 px on five routes in both themes; no console
+  errors; without JavaScript the home page shows no middot; menu keyboard (focus in, Tab
+  contained, Escape returns focus); the step being read measured as #206DA5/700 (light) and
+  #E88B40/700 (dark), the others muted/400.
+- [ ] For Jorge's Projects rework (not changed here): middots in credits and statuses
+  (`projects.ts` "En desarrollo · sin desplegar", "Versión funcional · 2025", "Privado · NDA";
+  stack and technology joins on the index and the case study; "Siguiente pista · 03"); the
+  index's four mono-caps labels on every card (24 on the page); the case study's 2 px rule on
+  top of every section plus a hairline under it, "Volver a proyectos" above breadcrumbs that
+  lead to the same place, the "Contenido" label, circled decision numbers, and the evidence
+  flow's boxed rows with mono-caps tags; the gallery's stack logos unnamed on touch (critique
+  run 3). The social cards keep their printed middots (rim, catalog line) as object print.
+
+### Phase F6: one frame per chapter (ADR-001, 2026-11-10) ✅
+
+Jorge: bring every section after Projects, and the Projects pages, up to the hero's and
+Projects' language; less text and fewer lines so each chapter fits the smooth-scroll hold and
+stays in place; a decision record to follow the change. Record, status table, removed copy and
+measurements: [`docs/adr/ADR-001-chapter-frames.md`](adr/ADR-001-chapter-frames.md).
+
+- Chapters 02–06 are frames like Projects' (heading top left at Projects' size, copy at the
+  foot): Proceso is a playlist on Jorge's iPod (a new cut-out) with the selected step's credits;
+  Servicios a tracklist of rows; Sobre mí his portrait cut-out with one signed paragraph and the
+  credits on shared columns; Bonus and Contacto make the oversized word the link ("Avísame*",
+  "Hablemos"); the footer is rows of links. No paper, pass, sticker, spec table or square button
+  on these pages.
+- The hold only holds a chapter that fits the window (`useChapterHold`, `data-unheld`);
+  Projects included since 2026-11-11 (Q49), so on phones and portrait tablets it flows.
+- `/proyectos/` and the case studies: sentence-case titles, credits without small capitals or
+  rules (`CreditsTable` restyled), stack marks (`editorial/StackMarks`), one back link, links
+  for actions, numerals without circles, single rules; the middot exemption for the two pages
+  is gone from `check:architecture`.
+- Home: 12,975 → 8,365 px at 1512 × 734; 17,604 → 9,059 px at 390 × 844 (Projects flowing).
+
 ### Phase G: validation ✅ (results in §7)
 - [x] `npm run build` (assets, types, client + SSR builds, prerender, SEO checks)
 - [x] Headless checks: console errors, hydration (dev build, all routes), overflow, no-JS, reduced motion, keyboard menu
@@ -269,7 +407,9 @@ These are kept **off the site** until confirmed:
 5. **Location**: only "España" is stated. A city would help local search.
 6. **About narrative and principles** are drafted from public facts; Jorge should review the voice.
 7. **Component library**: name, scope and whether a real waitlist is wanted (see §5).
-8. **Deployment**: replacing v2 on GitHub Pages is an owner decision (see §5).
+8. **Deployment**: replacing v2 on GitHub Pages is an owner decision (see §5). The workflow is
+   ready (`.github/workflows/deploy.yml`, 2026-11-11); the cut-over (Pages on `Portfoliov3`, the
+   domain moved from `portfoliov2`) waits for Jorge's go-ahead.
 10. **Availability** (`site.availability` in `src/content/site.ts`) says "Disponible para nuevos
     proyectos", carried over from the previous config. Flip it when that changes.
 11. ~~Hero brief, sections 1–4~~: answered by the full brief and the sketch (2026-10-29, Phase D3).
@@ -309,10 +449,9 @@ These are kept **off the site** until confirmed:
     "preferably"; there was no serif, so Bodoni Moda (OFL) was added for the gallery title only
     (ART_DIRECTION §3.1). Keep it, swap it (one token, `--font-serif`), or drop it for Poppins?
     Should the case-study title use it too, for continuity with the disc?
-20. **Arrow source in `public/`**: since TASK 01 the site shows `marker-arrow.webp`, extracted
-    from `public/images/gallery/cd7e159e….jpg` (17 kB). The JPEG itself is not referenced but is
-    copied into `dist/` and would be published. Move it out of `public/` (and update `SRC` in
-    `scripts/extract-marker-arrow.py`) or delete it once the WebP is approved.
+20. ~~**Arrow source in `public/`**~~ Resolved 2026-11-11 (Jorge: "only upload the images we
+    use"): the JPEG moved to `private/originals/gallery/` (git-ignored, never served) and `SRC`
+    in `scripts/extract-marker-arrow.py` follows it.
 21. **Counts**: the gallery shows `03 / 06` (six discs, each opens a case study); the footer
     counts seven tracks (the private row included). Keep both, or drop the private track from
     the numbering, or give it a disc that opens contact?
@@ -336,6 +475,74 @@ These are kept **off the site** until confirmed:
     script handles a checkerboard or a clean alpha.
 27. **Neighbour scale**: A24 grows the next disc; the gallery keeps Jorge's earlier rule (both
     neighbours smaller). `TRACK.scaleNext` above 1 gives A24's version if wanted.
+28. ~~**Theme toggle**~~ Answered 2026-11-02: Jorge asked for a sun/moon button left of
+    «Hablemos», "even if only for debugging". Added (see "Colour system"). Decide later whether
+    it stays public; removing `<ThemeToggle />` from SiteHeader is the only change needed.
+29. **Arrow in the dark theme**: `marker-arrow-dark.webp` is a generated recolour of Jorge's
+    stroke (accent hue, lightness lifted so it reads on carbon). Approve it, or supply an
+    orange/light original.
+30. **Iridescence**: the pastel data-side sheen on discs and the pass's holographic laminate stay
+    as physical materials (never fills or text). Keep them, or switch both to neutral silver?
+31. **Availability dot**: green `#1F9D55` is kept as a semantic state colour next to its text.
+    Confirm, or move it to the accent.
+32. **Rights to the cut-outs (2026-11-09)**: the files in `public/images/assets/` are downloads
+    with hash names; the map pin carries a "2023 Rawpixel Ltd." copyright in its EXIF; the
+    headphones, knob and phone are product-style photos; the train is a photo of a London
+    Underground train; the THIS IS NOT AI sticker's author is unknown. The repo is public and
+    the site will be. Confirm they may be published, or send replacements:
+    `uv run scripts/extract-cutouts.py <id>` re-keys a replacement with the same recipe.
+    The 2026-11-10 files (arm photo, media buttons, iPod, selection box, torn paper, a toy
+    brick that may carry a trademark) need the same answer.
+33. ~~**Originals in `public/`**~~ Resolved 2026-11-11 (same answer): the sources the scripts
+    read moved to `private/originals/` (`assets/`, `hero/cdJorge_1200px.png`, `hero/disc.webp`,
+    `gallery/`, `fonts/estrella-early.otf`) and every script path follows; images nothing reads
+    (v2 leftovers, the retired tape, train, hand, wordmark, frog and monogram files, the empty
+    canvas) moved to `private/unused/`. Both are git-ignored, so `public/` holds only what the
+    built site requests, plus licence notices and `robots.txt`.
+34. **Hero weight with the collage** (extends Q13): the first viewport's images are now
+    197 kB at 1512 × 734 @1×, 322 kB @2× and 280 kB on a 390 × 844 @3× phone (78 / 128 /
+    112 kB before). Accept, or trim: the train is only seen mid-scroll and could load later;
+    phones could skip the headphones; WebP quality could drop from 84. After the diagonal
+    hero (2026-11-10): 193 / 318 / 276 kB, measured the same way (the 61 kB arm replaces the
+    hand, the tape, the train, the ink and "!!"). After Phase D5 (the 1190 px disc, AVIF):
+    196 / 356 / 314 kB, the sharper disc costing ~38 kB on 2× and 3× screens.
+35. **THIS IS NOT AI**: placed on the sleeve at Jorge's request (2026-11-09) as his own
+    statement. Visitors may read it as a claim about the site; the commit history says its
+    first prototype was made with AI. Keep it as is, or say what it should refer to.
+36. **The knob turns in the plane**: the photo is a three-quarter view, so it can only turn as
+    a paper cut-out (64° over the scene), not spin on its own axis. A top-down photo of a knob
+    would allow a real turn up to eleven.
+37. ~~Whose arm holds the sleeve~~: answered 2026-11-10, it is Jorge's.
+38. ~~Disc resolution~~: answered 2026-11-10, Jorge supplied the disc at 1200 px (Phase D5).
+39. ~~The marked phrases~~: answered 2026-11-10, keep them for now; Jorge will rework the
+    Projects section and the projects page himself (so the Projects heading's mark, the gallery
+    and its credits are his next pass).
+40. ~~Trayectoria order~~: answered 2026-11-10, newest first (Phase F4).
+41. ~~Logo loop and Instrumentos~~: answered 2026-11-10, the strip is dropped (Phase F4). Its
+    files (`components/ui/LogoLoop`, `design/components/LogoLoop`) are left unused because they
+    carry uncommitted edits git could not restore; delete them when committing.
+42. ~~Theme toggle~~: answered 2026-11-10, removed (Phase F4). Its files (`ui/ThemeToggle`, never
+    committed) are left unused for the same reason; the forced-theme hooks stay dormant.
+43. ~~"Jorgw" in the header~~: answered 2026-11-10, the JA monogram (Phase F4).
+44. **Portrait resolution (ADR-001)**: About's cut-out is the pass's photo, 457 px wide, shown
+    up to 368 px wide, so a 2× screen upscales it about 1.6×. A portrait of 900 px or more
+    (same framing, cut out or on a plain ground) would be sharp; `uv run
+    scripts/extract-cutouts.py jorge` re-cuts it.
+45. **The iPod (ADR-001)**: Proceso's object is the iPod from the cut-out set, so Q32 (rights)
+    covers it too. Its front shows no logo. Keep it, or send a photo of your own iPod.
+46. **Copy cut by ADR-001**, all quoted in the ADR's appendix: the services' quoted client
+    problems and four-line scopes, About's second and third paragraphs, the three principles and
+    the milestones' detail lines (including "de marzo a junio" at Grupo Fuertes), Proceso's
+    closing question and button, the bonus's longer body and privacy note. Restore any that
+    should come back; each has a place in the new layout only if the chapter still fits.
+47. **The toy brick**: not used. Its studs carry a toy maker's trademark and the brick is about
+    240 px in the file; a bonus-track object needs another photo if you want one.
+48. **Unused files after ADR-001**: `editorial/ProfileCard`, `graphics/Paper`, `graphics/Sticker`
+    and their CSS (plus LogoLoop and ThemeToggle from Q41–42). Left in place because they carry
+    uncommitted edits; delete them when committing if they are not coming back.
+49. ~~Projects on phones~~: answered 2026-11-11, the fit rule applies to Projects too. It is
+    held wherever it fits (every laptop and desktop size measured) and flows on phones and
+    portrait tablets, where it is 1.04 to 1.35 windows tall.
 
 ---
 
@@ -345,7 +552,8 @@ These are kept **off the site** until confirmed:
   static), double opt-in, a privacy notice and an RGPD consent line. Until then the CTA is a
   `mailto:`.
 - **English edition** under `/en/` with `hreflang`, written (not machine translated).
-- **Deploy**: GitHub Actions workflow building `dist/` and publishing to Pages on
+- **Deploy** (workflow added 2026-11-11, `.github/workflows/deploy.yml`; cut-over pending, §4
+  Q8): GitHub Actions workflow building `dist/` and publishing to Pages on
   `portfolio.jarcas.dev`; set `og:image` URLs absolute (already absolute in the head builder).
 - Case-study screenshots for `client-leads`, `gitchange` and `Disco Download` (today they use
   diagrams and real command excerpts).
@@ -429,7 +637,7 @@ Same setup (production build, `vite preview`, Chrome headless, Lighthouse 12.8.2
   header).
 
 Comparison captures (first viewport, before and after this refactor) live in
-[`docs/evidence/`](evidence/): `2026-10-26-before-desktop.webp` vs `2026-10-26-after-desktop.webp`,
+`docs/evidence/` (local only, git-ignored since 2026-11-11): `2026-10-26-before-desktop.webp` vs `2026-10-26-after-desktop.webp`,
 `2026-10-26-before-mobile.webp` vs `2026-10-26-after-mobile.webp`, and
 `2026-10-26-after-case-mobile.webp`. Hero scene: `2026-10-29-hero-desktop.webp` (rest),
 `2026-10-29-hero-desktop-solo.webp` (disc centred), `2026-10-29-hero-mobile.webp`.
@@ -554,3 +762,93 @@ Updated validation and delivered-file inventory are in TASK02_REPORT.md.
 Missing art remains explicit: original paper scans, brush/sticker collection and final
 project cover art. Existing generated artwork is provisional. Estrella licence and factual
 content review questions remain open; TASK 02 does not resolve or invent them.
+
+## Colour system — 2026-11-02
+
+Brief: one light/dark colour system (light: cool white + blue `#409DE8`; dark: carbon + orange
+`#E88B40`, its HSL complement), no third accent, single source of truth, WCAG 2.2 AA. Layout,
+typography, copy, animations and CD geometry unchanged. Rules: ../DESIGN.md "Palette and
+material"; enforcement: `check:architecture` fails on hex/rgb/hsl or `--palette-*` outside
+`design/tokens.css` (the disc's neutral material greys in `Disc.css` excepted).
+
+- Tokens: palette primitives → semantic roles (light default, dark under
+  `prefers-color-scheme`) → scopes (`.on-night`, `[data-surface]`). All legacy names
+  (`--color-*`, `--rule*`, `--halo-*`, `--decorative`) were removed; ~250 usages migrated.
+- Night scope remaps roles, so the `.on-night` overrides in base, layout, Button, ChapterHeading,
+  CreditsTable, Contact and the footer were deleted. The header derives its halo from one
+  `--nav-ground`. In dark the back cover is raised to `#1B2027` so it stays a distinct object.
+- Removed from the identity: the pastel gradient of the Bonus insert (now `--accent-surface`),
+  the iridescent fill of the menu's first insert (now silver), the multi-hue project covers
+  (teal, brown, terracotta, navy, lime; now print inks + accent) and the terminal cover's
+  red/amber dots.
+- Rasters: dark variants by `scripts/generate-theme-variants.mjs` (hero disc and 4 cover sizes,
+  logo, frog mark: HSL complement; arrow: ink recolour; hand: defringe of its white cut-out),
+  served by `graphics/ThemeImage` (`<picture>` + media, no JS). Dark files are within ±3 % of
+  the originals' weight (cover-720: 48.2 vs 47.7 kB); the dark disc has no AVIF (Chrome's
+  encoder cannot write it), so dark visitors get its WebP (35.3 vs 20.7 kB). GitHub's mark has a light SVG for dark.
+- Readable glyphs (Estrella words, the Bonus asterisk) moved to `--accent-functional`; the
+  bright blue fails 3:1 on light grounds (2.76:1). The gallery's pen loop moved to `--accent`.
+- `index.html`: `color-scheme` meta (first canvas already dark) and per-scheme `theme-color`.
+  OG cards regenerated with the new cover inks; the generator now pins the light theme.
+
+Validation (2026-11-02, local Chrome via playwright-core): build, typecheck, architecture,
+config and asset checks pass; axe (WCAG 2.0/2.1/2.2 A+AA) on 9 routes × light/dark × 390/1440 px:
+0 violations after the glyph fix (one before: «Proceso» at 2.91:1). axe could not compute
+contrast for 9–157 nodes per page, ~85 % `bgGradient` (the grain veil and the paper material are
+gradients), the rest overlaps, pseudo-content and images; those pairs are covered by the measured
+role matrix in DESIGN.md. No horizontal overflow, no console
+errors. Visual review of every home section, index, case study and menu in both themes at 1440
+and 390 px. CSS 14.98 kB gzip (was 14.86), initial JS 105.61 kB gzip (was 105.29).
+Not verified here: Safari/Firefox, real devices, a screen reader, a live OS theme switch.
+
+Theme toggle (same day, Jorge's request "aunque sea solo para el debugging"): `ui/ThemeToggle`
+(ReIcon `Moon`/`Sun`, both rendered, `--theme-dark` shows one; `aria-pressed`, label «Tema
+oscuro», 44 × 44 px, hidden without JS) left of «Hablemos». `ui/theme/theme.ts` holds the
+override: `data-theme` on `<html>`, sessionStorage, restored by the inline head script before
+paint; `ThemeImage` sources and the per-scheme `theme-color` metas follow it. Tokens: dark
+mapping under both triggers, `--mark-filter*` replaces LogoLoop's own media query;
+`check:architecture` now also fails on `prefers-color-scheme` outside tokens.css and when the
+two dark blocks differ (verified by breaking one). Tested in Chrome with the system in light
+and in dark: force, navigate (kept), return (override dropped), Space key, images, metas,
+`aria-pressed`, no console or hydration errors; axe clean at 360/390/1440 px, no overflow.
+Initial JS 107.32 kB gzip (+1.7 kB: the two icons carry outline and filled paths, plus the store).
+Known limit: a theme forced against the system shows the system's raster variant for a moment
+on page load until hydration swaps the `<source>`; CSS is correct from the first paint.
+
+## Cut-out collage — 2026-11-09
+
+Brief: Jorge put realistic cut-outs in `public/images/assets/` and showed a flat generated
+project disc next to the photographed broken one ("the CDs are really different"): make the
+hero and Projects look like a cut-out 2000s CD cover, go extra, no new text. Decided with him:
+cut-outs keep their natural colours; the hero scene stays and a collage is built round it;
+release discs become printed singles; the THIS IS NOT AI sticker and the train go in the hero.
+Rules and record: ../DESIGN.md ("Photographed cut-outs", "Materials", "Composition",
+"Jorge's cut-out set"), INFORMATION_ARCHITECTURE §3, MOTION_SYSTEM §2.1–2.2, §4, §5,
+references.md #18.
+
+- Assets: `scripts/extract-cutouts.py` (uv, Pillow, NumPy, OpenCV) keys twelve originals by
+  their ground: flat colour connected to the edge (white, black, the PNGs' opaque grey), the
+  painted checkerboard rebuilt square by square (period and phase fitted on the edges), or
+  colour-to-alpha for ink; a die-cut paper margin for photos; premultiplied resizes; 29 WebP
+  files (two or three widths each, 4–50 kB, 664 kB in all). The train's background-removal outline (~4 px white, ~5 px dark) is choked
+  away. `scripts/generate-disc-finish.py` cuts the hero disc's hub and rim (measured: hole
+  < 0.11 r, clear hub to 0.195 r, print 0.20–0.96 r) into `disc/shell.webp` (24 kB) and lifts
+  scratches from the broken-disc photo into `disc/wear.webp` (38 kB): high-pass, crack gaps
+  masked, density evened per shard, three turned copies to fill the gaps. The scribble's
+  orange ink comes from `generate-theme-variants.mjs` (`ink`), which now also takes paths.
+- Code: `graphics/Cutout`, `ui/motion/usePointerDepth`, gestures `slap` / `hang` /
+  `draw-loop` in `design/motion.css`, tokens `--filter-cutout(-lift)`, `--filter-sticker`,
+  `--material-print-grain`; `CoverArt` prints a release's label cut-outs over field and title;
+  `Disc` (pressed) wears the shell, wear and grain; rim credits removed from every project disc
+  (gallery, index, case study, OG card), so the view-transition morph joins identical discs.
+  The ink loop's box was solved numerically (credit measured at 7 viewports; every line's
+  corners 8 px inside the loop; the loop inside the frame), which also raised the credit 0.75rem.
+- Validation (local Chrome via playwright-core, dev and production builds): typecheck,
+  architecture, config, asset and SEO checks and the build pass; no console errors and no
+  horizontal overflow at 1024 × 768, 1280 × 800, 1440 × 900, 1512 × 734, 1920 × 1080,
+  768 × 1024 and 390 × 844, light and dark; hero sampled at narrative 0, 0.3, 0.66, 0.72;
+  every gallery disc selected; reduced motion and no JavaScript (prerendered) show the complete
+  still composition. LCP stays on an existing hero image (the sleeve's film), 68–176 ms
+  unthrottled. CSS 16.8 kB gzip, initial JS 110.7 kB gzip (both in budget). Images: Q34.
+  Not verified: Safari/Firefox, real devices, a screen reader, a GPU trace of the pinned scene.
+

@@ -19,3 +19,32 @@
 .cover__hand {
   font-family: var(--font-display);
 }
+
+/* A printed single (CoverArt with label cut-outs): the SVG print fills the square
+   and Jorge's cut-outs lie over it, centred on their slots. The print is cut at the
+   edge like any cover; the cut-outs carry a printed contact shadow. */
+.cover--collage {
+  position: relative;
+  overflow: hidden;
+}
+
+.cover__print {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cover__cut {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  translate: -50% -50%;
+  filter: var(--filter-sticker);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cover__cut--pixel {
+  image-rendering: pixelated;
+}

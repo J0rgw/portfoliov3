@@ -1,2 +1,3 @@
-[data-surface="blue"] { --background: var(--color-brand); --foreground: var(--color-ink); --muted: var(--color-ink-soft); background: var(--background); color: var(--foreground); }
-[data-surface="paper"] { background: var(--material-paper); color: var(--foreground); }
+/* Grounds a scope can take. Their roles are remapped in tokens.css (§3). */
+[data-surface='accent'] { background: var(--background); color: var(--foreground); }
+[data-surface='paper'] { background: var(--material-paper); color: var(--foreground); }

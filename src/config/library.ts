@@ -3,23 +3,26 @@ import { mailto } from './site';
 /**
  * Bonus track: the upcoming component library. There is no waitlist backend,
  * so the action is an honest mailto: link (docs/IMPLEMENTATION_PLAN.md §5).
+ * Distilled on 2026-11-10 (ADR-001): the status, the audience, one action, the
+ * promise and the privacy note, each in a line; the talk is the one link out.
  */
 export const library = {
   heading: 'Una librería de componentes React, en preparación',
-  headline: 'Avísame',
-  footnote: 'Te escribo una sola vez, cuando haya algo que probar.',
+  /** The phrase the marker underlines while the chapter holds (graphics/PenMark). */
+  mark: 'en preparación',
   // Scope and name are still open (implementation plan, open question 7): describe only what is known.
-  body: 'Estoy preparando una librería de componentes para React. Todavía no tiene nombre público ni fecha: si quieres enterarte cuando haya algo que probar, avísame. Sobre cómo entiendo los componentes, hablé en el DevFest 2025 en «Deja de copiar y pegar componentes».',
-  audience: 'Para equipos y desarrolladores que construyen interfaces con React y quieren una base consistente.',
-  status: 'En preparación · sin fecha de lanzamiento',
+  body: 'Todavía sin nombre ni fecha. Para equipos que construyen interfaces con React y quieren una base consistente.',
+  /** The oversized word that is the action itself; the footnote's asterisk follows it. */
+  headline: 'Avísame',
+  /** Completes the headline's accessible name: "Avísame por email". */
+  headlineHidden: 'por email',
+  footnote: 'Te escribo una sola vez, cuando haya algo que probar.',
+  privacy: 'Sin newsletter: uso tu email solo para avisarte del lanzamiento y lo borro cuando me lo pidas.',
   cta: {
-    label: 'Avísame por email',
     href: mailto(
       'Bonus track: librería de componentes',
       'Hola Jorge,\n\nAvísame cuando la librería de componentes esté lista para probar.\n',
     ),
   },
-  talk: { label: 'Repositorio de la charla', href: 'https://github.com/J0rgw/PonenciaCDD' },
-  privacy:
-    'Sin newsletter ni listas automáticas: me escribes tú y te respondo yo. Usaré tu email solo para avisarte del lanzamiento, y puedes pedirme que lo borre cuando quieras.',
+  talk: { label: 'Mi charla en DevFest 2025, «Deja de copiar y pegar componentes»', href: 'https://github.com/J0rgw/PonenciaCDD' },
 };

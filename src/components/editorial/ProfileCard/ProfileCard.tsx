@@ -1,11 +1,14 @@
 import { ui, messages } from '../../../config/ui';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { prefersReducedMotion } from '../../ui/motion/useReducedMotion';
+import { ThemeImage } from '../../graphics/ThemeImage/ThemeImage';
 import '../../../design/components/ProfileCard/ProfileCard.css';
 
 interface ProfileCardProps {
   avatarUrl: string;
   iconUrl?: string;
+  /** Dark-theme variant of the icon (scripts/generate-theme-variants.mjs). */
+  iconDarkUrl?: string;
   name: string;
   title: string;
   handle: string;
@@ -30,6 +33,7 @@ const round = (v: number, precision = 3): number => parseFloat(v.toFixed(precisi
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   avatarUrl,
   iconUrl,
+  iconDarkUrl,
   name,
   title,
   handle,
@@ -150,7 +154,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
           <div className="pass__slot" aria-hidden="true" />
           <div className="pass__head">
             {badge && <span className="pass__badge">{badge}</span>}
-            {iconUrl && <img className="pass__icon" src={iconUrl} alt="" width={28} height={28} loading="lazy" />}
+            {iconUrl && (iconDarkUrl
+              ? <ThemeImage dark={{ src: iconDarkUrl }} className="pass__icon" src={iconUrl} alt="" width={28} height={28} loading="lazy" />
+              : <img className="pass__icon" src={iconUrl} alt="" width={28} height={28} loading="lazy" />)}
           </div>
           <div className="pass__photo">
             <img src={avatarUrl} alt={messages.portrait(name)} width={457} height={546} loading="lazy" decoding="async" />

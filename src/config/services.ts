@@ -5,24 +5,24 @@ import { projectHref } from './projects';
  * Offers organised around client problems (docs/INFORMATION_ARCHITECTURE.md §3).
  * Only services with public evidence are listed. WordPress / WooCommerce and
  * booking systems are deliberately absent until there is evidence (open question 4).
+ *
+ * Distilled on 2026-11-10 (ADR-001): one line per offer, built from its earlier
+ * outcome and scope (the client's quoted problem and the four-line scope went:
+ * an unattributed quote read like a testimonial, and the tracklist has to fit
+ * one frame). The outcome is also the offer's description in the JSON-LD.
  */
 export const servicesIntro = {
   heading: 'Qué puedo construir para ti',
-  lede: 'Cuatro formas de trabajar juntos. Empiezo siempre por el problema que tienes, no por la tecnología que me apetece usar.',
+  lede: 'Empiezo siempre por el problema que tienes, no por la tecnología que me apetece usar.',
+  /** The phrase the marker underlines while the chapter holds (graphics/PenMark). */
+  mark: 'el problema que tienes',
 };
 
 export const services: Service[] = [
   {
     id: 'web',
     title: 'Webs y landing pages a medida',
-    problem: '«Necesito una web que explique bien lo que hago y que convierta visitas en contactos.»',
-    outcome: 'Una web rápida, clara y fácil de encontrar, construida a partir de tu negocio y no de una plantilla.',
-    scope: [
-      'Estructura y textos orientados a la acción',
-      'Diseño de interfaz y desarrollo a medida',
-      'SEO técnico: HTML semántico, metadatos, datos estructurados y sitemap',
-      'Rendimiento y accesibilidad desde el primer día',
-    ],
+    outcome: 'Rápidas, accesibles y fáciles de encontrar, hechas a partir de tu negocio y no de una plantilla.',
     evidence: [
       { label: 'Este portfolio', href: '/' },
       { label: 'Portfolio v2', href: projectHref('portfolio-v2') },
@@ -32,14 +32,7 @@ export const services: Service[] = [
   {
     id: 'apps',
     title: 'Aplicaciones web y herramientas internas',
-    problem: '«Trabajamos con hojas de cálculo y procesos manuales que ya no dan más de sí.»',
-    outcome: 'Una aplicación hecha para tu forma de trabajar: paneles, formularios, importación de datos y cuentas de usuario, documentada y lista para crecer.',
-    scope: [
-      'Análisis del proceso actual y alcance por fases',
-      'Frontend en React y TypeScript',
-      'Backend y datos con Node.js, Python, Firebase o SQL según el caso',
-      'Aplicación instalable (PWA) cuando aporta valor',
-    ],
+    outcome: 'Paneles, formularios e importación de datos en React y TypeScript, a tu forma de trabajar.',
     evidence: [
       { label: 'MoneyMan', href: projectHref('moneyman') },
       { label: 'Mathgeon', href: projectHref('mathgeon') },
@@ -49,14 +42,7 @@ export const services: Service[] = [
   {
     id: 'automation',
     title: 'Automatización e integración con CRM',
-    problem: '«Los datos están repartidos entre herramientas y alguien los copia a mano.»',
-    outcome: 'Procesos que se ejecutan solos y datos que llegan limpios y trazables a donde se usan: el CRM, una hoja o un panel.',
-    scope: [
-      'Integración con APIs y CRM, por ejemplo Twenty',
-      'Extracción y enriquecimiento de datos con su procedencia',
-      'Scripts y utilidades de línea de comandos',
-      'Modo de prueba antes de escribir nada en tus sistemas',
-    ],
+    outcome: 'Datos que llegan solos, limpios y trazables a tu CRM, con un modo de prueba antes de escribir nada.',
     evidence: [
       { label: 'Client Leads', href: projectHref('client-leads') },
       { label: 'Disco Download', href: projectHref('disco-download') },
@@ -67,14 +53,7 @@ export const services: Service[] = [
   {
     id: 'frontend',
     title: 'Frontend y sistemas de componentes',
-    problem: '«El producto funciona, pero la interfaz es inconsistente y cada pantalla se hace desde cero.»',
-    outcome: 'Una interfaz coherente sobre componentes reutilizables, tokens de diseño y accesibilidad, que tu equipo puede mantener.',
-    scope: [
-      'Arquitectura de componentes en React y TypeScript',
-      'Tokens de diseño y documentación de uso',
-      'Accesibilidad (WCAG 2.2) y rendimiento',
-      'Animación con propósito que respeta «reducir movimiento»',
-    ],
+    outcome: 'Componentes reutilizables, tokens de diseño y accesibilidad que tu equipo puede mantener.',
     evidence: [
       { label: 'Charla en DevFest 2025', href: 'https://github.com/J0rgw/PonenciaCDD' },
       { label: 'Mathgeon', href: projectHref('mathgeon') },

@@ -1,9 +1,9 @@
-/* Chapter 00, the cover. Composition: docs/ART_DIRECTION.md §5.1 (Jorge's
-   sketch, 2026-10-29). Motion: docs/MOTION_SYSTEM.md §2.1. The scene reads the
-   variables written by useScrollScene (--scene-split, --scene-solo,
-   --scene-exit and the disc anchor's --scene-disc-dx/dy); the defaults below are
-   the resting composition, which is also what no-JS and reduced-motion
-   visitors see. */
+/* Chapter 00, the cover. Composition: the diagonal study Jorge chose on
+   2026-11-10 (DESIGN.md "Composition"). Motion: docs/MOTION_SYSTEM.md §2.1. The
+   scene reads the variables written by useScrollScene (--scene-split,
+   --scene-solo, --scene-exit and the disc anchor's --scene-disc-dx/dy); the
+   defaults below are the resting composition, which is also what no-JS and
+   reduced-motion visitors see. */
 
 .hero {
   /* One viewport, from the top of the page: the fixed header is transparent
@@ -28,28 +28,83 @@
   height: calc(var(--frame-h) + var(--scene-run));
 }
 
+/* Snap point at the end of the pinned run (SmoothScroll, MOTION_SYSTEM §2.3). */
+.hero__solo-mark {
+  position: absolute;
+  top: var(--scene-run);
+  height: 0;
+  visibility: hidden;
+}
+
+/* The pinned run, as seen from the header's middle line: while it crosses that
+   line the header stays clear (the composition was drawn under a clear header);
+   once the frame starts to leave, the header lays its veil and the name exits
+   under it, not under the logo. Without a pinned run (reduced motion) it covers
+   the resting page only. */
+.hero__clear {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: calc(var(--scene-run) + var(--header-h) / 2);
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .hero__frame {
+  /* The pointer's place in the viewport, −1 to 1 (usePointerDepth), and how far a
+     layer of depth 1 leans for it. */
+  --px: 0;
+  --py: 0;
+  --reach: 1.4rem;
   position: relative;
   height: var(--frame-h);
-  /* Its bottom edge is where the forearm leaves the picture. */
+  /* Its bottom and right edges are where the forearm leaves the picture. */
   overflow: clip;
   container-type: size;
 }
 
-/* ---- Credit: name, role and statement collapsed into the bottom-left corner -- */
+/* ---- The diagonal: one geometry for the type, the set and the collage ----------
+   The name in the top-left corner sets the scale. In Poppins 800 at this tracking
+   "Jorge Arcas" is 5.716 em wide and "Verdejo" 3.734 em (measured in the page),
+   so --name-end is where the first line ends. The disc (--d, 3.65 names at most)
+   sits just under that line, its centre 0.09 diameters short of the line's end and
+   clear of "Verdejo"; the sleeve and the arm lie to its lower right, and the
+   hand stays inside the frame at every width checked (1024-1920 px). */
+
+.hero__credit,
+.hero__set,
+.hero__collage {
+  /* The page's text edge, as the header's logo. */
+  --credit-x: max(var(--margin), (100cqw - var(--content-max)) / 2 + var(--margin));
+  --top: calc(var(--header-h) + clamp(var(--space-2), 3cqh, var(--space-6)));
+  --name: min(17cqh, (100cqw - 2 * var(--credit-x)) * 0.62 / 5.716);
+  --name-end: calc(var(--credit-x) + var(--name) * 5.716);
+  --d: min(62cqh, 34cqw, var(--name) * 3.65);
+}
+
+/* ---- Credit: the name on top, role and statement at the foot ------------------ */
 
 .hero__credit {
   position: absolute;
   z-index: 2;
-  bottom: clamp(var(--space-5), 6cqh, var(--space-8));
-  inset-inline-start: max(var(--margin), (100% - var(--content-max)) / 2 + var(--margin));
+  top: var(--top);
+  bottom: clamp(var(--space-5), 7cqh, var(--space-8));
+  inset-inline-start: var(--credit-x);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  max-width: min(29rem, calc(100% - 2 * var(--margin)));
+  /* The box spans the frame's height beside the disc: only its type takes the
+     pointer, so the disc keeps its hover and tap. */
+  pointer-events: none;
+  /* Parallax while the frame scrolls out (exit): a share of the frame's height
+     the credit moves against the page. It runs ahead (up) as fast as the disc
+     under the name lifts off, so the two keep their distance. */
+  --credit-depth: -0.15;
 }
 
 .hero__identity {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -57,68 +112,82 @@
   line-height: inherit;
   letter-spacing: 0;
   text-wrap: initial;
+  pointer-events: none;
 }
 
-/* Plain Poppins credit directly on the page background; no label or card. */
+.hero__name,
+.hero__role,
+.hero__statement {
+  pointer-events: auto;
+}
+
+/* Plain Poppins on the page background; no label or card. Two lines: "Jorge
+   Arcas" (5.716 em) fits 6 em, "Jorge Arcas Verdejo" (9.595 em) does not. */
 .hero__name {
-  display: inline-block;
-  margin-inline-start: 0;
-  padding-inline: 0;
+  display: block;
+  max-width: 6em;
   font-family: var(--font-heading);
-  font-size: var(--text-hero-name);
+  font-size: var(--name);
   font-weight: var(--weight-black);
-  line-height: var(--leading-snug);
-  letter-spacing: var(--tracking-tight);
-  max-width: 15ch;
-  text-wrap: balance;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
 }
 
-.hero__name::first-letter {
-  text-transform: uppercase;
+/* Each line is its own mask: generous enough to keep the J's top and the g and j
+   descenders, tight enough to hide the line while it rises (below). */
+.hero__name-line {
+  display: block;
+  clip-path: inset(-0.3em -0.2em -0.34em -0.2em);
+}
+
+.hero__name-rise {
+  display: inline-block;
 }
 
 .hero__role {
+  margin-top: auto;
   max-width: 32ch;
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
+  font-size: var(--text-lg);
   font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-snug);
 }
 
 .hero__statement {
   margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  color: var(--color-ink-soft);
+  font-size: var(--text-lg);
+  color: var(--muted-foreground);
 }
 
-/* ---- The set: disc behind the sleeve, a hand holding the sleeve ---------------
-   Everything is measured in the disc's diameter (--d). The set stands on the
-   frame's bottom edge, which crosses the forearm: the photo's own cut never
-   shows. */
+/* ---- The set: disc behind the sleeve, an arm holding the sleeve ----------------
+   Everything is measured in the disc's diameter (--d). The arm is a long photo,
+   so the set no longer stands on the frame's bottom edge: the forearm reaches
+   past the frame from wherever the sleeve is. */
 
 .hero__set {
-  --d: min(68cqh, 40cqw);
   /* The sleeve (printed cover in its film). */
   --w: calc(var(--d) * 0.8);
-  /* The hand photo: its thumb is ~0.36 of the sleeve, a real hand on a real case. */
-  --hand: calc(var(--w) * 0.89);
-  /* Where the hand holds the right edge, as a fraction of its height. The
-     film's pressure creases (film-*.webp) are drawn for this value. */
-  --grip: 0.62;
+  /* Jorge's grip photo, at the scale where the case it held is this sleeve: its
+     1260 px file is 1260 / 680 sleeves (the case's insert, 650 px, is the cover). */
+  --arm: calc(var(--w) * 1.853);
   --tilt: 3.5deg;
   --sleeve-x: calc(var(--d) * 0.66);
-  --sleeve-y: calc(var(--d) * 0.4);
-  /* How far the disc slides out of the sleeve, and where it settles below
-     the frame's centre when it takes the lead. */
+  --sleeve-y: calc(var(--d) * 0.26);
+  /* How far the disc slides out of the sleeve, and where it settles when it
+     takes the lead. Landscape: it is already near the middle, tucked under the
+     name, so it stays where it rests (the offsets cancel the move to the frame's
+     centre) and grows from its top down, never towards the name. */
   --split-dx: calc(var(--d) * -0.06);
-  --solo-dy: 0px;
+  --solo-dx: calc(var(--scene-disc-dx) * -1);
+  --solo-dy: calc(var(--d) * 0.03 - var(--scene-disc-dy));
   position: absolute;
-  bottom: 0;
-  left: calc(45cqw - var(--d) / 2);
-  width: calc(var(--sleeve-x) + var(--w) + var(--hand) * 0.62);
-  /* 1.08 sleeves below its top: under the sleeve's lowest corner (1.03 at
-     this tilt) and above the photo's cut across the forearm (~1.12 at this
-     grip and hand size). Re-check both if --grip, --hand or --tilt change. */
-  height: calc(var(--sleeve-y) + var(--w) * 1.08);
+  /* Just under the name's first line, centred down the room left below it. */
+  top: calc(
+    var(--top) + var(--name) * 1.03 +
+      max(0px, (100cqh - var(--top) - var(--name) * 1.03 - var(--d) * 1.06 - var(--space-6)) * 0.5)
+  );
+  left: calc(var(--name-end) - var(--d) * 0.59);
+  width: calc(var(--sleeve-x) + var(--w));
+  height: calc(var(--sleeve-y) + var(--w));
   pointer-events: none;
 }
 
@@ -151,13 +220,16 @@
   box-shadow: var(--shadow-object);
   pointer-events: auto;
   -webkit-tap-highlight-color: transparent;
-  /* split: slides out of the sleeve · solo: to the middle of the frame, a
+  /* split: slides out of the sleeve · solo: towards the middle of the frame, a
      little larger · exit: lifts away a touch faster than the page. */
   translate:
-    calc(var(--scene-split) * var(--split-dx) + var(--scene-solo) * (var(--scene-disc-dx) - var(--split-dx)))
+    calc(
+      var(--scene-split) * var(--split-dx) + var(--scene-solo) * (var(--scene-disc-dx) + var(--solo-dx) - var(--split-dx)) +
+        var(--px) * var(--reach) * 0.25
+    )
     calc(
       var(--scene-split) * var(--d) * -0.03 + var(--scene-solo) * (var(--scene-disc-dy) + var(--solo-dy) + var(--d) * 0.03) -
-        var(--scene-exit) * var(--d) * 0.24
+        var(--scene-exit) * var(--d) * 0.24 + var(--py) * var(--reach) * 0.25
     );
   scale: calc(1 + var(--scene-solo) * 0.06 - var(--scene-exit) * 0.1);
 }
@@ -188,19 +260,22 @@
   height: 100%;
 }
 
-/* A lamp's highlight: it stays still while the label turns under it. */
+/* A lamp's highlight: it stays still while the label turns under it, and slides
+   round the disc as a fine pointer moves, the way a reflection follows the eye. */
 .hero__disc-body::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 50%;
+  rotate: calc(var(--px) * 16deg - var(--py) * 6deg);
+  will-change: rotate;
   background: conic-gradient(
     from 300deg,
     transparent 0deg,
-    color-mix(in srgb, var(--color-paper-raised) 16%, transparent) 22deg,
+    color-mix(in srgb, var(--highlight) 16%, transparent) 22deg,
     transparent 48deg,
     transparent 180deg,
-    color-mix(in srgb, var(--color-paper-raised) 10%, transparent) 202deg,
+    color-mix(in srgb, var(--highlight) 10%, transparent) 202deg,
     transparent 228deg
   );
   /* Keep the centre hole clear. */
@@ -208,18 +283,18 @@
   pointer-events: none;
 }
 
-/* ---- The sleeve and the hand that holds it: one body ---------------------------- */
+/* ---- The sleeve and the arm that holds it: one body ----------------------------- */
 
 .hero__sleeve-body {
   position: relative;
   width: 100%;
   height: 100%;
   /* split: the hand pulls it off the disc, along the forearm · solo: on out of
-     the frame, the way the arm goes. It never moves up, so the frame's edge
-     always hides the end of the arm. */
+     the frame, the way the arm goes (down, a little to the right), sticker and
+     all, so the disc ends alone. */
   translate:
-    calc((var(--scene-split) * 0.14 + var(--scene-solo) * 0.5) * var(--d))
-    calc((var(--scene-split) * 0.16 + var(--scene-solo) * 0.8) * var(--d));
+    calc((var(--scene-split) * 0.08 + var(--scene-solo) * 0.22) * var(--d) + var(--px) * var(--reach) * 0.5)
+    calc((var(--scene-split) * 0.18 + var(--scene-solo) * 1.15) * var(--d) + var(--py) * var(--reach) * 0.5);
   rotate: calc(var(--tilt) + var(--scene-split) * 3deg + var(--scene-solo) * 4deg);
 }
 
@@ -254,43 +329,130 @@
 }
 
 /* The lamp's broad reflection on the film, from the top left. A gradient
-   here rather than in film-*.webp: lossy WebP alpha bands smooth ramps. */
-.hero__case::after {
-  content: '';
+   here rather than in film-*.webp: lossy WebP alpha bands smooth ramps. Its own
+   layer outside the sleeve's shadow filter, so following the pointer repaints
+   only these bands. */
+.hero__sheen {
   position: absolute;
   inset: 0.4%;
-  background:
+  background-size: 150% 150%;
+  background-position: calc(50% - var(--px) * 45%) calc(50% - var(--py) * 30%);
+  will-change: transform;
+  background-image:
     linear-gradient(
       118deg,
       transparent 16%,
-      color-mix(in srgb, var(--color-paper-raised) 9%, transparent) 25%,
-      color-mix(in srgb, var(--color-paper-raised) 17%, transparent) 31%,
-      color-mix(in srgb, var(--color-paper-raised) 6%, transparent) 39%,
+      color-mix(in srgb, var(--highlight) 9%, transparent) 25%,
+      color-mix(in srgb, var(--highlight) 17%, transparent) 31%,
+      color-mix(in srgb, var(--highlight) 6%, transparent) 39%,
       transparent 47%
     ),
     linear-gradient(
       118deg,
       transparent 50%,
-      color-mix(in srgb, var(--color-paper-raised) 9%, transparent) 52.5%,
+      color-mix(in srgb, var(--highlight) 9%, transparent) 52.5%,
       transparent 55%
     );
   pointer-events: none;
 }
 
-/* The straight cut beside the palm is where the photo's card ran: it lies on
-   the sleeve's right edge, so the thumb is on the film and the fingers are
-   behind the sleeve. Pivot on the foot of that cut (photo px 112, 88), turned
-   7.1° so the cut runs along the edge. */
-.hero__hand {
+/* Jorge's own grip (his photo holding a real case, 2026-11-10): the case and the
+   photo inside it were cut away by scripts/prepare-hero-art.py, and the sleeve is laid
+   exactly where the case was. The case's top-right corner (30.2 % across, −14.45 %
+   down the file) sits on the sleeve's top-right corner, the photo turns 4.9° back to
+   undo the case's tilt, and the case's 650 px insert is the cover's width, so the
+   thumb lies on the film as it lay on the case, the hand wraps the right edge as it
+   wrapped the case's, and the forearm leaves through the frame's bottom edge. */
+.hero__arm {
   position: absolute;
-  left: calc(var(--w) - var(--hand) * 0.3875 - 1px);
-  top: calc(var(--w) * var(--grip) - var(--hand) * 0.3045);
-  width: var(--hand);
+  left: calc(var(--w) - var(--arm) * 0.302);
+  top: calc(var(--arm) * 0.1181);
+  width: var(--arm);
   max-width: none;
   height: auto;
-  transform-origin: 38.75% 29.73%;
-  rotate: -7.1deg;
+  transform-origin: 30.2% -14.45%;
+  rotate: 4.9deg;
   filter: var(--filter-hand);
+}
+
+/* Stuck on the film: a promo sticker in the top corner, clear of the face and
+   the thumb. */
+.hero__sticker {
+  position: absolute;
+  right: -5%;
+  top: -7%;
+  width: 29%;
+  rotate: 9deg;
+}
+
+/* ---- The collage: Jorge's cut-outs round the scene -------------------------------
+   graphics/Cutout. Each one lies at its own depth, leans that far under the
+   pointer, drifts off the set as the hand pulls (split) and leaves through its
+   nearest edge while the disc takes the centre (solo), so the disc ends alone.
+   Measured in --d, like the set. */
+
+.hero__collage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* In front of the set: lying on the bottom edge. */
+.hero__collage--front {
+  z-index: 1;
+}
+
+.hero__cut {
+  --depth: 0.8;
+  --drift-x: 0;
+  --drift-y: 0;
+  --fly-x: 0;
+  --fly-y: 0;
+  --fly-r: 0deg;
+  --turn: 0deg;
+  position: absolute;
+  translate:
+    calc(
+      (var(--scene-split) * var(--drift-x) + var(--scene-solo) * var(--fly-x)) * var(--d) +
+        var(--px) * var(--depth) * var(--reach)
+    )
+    calc(
+      (var(--scene-split) * var(--drift-y) + var(--scene-solo) * var(--fly-y)) * var(--d) +
+        var(--py) * var(--depth) * var(--reach)
+    );
+  rotate: calc(var(--turn) + var(--scene-solo) * var(--fly-r));
+}
+
+/* Hung over the right edge by the headband (its cut end off the frame), under
+   the header's controls and above the sleeve's corner. Up and out to the right
+   when the package comes apart. */
+.hero__headphones {
+  --depth: 0.7;
+  --drift-x: 0.04;
+  --drift-y: -0.04;
+  --fly-x: 0.75;
+  --fly-y: -0.9;
+  --fly-r: 16deg;
+  --turn: -3deg;
+  top: calc(var(--header-h) + var(--d) * 0.02);
+  right: calc(var(--d) * -0.03);
+  width: calc(var(--d) * 0.36);
+}
+
+/* Lying on the bottom edge past the role, short of the disc. Scrolling turns it
+   up: an in-plane turn, honest for a photo seen from the side. */
+.hero__knob {
+  --depth: 1;
+  --drift-x: -0.04;
+  --drift-y: 0.05;
+  --fly-x: -0.45;
+  --fly-y: 0.7;
+  --fly-r: 40deg;
+  --turn: calc(-14deg + var(--scene) * 64deg);
+  /* "Freelance Software Developer" is 14.61 em in its own size. */
+  left: calc(var(--credit-x) + var(--text-lg) * 14.61 + var(--space-5));
+  bottom: calc(var(--d) * -0.05);
+  width: calc(var(--d) * 0.22);
 }
 
 /* ---- Pause control (WCAG 2.2.2) ------------------------------------------------
@@ -307,13 +469,13 @@
   gap: var(--space-2);
   min-height: 44px;
   padding-inline: var(--space-3);
-  background: var(--color-paper);
-  border: var(--hairline) solid var(--rule-strong);
+  background: var(--background);
+  border: var(--hairline) solid var(--control-border);
   font-family: var(--font-body);
   font-size: var(--text-2xs);
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
-  color: var(--color-ink);
+  color: var(--foreground);
   cursor: pointer;
 }
 
@@ -336,29 +498,94 @@ html:not(.js) .hero__spin-toggle {
    hand mostly beyond the right edge -------------------------------------------- */
 
 @container (orientation: portrait) {
-  /* The bottom belongs to the set (the forearm leaves through it): the credit
-     takes the free space above. */
+  .hero__credit,
+  .hero__set,
+  .hero__collage {
+    --top: calc(var(--header-h) + clamp(var(--space-2), 2cqh, var(--space-5)));
+    /* As wide as the text column allows, two lines. */
+    --name: min((100cqw - 2 * var(--credit-x)) / 5.75, 11cqh);
+    /* Room for the credit above: the name's two lines, role and statement. */
+    --d: min(86cqw, (100cqh - var(--top) - var(--name) * 1.72 - 7rem) / 1.35);
+  }
+
+  /* The bottom belongs to the set (the forearm leaves through it): role and
+     statement follow the name. */
   .hero__credit {
-    top: calc(var(--header-h) + clamp(var(--space-5), 4cqh, var(--space-8)));
     bottom: auto;
   }
 
-  .hero__name {
-    max-width: 18ch;
+  .hero__role {
+    margin-top: var(--space-4);
   }
 
-  /* Room for the credit above (12rem), the sleeve kept inside the right margin,
-     the disc allowed to crop a little at the left edge, where its label is
-     plain blue. */
+  /* The disc allowed to crop a little at the left edge, where its label is
+     plain blue; the sleeve kept inside the right margin. */
   .hero__set {
-    --d: min(86cqw, (100cqh - var(--header-h) - 12rem) / 1.41);
     --w: calc(var(--d) * 0.74);
     --sleeve-x: calc(var(--d) * 0.42);
     --sleeve-y: calc(var(--d) * 0.61);
     /* Its left edge is already at the screen's edge: it slides up, not out. */
     --split-dx: 0px;
+    --solo-dx: 0px;
     --solo-dy: calc(var(--d) * 0.12);
+    top: auto;
+    bottom: calc(var(--d) * 0.06);
     left: min((100cqw - var(--d) * 1.2) / 2, 100cqw - var(--margin) - var(--d) * 1.16);
+  }
+
+  /* Lower, in the band between the credit and the disc. */
+  .hero__headphones {
+    top: calc(100cqh - var(--d) * 1.62);
+    right: calc(var(--d) * -0.04);
+    width: calc(var(--d) * 0.34);
+  }
+
+  /* Under the disc's cropped left side, in the bottom-left corner. */
+  .hero__knob {
+    --fly-x: -0.5;
+    left: var(--margin);
+    bottom: calc(var(--d) * 0.02);
+    width: calc(var(--d) * 0.24);
+  }
+}
+
+/* ---- First paint: the album handed to you --------------------------------------
+   CSS only, so it plays without JavaScript; nothing waits for it and reduced
+   motion skips it. The name rises line by line out of its masks, the disc lands
+   spinning and settles into its slow turn, the hand brings the sleeve up from
+   below the frame, and the cut-outs are slapped down after it (Cutout `index`). */
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__name-rise {
+    animation: line-rise var(--dur-identity) var(--ease-out) both;
+    animation-delay: calc(var(--rise-index, 0) * 110ms + 80ms);
+  }
+
+  .hero__disc-art {
+    animation: disc-land 1.9s var(--ease-out) 60ms both;
+  }
+
+  .hero__sleeve {
+    animation: hand-in 1.2s var(--ease-out) 160ms both;
+  }
+}
+
+@keyframes line-rise {
+  from {
+    translate: 0 1.15em;
+  }
+}
+
+@keyframes disc-land {
+  from {
+    rotate: -1.35turn;
+  }
+}
+
+@keyframes hand-in {
+  from {
+    translate: calc(var(--d) * 0.06) calc(var(--d) * 0.72);
+    rotate: 6deg;
   }
 }
 
@@ -378,6 +605,16 @@ html:not(.js) .hero__spin-toggle {
   .js .hero__sleeve-body {
     will-change: translate, scale, rotate;
   }
+
+  .js .hero__cut {
+    will-change: translate, rotate;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero__credit {
+    translate: 0 calc(var(--scene-exit) * var(--frame-h) * var(--credit-depth));
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-height: 34rem) and (max-width: 767px) {
@@ -395,11 +632,5 @@ html:not(.js) .hero__spin-toggle {
 
   .hero__spin-toggle {
     display: none;
-  }
-}
-
-@media (max-height: 600px) and (min-width: 768px) {
-  .hero__credit {
-    max-width: 19rem;
   }
 }

@@ -24,8 +24,8 @@ from PIL import Image, ImageDraw, ImageFilter
 OUT = sys.argv[1] if len(sys.argv) > 1 else 'public/images/hero'
 SS = 2048            # supersampled canvas
 MARGIN = 0.022       # film around the print (Hero.css .hero__cover inset: 2.2%)
-GRIP = 0.62          # Hero.css --grip
-PAD = (0.70, 0.555)  # thumb pad at that grip
+GRIP = 0.55          # where Jorge's hand meets the right edge (his grip photo, 2026-11-10)
+PAD = (0.69, 0.43)   # under his thumb, as the photo lays it on the sleeve (Hero.css .hero__arm)
 rng = random.Random(7)
 
 
