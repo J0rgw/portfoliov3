@@ -1,4 +1,4 @@
-# Portfolio V3 · JRG-003
+# Portfolio V3 JRG-003
 
 Portfolio of **Jorge Arcas**, freelance full-stack developer, designed as an album: each chapter a
 track, each project a release with its own cover, credits and liner notes.
