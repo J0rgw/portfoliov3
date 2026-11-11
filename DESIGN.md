@@ -21,8 +21,8 @@ Poppins 400/600/700/800 is primary for navigation, headings, copy, buttons, proj
 Semantic roles in `design/typography.css`: body, heading, project, metadata, annotation.
 Responsive scales use clamp; headings wrap naturally, not one forced word per line.
 Mono is for track numbers, codes, technical metadata and manufacture labels. Small uppercase
-mono (`.label`) is only what a real object prints: a disc's or a sleeve's print, the menu
-panel's index, catalog numbers. Headings, categories and lead-ins speak in sentence case at
+mono (`.label`) is only what a real object prints: a disc's or a sleeve's print, catalog
+numbers. Headings, categories and lead-ins speak in sentence case at
 text size (2026-11-10: the home page went from 36 small-caps labels to 10; the same day ADR-001
 took the pass, the booklet's running head and the back cover's spec rows off the page, and the
 Projects pages' credit tables lost theirs).
@@ -117,9 +117,10 @@ source, so it has no dark file. Originals are never
 modified, and `filter: invert()` or hue rotation is never applied to photographs, text or
 artwork. The one filter exception is the grey technology marks in the Projects credits
 (`--mark-filter`); a black mark (GitHub) swaps to a light file in dark. The header's mark is
-the JA monogram (`graphics/Monogram`, Estrella's J and A as outlines in `currentColor`, in the
-accent) since 2026-11-10: the "Jorgw" wordmark read as a typo of the name, and a vector mark
-needs no dark file. The scrolling logo strip under About's instruments was removed the same
+the JA monogram (`graphics/Monogram`, Estrella's J and A as outlines in `currentColor`) since
+2026-11-10: the "Jorgw" wordmark read as a typo of the name, and a vector mark needs no dark
+file. Since 2026-11-11 it is in ink, taking the links' hover colour on hover and focus, so the
+accent stays with the content. The scrolling logo strip under About's instruments was removed the same
 day: the list names every tool in words.
 
 **Materials.** Iridescence (`--irid-*`, `--material-disc`, `--material-foil`) is the data side
@@ -176,12 +177,15 @@ track numbers on a disc. When the broken disc is selected, the phone hangs in be
 chapter after Projects is composed like Projects: one viewport-high frame on wide landscape
 screens (`clamp(40rem, 100svh, 64rem)`), the heading in the top-left corner at Projects'
 heading size (Poppins 800, `--text-xl`) with at most a one-line lede, one dominant element, and
-the copy at the foot, short and printed straight on the ground. No paper, card, pass, sticker or
+the copy at the foot, short and printed straight on the ground (Proceso's sits at eye level,
+below). No paper, card, pass, sticker or
 spec table; rules only between real rows. A chapter is held only when it fits (MOTION_SYSTEM §2.5).
 Process: Jorge's iPod (a photographed cut-out) with the five steps as its playlist, live HTML on
 its screen in the object's own inks and the accent's selection bar; the selected step's credits
-(title, one line, one real decision linked to its project) in the bottom-left corner, changing
-over like the gallery's. Services: the four offers as a tracklist printed on the page, one row
+(title, the step, one real decision linked to its evidence) at eye level in a column up to 40rem,
+and the iPod centred in the room that column leaves, never nearer than 4rem (at the frame's
+right edge where the room runs out), changing over like the gallery's (2026-11-11: Jorge moved
+the iPod right so his longer copy fits where the eye is, and picked this place from two). Services: the four offers as a tracklist printed on the page, one row
 each (number, title large, one line on what you get, where it was done, the enquiry); two by
 two below 1280 px. About: Jorge's portrait (the pass's photo) as a cut-out standing on the
 frame's lower edge, one paragraph signed "Jorge", and the credits on shared columns (the
@@ -191,10 +195,11 @@ talk as the one link out; it stays under "Hablemos" in size. Contact: the headin
 the oversized "Hablemos" with the CD-R between word and arrow as the email link (The Romans),
 one line of details at the foot (the address with a copy button, LinkedIn, GitHub,
 availability). The footer is rows of links with their name in the margin and one line of print.
-The header stays type over the page, but past the hero's pinned run a strip of the ground behind
-it, the header's height, with no edge, lies under its marks, so headings scrolling beneath (the
-hero's own name as it leaves included) pass under it instead of colliding with the logo
-(INFORMATION_ARCHITECTURE §4). The bonus's "Avísame*" is oversized against its card, not the
+The header stays type over the page; past the hero's pinned run it turns compact on a solid
+56 px strip of the ground behind it, cut straight with no fade, rule, blur or shadow
+(2026-11-11), so headings scrolling beneath (the hero's own name as it leaves included) go
+under the strip instead of colliding with the logo or showing half-faded. Its links are words
+in sentence case at body size, not small capitals (INFORMATION_ARCHITECTURE §4). The bonus's "Avísame*" is oversized against its card, not the
 page: just under the chapter's heading (0.92 × `--text-2xl`), so the waitlist never outshouts
 contact.
 Case study: cover/sleeve above a readable booklet column, with a steady navigation rail. Since
@@ -257,12 +262,15 @@ Float/drift are short bounded gestures, not automatic infinite background decora
 The hero turn and interactive gallery keep pause/reduced-motion/off-screen behavior. Layers
 move like handled objects; no scroll blocking, abrupt layout shifts or animation-gated copy.
 The chapter hold has a job (2026-11-10): while a chapter holds, the marker underlines what it
-is about ("seleccionados", "decisiones reales", "el problema que tienes", "mí", "en
+is about ("seleccionados", "producto real", "el problema que tienes", "mí", "en
 preparación"), so scrolling through a hold always changes something on screen; at the snap
 point the stroke is not there yet, at the end of the hold it is complete, and without the hold
 (no JavaScript, reduced motion, short viewports, a chapter taller than the window) it is simply
 drawn (MOTION_SYSTEM §2.5). Process's credits change over like the gallery's (the title rises,
-the lines follow); the booklet's page turn left with the booklet (ADR-001).
+the lines follow); the booklet's page turn left with the booklet (ADR-001). In Process the hold
+is the iPod's wheel (2026-11-11): every song owns a share of it, so scrolling changes the song,
+the selection bar slides to it and its credits change over; the marker is drawn in the hold's
+first stretch, while the heading is read.
 
 ## Decisions
 
@@ -283,6 +291,8 @@ Also poor (ADR-001, 2026-11-10): a chapter taller than its frame, so the hold fr
 half-read; copy on a paper card, a pass or a tinted insert; a spec table of small capitals
 between rules; a square uppercase button where the word itself can be the link; an
 unattributed quote that reads like a testimonial.
+Also poor (2026-11-11): a fade under a fixed header, which leaves whatever passes there
+half-erased; the header's strip cuts straight.
 Before adding a line, a box, a tag or a sentence, name what it tells the visitor that nothing
 near it already does. Rules mark real divisions (rows of a table or a tracklist, an object's
 edge); states (selection, the step being read, availability, focus) keep their markers.

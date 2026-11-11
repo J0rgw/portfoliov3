@@ -1,22 +1,35 @@
-/* The header is type over the page, not a bar: no ground, no rules, no blur
-   (Jorge's brief, 2026-10-29; ART_DIRECTION §9). Legibility is handled per
-   element: the navigation takes the ink of the ground it sits on
-   (`data-tone`, followed by SiteHeader.tsx over `.on-night` sections) and a
-   halo of that ground around its letters and marks, invisible on the plain
-   ground, readable over whatever scrolls beneath. */
+/* The header is type over the page, with no rules, blur or shadow (Jorge's
+   brief, 2026-10-29; ART_DIRECTION §9). Over the hero's pinned run it is only
+   type; everywhere else it is compact and sits on a solid strip of the ground
+   behind it, cut straight at its bottom edge (2026-11-11): whatever scrolls
+   beneath goes under the strip, never half-faded under the type. The
+   navigation takes the ink of the ground it sits on (`data-tone`, followed by
+   SiteHeader.tsx over `.on-night` sections) and, for the hero, where art can
+   pass behind the type, a halo of that ground. */
+
+/* Registered so SiteHeader.tsx can read it in px: the strip's bottom edge is
+   where the header reads the ground it lays. */
+@property --nav-compact {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
 .site-header {
   --nav-ground: var(--background);
   --nav-ink: var(--foreground);
   --nav-ink-hover: var(--accent-functional);
-  /* The track number's ink (a readable glyph: the functional accent). */
-  --nav-accent: var(--accent-functional);
   /* Declared here, not in tokens, so each tone below re-resolves it. */
   --nav-halo: 0 0 1px var(--nav-ground), 0 0 4px var(--nav-ground), 0 0 10px var(--nav-ground);
   --nav-halo-filter: drop-shadow(0 0 1px var(--nav-ground)) drop-shadow(0 0 5px var(--nav-ground));
-  /* The veil's material: the ground's colour under the page's grain, as body
-     paints it (base.css), or the veil would read as a cleaner band. */
-  --nav-veil: linear-gradient(color-mix(in srgb, var(--nav-ground) var(--grain-veil), transparent) 0 0),
+  /* The strip's material: the ground's colour under the page's grain, as body
+     paints it (base.css), or the strip would read as a cleaner band. */
+  --nav-strip: linear-gradient(color-mix(in srgb, var(--nav-ground) var(--grain-veil), transparent) 0 0),
     var(--material-grain), var(--nav-ground);
+  /* The compact strip's height; the type rises to its middle (below). */
+  --nav-compact: 3.5rem;
+  --nav-rise: 0px;
+  --nav-mark-scale: 1;
   position: fixed;
   top: 0;
   left: 0;
@@ -24,43 +37,52 @@
   z-index: var(--z-header);
   height: var(--header-h);
   color: var(--nav-ink);
+  /* Only the strip and the controls take the pointer; below the strip, the page does. */
+  pointer-events: none;
   view-transition-name: site-header;
 }
 
-/* The ground behind the header, named by the section there (layout.css).
-   Paper carries the grain like the page; the secondary ground is flat. */
-.site-header[data-ground='secondary'] {
+/* The ground under the strip's edge, named by the section there (layout.css).
+   The header mirrors it as `data-nav-ground`: `data-ground` itself would paint
+   the header's own box (layout.css). Paper carries the grain like the page;
+   the secondary ground is flat. */
+.site-header[data-nav-ground='secondary'] {
   --nav-ground: var(--surface-secondary);
-  --nav-veil: var(--nav-ground);
+  --nav-strip: var(--nav-ground);
 }
 
-.site-header[data-ground='paper'] {
+.site-header[data-nav-ground='paper'] {
   --nav-ground: var(--surface);
 }
 
-/* The veil (2026-11-10). Past the hero, a strip of the ground behind the
-   header, fading out below it: type scrolling beneath goes under it instead
-   of colliding with the mark and the links. No edge, rule, blur or shadow,
-   so over its own ground it cannot be seen; it is still type over the page,
-   the page just passes behind it. Off over the hero's pinned run, whose
-   composition was drawn under a clear header. Solid down to 54 px (the marks
-   end at 53), then a 34 px fade to 88 px, where the highest snapped heading
-   starts: art passing under it fades out instead of being sliced. */
+/* Compact (2026-11-11): past the hero's pinned run, and on pages without one.
+   A 56 px strip, the type risen to its middle, the mark at 28 px. Transforms
+   only: the header's box keeps its height and nothing lays out again. */
+.site-header[data-compact] {
+  --nav-rise: calc((var(--nav-compact) - var(--header-h)) / 2);
+  --nav-mark-scale: 0.78;
+}
+
+/* The strip. Off over the hero's pinned run, whose composition was drawn under
+   a clear header. Elsewhere a solid strip of the ground with no fade, edge,
+   rule or shadow, so over its own ground it cannot be seen. It lifts by the
+   difference rather than shrinking, so its grain is not squashed, and it takes
+   the pointer, so nothing hidden under it can be clicked. */
 .site-header::before {
   content: '';
   position: absolute;
   inset: 0 0 auto;
-  height: calc(var(--header-h) + var(--space-4));
-  background: var(--nav-veil);
-  -webkit-mask-image: linear-gradient(to bottom, black 61%, transparent);
-  mask-image: linear-gradient(to bottom, black 61%, transparent);
+  height: var(--header-h);
+  background: var(--nav-strip);
   opacity: 0;
-  transition: opacity var(--dur-base) var(--ease-out);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
   pointer-events: none;
 }
 
-.site-header[data-veil]::before {
+.site-header[data-compact]::before {
   opacity: 1;
+  transform: translateY(calc(var(--nav-compact) - var(--header-h)));
+  pointer-events: auto;
 }
 
 html.menu-open .site-header::before {
@@ -69,10 +91,9 @@ html.menu-open .site-header::before {
 
 .site-header[data-tone='night'] {
   --nav-ground: var(--night-background);
-  --nav-veil: var(--nav-ground);
+  --nav-strip: var(--nav-ground);
   --nav-ink: var(--night-foreground);
   --nav-ink-hover: var(--night-accent-functional);
-  --nav-accent: var(--night-accent-functional);
 }
 
 .site-header[data-tone='night'] :focus-visible {
@@ -84,13 +105,14 @@ html.menu-open .site-header {
   --nav-ground: var(--background);
   --nav-ink: var(--foreground);
   --nav-ink-hover: var(--accent-functional);
-  --nav-accent: var(--accent-functional);
 }
 
 html.menu-open .site-header :focus-visible {
   outline-color: var(--accent-functional);
 }
 
+/* The bar is never transformed: the menu's fixed layer lives inside it. The
+   compact rise moves each control instead (and the toggle, StaggeredMenu.css). */
 .site-header__bar {
   position: relative;
   z-index: 2;
@@ -109,61 +131,34 @@ html.menu-open .site-header :focus-visible {
   pointer-events: auto;
 }
 
-.site-header__start {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  min-width: 0;
-}
-
 .site-header__logo {
   display: inline-flex;
   align-items: center;
   min-width: 44px;
   min-height: 44px;
+  transform: translateY(var(--nav-rise));
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
 /* The JA monogram (graphics/Monogram, Estrella's J and A as one mark; since
    2026-11-10 instead of the "Jorgw" wordmark, which read as a typo of the
-   name). A mark, so the decorative accent; it follows both themes as
-   currentColor. The link is named "Jorge Arcas…" for assistive technology. */
+   name). In ink since 2026-11-11, so the accent stays with the content; it
+   takes the links' hover colour on hover and focus. The link is named
+   "Jorge Arcas…" for assistive technology and takes the visitor home, to the
+   top. */
 .site-header__mark {
   width: auto;
   height: 2.25rem;
-  color: var(--accent);
+  color: var(--nav-ink);
   filter: var(--nav-halo-filter);
+  transform: scale(var(--nav-mark-scale));
+  transform-origin: left center;
+  transition: color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
 
-/* The track playing (2026-11-10): the chapter under the header, like a CD
-   player's display, in the printed mono. Home only; hidden over the hero and
-   without JavaScript. A new track slides in. */
-.site-header__track {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  text-shadow: var(--nav-halo);
-  pointer-events: none;
-}
-
-.site-header__track-number {
-  color: var(--nav-accent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .site-header__track {
-    animation: site-header-track var(--dur-base) var(--ease-out) both;
-  }
-}
-
-@keyframes site-header-track {
-  from {
-    opacity: 0;
-    transform: translateY(0.4em);
-  }
+.site-header__logo:hover .site-header__mark,
+.site-header__logo:focus-visible .site-header__mark {
+  color: var(--nav-ink-hover);
 }
 
 .site-header__actions {
@@ -172,20 +167,22 @@ html.menu-open .site-header :focus-visible {
   gap: var(--space-4);
 }
 
+/* Words, not labels (2026-11-11): sentence case at body size, like the menu
+   toggle. */
 .site-header__cta,
 .site-header__index {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
   padding-inline: var(--space-2);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-ui);
-  text-transform: uppercase;
   text-decoration: underline;
   text-decoration-thickness: var(--hairline);
   text-underline-offset: 0.35em;
   text-shadow: var(--nav-halo);
+  transform: translateY(var(--nav-rise));
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
 .site-header__cta:hover {
@@ -203,23 +200,13 @@ html.menu-open .site-header :focus-visible {
     gap: var(--space-2);
   }
 
-  .site-header__cta {
+  .site-header__cta,
+  .site-header__index {
     padding-inline: var(--space-1);
-    font-size: var(--text-xs);
-  }
-
-  .site-header__start {
-    gap: var(--space-3);
+    font-size: var(--text-sm);
   }
 
   .site-header__mark {
     height: 1.9rem;
-  }
-}
-
-/* The narrowest phones keep the track number and drop its name. */
-@media (max-width: 379px) {
-  .site-header__track-label {
-    display: none;
   }
 }

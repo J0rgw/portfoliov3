@@ -1,7 +1,6 @@
 import { motion } from '../../../design/motion';
 import { ui } from '../../../config/ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { socialIcons, type SocialIconName } from '../Icon/Icon';
 import { loadGsap, prefetchGsap, type Gsap } from '../motion/gsap';
 import { scrollToTarget } from '../motion/SmoothScroll';
 import { prefersReducedMotion } from '../motion/useReducedMotion';
@@ -10,30 +9,11 @@ import '../../../design/components/StaggeredMenu/StaggeredMenu.css';
 export interface StaggeredMenuItem {
   label: string;
   href: string;
-  number: string;
-}
-
-export interface StaggeredMenuProject {
-  label: string;
-  href: string;
-  number: string;
-  detail: string;
-}
-
-export interface StaggeredMenuSocialItem {
-  label: string;
-  href: string;
-  icon?: SocialIconName;
 }
 
 export interface StaggeredMenuProps {
   items: StaggeredMenuItem[];
-  projects?: StaggeredMenuProject[];
-  socialItems?: StaggeredMenuSocialItem[];
-  availability?: string;
-  /** Path of the current page, to mark the current project. */
-  currentPath?: string;
-  /** Href of the home chapter in view (`/#proceso`), to mark it like the current project. */
+  /** Href of the home chapter in view (`/#proceso`), to mark it. */
   currentHref?: string;
 }
 
@@ -42,23 +22,18 @@ type Animation = { kill: () => void };
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
- * The menu panel ("tracklist"). Kept from the original StaggeredMenu: the
- * staggered prelayers, the panel slide, the rising item labels and the item
- * numbering (Kerimov-style rows). Restyled to the album identity and rebuilt
- * as a modal dialog: inert when closed, focus moves in, Tab is contained,
- * Escape closes and returns focus. See docs/INFORMATION_ARCHITECTURE.md §4.
+ * The menu panel: the chapters only, as Kerimov-style hairline rows, without
+ * numbers (2026-11-11: the project list, the availability line and the social
+ * links left the panel). Kept from the original StaggeredMenu: the staggered
+ * prelayers, the panel slide and the rising item labels. Restyled to the album
+ * identity and rebuilt as a modal dialog: inert when closed, focus moves in,
+ * Tab is contained, Escape closes and returns focus. See
+ * docs/INFORMATION_ARCHITECTURE.md §4.
  *
  * The closed state lives in CSS, so the panel is hidden from the first paint
  * and GSAP is only fetched (on idle, or on first use) to animate it.
  */
-export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
-  items,
-  projects = [],
-  socialItems = [],
-  availability,
-  currentPath = '/',
-  currentHref,
-}) => {
+export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({ items, currentHref }) => {
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -71,8 +46,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   const layers = () => Array.from(preLayersRef.current?.querySelectorAll<HTMLElement>('.sm-prelayer') ?? []);
   const itemLabels = () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>('.sm-panel-itemLabel') ?? []);
-  const numberEls = () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>('.sm-panel-item') ?? []);
-  const revealEls = () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>('[data-menu-reveal]') ?? []);
 
   useEffect(() => prefetchGsap(), []);
 
@@ -82,8 +55,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     if (!panel) return;
     gsap.set([...layers(), panel], { x: 0, xPercent: 100 });
     gsap.set(itemLabels(), { y: 0, yPercent: 140, rotate: 10 });
-    gsap.set(numberEls(), { '--sm-num-opacity': 0 });
-    gsap.set(revealEls(), { y: 25, opacity: 0 });
   }, []);
 
   const playOpen = useCallback(
@@ -96,8 +67,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       if (prefersReducedMotion()) {
         gsap.set([...layers(), panel], { x: 0, xPercent: 0 });
         gsap.set(itemLabels(), { y: 0, yPercent: 0, rotate: 0 });
-        gsap.set(numberEls(), { '--sm-num-opacity': 1 });
-        gsap.set(revealEls(), { y: 0, opacity: 1 });
         return;
       }
 
@@ -113,8 +82,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
       const itemsAt = panelAt + panelDuration * 0.15;
       tl.to(itemLabels(), { yPercent: 0, rotate: 0, duration: motion.menu.label, ease: 'power4.out', stagger: motion.menu.labelStagger }, itemsAt);
-      tl.to(numberEls(), { '--sm-num-opacity': 1, duration: motion.menu.number, ease: 'power2.out', stagger: motion.menu.numberStagger }, itemsAt + 0.1);
-      tl.to(revealEls(), { y: 0, opacity: 1, duration: motion.menu.reveal, ease: 'power3.out', stagger: motion.menu.revealStagger }, panelAt + panelDuration * 0.4);
       animationsRef.current.open = tl;
     },
     [setClosedState],
@@ -342,8 +309,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           data-lenis-prevent
         >
           <div className="sm-panel-inner">
-            {/* No label over the chapters: the rows say what they are. The projects
-                below keep theirs, as a second list of a different kind. */}
+            {/* No label over the chapters: the rows say what they are. */}
             <nav aria-label={ui.navigation.chapters}>
               <ol className="sm-panel-list" role="list">
                 {items.map((item) => (
@@ -351,7 +317,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     <a
                       className="sm-panel-item"
                       href={item.href}
-                      data-number={item.number}
                       aria-current={item.href === currentHref ? 'location' : undefined}
                       onClick={(event) => handleNavClick(event, item.href)}
                     >
@@ -361,57 +326,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 ))}
               </ol>
             </nav>
-
-            {projects.length > 0 && (
-              <nav className="sm-projects" aria-label={ui.navigation.projects}>
-                <p className="label" data-menu-reveal>{ui.navigation.projects} </p>
-                <ul role="list">
-                  {projects.map((project) => (
-                    <li key={project.href} data-menu-reveal>
-                      <a
-                        className="sm-project"
-                        href={project.href}
-                        aria-current={project.href === currentPath ? 'page' : undefined}
-                        onClick={(event) => handleNavClick(event, project.href)}
-                      >
-                        <span className="sm-project__number mono">{project.number}</span>
-                        <span className="sm-project__title">{project.label}</span>
-                        <span className="sm-project__detail">{project.detail}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            )}
-
-            {(availability || socialItems.length > 0) && (
-              <div className="sm-socials">
-                {availability && (
-                  <p className="sm-availability" data-menu-reveal>
-                    <span className="sm-availability__dot" aria-hidden="true" />
-                    {availability}
-                  </p>
-                )}
-                <ul className="sm-socials-list" role="list">
-                  {socialItems.map((social) => {
-                    const SocialIcon = social.icon ? socialIcons[social.icon] : null;
-                    const external = social.href.startsWith('http');
-                    return (
-                      <li key={social.label} data-menu-reveal>
-                        <a
-                          href={social.href}
-                          className="sm-socials-link"
-                          {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                        >
-                          {SocialIcon && <SocialIcon size={16} aria-hidden="true" />}
-                          <span>{social.label}</span>
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
       </div>

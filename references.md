@@ -34,12 +34,12 @@ Borrow the *quality*, never the assets, layouts or branding. Nothing here is cop
 | 6 | [Emma Portner, Islands](https://www.awwwards.com/sites/emma-portner-islands) | About, bonus atmosphere | Delicate, airy composition on a light ground | Low | Partial (negative space only) |
 | 7 | [The Romans](https://www.awwwards.com/sites/the-romans) | Contact, nav panel, headings | Oversized editorial type, inline image in a headline, square CTAs | High (contact) | Implemented (back cover; since ADR-001 the oversized "Hablemos", with the CD-R between word and arrow, is the email link; no square CTAs on the home chapters or the Projects pages) |
 | 8 | [Huy Phan Vol.2](https://www.awwwards.com/sites/huy-phan-vol-2) | Header, about, contact | Positioning next to the name, inquiry always reachable, vertical spine | High | Implemented (role under the name in the hero, header CTA); obi-strip spine not built yet |
-| 9 | [Kerimov Designs](https://www.awwwards.com/sites/kerimov-designs) | Navigation | Label / value spec rows, numbered hairline menu rows, "open for work" status | High (nav) | Implemented (menu rows; the hero spec strip was removed 2026-10-29, the back cover's spec rows by ADR-001 on 2026-11-10) |
+| 9 | [Kerimov Designs](https://www.awwwards.com/sites/kerimov-designs) | Navigation | Label / value spec rows, numbered hairline menu rows, "open for work" status | High (nav) | Implemented (menu rows, without their numbers since 2026-11-11; the hero spec strip was removed 2026-10-29, the back cover's spec rows by ADR-001 on 2026-11-10) |
 | 10 | [CollectUI, Branding](https://collectui.com/designs/branding-ui-design-inspiration/2371740b-4137-44b8-acd9-de254f5392e1) | Brand details | Simple silhouette filled with tactile collage | Medium | Partial (paper grain, handwritten scraps); since 2026-11-09 real collage material in the hero and on the discs (#18) |
 | 11 | [CollectUI, Subscribe](https://collectui.com/designs/subscribe-ui-design-inspiration/00947ffb-a6fd-4933-a025-3ea35fa4aef3) | Bonus track | Oversized headline with asterisk on a tinted card, single action | Medium | Implemented (the oversized "Avísame*" is the mailto link itself, no card, no fake form; ADR-001) |
 | 12 | [CollectUI, Navigation 9f343652](https://collectui.com/designs/navigation-ui-design-inspiration/9f343652-7a1e-487e-b5ff-278ef0da84b6) | Case studies | Sticky case-study chapter list with a moving active marker | High (case studies) | Implemented (sticky tracklist TOC) |
 | 13 | [CollectUI, Navigation c00d3685](https://collectui.com/designs/navigation-ui-design-inspiration/c00d3685-8461-4712-902b-e4547da18729) | Case studies | TOC that compresses into a dash rail | Medium | Implemented (dash markers) |
-| 14 | [CollectUI, Navigation 21793fa2](https://collectui.com/designs/navigation-ui-design-inspiration/21793fa2-4d46-4191-ada2-5386883d89a1) | Navigation panel | Media-device UI nostalgia; selected item reveals a one-line description | Medium | Implemented 2026-11-10 (ADR-001): Proceso's five steps are the playlist on Jorge's iPod, the selected step's line in the credits; also the menu panel's project list with taglines |
+| 14 | [CollectUI, Navigation 21793fa2](https://collectui.com/designs/navigation-ui-design-inspiration/21793fa2-4d46-4191-ada2-5386883d89a1) | Navigation panel | Media-device UI nostalgia; selected item reveals a one-line description | Medium | Implemented 2026-11-10 (ADR-001): Proceso's five steps are the playlist on Jorge's iPod, the selected step's line in the credits. The menu panel's project list with taglines was removed on 2026-11-11 at Jorge's request. 2026-11-11: the scroll turns the playlist like the iPod's wheel (each song a share of the chapter's hold) and the iPod moved right (centred in the room the text column leaves), so Jorge's longer credits sit at eye level |
 | 15 | [CollectUI, Header 1859d1a8](https://collectui.com/designs/header-navigation-ui-design-inspiration/1859d1a8-7cda-4d8b-9755-fcd8a605dceb) | Navigation | Active indicator that travels between items | Low | Not implemented (by design, see notes) |
 | 16 | [CollectUI, Header 733e9ab8](https://collectui.com/designs/header-navigation-ui-design-inspiration/733e9ab8-c15c-415c-8003-f4b194c85fef) | Page transitions | Navigation stays put while the page changes underneath | Medium | Implemented (persistent header across view transitions) |
 | 17 | Jorge's marker arrow (`private/originals/gallery/cd7e159e….jpg`, supplied 2026-10-30) | Projects annotation | A blue marker stroke: a sweep, one loop, an arrowhead | High (projects) | Implemented (`MarkerArrow`). Since TASK 01 (2026-10-30) the original image itself, keyed out of its painted checkerboard into `marker-arrow.webp` by `scripts/extract-marker-arrow.py` (the SVG redrawing is gone). Dark theme: generated orange ink `marker-arrow-dark.webp` (2026-11-02, Q29). Label moved to the tail's free end (2026-11-09) |
@@ -79,7 +79,17 @@ request: every chapter after Projects became one frame in the hero's and Project
 iPod's playlist, the services tracklist, the portrait cut-out, "Avísame*" and "Hablemos" as the
 links themselves), the hold only holds what fits, and the Projects pages follow the gallery's
 credits; checked at 1024 × 768, 1280 × 720, 1440 × 900, 1512 × 734, 1920 × 1080, 768 × 1024,
-390 × 844 and 320 × 640, in both themes, with reduced motion and without JavaScript.
+390 × 844 and 320 × 640, in both themes, with reduced motion and without JavaScript. On
+2026-11-11 the header's track readout was removed at Jorge's request; the monogram stays as the
+way back to the top. Checked at 320 to 1440 px in both themes, with reduced motion and without
+JavaScript (plan, "Header without the track readout"). Later the same day, from versions Jorge
+compared rendered on the live build, the header turned compact on a solid strip past the hero (no
+fade), with sentence-case links and the monogram in ink; checked at 320 to 1440 px in both
+themes, with reduced motion and without JavaScript (plan, "Header: solid strip and compact").
+The same evening, at Jorge's request, Proceso's hold became the iPod's wheel (scrolling changes
+the song and its credits) and the iPod moved right so longer copy fits at eye level, then took
+Jorge's own copy and the place he picked for the iPod; checked at 320 to 1920 px in both themes,
+with reduced motion and without JavaScript (plan, "Proceso: the scroll turns the playlist").
 
 Supporting resources: [SVGL](https://svgl.app/) (technology logos; the files in
 `public/images/logo/` follow that source), [Fontpair](https://fontpair.co/) (not needed, the

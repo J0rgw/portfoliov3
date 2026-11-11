@@ -167,32 +167,52 @@ Every chapter below must keep its contract when edited.
 **Chapters 02–06 share one frame** (2026-11-10, [ADR-001](adr/ADR-001-chapter-frames.md)). On
 wide landscape screens each is one viewport high (`clamp(40rem, 100svh, 64rem)`, `.frame` in
 layout.css), with the heading in the top-left corner where Projects' heading sits and its copy
-at the foot, so the chapter hold shows it whole. Measured on the production build at 1512 × 734,
+at the foot (Proceso's at eye level since 2026-11-11), so the chapter hold shows it whole. Measured on the production build at 1512 × 734,
 1280 × 720, 1024 × 768, 1440 × 900 and 1920 × 1080: every chapter fits and is held. On phones a
 chapter that does not fit flows instead (`data-unheld`, MOTION_SYSTEM §2.5). Copy was distilled
 from the earlier contracts' own text: no new facts.
 
 **02 · Proceso** (`src/sections/LinerNotes`)
 - Purpose: show how Jorge works and why the process is trustworthy.
-- Content: heading "Cómo trabajo" and a one-line lede (marked phrase "decisiones reales");
-  five steps (entender, definir, construir, publicar, mantener), each a title, one line on the
-  step and one real decision from a public project with a link to it (see §6). The steps are
-  the playlist on Jorge's iPod (a photographed cut-out, `cutouts.ipod`): live HTML on its
-  screen, "Proceso" and the count in the title bar, the selected step on the accent bar. The
-  selected step's credits sit in the frame's bottom-left corner. Removed by ADR-001: the
-  booklet and its running head, the torn slips, the closing question and its button.
+- Content: heading "Cómo trabajo" and a one-line lede, "Así es como materializo una
+  conversación en un producto real." (marked phrase "producto real"); five steps (entendiendo,
+  definiendo, construyendo, probando y publicando, manteniendo y mejorando), each a title, a
+  text on the step and one real decision with a link to its evidence (see §6). The copy is
+  Jorge's (2026-11-11; only spelling and punctuation were touched). The steps are the playlist
+  on Jorge's iPod (a photographed cut-out, `cutouts.ipod`): live HTML on its screen, "Proceso"
+  and the count in the title bar, the selected step on the accent bar. The selected step's
+  credits sit at eye level beside the iPod. Removed by ADR-001: the booklet and its running
+  head, the torn slips, the closing question and its button.
 - References: A24 (credits that change with the selection), CollectUI navigation 21793fa2
-  (media-device UI, the selected item's one-line description), Boccia (one story, readable
-  without animation).
-- Interaction: the playlist is a tablist (one Tab stop; arrows, Home and End move and select;
-  click or tap selects); each step's credits are its tabpanel. Without JavaScript every step's
-  credits are listed under the heading.
-- Motion: Level 2. The credits change over like the gallery's (the title rises, the lines
-  follow; not on first load, none under reduced motion); the hold's marker under "decisiones
-  reales" (MOTION_SYSTEM §2.5).
-- Responsive: wide landscape, the iPod whole, a little right of the middle, turned 3°; below
-  that, the iPod under the heading, cropped by its own clip under the top of the wheel, and the
-  credits under it (the cell keeps the longest step's height, so nothing jumps).
+  (media-device UI, the selected item's description), Boccia (one story, readable without
+  animation).
+- Interaction: while the chapter holds, the scroll is the iPod's wheel (Jorge's request,
+  2026-11-11): its hold is 200svh and every step owns an equal share of it (40svh with five),
+  so scrolling changes the song and its credits, in both directions. The playlist stays a
+  tablist (one Tab stop; arrows, Home and End move and select; click or tap selects); while
+  held, choosing a song also scrolls the page to the middle of its share, so the wheel and the
+  playlist always agree (the selection changes at once; the songs passed on the way do not
+  flash). Focus on the playlist follows the song. Not held (the chapter taller than the window,
+  reduced motion, short viewports), choosing is the only way. A link to the chapter opens it on
+  its first song from above or below. Each step's credits are its tabpanel. Without JavaScript
+  every step's credits are listed under the heading.
+- Motion: Level 2. The selection bar slides to the selected song; the credits change over like
+  the gallery's (the title rises, the lines follow; not on first load, none under reduced
+  motion); the hold's marker under "producto real" is drawn in the first 40svh of the hold,
+  while the heading is read (MOTION_SYSTEM §2.5).
+- Responsive: wide landscape, the credits in a column up to 40rem at body size, centred under
+  the heading (eye level); the cell keeps the longest step's height and every step starts at
+  its top, so the title never moves. The iPod whole, turned 3°, centred in the room the column
+  leaves and never nearer than 4rem to it, so where the room runs out (1024 and 1920 px wide) it
+  stands at the frame's right edge (Jorge's pick of two, 2026-11-11). Below that, the iPod under
+  the heading, cropped by its own clip under the top of the wheel, the credits under it, and a
+  2rem foot instead of other frames' 4rem, so the longest step fits a 390 × 844 window.
+- Copy budget (measured 2026-11-11 with test text; words of step text and decision together,
+  per step, with the chapter still held): 160 at 1512 × 734, 150 at 1280 × 720, 120 at
+  1024 × 768, 110 at 768 × 1024. Jorge's copy runs 35 to 59 words a step: the chapter is held at
+  every size from 1024 × 768 to 1920 × 1080, at 768 × 1024, 414 × 896 and 390 × 844 (51 px to
+  spare), and flows at 375 × 667, 360 × 780 and 320 × 640, where the songs are chosen by tap.
+  Titles up to 28 characters fit one row of the iPod's screen.
 - SEO: every step's title (h3) and text are in the HTML; links from each decision to its case
   study.
 - Conversion: the decisions link the case studies; contact is the header's "Hablemos" and the
@@ -263,31 +283,36 @@ from the earlier contracts' own text: no new facts.
 One coherent system: **a conventional information architecture dressed as a tracklist.**
 
 - **Header** (every page, `components/SiteHeader`): the JA monogram (link home, named "Jorge
-  Arcas…" for assistive technology; it replaced the "Jorgw" wordmark on 2026-11-10), the track
-  playing (home only), `Hablemos` (contact action) and the **Menú** toggle, as type over the
-  page with no bar (ART_DIRECTION §9); no theme switch since 2026-11-10. It switches to light
-  ink over the back cover and the footer. It stays fixed and keeps its own view-transition
-  name, so it does not move during page changes. Past the hero it lays a veil under its marks
-  (2026-11-10): a strip of the ground behind it, solid down to 54 px and fading out by 88 px
-  (where the highest snapped heading starts), with no edge, rule, blur or shadow, so it cannot
-  be seen over its own ground; text scrolling beneath passes under it instead of colliding with
-  the mark and the links, and art fades out under it. The ground is named by the section there:
-  `data-ground="secondary"` (Projects), `"paper"` (case-study cover), `.on-night` (back cover,
-  footer), otherwise the page ground with its grain (layout.css). The header stays clear over
-  the hero's pinned run only (`.hero__clear`, `data-header-clear`, the run plus half the
-  header): once the frame starts to leave, the veil comes on and the name exits under it. One
-  IntersectionObserver on the header's middle line, as for the ink.
-- **Track readout** (home, 2026-11-10): the chapter under the header's line, like a CD player's
-  display ("02 Proceso"), in the printed mono, beside the monogram; hidden over the hero and
-  without JavaScript, the name dropped under 380 px (the number stays). `aria-hidden`: the
-  chapter headings carry the structure. The same chapter is marked in the menu panel
-  (`aria-current="location"`, like the current project).
-- **Menu panel** (`components/StaggeredMenu`, kept and restyled): numbered chapter links (Kerimov
-  rows), the project list with taglines, contact and social links. No label over the chapter rows
-  since 2026-11-10 (the rows name themselves); the project list keeps "Proyectos", a second list
-  of a different kind; the availability dot is plain, without a halo of its own colour. Behaves as a modal dialog:
-  focus moves in, Tab is contained, Escape closes and returns focus, the panel is `inert` when
-  closed. Works with reduced motion.
+  Arcas…" for assistive technology, and the way back to the top; it replaced the "Jorgw"
+  wordmark on 2026-11-10, and since 2026-11-11 it is in ink, taking the links' hover colour on
+  hover and focus), `Hablemos` (contact action) and the **Menú** toggle, words in sentence case
+  at body size (2026-11-11), as type over the page with no rule, blur or shadow
+  (ART_DIRECTION §9); no theme switch since 2026-11-10, and no track readout beside the
+  monogram since 2026-11-11 (Jorge's call). It switches to light ink over the back cover and
+  the footer. It stays fixed and keeps its own view-transition name, so it does not move during
+  page changes. Over the hero's pinned run it is only type, at full size (`.hero__clear`,
+  `data-header-clear`, the run plus half the header). Everywhere else it is **compact**
+  (2026-11-11, chosen by Jorge from rendered versions; it replaces a veil that faded out from
+  54 to 88 px and left whatever passed there half-erased): a solid 56 px strip of the ground
+  behind it, cut straight at its bottom edge, with no fade, rule, blur or shadow, so over its
+  own ground it cannot be seen and whatever scrolls beneath goes under it; the controls rise to
+  its middle and the monogram shrinks to 28 px, by transforms only. Pages without a hero are
+  compact from the start. The strip's ground is read on its bottom edge, so it always matches
+  what shows right below it: `data-ground="secondary"` (Projects), `"paper"` (case-study cover),
+  `.on-night` (back cover, footer), otherwise the page ground with its grain (layout.css). The
+  header mirrors it as `data-nav-ground`, because `data-ground` itself would paint the header's
+  box (it did, over Projects, until 2026-11-11). The strip takes the pointer; below it the page
+  keeps it. Two IntersectionObservers: the strip's bottom edge for the ground and the ink, the
+  header's middle line for the hero's run and the chapter marked in the menu.
+- **Menu panel** (`components/StaggeredMenu`, kept and restyled): the chapter links only, as
+  Kerimov's hairline rows, with no label over them (2026-11-10: the rows name themselves) and no
+  numbers (2026-11-11). On 2026-11-11, at Jorge's request, the project list with taglines, the
+  availability line and the contact and social links left the panel; the projects stay in
+  chapter 01, `/proyectos/` and the footer, contact and availability in chapter 06 and the
+  footer. Behaves as a modal dialog: focus moves in, Tab is contained, Escape closes and returns
+  focus, the panel is `inert` when closed. Works with reduced motion. On home, the chapter under
+  the header's middle line is marked (`aria-current="location"`, 2026-11-10): the accent and a
+  small `▸` at the row's end, so the state does not rest on colour alone.
 - **Case-study table of contents**: sticky on wide screens, with scroll-spy and a dash marker per
   section.
 - **Footer**: the full tracklist (site map) with every case study, as rows of links (ADR-001).
@@ -375,6 +400,10 @@ claim. Anything unverified goes to "Open questions" in the implementation plan, 
 | Hero artwork: printed name, "Freelance Software Engineer", "Vol. 01 / 2026", barcode | Artwork supplied by Jorge, 2026-10-29 (`private/unused/brand/cdJorge.png`, `jorgeCDsleeve.png`, git-ignored); the cover again at 1200 px, the disc at 1200 px and a photo of his hand holding a real case on 2026-11-10 (kept in the git-ignored `private/`, never published: the case frames a private photo; only the hand is shown). Decorative (`aria-hidden`); the barcode is a graphic, not a product code. The site's role text stays the `h1`. |
 | Hero credit: "Jorge Arcas Verdejo", "Freelance Software Developer", "Software con carácter." | Jorge's correction to the hero, 2026-10-29 (full name as on his LinkedIn; the role in English as he wrote it, "freelancer" read as "Freelance") |
 | Third portfolio (catalog JRG-003) | `J0rgw/portfolio` (v1), `J0rgw/portfoliov2` (v2), this repo |
+| Proceso 01: Client Leads came from a startup that needed a CRM from scratch, where filling it by hand was too costly | Jorge's Proceso copy, 2026-11-11; consistent with the project's tagline (Google Maps to Twenty CRM). The startup is not named (open question 2) |
+| Proceso 02: MoneyMan started as a personal project to research fintech; the people around Jorge use it now | Jorge's Proceso copy, 2026-11-11. The case study's status and the repo's README still say it is not deployed (open question 53) |
+| Proceso 04: none of Jorge's websites is published without every image, a title, a description and one h1 per page | Jorge's Proceso copy, 2026-11-11; for this site, `scripts/check-assets.mjs` and `scripts/check-seo.mjs` in the build |
+| Proceso 05: handover with training; documentation in Spanish and English, organised for people and LLMs | Jorge's Proceso copy, 2026-11-11; MoneyMan's repo has `README.md` and `readmeESP.md`, `DESIGN.md`, `PRODUCT.md` and `docs/` |
 
 ---
 

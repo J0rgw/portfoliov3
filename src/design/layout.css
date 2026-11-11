@@ -83,8 +83,9 @@
 }
 
 /* Grounds. A section that does not sit on the page ground names its ground
-   once, here; the fixed header reads the same attribute to lay a veil of that
-   ground under its type (SiteHeader). Night grounds are `.on-night`. */
+   once, here; the fixed header reads the same attribute to lay a strip of that
+   ground under its type, and mirrors it as `data-nav-ground` so this rule never
+   paints the header itself (SiteHeader). Night grounds are `.on-night`. */
 [data-ground='secondary'] {
   background: var(--surface-secondary);
 }

@@ -1,12 +1,20 @@
 /* Chapter 02, Proceso (ADR-001). One frame: the heading top left, Jorge's
-   iPod with the five steps as its playlist, the selected step's credits in
-   the bottom-left corner like the selected disc's in Projects. The iPod is a
-   photographed cut-out (graphics/Cutout); its screen is live HTML laid on the
-   dark glass, printed in the object's own inks (they do not change with the
-   theme, only the accent does, like a disc's print). */
+   iPod with the five steps as its playlist, the selected step's credits at
+   eye level beside it. The iPod is a photographed cut-out (graphics/Cutout);
+   its screen is live HTML laid on the dark glass, printed in the object's own
+   inks (they do not change with the theme, only the accent does, like a
+   disc's print). */
 
-.process__frame {
-  --info-w: min(24rem, 32vw);
+/* The hold is the iPod's wheel (MOTION_SYSTEM §2.5): long enough for every
+   song to get a share of scroll (40svh each with five songs; more songs share
+   the same length). The marker under the lede is drawn in the first 40svh,
+   while the heading is read, and the rest of the hold turns the songs. */
+.chapter-hold:has(> .process) {
+  --chapter-hold: 200svh;
+}
+
+.process {
+  --pen: min(1, var(--hold, 1) * 5);
 }
 
 /* ---- The iPod ------------------------------------------------------------------ */
@@ -73,11 +81,31 @@
 }
 
 .process__tracks {
+  position: relative;
   display: grid;
   grid-auto-rows: minmax(0, 1fr);
 }
 
+/* The selection bar, as the iPod draws it: one row of the accent that slides
+   to the selected song as the page turns the wheel. */
+.process__cursor {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: calc(100% / var(--songs, 5));
+  background: var(--accent);
+  translate: 0 calc(var(--song, 0) * 100%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .process__cursor {
+    transition: translate var(--dur-fast) var(--ease-out);
+  }
+}
+
 .process__track {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.7em;
@@ -99,9 +127,8 @@
   font-weight: var(--weight-semibold);
 }
 
-/* The selected track, as the iPod marks it: a bar of the accent, ink on it. */
+/* The selected track takes the bar's ink. */
 .process__track[aria-selected='true'] {
-  background: var(--accent);
   color: var(--on-accent);
 }
 
@@ -137,15 +164,16 @@ html:not(.js) .process__track {
 }
 
 /* With JavaScript every step shares one cell, so the block keeps the height of
-   the longest and nothing under it moves when the selection changes; only the
-   selected one is visible (and in the accessibility tree). */
+   the longest and nothing around it moves when the song changes; each starts
+   at the cell's top, so the title stays where the eye is. Only the selected
+   one is visible (and in the accessibility tree). */
 .js .process__credits {
   display: grid;
 }
 
 .js .process__step {
   grid-area: 1 / 1;
-  align-self: end;
+  align-self: start;
 }
 
 .js .process__step:not([data-active]) {
@@ -156,10 +184,19 @@ html:not(.js) .process__step + .process__step {
   margin-top: var(--space-7);
 }
 
-/* Without JavaScript the steps follow the heading as a list, not at the
-   frame's foot (they run longer than the frame). */
+/* Without JavaScript the steps follow the heading as a list (they run
+   longer than the frame). */
 html:not(.js) .process__frame .process__credits {
   margin-top: var(--space-7);
+}
+
+/* Phones and portrait screens: a shorter foot than other frames, so the
+   longest step still fits a 390 × 844 window and the hold turns the songs
+   there (Jorge's copy, 2026-11-11). Two classes: layout.css is bundled later. */
+@media (max-width: 1023.98px), (orientation: portrait) {
+  .process .process__frame {
+    padding-bottom: var(--space-6);
+  }
 }
 
 .process__title {
@@ -244,15 +281,22 @@ html:not(.js) .process__frame .process__credits {
 }
 
 /* ---- Wide landscape: one frame ------------------------------------------------------
-   The heading top left, the credits bottom left (as in Projects), the iPod
-   whole, standing a little to the right of the middle and turned like a thing
-   put down by hand. */
+   The heading top left, the selected step's credits at eye level in a column
+   up to a reading measure, and the iPod whole, turned like a thing put down
+   by hand, centred in the room the column leaves; where that room runs out it
+   stands at the frame's right edge (Jorge, 2026-11-11: room for longer copy,
+   then version B of the iPod's place). */
 
 @media (min-width: 1024px) and (orientation: landscape) {
   .process__frame {
     --frame-h: clamp(40rem, 100svh, 64rem);
     /* The iPod's height: the frame under the header's line, less a margin. */
     --ipod-h: calc(var(--frame-h) - var(--header-h) - var(--space-7));
+    --ipod-w: calc(var(--ipod-h) * 920 / 1513);
+    /* The text column: what the iPod and a gap leave, up to a reading measure. */
+    --info-w: min(40rem, 100% - var(--ipod-w) - var(--space-8));
+    /* Long credits never run into the lede. */
+    row-gap: var(--space-6);
   }
 
   /* The heading and its lede keep to the credits' column, clear of the iPod. */
@@ -261,10 +305,18 @@ html:not(.js) .process__frame .process__credits {
   }
 
   .process__player {
+    /* The same column, measured in the player's containing block (the
+       frame's padding box, where the content runs from --margin to
+       100% - --margin): centred in what it leaves, never nearer than the gap. */
+    --content-w: calc(100% - 2 * var(--margin));
+    --column-w: min(40rem, var(--content-w) - var(--ipod-w) - var(--space-8));
     position: absolute;
     top: calc(var(--header-h) + var(--space-3));
-    left: max(63% - var(--ipod-h) * 920 / 1513 / 2, var(--margin) + var(--info-w) + var(--space-7));
-    width: calc(var(--ipod-h) * 920 / 1513);
+    left: max(
+      var(--margin) + var(--column-w) + var(--space-8),
+      var(--margin) + (var(--content-w) + var(--column-w) - var(--ipod-w)) / 2
+    );
+    width: var(--ipod-w);
     margin: 0;
     overflow: visible;
     rotate: -3deg;
@@ -274,8 +326,21 @@ html:not(.js) .process__frame .process__credits {
     margin-bottom: 0;
   }
 
+  /* Centred in the frame under the heading: eye level. */
   .process__credits {
     width: var(--info-w);
-    margin-top: auto;
+    max-width: none;
+    margin-block: auto;
+  }
+
+  .process__text,
+  .process__note {
+    max-width: none;
+    font-size: var(--text-base);
+    line-height: 1.55;
+  }
+
+  .process__text {
+    margin-top: var(--space-4);
   }
 }

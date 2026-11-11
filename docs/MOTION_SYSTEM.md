@@ -31,13 +31,14 @@ or a new library needs an entry in this file first.
   over like the gallery's: the title rises out of its clip (`--dur-slow`, `--ease-out`), the
   line and the decision fade up after it (`--stagger`); keyed by the selection, not on first
   load, none under reduced motion. The booklet and its page turn were removed with the booklet.
+  Since 2026-11-11 the scroll selects too: the chapter's hold is the iPod's wheel (§2.5), and
+  the selection bar slides to the selected song (`--dur-fast`, `--ease-out`, a transform).
 - Chapter hold: the marker underlines the chapter's phrase as the hold is used up (§2.5).
-- Header veil: fades in (320 ms opacity) when the hero's pinned run ends (`.hero__clear` leaves
-  the header's line), so the name exits under it; out over the pinned run and while the menu is
-  open (INFORMATION_ARCHITECTURE §4). Checked 2026-11-10 at 1512 × 734: off at 0–700 px, on from
-  760 px.
-- Header track readout: a new chapter's number and name slide in (320 ms, 0.4em rise and
-  opacity, keyed by the chapter); none under reduced motion.
+- Header compact (2026-11-11): when the hero's pinned run ends (`.hero__clear` leaves the
+  header's middle line), the strip fades in and lifts to 56 px while the controls rise 8 px and
+  the monogram scales to 28 px (320 ms, transform and opacity only), so the name exits under
+  the strip; the reverse on the way back up. The strip is hidden while the menu is open
+  (INFORMATION_ARCHITECTURE §4). Checked 2026-11-11 at 1440 × 900: compact from about 920 px.
 - Case study: the table of contents marks the section in view.
 
 **Level 3, interface**
@@ -234,7 +235,9 @@ wheel capture, no snapping" rule (references.md, rule 1, amended the same day).
   keyboard and the scrollbar are native. The menu panel is `data-lenis-prevent`.
 - **In-page links**: same-page hash links (and the menu's chapter links) scroll through
   `scrollToTarget`, eased, honouring `scroll-padding-top` / `scroll-margin-top`; the hash is
-  pushed and focus moves to the target.
+  pushed and focus moves to the target. A held chapter opens at the start of its hold
+  (2026-11-11): it is sticky, so from below its box sits at the end of the hold, and a link
+  would have opened Proceso on its last song; the target is its hold wrapper's top instead.
 - **Chapter snap** (home only): `main > section` and `[data-snap]` (the hero's end-of-run mark)
   are snap points aligned to the top edge. When the wheel comes to rest (400 ms) within 25 % of
   a viewport of one, the page settles on it in 0.8 s (Lenis' expo-out); anywhere else it stays
@@ -298,7 +301,7 @@ Projects flows; at 320 × 640 every chapter flows.
 
 **The hold's job** (2026-11-10, after the critique: "scroll that does nothing", five times per
 visit; Jorge chose to give it a job rather than shorten it). While a chapter holds, Jorge's
-marker underlines what it is about: "seleccionados" (Projects), "decisiones reales" (Proceso),
+marker underlines what it is about: "seleccionados" (Projects), "producto real" (Proceso; "decisiones reales" until 2026-11-11),
 "el problema que tienes" (Servicios), "mí" (Sobre mí), "en preparación" (Librería). So every
 scroll inside a hold visibly does something, and the stroke is complete when the page moves on.
 
@@ -316,6 +319,38 @@ scroll inside a hold visibly does something, and the stroke is complete when the
 - Checked 2026-11-10 at 1512 × 734: `--hold` 0.000 at the snap point, 0.455 and 0.909 after two
   and four wheel ticks inside the Projects hold, 1 at its end, the stroke growing to match;
   every chapter's stroke complete at the end of its hold; drawn statically without JavaScript.
+
+**Proceso's hold turns the playlist** (Jorge's request, 2026-11-11: "the scroll changes the
+song and therefore the text"). The chapter's hold is 200svh (`.chapter-hold:has(> .process)` in
+LinerNotes.css) instead of 60svh, and every song owns an equal share of it (40svh with five
+songs; more songs would share the same length). Scrolling through it changes the song, the
+selection bar slides to it and its credits change over; scrolling back runs the songs back.
+Before the hold the first song plays, after it the last.
+
+- `useChapterHold` sends its state to the chapter (`onHold`: progress, the hold's start and
+  length, or `null` once it is not held), only when it changes. LinerNotes maps the progress to
+  a song (`floor(progress × songs)`), with no change-over for the first state on load.
+- Choosing a song (click, tap, arrows, Home, End) while held selects it at once and scrolls the
+  page to the middle of its share (`scrollToOffset`), so the wheel and the playlist agree; the
+  songs passed on the way are ignored until the page arrives, or for `motion.playlist.arriveMs`
+  (1.5 s) if another scroll takes over, after which the scroll leads again. Focus on the
+  playlist follows the song, so its one Tab stop is always the selected tab.
+- The marker under "producto real" reads `--pen` (`min(1, --hold × 5)`, PenMark.css falls
+  back to `--hold`): it is drawn in the first 40svh, while the heading is read.
+- Not held (taller than the window, reduced motion, under 34rem of height, no JavaScript): no
+  event, the songs are chosen on the playlist only.
+- Cost: no new listener (the hold's own), one custom event per changed frame near the chapter,
+  one React render per song change; the bar is a transform.
+- Checked 2026-11-11 on the production build at 1512 × 734 (wheel ticks of 100 px): the songs
+  change at `--hold` 0.2, 0.4, 0.6 and 0.8, about three ticks (294 px) a song, in both
+  directions; the marker complete by 0.2; a click on song 4 at the hold's start shows it at
+  once and lands at 0.700 with no other song shown on the way; ↓, End, Home and a wrapping ↓
+  move selection, focus and page together; a click followed at once by the wheel hands over to
+  the scroll after 1.5 s; the menu's Proceso link lands on the first song from Contact and from
+  the hero. On a 390 × 844 phone emulation the five songs follow native scroll (hold 1,688 px).
+  Reduced motion: no hold, a click selects. Without JavaScript the five steps are listed. No
+  horizontal overflow at 320, 390, 768, 1024, 1280, 1440 and 1512 px in both themes; no console
+  errors.
 
 ---
 
@@ -348,14 +383,14 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 | Reveal controller | `src/components/ui/motion/RevealController.tsx` | One `IntersectionObserver` for every `[data-reveal]` element on the page. Marks them `data-revealed` once. |
 | Reveal styles | `src/design/motion.css` | `data-reveal="up" \| "fade" \| "mask"`, delays via `--reveal-delay` or `data-reveal-index`. |
 | Scroll scene | `src/components/ui/motion/useScrollScene.ts` | Writes `--scene` (0 → 1) and one eased `--scene-<phase>` per named phase on a root holding a `[data-scene-pin]`. Pin-aware: the narrative splits between the stuck run and the scroll-out when CSS makes the pin sticky, and plays over the scroll-out alone when it is static. Measures `[data-scene-anchor]` boxes on resize (`--scene-<name>-dx/dy` to the pin's centre). One passive listener, one frame at most per scroll, nothing off-screen or under reduced motion. |
-| Smooth scroll | `src/components/ui/motion/SmoothScroll.tsx` | Lenis (eased wheel) on every page and proximity chapter snap on home (§2.3), loaded on demand; `scrollToTarget()` for in-page jumps. Off under reduced motion. |
+| Smooth scroll | `src/components/ui/motion/SmoothScroll.tsx` | Lenis (eased wheel) on every page and proximity chapter snap on home (§2.3), loaded on demand; `scrollToTarget()` for in-page jumps (a held chapter opens at the start of its hold), `scrollToOffset()` for a document offset. Off under reduced motion. |
 | Parallax | `src/components/ui/motion/useParallax.ts` | Writes `--parallax` (−1 → 0 → 1) on a section as it passes the top edge (§2.4). One passive listener, one frame per scroll, nothing off-screen or under reduced motion. |
 | Pointer depth | `src/components/ui/motion/usePointerDepth.ts` | Writes `--px` / `--py` (−1 → 1, the pointer's place in the viewport, eased per frame by `motion.pointerDepth.ease`) on a root; CSS multiplies them by each layer's depth (§2.1). Mouse or pen on a hovering device only, only while the root is on screen, frames only until the values settle, no layout reads (the hero's frame is pinned to the viewport). Nothing under reduced motion. |
 | Paper gestures | `src/design/motion.css` | Bounded, CSS-only, off under reduced motion: `data-gesture="slap"` (a cut-out slapped down: lands large and turned, squashes, settles; `--slap-index` staggers; `backwards` fill so hover can use `scale`/`rotate` after), `hang` (dropped in on a cord, damped swing that stops), `draw-loop` (ink revealed round its centre through a registered `--sweep` angle; fully shown where `@property` is unsupported), plus the older `float`, `drift`, `rotate`. |
 | Spin | `src/components/ui/motion/useSpin.ts` | Drives a CSS keyframe loop: pauses it off-screen, eases `playbackRate` to 0 on mouse/pen hover and back, holds it while a `paused` flag is set. Does nothing under reduced motion (the CSS declares no loop). |
 | Disc carousel | `src/components/ui/motion/useDiscCarousel.ts` | Drag with inertia and snapping for a row of items (§2.2): one position, one selection, a stable controller (`goTo`, `step`, `index`), `render(position)` at most once per frame, `onIndex` / `onMotion` callbacks for React. No loop while idle; instant under reduced motion. |
 | Scroll spy | `src/components/ui/motion/useScrollSpy.ts` | Returns the id of the section currently being read. |
-| Chapter hold | `src/components/ui/motion/ChapterHold.tsx`, `useChapterHold.ts` | The home chapter's hold wrapper; writes `--hold` (0 → 1 through the hold) on the chapter and marks the wrapper `data-unheld` when the chapter is taller than the window (§2.5). One passive listener, one `ResizeObserver`, one frame per scroll, nothing beyond a viewport away or under reduced motion. |
+| Chapter hold | `src/components/ui/motion/ChapterHold.tsx`, `useChapterHold.ts` | The home chapter's hold wrapper; writes `--hold` (0 → 1 through the hold) on the chapter, sends the same state to it (`onHold`, Proceso's playlist) and marks the wrapper `data-unheld` when the chapter is taller than the window (§2.5). One passive listener, one `ResizeObserver`, one frame per scroll, nothing beyond a viewport away or under reduced motion. |
 | Pen mark | `src/components/graphics/PenMark/PenMark.tsx` | A marker underline under one phrase, drawn by `--hold`; drawn outright where nothing sets it (§2.5). |
 | Reduced-motion hook | `src/components/ui/motion/useReducedMotion.ts` | Live `prefers-reduced-motion` value for effects (never for markup). |
 | GSAP on demand | `src/components/ui/motion/gsap.ts` | `loadGsap()` / `prefetchGsap()`: GSAP is a separate chunk fetched on idle or first use. Closed and resting states live in CSS so nothing waits for it. |
@@ -398,9 +433,10 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
   element a 0.01 ms transition, so inherited `visibility` reaches the panel's links a few frames
   late; the menu retries `focus()` each frame until it lands.)
 - Projects gallery: instant changes, no change-over, the arrow already drawn (§2.2).
-- Header track readout: a new track appears without sliding in.
+- Header: turns compact at once, without the fade or the lift.
 - Chapter marks: drawn and still (`--hold` is never written); Process's credits change without
-  the change-over.
+  the change-over, and its songs are chosen on the playlist only (there is no hold to turn
+  them); the selection bar jumps.
 - Smooth scrolling, chapter snap, chapter hold and parallax: off (native scroll, plain flow,
   layers at rest).
 

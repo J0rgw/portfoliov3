@@ -306,7 +306,9 @@ naming the stack logos, sits in the Projects section he will rework) and answere
 - [x] The header veil fades out by 88 px (solid to 54 px), so art passing under it fades
   instead of being sliced.
 - [x] The track playing: "02 Proceso" beside the mark on home, from the header's observer,
-  and the same chapter marked in the menu (`aria-current="location"`).
+  and the same chapter marked in the menu (`aria-current="location"`). The readout was removed
+  on 2026-11-11 ("Header without the track readout", at the end of this file); the menu mark
+  stays.
 - [x] The JA monogram replaces the "Jorgw" wordmark; the theme switch is gone; About's logo
   strip is gone; the timeline runs newest first.
 
@@ -543,6 +545,20 @@ These are kept **off the site** until confirmed:
 49. ~~Projects on phones~~: answered 2026-11-11, the fit rule applies to Projects too. It is
     held wherever it fits (every laptop and desktop size measured) and flows on phones and
     portrait tablets, where it is 1.04 to 1.35 windows tall.
+50. ~~Proceso's longer copy~~: answered 2026-11-11, Jorge wrote it (lede, five titles, texts and
+    decisions); applied with spelling and punctuation fixed only (plan, "Proceso: the scroll
+    turns the playlist"). New claims are in the authenticity register.
+51. ~~The iPod's place~~: answered 2026-11-11, B: centred in the room the text column leaves,
+    built with a 4rem floor so it never comes nearer the text (at 1024 px that puts it at the
+    right edge, as A did).
+52. **Proceso on small phones**: with Jorge's copy the chapter is held on 390 × 844 and
+    414 × 896 phones (a 2rem foot on phones made the 13 px it lacked), and flows on 375 × 667,
+    360 × 780 and 320 × 640, where the songs are chosen by tap (it already did there with the
+    earlier copy). If those should turn with the scroll too: a phone layout where the iPod's
+    screen sticks at the top and the steps flow under it, or a shorter phone text.
+53. **MoneyMan's status**: Proceso now says "Ahora es una app que todo mi entorno usa", while its
+    case study says "En desarrollo, sin desplegar" and its README "Not deployed yet". Update the
+    case study (and the README) if it is in use, or tell me how to word the sentence.
 
 ---
 
@@ -881,3 +897,126 @@ the site uses, and to move GitHub Pages to this version.
   (vite, rollup, postcss and their dependencies), all with fixes available, not applied.
 - Still open: Q32 (rights to the downloaded cut-outs) applies to the derived files that are
   served.
+
+## Header without the track readout — 2026-11-11
+
+Brief: Jorge asked to take the chapter readout ("01 Proyectos") out of the header and delete it.
+The JA monogram stays: it is the anchor that takes the visitor back to the top.
+
+- `SiteHeader`: the readout's markup and styles are gone (`.site-header__track*`, its slide-in,
+  the `--nav-accent` ink only it used, the `.site-header__start` group); the monogram's link is a
+  direct child of the bar again. The observer still finds the chapter under the header's line,
+  and the menu still marks it (`aria-current="location"`). MOTION_SYSTEM and
+  INFORMATION_ARCHITECTURE §4 no longer list the readout.
+- Validation: `npm run build` passes (architecture, config, assets, types, client + SSR,
+  prerender, SEO). Home at 320 × 640, 390 × 844, 768 × 1024, 1024 × 768 and 1440 × 900,
+  `/proyectos/` and a case study, in both schemes, with reduced motion and without JavaScript:
+  monogram on the left, `Hablemos` and the menu toggle (`Índice` without JavaScript) on the
+  right, no readout, no horizontal overflow, no console errors. Clicking the monogram 4,681 px
+  down home (2,701 px with reduced motion), and from a case study, lands at the top of home.
+
+## Header: solid strip and compact — 2026-11-11
+
+Brief: Jorge disliked the header's fade and its overall state and asked for plenty of options,
+then for every version rendered with Playwright so he could pick (prototypes injected over the
+built site, compared on a local page; none of it is in the repo). His picks: a solid strip with a
+hard edge (A1), compact past the hero (B3), sentence-case links at body size (C1), and the
+monogram in ink with the accent on hover (D4).
+
+- `SiteHeader.css`: the strip is the ground's material, solid and cut straight. Past the hero's
+  pinned run (`data-compact`, formerly `data-veil`) it lifts to 56 px, the controls rise 8 px and
+  the mark scales to 28 px, by transforms only. The bar is never transformed, because the menu's
+  fixed layer lives inside it; the toggle reads `--nav-rise` instead. The header's box no longer
+  takes the pointer; the strip does. Pages without a hero are compact from the start.
+- `SiteHeader.tsx`: the ground and the ink are read on the strip's bottom edge (`--nav-compact`,
+  registered with `@property` so it reads in px), the hero's run and the menu's chapter on the
+  middle line, with two IntersectionObservers. Measured at 1440 × 900: a night section whose top
+  is at 54 px turns the strip night, at 57 px it is still the page ground, so no band of the
+  wrong ground shows at a boundary.
+- Bug fixed: the header carried `data-ground`, so layout.css painted its own box over Projects
+  and case-study covers (a band under the open menu there). It now mirrors the ground as
+  `data-nav-ground`.
+- Links: `Hablemos`, `Índice` and the menu toggle in sentence case at `--text-base`
+  (`--text-sm` under 640 px), without tracking.
+- Validation: `npm run build` passes. At 320, 390, 768, 1024 and 1440 px in both schemes:
+  compact past the hero (mark 36 → 28 px; 30 → 24 px on phones), no horizontal overflow, 44 px
+  controls, no console errors. In the compact state the menu's layer covers the viewport, focus
+  moves in and Escape returns it to the toggle. Hit test: the strip takes clicks at 30 and 50 px
+  and the page gets them at 60 and 70 px; over the hero the page gets them at 60 px. The
+  monogram's hover takes the functional accent, and clicking it from Contact lands at the top.
+  Case study, index and 404: compact, with a paper strip on the case-study cover. Reduced motion:
+  the switch is instant (the global backstop). Without JavaScript the header stays full size
+  with no strip, as it did with the veil.
+- Open: without JavaScript there is no strip, so text scrolling under the header can still meet
+  its type (as it could with the veil).
+
+## Menu: chapters only — 2026-11-11
+
+Brief: Jorge asked to delete everything under the chapter rows in the menu panel (the
+"Proyectos" list with numbers and taglines, the availability line, the Email, GitHub and
+LinkedIn links) and the numbers on the chapter rows.
+
+- `StaggeredMenu`: only the chapter links remain; the `projects`, `socialItems`, `availability`
+  and `currentPath` props, the project and contact markup, their styles, the number column
+  (`data-number`, `--sm-num-opacity`) and the reveal step of the opening timeline are gone, with
+  the motion parameters only they used (`menu.number`, `numberStagger`, `reveal`,
+  `revealStagger`). `SiteHeader` passes only the rows and the chapter in view.
+- The chapter in view keeps the accent and a small `▸` at the row's end (it was `▸ 03`), so the
+  state is not marked by colour alone. The rows keep their hairlines. Nothing left the site: the
+  projects are in chapter 01, `/proyectos/` and the footer; availability and contact in chapter
+  06 and the footer.
+- Validation: `npm run build` passes. Menu opened at 1440 × 900 (light, home and a case study,
+  dark) and 390 × 844 (dark, and light with reduced motion): the seven chapter links and nothing
+  else, the chapter in view marked on home and none on the case study; focus moves to "Inicio",
+  Tab cycles the links and the toggle, Escape closes and returns focus to the toggle; no console
+  errors.
+
+## Proceso: the scroll turns the playlist — 2026-11-11
+
+Brief: in "Cómo trabajo", move the iPod to the right so more text fits at eye level, and,
+before any new text (Jorge will write it), make the scroll change the song on the iPod and with
+it the text.
+
+- The hold is the iPod's wheel: Proceso's hold is 200svh (`.chapter-hold:has(> .process)`), each
+  song owns an equal share, and `useChapterHold` now sends its state to the chapter (`onHold`);
+  LinerNotes maps it to the song. Choosing a song on the playlist while held selects it at once
+  and scrolls the page to its share (`scrollToOffset`, new in SmoothScroll), so the two never
+  disagree; focus on the playlist follows the song. Details in MOTION_SYSTEM §2.5.
+- The selection bar is one element that slides between rows (`.process__cursor`); the marker
+  under "decisiones reales" is drawn in the first 40svh (`--pen`, PenMark.css falls back to
+  `--hold`).
+- Layout on wide landscape screens: the iPod's right edge on the content edge (it was centred
+  at 63 %), the credits in the width it leaves (up to 40rem, at body size instead of `--text-sm`),
+  centred under the heading instead of the bottom-left corner; every step starts at the top of
+  the shared cell, so the title stays put between songs. Phones keep their layout.
+- Bug found on the way: a sticky chapter, reached by a link from below, sat at the end of its
+  hold, so the menu's Proceso link would have opened it on the last song. `scrollToTarget` now
+  aims at the hold wrapper's top for every held chapter.
+- No copy was changed. Budget for Jorge's copy in Q50; phones in Q52; the iPod's place in Q51.
+- Validation: `npm run build` passes (typecheck, architecture, config, assets, SEO). Measured on
+  the production build, MOTION_SYSTEM §2.5: songs change every 294 px of wheel at 1512 × 734 in
+  both directions, clicks and keys keep scroll and selection together without flashing the songs
+  between, the menu lands on the first song from above and below, phones follow native scroll,
+  reduced motion and no-JS keep the earlier behaviour, no horizontal overflow from 320 to
+  1512 px in both themes, no console errors. Comparison renders (videos and frames, A and B) live
+  in the session scratchpad, not in the repo.
+
+Later the same day, Jorge's answers (Q50, Q51):
+
+- Copy: his lede, titles (now gerunds), texts and decisions in `config/process.ts`. Only
+  orthography was touched: accents (cuál, mí, mía, inglés, búsqueda), "crm" as "CRM", "desde 0"
+  as "desde cero", "incides" as "índices", final stops, a stop instead of a comma between whole
+  sentences, "son en" as "están en", and "Ninguna web mía no se publica" as "Ninguna web mía se
+  publica" (the double negative said the opposite). The marker moved to "producto real", the
+  phrase his lede ends on (`scripts/test-config.ts` checks it is in the lede).
+- The iPod in B, with a 4rem floor to the text column: centred in the room the column leaves
+  from 1280 px up, at the right edge at 1024 px. Measured gap from the column to the iPod's
+  turned corner: 142 px at 1512 × 734, 73 at 1280 × 720, 47 at 1024 × 768, 46 at 1920 × 1080.
+- Phones: the frame's foot is 2rem below 1024 px or in portrait (4rem elsewhere), which brought
+  a 390 × 844 phone back under the window (it was 13 px over); Q52 for smaller phones.
+- New claims registered (IA §6); the MoneyMan sentence conflicts with its case study (Q53).
+- Validation: `npm run build` passes. Held at 1024 × 768, 1280 × 720, 1366 × 768, 1440 × 900,
+  1512 × 734, 1920 × 1080, 768 × 1024, 414 × 896 and 390 × 844; flows at 375 × 667, 360 × 780
+  and 320 × 640. Every title fits one row of the iPod's screen; no horizontal overflow; the
+  wheel, click, keys, menu link, reduced motion, no-JS and phone checks rerun with the same
+  results as above; no console errors.

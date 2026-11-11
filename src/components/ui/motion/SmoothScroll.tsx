@@ -7,13 +7,35 @@ let instance: Lenis | null = null;
 const FRAME_MS = 1000 / 60;
 
 /**
+ * Where a held home chapter starts. The chapter is sticky (layout.css): seen
+ * from below, its box sits at the end of its hold, so a link would open it on
+ * its last state (Proceso's last song). Its hold wrapper never sticks.
+ */
+function holdStart(target: HTMLElement) {
+  const hold = target.parentElement;
+  if (!hold?.classList.contains('chapter-hold')) return null;
+  const margin = Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+  const padding = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  return hold.getBoundingClientRect().top + window.scrollY - margin - padding;
+}
+
+/**
  * Scrolls to an in-page target the way the rest of the page scrolls: eased by
  * the smooth scroller when it runs, natively otherwise (reduced motion, before
- * it loads). Both honour `scroll-padding-top` and `scroll-margin-top`.
+ * it loads). Both honour `scroll-padding-top` and `scroll-margin-top`; a held
+ * chapter opens at the start of its hold, wherever the page is.
  */
 export function scrollToTarget(target: HTMLElement) {
-  if (instance) instance.scrollTo(target);
+  const start = holdStart(target);
+  if (start !== null) scrollToOffset(start);
+  else if (instance) instance.scrollTo(target);
   else target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+}
+
+/** Scrolls to a document offset in px, eased the same way as `scrollToTarget`. */
+export function scrollToOffset(top: number) {
+  if (instance) instance.scrollTo(top);
+  else window.scrollTo({ top, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
 }
 
 /** Same-page hash links scroll through `scrollToTarget` and move focus. */

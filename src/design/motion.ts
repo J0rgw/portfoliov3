@@ -1,8 +1,7 @@
 /** Visual parameters only. Mechanics and lifecycle live in components/ui/motion. */
 export const motion = {
-  menu: { layer: 0.5, layerStagger: 0.07, panel: 0.65, label: 1, number: 0.6,
-    reveal: 0.55, close: 0.32, spinOpen: 0.8, spinClose: 0.35,
-    labelStagger: 0.1, numberStagger: 0.08, revealStagger: 0.05 },
+  menu: { layer: 0.5, layerStagger: 0.07, panel: 0.65, label: 1,
+    close: 0.32, spinOpen: 0.8, spinClose: 0.35, labelStagger: 0.1 },
   /** Hero scene (MOTION_SYSTEM §2.1): split and solo overlap so the movement never stalls. */
   hero: { phases: { split: [0.06, 0.46], solo: [0.36, 0.8], exit: [0.8, 1] } },
   /** Cut-outs lean towards a fine pointer by their depth (usePointerDepth, §4):
@@ -23,6 +22,9 @@ export const motion = {
   snap: { omega: 11 },
   /** Page scroll (MOTION_SYSTEM §2.3): Lenis easing, chapter snap on the home page. */
   smoothScroll: { lerp: 0.1, snap: { threshold: '25%', debounceMs: 400, duration: 0.8 } },
+  /** Proceso's playlist (MOTION_SYSTEM §2.5): how long a song chosen on the iPod
+   *  keeps the selection while the page scrolls to it, if it never arrives. */
+  playlist: { arriveMs: 1500 },
   hover: { durationMs: 180 },
   pageTransition: { durationMs: 1100 },
 } as const;

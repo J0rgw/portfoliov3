@@ -3,7 +3,8 @@
    stay legible; its height is in em, so its weight follows the type it marks
    (about 4.8 px under a 60 px heading), never thinner than a marker (2.4 px
    under a lede, from the 0.8rem floor). It grows from the left with --hold
-   (0 → 1, MOTION_SYSTEM §2.5); unset, it is drawn. */
+   (0 → 1, MOTION_SYSTEM §2.5), or with --pen where a chapter sets its own
+   pace from the hold (Proceso); unset, it is drawn. */
 
 .pen-mark {
   position: relative;
@@ -34,7 +35,7 @@
      shows; the offset runs a little past the start so an undrawn stroke
      leaves no round-cap dot. */
   stroke-dasharray: 1 2;
-  stroke-dashoffset: calc((1 - var(--hold, 1)) * 1.05);
+  stroke-dashoffset: calc((1 - var(--pen, var(--hold, 1))) * 1.05);
   /* Smooths the jumps of keyboard and scrollbar scrolling; the wheel is
      already eased (SmoothScroll). */
   transition: stroke-dashoffset var(--dur-base) var(--ease-out);

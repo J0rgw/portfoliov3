@@ -38,8 +38,8 @@
 
 /* The pinned run, as seen from the header's middle line: while it crosses that
    line the header stays clear (the composition was drawn under a clear header);
-   once the frame starts to leave, the header lays its veil and the name exits
-   under it, not under the logo. Without a pinned run (reduced motion) it covers
+   once the frame starts to leave, the header turns compact on its strip and the
+   name exits under it, not under the logo. Without a pinned run (reduced motion) it covers
    the resting page only. */
 .hero__clear {
   position: absolute;

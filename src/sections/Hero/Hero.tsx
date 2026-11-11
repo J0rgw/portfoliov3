@@ -47,7 +47,7 @@ export function Hero() {
       <div className="hero__track">
         {/* Snap point (MOTION_SYSTEM §2.3): the end of the pinned run, where the disc stands alone. */}
         <div className="hero__solo-mark" data-snap aria-hidden="true" />
-        {/* The header stays clear while the frame is pinned (SiteHeader's veil, INFORMATION_ARCHITECTURE §4). */}
+        {/* The header stays clear while the frame is pinned (SiteHeader's strip, INFORMATION_ARCHITECTURE §4). */}
         <div className="hero__clear" data-header-clear aria-hidden="true" />
         <div className="hero__frame" data-scene-pin ref={frameRef}>
           <div className="hero__credit">
