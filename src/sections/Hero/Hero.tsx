@@ -9,6 +9,7 @@ import { ThemeImage } from '../../components/graphics/ThemeImage/ThemeImage';
 import { usePointerDepth } from '../../components/ui/motion/usePointerDepth';
 import { useScrollScene } from '../../components/ui/motion/useScrollScene';
 import { useSpin } from '../../components/ui/motion/useSpin';
+import { useTextSwap } from '../../components/ui/motion/useTextSwap';
 import '../../design/sections/Hero/Hero.css';
 
 const enter = (index: number) => ({ '--enter-index': index }) as CSSProperties;
@@ -27,9 +28,10 @@ const rise = (index: number) => ({ '--rise-index': index }) as CSSProperties;
  * Everything readable is real HTML, visible on first paint without JavaScript.
  * The objects are decorative: the name and role printed on them are the h1 in
  * plain text. With JavaScript and motion allowed the disc turns slowly (eased stop
- * on hover, tap or the focus-revealed control) and holds its place while scroll
- * takes the package apart round it (`--scene-*`, useScrollScene; MOTION_SYSTEM
- * §2.1), and every layer leans by its depth under a fine pointer (usePointerDepth).
+ * on hover, tap or the focus-revealed control) and otherwise holds still while
+ * scroll takes the package apart round it (`--scene-*`, useScrollScene;
+ * MOTION_SYSTEM §2.1), and every other layer leans by its depth under a fine
+ * pointer (usePointerDepth).
  */
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -41,6 +43,8 @@ export function Hero() {
   usePointerDepth(frameRef);
   useSpin(spinRef, { hoverRef: discRef, paused: spinPaused });
   const toggleSpin = () => setSpinPaused((value) => !value);
+  // The control's icon swaps (data-icon-swap) and its words swap as text (useTextSwap).
+  const [spinWords, spinSwap] = useTextSwap(spinPaused ? ui.hero.resume : ui.hero.pause);
 
   return (
     <section id="inicio" className="hero" aria-labelledby="hero-title" ref={heroRef}>
@@ -176,8 +180,11 @@ export function Hero() {
           </div>
 
           <button type="button" className="hero__spin-toggle" onClick={toggleSpin}>
-            {spinPaused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}
-            {spinPaused ? ui.hero.resume : ui.hero.pause}
+            <span data-icon-swap={spinPaused ? 'b' : 'a'} aria-hidden="true">
+              <Pause size={14} />
+              <Play size={14} />
+            </span>
+            <span data-swap={spinSwap}>{spinWords}</span>
           </button>
         </div>
       </div>

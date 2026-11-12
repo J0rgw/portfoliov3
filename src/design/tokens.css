@@ -340,6 +340,9 @@
   --dur-identity: 1100ms;
   /* One turn of the hero disc: slow enough to read its print while it turns. */
   --dur-spin: 75s;
+  /* The next track's spin-up on hover: three turns, faster and faster, then an eased stop
+     (ProjectPage.css). */
+  --dur-spin-up: 2500ms;
   /* One turn of the pen loop round a hovered disc (Projects): calm, but seen to move. */
   --dur-orbit: 10s;
   --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
@@ -347,6 +350,24 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-press: cubic-bezier(0.2, 0, 0, 1);
   --stagger: 70ms;
+  /* Text that changes in place (motion.css, data-swap): each half of the swap, the old
+     text leaving and the new arriving, takes --dur-swap; CSS's own ease-in-out, softer
+     than --ease-in-out. useTextSwap reads --dur-swap to time the change of text. */
+  --dur-swap: 150ms;
+  --ease-swap: ease-in-out;
+  --swap-shift: 4px;
+  --swap-blur: 2px;
+  /* The other transitions taken from transitions.dev keep its scale (MOTION_SYSTEM §2.7):
+     250 ms on its smooth decel for UI that moves (pages, the playlist's bar, icons), a
+     spring back when a lifted mark is let go, 500 ms for text that rises in, and 80 ms
+     before a tooltip shows. */
+  --dur-ui: 250ms;
+  --dur-lift: 350ms;
+  --dur-rise: 500ms;
+  --dur-tip-delay: 80ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring-back: cubic-bezier(0.34, 3.85, 0.64, 1);
+  --ease-tip: ease-out;
 
   /* ---- Breakpoints (reference only: custom media is not native yet) -------
      sm 480px · md 768px · lg 1024px · xl 1280px                              */

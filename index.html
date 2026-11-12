@@ -23,6 +23,21 @@
           if (theme === 'light' || theme === 'dark') root.dataset.theme = theme;
         } catch (e) {}
       })(document.documentElement);
+      // The page slide's direction (motion.css): a shallower page, or the browser's
+      // back, arrives from the other side. Must run before the first render.
+      window.addEventListener('pagereveal', function (event) {
+        var transition = event.viewTransition;
+        var activation = window.navigation && window.navigation.activation;
+        if (!transition || !transition.types || !activation || !activation.from) return;
+        var depth = function (url) {
+          return new URL(url).pathname.split('/').filter(Boolean).length;
+        };
+        var back =
+          activation.navigationType === 'traverse'
+            ? activation.entry.index < activation.from.index
+            : depth(activation.entry.url) < depth(activation.from.url);
+        transition.types.add(back ? 'back' : 'forward');
+      });
     </script>
   </head>
   <body>

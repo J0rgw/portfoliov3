@@ -9,6 +9,7 @@ import { SquareArrowsLeft, SquareArrowsRight } from '../../ui/Icon/Icon';
 import MarkerArrow from '../../graphics/MarkerArrow/MarkerArrow';
 import type { ProjectSummary } from '../../../config/types';
 import { useDiscCarousel } from '../../ui/motion/useDiscCarousel';
+import { useTextSwap } from '../../ui/motion/useTextSwap';
 import { SHOWN, discPose, discStyle, discTransform, type Shown } from '../../../design/discPose';
 import { rememberedProject } from './selection';
 
@@ -48,6 +49,8 @@ export function DiscGallery({ items, catalog, onSelect }: DiscGalleryProps) {
   const [rested, setRested] = useState(0);
   const [announcement, setAnnouncement] = useState('');
   const restoring = useRef(false);
+  // A selection restored on load changes the count at once, like the credits.
+  const [restored, setRestored] = useState(false);
   // The selection as the carousel knows it, readable mid-frame.
   const selectedRef = useRef(0);
   // How many neighbours the layout has room for (CSS, read on resize).
@@ -89,6 +92,7 @@ export function DiscGallery({ items, catalog, onSelect }: DiscGalleryProps) {
       const item = itemRefs.current[index];
       if (item) item.style.visibility = '';
       setSelected(index);
+      setRestored(restoring.current);
       onSelect(index, restoring.current);
       if (!restoring.current) setAnnouncement(messages.projectAnnouncement(index + 1, count, items[index].title));
     },
@@ -165,6 +169,7 @@ export function DiscGallery({ items, catalog, onSelect }: DiscGalleryProps) {
   const current = items[selected];
   const atStart = selected === 0;
   const atEnd = selected === count - 1;
+  const [number, numberSwap] = useTextSwap(selected + 1, restored);
 
   return (
     <div className="disc-gallery" data-moving={moving || undefined} onKeyDown={handleKeyDown}>
@@ -259,8 +264,8 @@ export function DiscGallery({ items, catalog, onSelect }: DiscGalleryProps) {
 
       {/* The icon is the key: its rounded square is the button's only outline.
           At either end the key stays focusable (aria-disabled), so focus is
-          never dropped. The count between them is visual: the live region
-          announces the change. */}
+          never dropped. The count between them is visual (its number swaps
+          like the credits): the live region announces the change. */}
       <div className="disc-gallery__controls">
         <button
           type="button"
@@ -273,7 +278,7 @@ export function DiscGallery({ items, catalog, onSelect }: DiscGalleryProps) {
           <SquareArrowsLeft className="disc-gallery__key" aria-hidden="true" />
         </button>
         <span className="disc-gallery__count mono" aria-hidden="true">
-          {String(selected + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
+          <span data-swap={numberSwap}>{String(number).padStart(2, '0')}</span> / {String(count).padStart(2, '0')}
         </span>
         <button
           type="button"

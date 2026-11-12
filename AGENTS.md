@@ -35,7 +35,10 @@ Edit text in config, never JSX. **Do not hardcode project copy in components.**
 `projects.ts` is the single source for gallery, index, detail, menu, sitemap and SEO.
 Add a typed entry to `projectCatalog` with unique immutable `id`, unique URL-safe `slug`,
 `order`, `visible`, title/tagline/summary/overview, technology, credits, links and SEO.
-Optional evidence/case sections/artwork go on that same entry. Track numbers are derived
+Optional evidence/case sections/artwork go on that same entry. Case-study sections are prose,
+one paragraph per string, in Castilian Spanish that does not read as translated: no bullet
+lists, numbered items or label-and-colon fragments, and nothing numbered on the page
+(INFORMATION_ARCHITECTURE §5, 2026-11-11). Track numbers are derived
 from visible order; hiding a project also removes its public route and sitemap entry.
 Asset references belong to config; neutral graphic themes live in design. An unregistered
 project receives the default theme; no theme edit is required to publish a project.
@@ -49,9 +52,10 @@ Compose existing units before extracting new ones; do not build a universal deco
 without a marker stroke) above a heading. Sections, pages and OG cards open with the heading.
 `npm run check:architecture` fails on `kicker` or `eyebrow` anywhere in `src/`.
 **No middots between data** (DESIGN.md "Typography"): lists take commas, hierarchy takes type and
-space. The same check fails on a middot in any string or JSX text; its allowlist (object print,
-document titles, social cards, the project data's SEO titles) lives in the script and grows
-only with a stated reason. No category tags, status chips or rules that restate what is
+space. The same check fails on a middot in any string or JSX text, document titles and the
+site's name included (2026-11-11); its allowlist (object print, social cards, the console's
+hidden track, the project data's quoted README output) lives in the script and grows only with
+a stated reason. No category tags, status chips or rules that restate what is
 next to them (DESIGN.md "Decisions").
 Functional components/hooks, explicit TypeScript types, no new `any`, deterministic SSR.
 Do not read browser globals or time/random values during render. Use effects and clean up.
@@ -75,8 +79,9 @@ one h1, skip link, keyboard/touch alternatives, modal focus containment/Escape/r
 closed menu. Aim for 44px controls. No mandatory animation intro; the only wheel handling is the eased scroll and proximity
 chapter snap (MOTION_SYSTEM §2.3): no paging, no blocked scrolling.
 Respect prefers-reduced-motion in CSS AND interaction hooks. Stop loops off-screen; provide
-pause for ongoing motion. No-JS must retain content and links. Transform/opacity for motion;
-SVG stroke drawing is allowed on bounded decorative resources. Never animate layout on scroll.
+pause for ongoing motion. No-JS must retain content and links. Transform/opacity for motion
+(one exception: the short blurs of the transitions taken from transitions.dev, MOTION_SYSTEM
+§2.6–2.7); SVG stroke drawing is allowed on bounded decorative resources. Never animate layout on scroll.
 Recompose small screens; contain decorative overflow without clipping text or focus.
 Local WOFF2 with licences, explicit image dimensions, responsive sources, lazy below fold.
 Keep GSAP lazy and current rendering stack; justify any new runtime dependency with a need

@@ -8,6 +8,7 @@ import DiscGallery from '../../components/cd/DiscGallery/DiscGallery';
 import PenMark from '../../components/graphics/PenMark/PenMark';
 import QuickResume from '../../components/editorial/QuickResume/QuickResume';
 import { useParallax } from '../../components/ui/motion/useParallax';
+import { useTextSwap } from '../../components/ui/motion/useTextSwap';
 import '../../design/sections/Projects/Projects.css';
 
 const chapter = chapterById('proyectos');
@@ -21,8 +22,9 @@ const chapter = chapterById('proyectos');
  * The heading links the full index (/proyectos/). The private work is the
  * last disc (a broken one, linking Contact), not a line under the gallery.
  *
- * The credits (QuickResume) always show the selected disc; the gallery owns
- * the selection and reports it here. The list at the end is the no-JavaScript
+ * The credits (QuickResume) follow the selected disc, swapping their text when
+ * it changes (useTextSwap); the gallery owns the selection and reports it
+ * here. The list at the end is the no-JavaScript
  * path to every case study. Scroll gives the frame depth (useParallax): the
  * credits trail the page, the discs run ahead of it, both at rest when the
  * chapter's top meets the viewport's.
@@ -30,7 +32,9 @@ const chapter = chapterById('proyectos');
 export function Projects() {
   const [selected, setSelected] = useState(0);
   const [animate, setAnimate] = useState(false);
-  const project = projectSummaries[selected];
+  // A disc restored from the last visit shows its credits at once.
+  const [shown, swap] = useTextSwap(selected, !animate);
+  const project = projectSummaries[shown];
   const sectionRef = useRef<HTMLElement>(null);
   useParallax(sectionRef);
 
@@ -49,7 +53,7 @@ export function Projects() {
               <ArrowRight className="projects__heading-arrow" size={20} aria-hidden="true" />
             </a>
           </h2>
-          {project ? <QuickResume key={project.id} project={project} animate={animate} /> : <p className="lede">{ui.projects.empty}</p>}
+          {project ? <QuickResume project={project} swap={swap} /> : <p className="lede">{ui.projects.empty}</p>}
         </header>
 
         {project && <DiscGallery items={projectSummaries} catalog={site.catalog} onSelect={handleSelect} />}

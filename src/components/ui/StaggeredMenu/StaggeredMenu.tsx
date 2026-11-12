@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { loadGsap, prefetchGsap, type Gsap } from '../motion/gsap';
 import { scrollToTarget } from '../motion/SmoothScroll';
 import { prefersReducedMotion } from '../motion/useReducedMotion';
+import { useTextSwap } from '../motion/useTextSwap';
 import '../../../design/components/StaggeredMenu/StaggeredMenu.css';
 
 export interface StaggeredMenuItem {
@@ -25,7 +26,8 @@ const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1
  * The menu panel: the chapters only, as Kerimov-style hairline rows, without
  * numbers (2026-11-11: the project list, the availability line and the social
  * links left the panel). Kept from the original StaggeredMenu: the staggered
- * prelayers, the panel slide and the rising item labels. Restyled to the album
+ * prelayers, the panel slide and the rising item labels; the toggle's words
+ * swap like the site's other changing text (useTextSwap). Restyled to the album
  * identity and rebuilt as a modal dialog: inert when closed, focus moves in,
  * Tab is contained, Escape closes and returns focus. See
  * docs/INFORMATION_ARCHITECTURE.md §4.
@@ -39,10 +41,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({ items, currentHref
   const panelRef = useRef<HTMLDivElement | null>(null);
   const preLayersRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLSpanElement | null>(null);
-  const textInnerRef = useRef<HTMLSpanElement | null>(null);
   const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
-  const [textLines, setTextLines] = useState<string[]>([ui.navigation.menu, ui.navigation.close]);
-  const animationsRef = useRef<{ open?: Animation; close?: Animation; spin?: Animation; text?: Animation }>({});
+  const [label, labelSwap] = useTextSwap(open ? ui.navigation.close : ui.navigation.menu);
+  const animationsRef = useRef<{ open?: Animation; close?: Animation; spin?: Animation }>({});
 
   const layers = () => Array.from(preLayersRef.current?.querySelectorAll<HTMLElement>('.sm-prelayer') ?? []);
   const itemLabels = () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>('.sm-panel-itemLabel') ?? []);
@@ -112,36 +113,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({ items, currentHref
 
   const animateToggle = useCallback((gsap: Gsap, opening: boolean) => {
     const icon = iconRef.current;
-    const inner = textInnerRef.current;
-    const instant = prefersReducedMotion();
-
-    if (icon) {
-      animationsRef.current.spin?.kill();
-      animationsRef.current.spin = gsap.to(icon, {
-        rotate: opening ? 225 : 0,
-        duration: instant ? 0 : opening ? motion.menu.spinOpen : motion.menu.spinClose,
-        ease: opening ? 'power4.out' : 'power3.inOut',
-        overwrite: 'auto',
-      });
-    }
-
-    if (!inner) return;
-    animationsRef.current.text?.kill();
-    const target = opening ? ui.navigation.close : ui.navigation.menu;
-    if (instant) {
-      setTextLines([target]);
-      gsap.set(inner, { yPercent: 0 });
-      return;
-    }
-    const from = opening ? ui.navigation.menu : ui.navigation.close;
-    const sequence = [from, target, from, target];
-    setTextLines(sequence);
-    gsap.set(inner, { yPercent: 0 });
-    const shift = ((sequence.length - 1) / sequence.length) * 100;
-    animationsRef.current.text = gsap.to(inner, {
-      yPercent: -shift,
-      duration: motion.menu.layer + sequence.length * motion.menu.layerStagger,
-      ease: 'power4.out',
+    if (!icon) return;
+    animationsRef.current.spin?.kill();
+    animationsRef.current.spin = gsap.to(icon, {
+      rotate: opening ? 225 : 0,
+      duration: prefersReducedMotion() ? 0 : opening ? motion.menu.spinOpen : motion.menu.spinClose,
+      ease: opening ? 'power4.out' : 'power3.inOut',
+      overwrite: 'auto',
     });
   }, []);
 
@@ -276,14 +254,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({ items, currentHref
         onClick={() => setMenuOpen(!openRef.current)}
         type="button"
       >
-        <span className="sm-toggle-textWrap" aria-hidden="true">
-          <span ref={textInnerRef} className="sm-toggle-textInner">
-            {textLines.map((line, i) => (
-              <span className="sm-toggle-line" key={i}>
-                {line}
-              </span>
-            ))}
-          </span>
+        <span className="sm-toggle-text" aria-hidden="true" data-swap={labelSwap}>
+          {label}
         </span>
         <span ref={iconRef} className="sm-icon" aria-hidden="true">
           <span className="sm-icon-line" />

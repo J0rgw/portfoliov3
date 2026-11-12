@@ -17,6 +17,8 @@ import { ArrowUpRight } from 'reicon-react/icons/ArrowUpRight';
 import { Envelope } from 'reicon-react/icons/Envelope';
 import { ArrowUp } from 'reicon-react/icons/ArrowUp';
 import { Copy } from 'reicon-react/icons/Copy';
+// The copy button's done state (Contact).
+import { Check } from 'reicon-react/icons/Check';
 import { Pause3 as Pause } from 'reicon-react/icons/Pause3';
 import { Play } from 'reicon-react/icons/Play';
 // Double chevrons in a rounded square: the Projects gallery's keys (the square is the key).
@@ -26,7 +28,7 @@ import { SquareArrowsRight } from 'reicon-react/icons/SquareArrowsRight';
 import { Moon } from 'reicon-react/icons/Moon';
 import { Sun } from 'reicon-react/icons/Sun';
 
-export { ArrowLeft, ArrowRight, ArrowDown, ArrowUpRight, Envelope, ArrowUp, Copy, Pause, Play, SquareArrowsLeft, SquareArrowsRight, Moon, Sun };
+export { ArrowLeft, ArrowRight, ArrowDown, ArrowUpRight, Envelope, ArrowUp, Copy, Check, Pause, Play, SquareArrowsLeft, SquareArrowsRight, Moon, Sun };
 
 type BrandIconProps = SVGProps<SVGSVGElement> & { size?: number | string };
 

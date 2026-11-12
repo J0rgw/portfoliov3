@@ -1,6 +1,8 @@
 /* ==========================================================================
    Motion presets. Rules and rationale: docs/MOTION_SYSTEM.md.
-   Only transform, opacity and (rarely) clip-path animate.
+   Only transform, opacity and (rarely) clip-path animate, plus the short
+   blurs of the transitions taken from transitions.dev (the text and icon
+   swaps, the rising headings, the page slide), which never follow the scroll.
    ========================================================================== */
 
 /* ---- Level 2: reveal on scroll ---------------------------------------------
@@ -33,6 +35,23 @@
   clip-path: inset(0 0 0 0);
 }
 
+/* A heading and its lede (transitions.dev "Texts reveal", MOTION_SYSTEM §2.7):
+   each line rises 12 px out of a 3 px blur as it fades in, the second a beat
+   after the first. */
+[data-reveal='rise'] {
+  transition:
+    opacity var(--dur-rise) var(--ease-swap),
+    transform var(--dur-rise) var(--ease-swap),
+    filter var(--dur-rise) var(--ease-swap);
+  transition-delay: calc(var(--reveal-index, 0) * 40ms);
+}
+
+.js [data-reveal='rise']:not([data-revealed]) {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  filter: blur(3px);
+}
+
 /* Failsafe: if the controller never starts (slow or failed bundle), show
    everything after 2.5s instead of stranding content. */
 .js:not(.reveal-ready) [data-reveal]:not([data-revealed]) {
@@ -43,7 +62,113 @@
   to {
     opacity: 1;
     transform: none;
+    filter: none;
     clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---- Levels 2 and 3: text that changes in place (useTextSwap) ----------------
+   A selection's credits, a count, a button's state. The old text leaves
+   upwards out of focus, the new one arrives from below the same way, one
+   --dur-swap each: useTextSwap sets "out", changes the text under "in" (no
+   transition) and goes back to "idle", so the new text eases into place. Not
+   tied to scroll position: a song changed by the scroll plays the same swap. */
+
+[data-swap] {
+  transition:
+    translate var(--dur-swap) var(--ease-swap),
+    filter var(--dur-swap) var(--ease-swap),
+    opacity var(--dur-swap) var(--ease-swap);
+}
+
+/* Inline text has to be a box to move; component styles override this. */
+:where(span[data-swap]) {
+  display: inline-block;
+}
+
+[data-swap='out'] {
+  translate: 0 calc(var(--swap-shift) * -1);
+  filter: blur(var(--swap-blur));
+  opacity: 0;
+}
+
+[data-swap='in'] {
+  translate: 0 var(--swap-shift);
+  filter: blur(var(--swap-blur));
+  opacity: 0;
+  transition: none;
+}
+
+/* Two icons in one place (transitions.dev "Icon swap", MOTION_SYSTEM §2.7):
+   data-icon-swap names the one showing, "a" (the first child) or "b"; the
+   other shrinks to half out of focus while this one grows in, together. */
+[data-icon-swap] {
+  display: inline-grid;
+  place-items: center;
+}
+
+[data-icon-swap] > * {
+  grid-area: 1 / 1;
+  transition:
+    scale var(--dur-ui) var(--ease-swap),
+    filter var(--dur-ui) var(--ease-swap),
+    opacity var(--dur-ui) var(--ease-swap);
+}
+
+[data-icon-swap='a'] > :nth-child(2),
+[data-icon-swap='b'] > :nth-child(1) {
+  scale: 0.5;
+  filter: blur(var(--swap-blur));
+  opacity: 0;
+}
+
+/* A shake that says no (transitions.dev "Input shake on error"): out 8 px and
+   back past the start in two 80 ms beats, then 6 px in two of 60 ms. Replayed
+   by removing the class and adding it again. */
+.is-shaking {
+  animation: shake 280ms both;
+}
+
+@keyframes shake {
+  0% {
+    translate: 0 0;
+    animation-timing-function: var(--ease-swap);
+  }
+  28.57% {
+    translate: -8px 0;
+    animation-timing-function: var(--ease-swap);
+  }
+  57.14% {
+    translate: 8px 0;
+    animation-timing-function: var(--ease-swap);
+  }
+  78.57% {
+    translate: -6px 0;
+    animation-timing-function: var(--ease-swap);
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+/* Reduced motion keeps the fades alone: no shift, no scale, no blur, no shake.
+   The swaps are spared the global backstop (base.css), which would leave a
+   blank frame instead. */
+@media (prefers-reduced-motion: reduce) {
+  [data-swap] {
+    translate: none !important;
+    filter: none !important;
+    transition-duration: var(--dur-swap) !important;
+  }
+
+  [data-icon-swap] > * {
+    scale: none !important;
+    filter: none !important;
+    transition-duration: var(--dur-ui) !important;
+  }
+
+  .is-shaking {
+    animation: none;
   }
 }
 
@@ -110,10 +235,38 @@ html.lenis {
   }
 }
 
-::view-transition-old(root),
+/* The pages slide side by side (transitions.dev "Side-by-side page slide",
+   MOTION_SYSTEM §2.7): the page you leave drifts 8 px back and out of focus
+   while the next arrives from 8 px ahead into focus, both at once. Going
+   back (to a shallower page, or the browser's back) runs the other way: the
+   inline script in index.html names the transition "back". The header and
+   the discs have names of their own, so they stay put or morph. */
+::view-transition-old(root) {
+  animation: page-leave var(--dur-ui) var(--ease-smooth-out) both;
+}
+
 ::view-transition-new(root) {
-  animation-duration: var(--dur-base);
-  animation-timing-function: var(--ease-in-out);
+  animation: page-arrive var(--dur-ui) var(--ease-smooth-out) both;
+}
+
+html:active-view-transition-type(back) {
+  --page-dir: -1;
+}
+
+@keyframes page-leave {
+  to {
+    translate: calc(-8px * var(--page-dir, 1)) 0;
+    filter: blur(3px);
+    opacity: 0;
+  }
+}
+
+@keyframes page-arrive {
+  from {
+    translate: calc(8px * var(--page-dir, 1)) 0;
+    filter: blur(3px);
+    opacity: 0;
+  }
 }
 
 ::view-transition-group(*) {
@@ -127,6 +280,7 @@ html.lenis {
   .js [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
     clip-path: none !important;
   }
 

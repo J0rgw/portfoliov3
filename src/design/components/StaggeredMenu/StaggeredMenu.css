@@ -33,26 +33,13 @@ html:not(.js) .sm-toggle {
   display: none;
 }
 
-.sm-toggle-textWrap {
-  position: relative;
+/* "Menú" and "Cerrar" swap in place (motion.css, data-swap), set to the
+   right in the longer word's width so the icon never moves. */
+.sm-toggle-text {
   display: inline-block;
-  height: 1em;
   min-width: 4.4em;
-  overflow: hidden;
   white-space: nowrap;
   text-align: right;
-}
-
-.sm-toggle-textInner {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-
-.sm-toggle-line {
-  display: block;
-  height: 1em;
-  line-height: 1;
 }
 
 .sm-icon {

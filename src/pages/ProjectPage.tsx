@@ -8,10 +8,11 @@ import Evidence from '../components/editorial/Evidence/Evidence';
 import StackMarks from '../components/editorial/StackMarks/StackMarks';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from '../components/ui/Icon/Icon';
 import { chapterHref } from '../config/navigation';
-import { formatTrack, nextProject, projectBySlug, projectHref } from '../config/projects';
+import { nextProject, projectBySlug, projectHref } from '../config/projects';
 import { mailto, site } from '../config/site';
 import type { Project } from '../config/types';
 import { useScrollSpy } from '../components/ui/motion/useScrollSpy';
+import { useSpinOnce } from '../components/ui/motion/useSpinOnce';
 import { rememberProject } from '../components/cd/DiscGallery/selection';
 import '../design/pages/ProjectPage.css';
 
@@ -26,13 +27,10 @@ const listFormat = (items: string[]) =>
   items.length > 1 ? `${items.slice(0, -1).join(', ')} y ${items[items.length - 1]}` : items.join('');
 
 const paragraphs = (items: string[]) => items.map((text, index) => <p key={index}>{text}</p>);
-const bullets = (items: string[]) => (
-  <ul className="case-list" role="list">
-    {items.map((text) => (
-      <li key={text}>{text}</li>
-    ))}
-  </ul>
-);
+
+/** A section told in prose, or nothing when there is nothing to tell. */
+const prose = (id: string, title: string, items?: string[]): CaseSection | null =>
+  items ? { id, title, content: paragraphs(items) } : null;
 
 /**
  * A core section with nothing verified to say yet: it says so, instead of
@@ -47,58 +45,21 @@ const pending = (id: string, title: string): CaseSection => ({
 /**
  * Optional sections render only with content, in the order of the IA
  * contract. The template's core (context or problem, role, solution) always
- * appears, as a placeholder when the content does not exist yet.
+ * appears, as a placeholder when the content does not exist yet. Every
+ * section is prose: no lists and no numbers (2026-11-11, Jorge's request).
  */
 const buildSections = (project: Project): CaseSection[] => {
   const sections: (CaseSection | null)[] = [
-    { id: 'resumen', title: ui.detail.overview, content: paragraphs(project.overview) },
-    project.context ? { id: 'contexto', title: ui.detail.context, content: paragraphs(project.context) } : null,
-    project.challenge ? { id: 'problema', title: ui.detail.challenge, content: paragraphs(project.challenge) } : null,
+    prose('resumen', ui.detail.overview, project.overview),
+    prose('contexto', ui.detail.context, project.context),
+    prose('problema', ui.detail.challenge, project.challenge),
     !project.context && !project.challenge ? pending('contexto', ui.detail.contextProblem) : null,
-    project.goals ? { id: 'objetivos', title: ui.detail.goals, content: bullets(project.goals) } : null,
-    project.responsibilities
-      ? {
-          id: 'mi-papel',
-          title: ui.detail.responsibilities,
-          content: project.responsibilities.length > 1 ? bullets(project.responsibilities) : paragraphs(project.responsibilities),
-        }
-      : pending('mi-papel', ui.detail.responsibilities),
+    prose('objetivos', ui.detail.goals, project.goals),
+    prose('mi-papel', ui.detail.responsibilities, project.responsibilities) ?? pending('mi-papel', ui.detail.responsibilities),
     !project.architecture && !project.decisions ? pending('solucion', ui.detail.solution) : null,
-    project.architecture
-      ? {
-          id: 'arquitectura',
-          title: ui.detail.architecture,
-          content: (
-            <>
-              {paragraphs(project.architecture.summary)}
-              <CreditsTable
-                className="case-stack"
-                rows={project.architecture.stack.map((group) => ({ label: group.label, value: listFormat(group.items) }))}
-              />
-            </>
-          ),
-        }
-      : null,
-    project.decisions
-      ? {
-          id: 'decisiones',
-          title: ui.detail.decisions,
-          content: (
-            <ol className="case-decisions" role="list">
-              {project.decisions.map((decision, index) => (
-                <li key={decision.title} className="case-decision">
-                  <span className="case-decision__number mono">{String(index + 1).padStart(2, '0')}</span>
-                  <div>
-                    <h3 className="case-decision__title">{decision.title}</h3>
-                    <p>{decision.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          ),
-        }
-      : null,
-    project.outcome ? { id: 'resultado', title: ui.detail.outcome, content: paragraphs(project.outcome) } : null,
+    prose('arquitectura', ui.detail.architecture, project.architecture),
+    prose('decisiones', ui.detail.decisions, project.decisions),
+    prose('resultado', ui.detail.outcome, project.outcome),
     project.evidence
       ? {
           id: 'evidencias',
@@ -126,7 +87,8 @@ export function ProjectPage({ slug }: { slug: string }) {
   const sections = buildSections(project);
   const activeId = useScrollSpy(sections.map((section) => section.id));
   const next = nextProject(slug);
-  const track = formatTrack(project.track);
+  // The next track's disc spins up under the pointer: three turns, faster each time, then stops.
+  const spin = useSpinOnce('case-disc-spin-up');
 
   // "Volver a proyectos" reopens the home gallery on this disc.
   useEffect(() => rememberProject(slug), [slug]);
@@ -179,11 +141,11 @@ export function ProjectPage({ slug }: { slug: string }) {
 
           <div className="case-cover__object" aria-hidden="true">
             <div className="case-cover__sleeve">
-              <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} artSize="29rem" loading="eager" />
+              <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} catalog={site.catalog} artSize="29rem" loading="eager" />
             </div>
             <div className="case-cover__disc">
               <Disc variant="pressed" transitionName={`disc-${project.slug}`}>
-                <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} track={track} catalog={site.catalog} shape="disc" loading="eager" />
+                <CoverArt cover={projectTheme(project.id)} assets={project.assets} title={project.title} catalog={site.catalog} shape="disc" loading="eager" />
               </Disc>
             </div>
           </div>
@@ -196,7 +158,6 @@ export function ProjectPage({ slug }: { slug: string }) {
             {sections.map((section) => (
               <li key={section.id}>
                 <a href={`#${section.id}`} aria-current={activeId === section.id ? 'location' : undefined}>
-                  <span className="case-toc__dash" aria-hidden="true" />
                   {section.title}
                 </a>
               </li>
@@ -205,7 +166,7 @@ export function ProjectPage({ slug }: { slug: string }) {
         </nav>
 
         <div className="case-content">
-          {sections.map((section, index) => (
+          {sections.map((section) => (
             <section
               key={section.id}
               id={section.id}
@@ -213,7 +174,6 @@ export function ProjectPage({ slug }: { slug: string }) {
               aria-labelledby={`${section.id}-title`}
             >
               <h2 id={`${section.id}-title`} className="case-section__title">
-                <span className="case-section__number mono">{String(index + 1).padStart(2, '0')}</span>
                 {section.title}
               </h2>
               <div className="case-section__body" data-reveal="up">
@@ -225,15 +185,15 @@ export function ProjectPage({ slug }: { slug: string }) {
       </div>
 
       {next && next.id !== project.id && <nav className="case-next" aria-label={ui.projects.next}>
-        <a className="container case-next__link" href={projectHref(next.slug)}>
-          <span className="case-next__disc" aria-hidden="true">
+        <a className="container case-next__link" href={projectHref(next.slug)} {...spin.trigger}>
+          <span className="case-next__disc" aria-hidden="true" {...spin.target}>
             <Disc variant="pressed" transitionName={`disc-${next.slug}`}>
-              <CoverArt cover={projectTheme(next.id)} assets={next.assets} title={next.title} track={formatTrack(next.track)} catalog={site.catalog} shape="disc" artSize="8rem" />
+              <CoverArt cover={projectTheme(next.id)} assets={next.assets} title={next.title} catalog={site.catalog} shape="disc" artSize="8rem" />
             </Disc>
           </span>
           <span className="case-next__text">
             <span className="case-next__label">
-              {ui.detail.nextTrack} <span className="mono">{formatTrack(next.track)}</span>
+              {ui.detail.nextTrack}
             </span>
             <span className="case-next__title">{next.title}</span>
             <span className="case-next__tagline">{next.tagline}</span>

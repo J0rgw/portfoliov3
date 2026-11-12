@@ -86,7 +86,7 @@ export const routeMeta = (route: Route): RouteMeta => {
     }
     default:
       return {
-        title: seoTemplates.notFoundTitle(site.name),
+        title: seoTemplates.notFoundTitle,
         description: seoTemplates.notFoundDescription,
         url: absolute('/404.html'),
         image: absolute(site.seo.image),

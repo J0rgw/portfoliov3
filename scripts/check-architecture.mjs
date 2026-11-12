@@ -8,16 +8,13 @@ const graph = new Map();
 const failures = [];
 // Middots between on-page data are banned (DESIGN.md "Typography"): lists take commas or a
 // line each, and hierarchy takes type and space. Exempt: print on an object (a disc's rim,
-// the CD-R's capacity line), document titles, social cards, the console's hidden track, and
-// the project data, whose SEO titles and quoted README output keep theirs. The Projects
-// pages lost their exemption with ADR-001 (2026-11-10): their copy separates like the rest.
+// the CD-R's capacity line), social cards, the console's hidden track, and the project data,
+// whose quoted README output keeps them. The Projects pages lost their exemption with ADR-001
+// (2026-11-10), document titles and the site's name theirs on 2026-11-11 (Jorge's request).
 const MIDDOT_FILES = new Set([
   'components/cd/Disc/Disc.tsx',
-  'config/seo.ts',
   'config/hiddenTrack.ts',
   'seo/OgCard.tsx',
-  'seo/head.ts',
-  'seo/schema.ts',
   'config/projects.ts',
 ]);
 const MIDDOT_PRINT = new Set(['80 min · 700 MB']);

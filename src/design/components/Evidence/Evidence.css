@@ -127,7 +127,7 @@
 .evidence__flow li {
   position: relative;
   display: grid;
-  grid-template-columns: 2.5rem 1fr auto;
+  grid-template-columns: 1fr auto;
   align-items: baseline;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
@@ -140,12 +140,6 @@
   color: var(--background);
 }
 
-.evidence__flow-index {
-  font-size: var(--text-xs);
-  color: var(--muted-foreground);
-}
-
-.evidence__flow li:last-child .evidence__flow-index,
 .evidence__flow li:last-child .evidence__flow-detail {
   /* Inverse row: the row ink itself keeps full contrast in both themes. */
   color: inherit;

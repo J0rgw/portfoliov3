@@ -210,10 +210,9 @@
   box-shadow: var(--shadow-object);
   pointer-events: auto;
   -webkit-tap-highlight-color: transparent;
-  /* The scroll leaves it where it rests while the package comes apart round it
-     (Jorge, 2026-11-11: sliding out and back, growing then shrinking, read as a
-     bounce). Only a fine pointer leans it, by its depth. */
-  translate: calc(var(--px) * var(--reach) * 0.25) calc(var(--py) * var(--reach) * 0.25);
+  /* It never moves (Jorge, 2026-11-11): sliding with the scroll and leaning
+     after the pointer both read as a bounce. Only the label turns, below, and
+     the lamp's highlight follows the pointer. */
 }
 
 .hero__disc-spin {
@@ -223,8 +222,8 @@
   border-radius: 50%;
 }
 
-/* The turn lives on its own layer, apart from the pointer's lean, and only
-   with JavaScript (which provides the pause). It starts upright. */
+/* The turn lives on its own layer, and only with JavaScript (which provides
+   the pause). It starts upright. */
 .js .hero__disc-spin {
   animation: disc-spin var(--dur-spin) linear infinite;
   will-change: rotate;
@@ -576,11 +575,6 @@ html:not(.js) .hero__spin-toggle {
   .js .hero__frame {
     position: sticky;
     top: 0;
-  }
-
-  /* The disc moves only with the pointer; the sleeve with the scroll as well. */
-  .js .hero__disc-body {
-    will-change: translate;
   }
 
   .js .hero__sleeve-body {

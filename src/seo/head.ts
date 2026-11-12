@@ -1,3 +1,4 @@
+import { seoTemplates } from '../config/seo';
 import { site } from '../config/site';
 import { routeMeta, type Route } from '../routes';
 import { schemaFor } from './schema';
@@ -21,7 +22,7 @@ export const buildHead = (route: Route): string => {
     `<link rel="canonical" href="${meta.url}" />`,
     meta.noindex ? '<meta name="robots" content="noindex" />' : '<meta name="robots" content="index, follow" />',
     `<meta property="og:type" content="${meta.type}" />`,
-    `<meta property="og:site_name" content="${escapeHtml(`${site.name} · ${site.portfolioLabel}`)}" />`,
+    `<meta property="og:site_name" content="${escapeHtml(seoTemplates.siteName(site.name, site.portfolioLabel))}" />`,
     `<meta property="og:locale" content="${site.locale}" />`,
     `<meta property="og:title" content="${escapeHtml(meta.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(meta.description)}" />`,

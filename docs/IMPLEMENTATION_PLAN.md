@@ -1021,7 +1021,7 @@ Later the same day, Jorge's answers (Q50, Q51):
   wheel, click, keys, menu link, reduced motion, no-JS and phone checks rerun with the same
   results as above; no console errors.
 
-## Hero: the disc holds still on scroll — 2026-11-11
+## Hero: the disc holds still — 2026-11-11
 
 Brief: Jorge saw a bounce on the hero's disc while scrolling and asked to remove it so the disc is
 static on scroll, keeping the animation of the rest of the stickers and assets.
@@ -1053,3 +1053,159 @@ static on scroll, keeping the animation of the rest of the stickers and assets.
   scratchpad, not in the repo.
 - On phones the disc no longer goes to the centre at the end of the pinned run: it stays where it
   rests, cropped a little at the left edge as the composition already allowed.
+
+Later the same night, Jorge: "remove the cd bouncing while following the mouse, just the cd".
+
+- `Hero.css`: `.hero__disc-body` has no `translate` left (it leaned 0.25 of the reach, ±5.6 px),
+  and no `will-change`, since it never moves. The lamp's highlight on the disc still turns with
+  the pointer: it is a reflection, the disc stays put. Every other layer leans as before.
+- Validation: `npm run build` passes. Against the previous build at 1512 × 734, pointer at the
+  centre and the four corners: the disc 0.0 px at every spot (it was ±5.5–5.6 px); the sleeve
+  (±11.1 px), the sticker, the headphones (±15.6 px), the knob (±22.3 px), the disc's highlight
+  and the film's sheen identical. Scrolling the whole run with the pointer in a corner: one disc
+  position against the frame. Reduced motion and no-JS: the same resting composition, no
+  horizontal overflow, no console errors.
+
+## Case studies as narrative — 2026-11-11
+
+Brief: on a case study ("01 Resumen" beside "— Resumen" in the contents), Jorge asked to remove
+the numbers from the whole page, remove the dash and avoid lists, and to write the text as a
+natural narrative in Castilian Spanish, with semicolons and the rest, that does not feel
+translated from English.
+
+- Numbers gone from the page: sections, technical decisions, the steps of Client Leads' flow
+  diagram, "Siguiente pista 03" and the sleeve's printed track (`CoverArt`'s `track` is now
+  optional; the index and the social cards still pass it). The footer's tracklist lost its
+  numbers too, so this changes the footer on every page. The `/proyectos/` index keeps its card
+  numbers (not on this page).
+- The contents rail lost its dashes; the section in view is set in ink and semibold.
+- No lists: `goals`, `responsibilities`, `architecture` and `decisions` are paragraphs
+  (`string[]` in `types.ts`, the `{ summary, stack }` and `{ title, body }` shapes are gone). The
+  stack table is named in the architecture's prose, and decisions lost their titles. The
+  template builds every section with one `prose()` helper; the CSS for the dash list, the stack
+  table, the numbered decisions and the section numbers was deleted.
+- Copy rewritten for all six case studies from the same facts (nothing added to the
+  authenticity register): semicolons where Spanish joins clauses, counts in words (doce, ocho,
+  siete) and figures for technical values (59 comandos, puerto 5555, versión 16), no
+  label-and-colon fragments ("Pendiente:", "Siguiente:"), no calques ("mobile-first", "asset",
+  "por debajo", "pipeline"). Summaries were reworded in the same spirit; Mathgeon's tagline is
+  now "Roguelite web para aprender matemáticas jugando". SEO titles and descriptions unchanged.
+- Kept: the cover credits and stack marks, and the evidence figures (screenshots, code, the flow
+  diagram as a figure without numbers, Disco Download's state table, whose middots quote the
+  README).
+- Docs: INFORMATION_ARCHITECTURE §4 and §5, DESIGN.md "Composition", references.md #12 and #13,
+  AGENTS.md "Content editing".
+- Validation: `npm run build` passes (architecture, config, assets, types, client + SSR,
+  prerender, SEO; the Moon and Sun warnings predate this). Prerendered HTML of the six case
+  studies: no zero-padded number, no em dash, and the only list in a body is the flow diagram.
+  Every case study at 1440 × 900 light and 390 × 844 dark with reduced motion, and at 768 × 1024
+  and 1024 × 768 in both schemes: no console errors, no horizontal overflow, no broken image.
+  Without JavaScript all paragraphs show (13, 16, 11, 10, 9 and 7). Renders compared before and
+  after in the session scratchpad, not in the repo.
+
+Later the same night, Jorge, on the case study's next track: "when you hover it, the cd just
+tilts, make the cd make a 360 spin like the cd is loading/the same animation when you just load
+in the web page". Four versions, each after his feedback on the one before:
+
+1. One turn with the hero's landing curve (1.9 s, `--ease-out`). Jorge: "i want it to give a
+   sensation that it starts spinning like it's starting to sound, this feels a little bit off"
+   (an ease-out turn starts at full speed: a disc flicked, not one starting to play).
+2. A disc that played while pointed at: spun up from rest to 45 rpm along a spring, ran down on
+   leave. Jorge: "make it stop after a couple spin, but make the couple spin spin faster
+   incrementally until like 2 or 3 spins like the wii cd animation when there was no cd".
+3. The spin-up of a drive with nothing to read (references.md #19): three turns clockwise from
+   rest, each faster than the last, then constant braking for 0.35 s from 180 rpm. Jorge: "the
+   stopping is too abruct, make it ease it out".
+4. Kept: the same spin-up with an eased stop. `case-disc-spin-up` over `--dur-spin-up` (2.5 s):
+   constant acceleration for 1.5 s (quadratic ease-in, 750°), then a cubic ease-out for 1 s
+   (330°) that glides to a stop, upright again. The two curves meet at the same speed, 167 rpm
+   (the ease-in ends at slope 2, the ease-out starts at slope 1 / 0.33), so the speed never
+   jumps. The `useSpinOnce` hook sets `data-spinning` on a mouse or pen arriving or keyboard
+   focus, and clears it when the animation ends, so a spin under way always finishes and is
+   never restarted. The 45° tilt and the earlier hooks and tokens are gone.
+
+- Docs: MOTION_SYSTEM §2 (level 3), §3, §4 and §5; references.md #19.
+- Validation: typecheck and architecture pass. At 1440 × 900, angle read every frame: rpm per
+  100 ms 6, 18, 30, 42, 53, 64, 75, 86, 96, 107, 118, 129, 140, 151, 162 up to 1.5 s, then 144,
+  114, 88, 66, 46, 30, 19, 9, 3, 0 (per 50 ms across the handover: 160, 164, 152, 136); the
+  turns end at 1.03, 1.47 and 2.38 s; it ends at 1080°, the same face as at rest, with no jump.
+  For the third version (same hook): the pointer leaving at 0.5 s let the spin run to the end,
+  coming back at 0.8 s did not restart it, it stayed still while the pointer stayed, keyboard
+  focus played it, and reduced motion and no JavaScript declared none.
+
+## Text that changes in place — 2026-11-12
+
+Brief: Jorge supplied a "text states swap" component (exit: rise 4 px, blur 2 px, fade, 150 ms
+`ease-in-out`; enter: the same from 4 px below; reduced motion keeps the fade only) and asked for
+it wherever text appears and changes on the home page, starting with "Cómo trabajo" as the scroll
+turns the iPod, and for any other clear case.
+
+- Primitive: `useTextSwap(value, instant)` (`components/ui/motion`) and `[data-swap]` in
+  motion.css, with tokens `--dur-swap` (150 ms), `--ease-swap` (`ease-in-out`), `--swap-shift`
+  (4 px) and `--swap-blur` (2 px). The hook reads `--dur-swap` to time the change of text, so the
+  CSS token is the only source. Kept from the supplied component: durations, curve, distances and
+  the reduced-motion fallback. Not kept: its demo card, button and stage colours (nothing on this
+  site uses them), the permanent `will-change` (the project sets it only on what moves), the
+  click lock while a swap runs (a scroll-driven change must land on the latest value, so the
+  latest wins instead), and its `--p6-enter-delay` (always 0).
+- Applied to: Proceso's credits and the count on the iPod's screen (scroll and playlist);
+  Projects' credits (`QuickResume`, no longer re-keyed) and the count between the keys; the copy
+  button; the menu toggle (on every page); the hero's focus-revealed pause control (icon and
+  words). Left alone: the gallery's annotation, which is laid in again with the arrow at rest.
+- Removed: A24's title change-over on both sets of credits (the rise out of a clip and the rows
+  fading up after it, with their `__line` clip wrappers and keyframes) and the menu toggle's
+  GSAP roll through "Menú" and "Cerrar" (`textLines`, its tween and the hidden second word).
+- Exceptions written down: the blur is the only filter that animates (AGENTS.md, MOTION_SYSTEM
+  §4 and §6: never scrubbed by scroll, 150 ms after a change), and the swap is the one transition
+  base.css's reduced-motion backstop spares (at 0.01 ms its fade would blank the text for 150 ms).
+- Docs: MOTION_SYSTEM §2, §2.2, §2.5, new §2.6, §3, §4, §5 and §6; DESIGN.md "Motion";
+  INFORMATION_ARCHITECTURE §3 (hero, Projects, Proceso, contact) and §4 (the toggle); AGENTS.md;
+  references.md status.
+- Validation: `npm run build` passes (architecture, config, assets, types, client + SSR,
+  prerender, SEO; the Moon and Sun warnings predate this). Production build in Chrome, every
+  frame sampled: at 1512 × 734 the wheel turned Proceso's five songs down and back up, eight swaps
+  of the credits and the count, each half 150 ms to within a frame (148–169 ms as sampled),
+  opacity to 0, blur to 2 px, −3.6 to +4 px, one step on screen at a time; the gallery's key (a
+  fast double press lands on 05 without showing 04, credits and count together), the copy
+  button, the menu toggle and the pause control 148–152 ms a half. Reduced motion: opacity only.
+  390 × 844 in dark: the same, Proceso held. Element boxes identical to the previous build at
+  1512 × 734, 1440 × 900, 1024 × 768, 768 × 1024, 390 × 844 and 320 × 640, with and without
+  JavaScript; no horizontal overflow; no console errors; long frames during the wheel the same
+  as before (one 52–66 ms frame in both builds, at the same moment). A before/after recording
+  lives in the session scratchpad, not in the repo.
+
+## Transitions from transitions.dev — 2026-11-12
+
+Brief: after the text swap, Jorge asked to investigate https://transitions.dev/ and apply any of
+its transitions this site can use.
+
+- Investigation: the library has 44 transitions (8 paid, no public code). Its page exposes, as
+  plain text, a React snippet per transition and its motion scale (duration, easing, distance,
+  blur and scale tokens, each annotated with the transitions that use it). Reading its
+  per-transition CSS required running the page's own script, which was not done; values the
+  tokens and snippets do not give are inferred and marked so in MOTION_SYSTEM §2.7.
+- Applied (MOTION_SYSTEM §2.7): side-by-side page slide on every page change (the root of the
+  cross-document view transition, direction from an inline `pagereveal` script in `index.html`);
+  icon swap on the copy button (copy to a check) and the hero's pause control; input shake on a
+  copy the browser refuses; avatar group hover spring and tooltip on every row of technology
+  marks (`MarkRow` with `useMarkGroup`: QuickResume on home, StackMarks on the index and the case
+  studies); tabs sliding timing on the iPod's bar; texts reveal on every chapter heading and lede
+  (`data-reveal="rise"`).
+- Not applied, with reasons, in §2.7: nothing on the site for most (badges, toasts, dropdowns,
+  inputs, loaders, AI states); the menu keeps its own choreography; the counts keep the text swap
+  Jorge asked for; the tilt would break the case study's disc-in-sleeve cover.
+- Tokens: `--dur-ui`, `--dur-lift`, `--dur-rise`, `--dur-tip-delay`, `--ease-smooth-out`,
+  `--ease-spring-back`, `--ease-tip`. Removed: `.hero__spin-state` (icon and words now swap on
+  their own).
+- Docs: MOTION_SYSTEM §2, new §2.7, §3, §4, §5 and §6; DESIGN.md "Motion"; INFORMATION_ARCHITECTURE
+  §2 (page changes), §3 (Projects' marks, chapter headings, the copy button) and §5 (the case
+  study's marks); AGENTS.md (the blur exception); references.md #20 and status.
+- Validation: `npm run build` passes (architecture, config, assets, types, client + SSR,
+  prerender, SEO; the Moon and Sun warnings predate this). Measured in Chrome on the production
+  build at 1512 × 734, with and without reduced motion (numbers in MOTION_SYSTEM §2.7): page slide
+  forward and back (by link and by the browser's back), the copy check and the refused-copy
+  shake, the marks' lift, spring back and travelling tag, the bar's timing, Servicios' heading
+  rising. Element boxes identical to the previous build on home, the index and a case study at
+  1512 × 734, 1024 × 768 and 390 × 844, with and without JavaScript; the marks keep their
+  `title` without JavaScript; no horizontal overflow; no console errors. A recording lives in the
+  session scratchpad, not in the repo.

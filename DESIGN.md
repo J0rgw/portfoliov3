@@ -32,8 +32,12 @@ hierarchy do it (a role in semibold over its place in muted type, each on its li
 list the way Spanish writes one ("MoneyMan, Client Leads, Disco Download y gitchange"; credits
 take commas, "TypeScript, React, Vite"). What an object prints on its own label is print, not
 interface, and may keep its separator: the CD-R's "80 min · 700 MB", a disc's rim credits, the
-social cards. Document titles keep theirs too. `npm run check:architecture` fails on a middot in
-any copy outside those (the Projects pages lost their exemption with ADR-001, 2026-11-10).
+social cards. Document titles and the site's name lost theirs on 2026-11-11, at Jorge's request:
+the home page is "Jorge Arcas, desarrollador full-stack freelance", the index "Proyectos de Jorge
+Arcas", a case study and the 404 their own title alone ("MoneyMan, finanzas personales sin
+servidor", "Pista no encontrada"), and the site, in link previews and search results, "Portfolio
+de Jorge Arcas". `npm run check:architecture` fails on a middot in any copy outside those (the
+Projects pages lost their exemption with ADR-001, 2026-11-10).
 Estrella is an occasional decorative handwritten voice; never the default heading. It lacks
 proper accents/digits/punctuation, so retain real HTML text in Poppins. It writes on objects
 (CD-R labels) and signs the About notes; it is never a word set beside a heading, which only
@@ -206,8 +210,11 @@ Case study: cover/sleeve above a readable booklet column, with a steady navigati
 ADR-001 the Projects pages speak like the gallery: sentence-case titles, credits as label and
 value without small capitals or rules, the stack as grey marks (`editorial/StackMarks`) with the
 rest named in words, one back link (the breadcrumb trail lives in the JSON-LD), links instead of
-square buttons, numerals instead of circles, one rule per division, and the private work as the
-broken disc in the index too.
+square buttons, one rule per division, and the private work as the broken disc in the index too.
+Since 2026-11-11 a case study is read as a booklet's text, not a spec sheet: no numbers (sections,
+decisions, the diagram's steps, the next track, the sleeve's print) and no dash rail, and every
+section is narrative prose with semicolons, never bullets (INFORMATION_ARCHITECTURE §5). The
+footer's tracklist lost its numbers the same day.
 Asymmetry must be intentional, limited by readable measure and safe interactive hit areas.
 Mobile reassembles the layers in reading order; no essential content outside the viewport.
 
@@ -256,8 +263,8 @@ on it.
 
 ## Motion
 
-Reveal, float, drift, rotate, draw, slide, snap, hover and page-transition vocabulary is owned
-by `design/motion.ts` and `design/motion.css`. Parameters are separate from interaction hooks.
+Reveal, float, drift, rotate, draw, slide, snap, hover, text-swap, icon-swap, lift, shake and
+page-transition vocabulary is owned by `design/motion.ts` and `design/motion.css`. Parameters are separate from interaction hooks.
 Float/drift are short bounded gestures, not automatic infinite background decoration.
 The hero turn and interactive gallery keep pause/reduced-motion/off-screen behavior. Layers
 move like handled objects; no scroll blocking, abrupt layout shifts or animation-gated copy.
@@ -266,11 +273,18 @@ is about ("seleccionados", "producto real", "el problema que tienes", "mí", "en
 preparación"), so scrolling through a hold always changes something on screen; at the snap
 point the stroke is not there yet, at the end of the hold it is complete, and without the hold
 (no JavaScript, reduced motion, short viewports, a chapter taller than the window) it is simply
-drawn (MOTION_SYSTEM §2.5). Process's credits change over like the gallery's (the title rises,
-the lines follow); the booklet's page turn left with the booklet (ADR-001). In Process the hold
-is the iPod's wheel (2026-11-11): every song owns a share of it, so scrolling changes the song,
-the selection bar slides to it and its credits change over; the marker is drawn in the hold's
-first stretch, while the heading is read.
+drawn (MOTION_SYSTEM §2.5). Process's credits change like the gallery's; the booklet's page
+turn left with the booklet (ADR-001). In Process the hold is the iPod's wheel (2026-11-11): every
+song owns a share of it, so scrolling changes the song, the selection bar slides to it and its
+credits change; the marker is drawn in the hold's first stretch, while the heading is read.
+Text that changes in place swaps (2026-11-12, Jorge's request, MOTION_SYSTEM §2.6): the old
+words rise 4 px out of focus and fade, then the new ones come up from 4 px below into focus,
+150 ms each, never both on screen at once. It is the one way text changes on the site: the
+credits and counts of Projects and Proceso, the copy button, the menu toggle, the hero's pause
+control. Under reduced motion it is a fade. Seven more transitions from the same library
+(transitions.dev, 2026-11-12, MOTION_SYSTEM §2.7) keep its scale, small and quick: pages slide
+8 px side by side, icons swap, technology marks lift and name themselves on a travelling tag, the
+iPod's bar slides on its timing, chapter headings rise into focus, and a refused copy shakes.
 
 ## Decisions
 

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
 import Disc from '../../components/cd/Disc/Disc';
-import { ArrowRight, ArrowUpRight, Copy } from '../../components/ui/Icon/Icon';
+import { ArrowRight, ArrowUpRight, Check, Copy } from '../../components/ui/Icon/Icon';
+import { prefersReducedMotion } from '../../components/ui/motion/useReducedMotion';
+import { useTextSwap } from '../../components/ui/motion/useTextSwap';
 import { chapterById } from '../../config/navigation';
 import { mailto, site, socials } from '../../config/site';
 import { ui } from '../../config/ui';
@@ -21,6 +23,10 @@ export function Contact() {
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
   const timer = useRef<number | undefined>(undefined);
+  const copyButton = useRef<HTMLButtonElement>(null);
+  // "Copiar email" and "Email copiado" swap in place (useTextSwap); the icon turns
+  // into a check (data-icon-swap); a copy that fails shakes the button (motion.css).
+  const [copyLabel, copySwap] = useTextSwap(copied ? ui.contact.copied : ui.contact.copy);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
@@ -35,6 +41,12 @@ export function Contact() {
       // Clipboard can be blocked; the address stays visible and selectable.
       setCopied(false);
       setCopyFailed(true);
+      const button = copyButton.current;
+      if (button && !prefersReducedMotion()) {
+        button.classList.remove('is-shaking');
+        void button.offsetWidth;
+        button.classList.add('is-shaking');
+      }
     }
   };
 
@@ -57,9 +69,20 @@ export function Contact() {
         <div className="contact__details">
           <p className="contact__email">
             <span className="contact__address">{site.email}</span>
-            <button type="button" className="contact__copy" onClick={copyEmail}>
-              <Copy size={16} aria-hidden="true" />
-              {copied ? ui.contact.copied : ui.contact.copy}
+            <button
+              ref={copyButton}
+              type="button"
+              className="contact__copy"
+              onClick={copyEmail}
+              onAnimationEnd={(event) => {
+                if (event.animationName === 'shake') event.currentTarget.classList.remove('is-shaking');
+              }}
+            >
+              <span data-icon-swap={copied ? 'b' : 'a'} aria-hidden="true">
+                <Copy size={16} />
+                <Check size={16} />
+              </span>
+              <span data-swap={copySwap}>{copyLabel}</span>
             </button>
           </p>
           <ul className="contact__links" role="list">

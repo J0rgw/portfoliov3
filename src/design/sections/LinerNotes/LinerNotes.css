@@ -87,7 +87,8 @@
 }
 
 /* The selection bar, as the iPod draws it: one row of the accent that slides
-   to the selected song as the page turns the wheel. */
+   to the selected song as the page turns the wheel, on transitions.dev's
+   "Tabs sliding" timing (MOTION_SYSTEM §2.7). */
 .process__cursor {
   position: absolute;
   inset-inline: 0;
@@ -100,7 +101,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .process__cursor {
-    transition: translate var(--dur-fast) var(--ease-out);
+    transition: translate var(--dur-ui) var(--ease-smooth-out);
   }
 }
 
@@ -165,8 +166,10 @@ html:not(.js) .process__track {
 
 /* With JavaScript every step shares one cell, so the block keeps the height of
    the longest and nothing around it moves when the song changes; each starts
-   at the cell's top, so the title stays where the eye is. Only the selected
-   one is visible (and in the accessibility tree). */
+   at the cell's top, so the title stays where the eye is. Only the one on
+   screen is visible (and in the accessibility tree). A change of song swaps
+   the block's text (motion.css, data-swap): the old step leaves, then the new
+   one arrives, never both at once. */
 .js .process__credits {
   display: grid;
 }
@@ -207,16 +210,6 @@ html:not(.js) .process__frame .process__credits {
   text-wrap: balance;
 }
 
-/* The rise's clip leaves room for accents above and descenders below. */
-.process__line {
-  display: block;
-  clip-path: inset(-0.5em -0.5em -0.35em -0.5em);
-}
-
-.process__line > span {
-  display: block;
-}
-
 .process__text {
   max-width: 36ch;
   margin-top: var(--space-3);
@@ -252,32 +245,6 @@ html:not(.js) .process__frame .process__credits {
 
 .process__source:hover svg {
   translate: 0.2em 0;
-}
-
-/* The change-over, as in Projects: the new title rises, the lines follow.
-   Not on first load (data-animate comes with the first selection). */
-@media (prefers-reduced-motion: no-preference) {
-  .process__credits[data-animate] .process__step[data-active] .process__line > span {
-    animation: process-rise var(--dur-slow) var(--ease-out) both;
-  }
-
-  .process__credits[data-animate] .process__step[data-active] :is(.process__text, .process__note) {
-    animation: process-fade var(--dur-base) var(--ease-out-soft) both;
-    animation-delay: calc((var(--row, 0) + 1) * var(--stagger));
-  }
-}
-
-@keyframes process-rise {
-  from {
-    translate: 0 150%;
-  }
-}
-
-@keyframes process-fade {
-  from {
-    opacity: 0;
-    translate: 0 0.4rem;
-  }
 }
 
 /* ---- Wide landscape: one frame ------------------------------------------------------

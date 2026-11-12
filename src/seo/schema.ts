@@ -1,5 +1,5 @@
 import { ui } from '../config/ui';
-import { personSeo } from '../config/seo';
+import { personSeo, seoTemplates } from '../config/seo';
 import { projectBySlug, projectHref, projects } from '../config/projects';
 import { services } from '../config/services';
 import { site, socials } from '../config/site';
@@ -56,7 +56,7 @@ export const schemaFor = (route: Route): object[] => {
         {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: `${site.name} · ${site.portfolioLabel}`,
+          name: seoTemplates.siteName(site.name, site.portfolioLabel),
           url: url('/'),
           inLanguage: site.lang,
           author: { '@id': personId },

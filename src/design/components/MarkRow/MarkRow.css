@@ -1,0 +1,53 @@
+/* A row of technology marks (MarkRow, useMarkGroup, MOTION_SYSTEM §2.7): the marks
+   lift under the pointer and one name tag travels between them. */
+
+[data-mark-group] {
+  position: relative;
+}
+
+/* Written per mark by useMarkGroup; at rest nothing moves. */
+[data-mark-group] > li:not([data-mark-tip]) {
+  translate: 0 var(--lift-y, 0px);
+  scale: var(--lift-scale, 1);
+  transition:
+    translate var(--dur-lift) var(--lift-ease, var(--ease-smooth-out)),
+    scale var(--dur-lift) var(--lift-ease, var(--ease-smooth-out));
+}
+
+/* The name, in the page's inverted ink, centred over the mark (--tip-x). It
+   shows after a beat, travels from mark to mark and goes at once. */
+.mark-tip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + var(--space-2));
+  z-index: 3;
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  translate: calc(var(--tip-x, 0px) - 50%) 0;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  scale: 0.98;
+  transition: none;
+}
+
+.mark-tip[data-show] {
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity var(--dur-swap) var(--ease-tip) var(--dur-tip-delay),
+    scale var(--dur-swap) var(--ease-tip) var(--dur-tip-delay),
+    translate var(--dur-swap) var(--ease-tip);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark-tip[data-show] {
+    scale: none;
+  }
+}

@@ -36,7 +36,9 @@ Slugs: `moneyman`, `client-leads`, `mathgeon`, `disco-download`, `gitchange`, `p
 - The browser receives complete HTML: the hero, the projects and every case study are readable with
   JavaScript disabled. React then hydrates (`hydrateRoot`) to add interaction.
 - Navigation between pages is ordinary links (no client router). Cross-document View Transitions
-  make page changes feel continuous where supported, and degrade to a normal navigation elsewhere.
+  make page changes feel continuous where supported, and degrade to a normal navigation elsewhere:
+  the pages slide 8 px side by side, a shallower page (or the browser's back) from the other side
+  (MOTION_SYSTEM §2.7, 2026-11-12).
 - In `npm run dev` the page renders client-side (empty root, `createRoot`) and the title is set
   from the same route metadata, so development needs no server.
 - The stylesheet (~13 kB gzip) is inlined into every page by the prerenderer to remove a
@@ -97,9 +99,9 @@ Every chapter below must keep its contract when edited.
   line by line, the disc lands spinning, the hand brings the sleeve up from below; the disc turns
   slowly (75 s a turn; eased stop on hover, held by a tap, paused off-screen, and a pause button
   revealed on keyboard focus); scroll takes the package apart round the disc, which holds still
-  (rest → split → solo → exit, since 2026-11-11 without moving or scaling the disc), in a pinned
-  frame (MOTION_SYSTEM §2.1); the credit parallaxes as the frame leaves, and the end of
-  the pinned run is a snap point (§2.3). The cut-outs slap down after the scene's entrance,
+  (rest → split → solo → exit; since 2026-11-11 neither the scroll nor the pointer moves the
+  disc), in a pinned frame (MOTION_SYSTEM §2.1); the credit parallaxes as the frame leaves, and
+  the end of the pinned run is a snap point (§2.3). The cut-outs slap down after the scene's entrance,
   lean by their depth under a fine pointer, drift apart as the hand pulls and leave through
   their nearest edge, so the disc ends alone; the knob turns up with the scroll. Reduced
   motion and no-JS: a still, complete composition with no extra scroll length.
@@ -112,7 +114,8 @@ Every chapter below must keep its contract when edited.
   in the meta description; the Person JSON-LD description is `site.summary`. The artwork is
   decorative and adds no claims.
 - Accessibility: all text is real HTML, visible without JavaScript; the name is typeset in its original case. The disc, the sleeve, the arm and every cut-out are `aria-hidden` (the name and role
-  printed on them are the `h1`); nothing covers the credit's type. The turn can be paused by keyboard (focus-revealed button),
+  printed on them are the `h1`); nothing covers the credit's type. The turn can be paused by keyboard (focus-revealed button,
+  whose icon and words swap between "Pausar" and "Reanudar giro del disco", MOTION_SYSTEM §2.6),
   mouse and touch (WCAG 2.2.2).
 - Conversion: the header's "Hablemos" (always visible) and the menu; the hero itself has no CTA,
   by the owner's brief.
@@ -128,18 +131,20 @@ Every chapter below must keep its contract when edited.
   (config `assets.label`), with the hero disc's real hub and rim and real wear; no rim credits.
   The selected disc's credits, unboxed (2026-11-09), in the bottom-left corner on wide screens, their last line level with the keys: title,
   short description (the tagline) tight under it, stack (first three technologies) as logo marks
-  from `config/technologies.ts`, a mono chip where no mark exists. Position `03 / 06` between the
+  from `config/technologies.ts`, a mono chip where no mark exists; the marks lift under the
+  pointer and their names show on a tag that travels between them (MOTION_SYSTEM §2.7). Position `03 / 06` between the
   previous/next keys, which sit centred under the selected disc. The arrow's label sits at the
   free end of its tail. No foot (removed 2026-11-09): the chapter heading links the full index
   (`/proyectos/`, with an arrow). Without JavaScript, a text list of every
   case study.
 - References: A24 by Ravi Klaassens (primary: composition, credits, the arc of discs, the pen loop
-  on hover, title change-over), Jorge's marker arrow, the original image (references.md #17),
-  Cool Interaction (numeral with total).
+  on hover; its title change-over until 2026-11-12), Jorge's marker arrow, the original image
+  (references.md #17), Cool Interaction (numeral with total).
 - Components: `DiscGallery`, `QuickResume`, `discPose` (section: the path, `TRACK`), `Disc`,
   `CoverArt`, `Cutout`, `MarkerArrow`, `HandCircle`, `useDiscCarousel`. Data: `projectSummaries` (§5).
 - Motion: Level 3 (MOTION_SYSTEM §2.2): drag with inertia and snapping along an arc,
-  previous/next buttons, arrow keys; the credits change over; the arrow is laid again at rest; a
+  previous/next buttons, arrow keys; the credits and the count swap their text (MOTION_SYSTEM
+  §2.6, 2026-11-12); the arrow is laid again at rest; a
   pen loop turns round the hovered disc. No wheel capture: the wheel scrolls the page everywhere.
   Scroll parallax (§2.4): credits trail the page, the gallery runs ahead, both at rest when the
   chapter's top meets the viewport's (its snap point). Like every home chapter but the last, it
@@ -171,7 +176,8 @@ layout.css), with the heading in the top-left corner where Projects' heading sit
 at the foot (Proceso's at eye level since 2026-11-11), so the chapter hold shows it whole. Measured on the production build at 1512 × 734,
 1280 × 720, 1024 × 768, 1440 × 900 and 1920 × 1080: every chapter fits and is held. On phones a
 chapter that does not fit flows instead (`data-unheld`, MOTION_SYSTEM §2.5). Copy was distilled
-from the earlier contracts' own text: no new facts.
+from the earlier contracts' own text: no new facts. Each chapter's heading and lede rise into
+focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 
 **02 · Proceso** (`src/sections/LinerNotes`)
 - Purpose: show how Jorge works and why the process is trustworthy.
@@ -197,10 +203,11 @@ from the earlier contracts' own text: no new facts.
   reduced motion, short viewports), choosing is the only way. A link to the chapter opens it on
   its first song from above or below. Each step's credits are its tabpanel. Without JavaScript
   every step's credits are listed under the heading.
-- Motion: Level 2. The selection bar slides to the selected song; the credits change over like
-  the gallery's (the title rises, the lines follow; not on first load, none under reduced
-  motion); the hold's marker under "producto real" is drawn in the first 40svh of the hold,
-  while the heading is read (MOTION_SYSTEM §2.5).
+- Motion: Level 2. The selection bar slides to the selected song; the credits and the count on
+  the iPod's screen swap their text like the gallery's (Jorge's request, 2026-11-12, MOTION_SYSTEM
+  §2.6: the old text rises out of focus, then the new one comes up into place; not on first
+  load; a fade under reduced motion); the hold's marker under "producto real" is drawn in the
+  first 40svh of the hold, while the heading is read (MOTION_SYSTEM §2.5).
 - Responsive: wide landscape, the credits in a column up to 40rem at body size, centred under
   the heading (eye level); the cell keeps the longest step's height and every step starts at
   its top, so the title never moves. The iPod whole, turned 3°, centred in the room the column
@@ -264,8 +271,9 @@ from the earlier contracts' own text: no new facts.
 - Purpose: convert interest into an enquiry and close the narrative.
 - Content: heading "¿Tienes un proyecto en mente?" and its lede; the oversized "Hablemos" with
   the CD-R set between the word and an arrow, as the primary email link of the whole site
-  (named "Hablemos por email"); one line of details: the address with a copy button (feedback in
-  a polite live region), LinkedIn, GitHub, availability (the green dot beside its words). Removed
+  (named "Hablemos por email"); one line of details: the address with a copy button (its words
+  swap to "Email copiado" and back and its icon turns into a check, MOTION_SYSTEM §2.6–2.7; a copy
+  the browser refuses shakes it; feedback in a polite live region), LinkedIn, GitHub, availability (the green dot beside its words). Removed
   by ADR-001: the two square buttons and the spec table (Estado, Base, Idiomas, LinkedIn, GitHub
   in small capitals between rules); the languages are in About, the base in the footer.
 - Footer (every page): rows of links with their name in the margin: the full tracklist (site
@@ -286,8 +294,9 @@ One coherent system: **a conventional information architecture dressed as a trac
 - **Header** (every page, `components/SiteHeader`): the JA monogram (link home, named "Jorge
   Arcas…" for assistive technology, and the way back to the top; it replaced the "Jorgw"
   wordmark on 2026-11-10, and since 2026-11-11 it is in ink, taking the links' hover colour on
-  hover and focus), `Hablemos` (contact action) and the **Menú** toggle, words in sentence case
-  at body size (2026-11-11), as type over the page with no rule, blur or shadow
+  hover and focus), `Hablemos` (contact action) and the **Menú** toggle (its word swaps to
+  "Cerrar" while the menu is open, MOTION_SYSTEM §2.6), words in sentence case at body size
+  (2026-11-11), as type over the page with no rule, blur or shadow
   (ART_DIRECTION §9); no theme switch since 2026-11-10, and no track readout beside the
   monogram since 2026-11-11 (Jorge's call). It switches to light ink over the back cover and
   the footer. It stays fixed and keeps its own view-transition name, so it does not move during
@@ -314,9 +323,10 @@ One coherent system: **a conventional information architecture dressed as a trac
   focus, the panel is `inert` when closed. Works with reduced motion. On home, the chapter under
   the header's middle line is marked (`aria-current="location"`, 2026-11-10): the accent and a
   small `▸` at the row's end, so the state does not rest on colour alone.
-- **Case-study table of contents**: sticky on wide screens, with scroll-spy and a dash marker per
-  section.
-- **Footer**: the full tracklist (site map) with every case study, as rows of links (ADR-001).
+- **Case-study table of contents**: sticky on wide screens, with scroll-spy; the section in view
+  is set in ink and semibold. No dash or number beside the entries (2026-11-11, Jorge's request).
+- **Footer**: the full tracklist (site map) with every case study, as rows of links (ADR-001),
+  without track numbers since 2026-11-11 (on every page, the footer being one component).
 - Links to home chapters are absolute (`/#proyectos`) so they work from every page; on the home
   page they are intercepted and scrolled smoothly (instant under reduced motion), and focus moves
   to the target.
@@ -345,7 +355,7 @@ id, slug, order, visible, title, tagline, summary,
 projectType, typeLabel, role, team?, status: { kind, label }, year,
 technologies[], services[], assets?: { disc?, sleeve?, social? },
 overview[], context?[], challenge?[], goals?[], responsibilities?[],
-architecture?: { summary[], stack[] }, decisions?: { title, body }[],
+architecture?[], decisions?[],
 outcome?[], evidence?: Evidence[], links: { repo?, live? }, seo: { title, description }
 ```
 
@@ -362,9 +372,18 @@ Sections are optional. A case study renders only the parts that have content, in
 cover and credits → resumen → contexto → el problema → objetivos y restricciones → mi papel →
 arquitectura → decisiones técnicas → resultado → evidencias → siguiente proyecto → contacto.
 Since ADR-001 (2026-11-10) the cover prints the credits as label and value (no small capitals or
-rules), the stack as marks with the rest named in words (`editorial/StackMarks`), one back link
-and no visible breadcrumb trail (it stays in the JSON-LD); the table of contents is a dash per
-section without numbers (the sections keep theirs), decisions are numbered without circles.
+rules), the stack as marks with the rest named in words (`editorial/StackMarks`; the marks lift
+and name themselves on hover, MOTION_SYSTEM §2.7), one back link
+and no visible breadcrumb trail (it stays in the JSON-LD). Since 2026-11-11 (Jorge's request)
+the page carries **no numbers and no lists**: no number on a section, a decision, a step of the
+flow diagram, the next track or the sleeve's print, and no dash in the table of contents. Every
+section is prose in Castilian Spanish, one paragraph per string, joined with commas and
+semicolons the way Spanish writes rather than set as bullets; the stack is named inside the
+architecture's sentences (the cover's marks still show it at a glance), and each technical
+decision is a paragraph with no title of its own. Evidence keeps its figures (screenshots, code,
+the flow diagram, the state table). Copy must not read as translated from English: no "X, not
+Y" taglines, no label-and-colon fragments ("Pendiente:", "Siguiente:"), no calques ("mobile-first"
+becomes "pensada primero para el móvil").
 Since 2026-10-30 the template's core always appears (Jorge's brief: placeholders, never
 guesses): "Contexto y problema" when neither `context` nor `challenge` exists, "Mi papel"
 without `responsibilities`, "Solución" without `architecture` and `decisions`, each saying

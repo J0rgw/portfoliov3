@@ -37,13 +37,15 @@ Borrow the *quality*, never the assets, layouts or branding. Nothing here is cop
 | 9 | [Kerimov Designs](https://www.awwwards.com/sites/kerimov-designs) | Navigation | Label / value spec rows, numbered hairline menu rows, "open for work" status | High (nav) | Implemented (menu rows, without their numbers since 2026-11-11; the hero spec strip was removed 2026-10-29, the back cover's spec rows by ADR-001 on 2026-11-10) |
 | 10 | [CollectUI, Branding](https://collectui.com/designs/branding-ui-design-inspiration/2371740b-4137-44b8-acd9-de254f5392e1) | Brand details | Simple silhouette filled with tactile collage | Medium | Partial (paper grain, handwritten scraps); since 2026-11-09 real collage material in the hero and on the discs (#18) |
 | 11 | [CollectUI, Subscribe](https://collectui.com/designs/subscribe-ui-design-inspiration/00947ffb-a6fd-4933-a025-3ea35fa4aef3) | Bonus track | Oversized headline with asterisk on a tinted card, single action | Medium | Implemented (the oversized "Avísame*" is the mailto link itself, no card, no fake form; ADR-001) |
-| 12 | [CollectUI, Navigation 9f343652](https://collectui.com/designs/navigation-ui-design-inspiration/9f343652-7a1e-487e-b5ff-278ef0da84b6) | Case studies | Sticky case-study chapter list with a moving active marker | High (case studies) | Implemented (sticky tracklist TOC) |
-| 13 | [CollectUI, Navigation c00d3685](https://collectui.com/designs/navigation-ui-design-inspiration/c00d3685-8461-4712-902b-e4547da18729) | Case studies | TOC that compresses into a dash rail | Medium | Implemented (dash markers) |
+| 12 | [CollectUI, Navigation 9f343652](https://collectui.com/designs/navigation-ui-design-inspiration/9f343652-7a1e-487e-b5ff-278ef0da84b6) | Case studies | Sticky case-study chapter list with a moving active marker | High (case studies) | Implemented (sticky tracklist TOC; since 2026-11-11 the entry in view is marked by ink and weight only) |
+| 13 | [CollectUI, Navigation c00d3685](https://collectui.com/designs/navigation-ui-design-inspiration/c00d3685-8461-4712-902b-e4547da18729) | Case studies | TOC that compresses into a dash rail | Medium | Removed 2026-11-11 (Jorge's request: no dash beside the entries) |
 | 14 | [CollectUI, Navigation 21793fa2](https://collectui.com/designs/navigation-ui-design-inspiration/21793fa2-4d46-4191-ada2-5386883d89a1) | Navigation panel | Media-device UI nostalgia; selected item reveals a one-line description | Medium | Implemented 2026-11-10 (ADR-001): Proceso's five steps are the playlist on Jorge's iPod, the selected step's line in the credits. The menu panel's project list with taglines was removed on 2026-11-11 at Jorge's request. 2026-11-11: the scroll turns the playlist like the iPod's wheel (each song a share of the chapter's hold) and the iPod moved right (centred in the room the text column leaves), so Jorge's longer credits sit at eye level |
 | 15 | [CollectUI, Header 1859d1a8](https://collectui.com/designs/header-navigation-ui-design-inspiration/1859d1a8-7cda-4d8b-9755-fcd8a605dceb) | Navigation | Active indicator that travels between items | Low | Not implemented (by design, see notes) |
 | 16 | [CollectUI, Header 733e9ab8](https://collectui.com/designs/header-navigation-ui-design-inspiration/733e9ab8-c15c-415c-8003-f4b194c85fef) | Page transitions | Navigation stays put while the page changes underneath | Medium | Implemented (persistent header across view transitions) |
 | 17 | Jorge's marker arrow (`private/originals/gallery/cd7e159e….jpg`, supplied 2026-10-30) | Projects annotation | A blue marker stroke: a sweep, one loop, an arrowhead | High (projects) | Implemented (`MarkerArrow`). Since TASK 01 (2026-10-30) the original image itself, keyed out of its painted checkerboard into `marker-arrow.webp` by `scripts/extract-marker-arrow.py` (the SVG redrawing is gone). Dark theme: generated orange ink `marker-arrow-dark.webp` (2026-11-02, Q29). Label moved to the tail's free end (2026-11-09) |
 | 18 | Jorge's cut-out set (`private/originals/assets/`, supplied 2026-11-09) and his broken-disc screenshot ("the CDs are really different") | Hero, Projects | Realistic photographed objects cut out like a 2000s CD-cover collage; discs that read as photographs | **Highest (hero, projects)** | Implemented 2026-11-09: keyed by `scripts/extract-cutouts.py` into `graphics/Cutout`; a collage round the hero scene (headphones, knob, "!!", sticker and tape on the sleeve, ink loop, train); release discs reprinted as printed singles (a cut-out on each label, the hero disc's real hub and rim, real wear from the broken disc, no rim text); the phone beside the private disc. Megaphone and paper arrows not used yet. 2026-11-10: the hero recomposed as the diagonal study Jorge chose (large name top left, his arm photo holding the sleeve); the tape and the train removed at his request, the ink loop and "!!" with the small credit; then his own arm re-gripped, the disc at 1200 px and the handed-in entrance. With ADR-001 (same day) the iPod became Proceso's object and his portrait (the pass's photo) About's |
+| 19 | The Wii's Disc Channel with no disc (Jorge's reference, 2026-11-11) | Case study, next track | A disc drive waking with nothing to read: the disc spins faster turn after turn, then stops | Medium (case studies) | Implemented 2026-11-11: the next track's disc on hover, three turns, faster each time, then a firm stop (MOTION_SYSTEM §2, level 3). Motion only, nothing of the console's look |
+| 20 | [transitions.dev](https://transitions.dev/) (the library Jorge supplied, 2026-11-12) | Every change of text, icon, page or hover state | Small, consistent transitions: 150–500 ms, 4–12 px of travel, a 2–3 px blur while moving | High (motion) | Implemented 2026-11-12: its text states swap (MOTION_SYSTEM §2.6), then its page slide, icon swap, input shake, avatar hover spring, tooltip, sliding tabs and texts reveal (§2.7); the rest have nothing on this site to apply to |
 
 Status reflects the build verified on 2026-10-26, the hero verified on 2026-10-29 after its
 recomposition from Jorge's hand-drawn sketch, which is now the hero's primary reference
@@ -91,10 +93,23 @@ the song and its credits) and the iPod moved right so longer copy fits at eye le
 Jorge's own copy and the place he picked for the iPod; checked at 320 to 1920 px in both themes,
 with reduced motion and without JavaScript (plan, "Proceso: the scroll turns the playlist").
 Later that night, at Jorge's request, the hero disc stopped moving with the scroll (sliding out
-and back, growing then shrinking, it read as a bounce); the sleeve, the hand and the cut-outs
-still take the package apart. Checked at 1512 × 734, 1440 × 900, 1024 × 768, 768 × 1024 and
-390 × 844, in both themes, with wheel input, reduced motion and without JavaScript (plan, "Hero:
-the disc holds still on scroll").
+and back, growing then shrinking, it read as a bounce), then with the pointer; the sleeve, the
+hand and the cut-outs still take the package apart and lean under the pointer. Checked at
+1512 × 734, 1440 × 900, 1024 × 768, 768 × 1024 and 390 × 844, in both themes, with wheel and
+pointer input, reduced motion and without JavaScript (plan, "Hero: the disc holds still").
+On 2026-11-12, at Jorge's request, text that changes in place took the "text states swap" he
+supplied: the old words rise out of focus and fade, then the new ones come up into place, 150 ms
+each (Proceso's and Projects' credits and counts, the copy button, the menu toggle, the hero's
+pause control). It replaced A24's title change-over on both sets of credits (#2) and the menu
+toggle's word roll; no reference's layout changed. Measured at 1512 × 734 (light, and with
+reduced motion, where it is a fade) and 390 × 844 (dark); the resting layout is identical to the
+previous build from 320 to 1512 px, with and without JavaScript (plan, "Text that changes in
+place"). Later the same night, also at his request, seven more transitions from that library
+(#20): the pages slide side by side, icons swap, a refused copy shakes, technology marks lift and
+name themselves, the iPod's bar slides on its timing and chapter headings rise into focus.
+Measured at 1512 × 734 with and without reduced motion; element boxes identical to the previous
+build on home, the index and a case study at 1512 × 734, 1024 × 768 and 390 × 844, with and
+without JavaScript (plan, "Transitions from transitions.dev").
 
 Supporting resources: [SVGL](https://svgl.app/) (technology logos; the files in
 `public/images/logo/` follow that source), [Fontpair](https://fontpair.co/) (not needed, the
@@ -377,7 +392,8 @@ it contains **only** `estrella-early.otf`; no Poppins files existed before this 
   you scroll and only spells itself back out once you stop"*.
 - **Proposed**: the case-study TOC shows a dash per section (the dash *is* the track marker);
   labels stay visible on wide screens. The collapse-while-scrolling behaviour was rejected
-  because it hides navigation during motion.
+  because it hides navigation during motion. **Removed 2026-11-11** at Jorge's request: the
+  entries carry no dash; the one in view is set in ink and semibold.
 - **Targets**: `/proyectos/<slug>/`.
 
 ### 14. CollectUI, Navigation 21793fa2 (ozzy, "navbars are boring so i made mine a playstation")

@@ -1,6 +1,6 @@
 import { ui } from '../../../config/ui';
 import { chapters, chapterHref } from '../../../config/navigation';
-import { formatTrack, projectHref, projects } from '../../../config/projects';
+import { projectHref, projects } from '../../../config/projects';
 import { site, socials } from '../../../config/site';
 import { ArrowRight, ArrowUp } from '../Icon/Icon';
 import Barcode from '../../graphics/Barcode/Barcode';
@@ -8,8 +8,9 @@ import '../../../design/components/SiteFooter/SiteFooter.css';
 
 /**
  * The tray card: the back of the album on every page (ADR-001). The full
- * tracklist (site map) and every case study as rows of links, then one line of
- * print: barcode and catalog number, the credits, the copyright, back to top.
+ * tracklist (site map) and every case study as rows of links, without numbers
+ * (2026-11-11), then one line of print: barcode and catalog number, the
+ * credits, the copyright, back to top.
  * `contact={false}` drops the contact row where the page has just listed the
  * same links (home: chapter 06, the back cover, sits right above).
  */
@@ -22,14 +23,12 @@ export function SiteFooter({ contact = true }: { contact?: boolean }) {
           <ol role="list" className="site-footer__list">
             <li>
               <a href="/#inicio">
-                <span className="mono">00</span>
                 {ui.navigation.cover}
               </a>
             </li>
             {chapters.map((chapter) => (
               <li key={chapter.id}>
                 <a href={chapterHref(chapter.id)}>
-                  <span className="mono">{chapter.number}</span>
                   {chapter.label}
                 </a>
               </li>
@@ -43,12 +42,11 @@ export function SiteFooter({ contact = true }: { contact?: boolean }) {
             {projects.map((project) => (
               <li key={project.slug}>
                 <a href={projectHref(project.slug)}>
-                  <span className="mono">{formatTrack(project.track)}</span>
                   {project.title}
                 </a>
               </li>
             ))}
-            {/* A page, not a track: no number of its own. */}
+            {/* A page, not a track: an arrow like the site's other "go there" links. */}
             <li>
               <a className="site-footer__more" href="/proyectos/">
                 {ui.navigation.fullIndex}

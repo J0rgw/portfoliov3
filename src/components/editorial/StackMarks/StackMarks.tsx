@@ -1,6 +1,7 @@
 import { ThemeImage } from '../../graphics/ThemeImage/ThemeImage';
 import { techLogo } from '../../../config/technologies';
 import { ui } from '../../../config/ui';
+import MarkRow from '../../ui/MarkRow/MarkRow';
 import '../../../design/components/StackMarks/StackMarks.css';
 
 /** "A, B y C", the way Spanish writes a list (DESIGN.md "Typography"). */
@@ -9,9 +10,10 @@ const listFormat = (items: string[]) =>
 
 /**
  * A release's stack on the Projects pages (ADR-001), as the gallery prints it:
- * the technologies that have a mark as grey marks, named on hover and for
- * assistive technology, and the rest in words after them, as a list. No chips:
- * a row of stamped names competed with the marks.
+ * the technologies that have a mark as grey marks, named on hover (a tag that
+ * travels between them while they lift, MarkRow) and for assistive technology,
+ * and the rest in words after them, as a list. No chips: a row of stamped names
+ * competed with the marks.
  */
 export function StackMarks({ technologies, className = '' }: { technologies: string[]; className?: string }) {
   const marked = technologies.filter((tech) => techLogo(tech));
@@ -20,7 +22,7 @@ export function StackMarks({ technologies, className = '' }: { technologies: str
   return (
     <div className={`stack-marks ${className}`.trim()}>
       {marked.length > 0 && (
-        <ul className="stack-marks__marks" role="list" aria-label={ui.labels.stack}>
+        <MarkRow className="stack-marks__marks" label={ui.labels.stack}>
           {marked.map((tech) => {
             const logo = techLogo(tech)!;
             return (
@@ -38,7 +40,7 @@ export function StackMarks({ technologies, className = '' }: { technologies: str
               </li>
             );
           })}
-        </ul>
+        </MarkRow>
       )}
       {named.length > 0 && <p className="stack-marks__names">{listFormat(named)}</p>}
     </div>

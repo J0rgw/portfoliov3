@@ -54,9 +54,8 @@ export function Evidence({ item }: { item: EvidenceItem }) {
         <figure className="evidence evidence--diagram">
           <p className="evidence__diagram-title">{item.title}</p>
           <ol className="evidence__flow" role="list">
-            {item.steps.map((step, index) => (
+            {item.steps.map((step) => (
               <li key={step.label}>
-                <span className="evidence__flow-index mono">{String(index + 1).padStart(2, '0')}</span>
                 <span className="evidence__flow-label">{step.label}</span>
                 {step.detail && <span className="evidence__flow-detail">{step.detail}</span>}
               </li>

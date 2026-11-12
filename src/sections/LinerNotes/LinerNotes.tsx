@@ -5,6 +5,7 @@ import PenMark from '../../components/graphics/PenMark/PenMark';
 import { ArrowRight } from '../../components/ui/Icon/Icon';
 import { scrollToOffset } from '../../components/ui/motion/SmoothScroll';
 import { onHold, type HoldState } from '../../components/ui/motion/useChapterHold';
+import { useTextSwap } from '../../components/ui/motion/useTextSwap';
 import { chapterById } from '../../config/navigation';
 import { processIntro, processSteps } from '../../config/process';
 import { ui } from '../../config/ui';
@@ -33,7 +34,8 @@ const songPoint = (index: number) => (index + 0.5) / count;
  * §2.5). The playlist is still a tablist (click, tap or arrow keys); while held,
  * choosing a song also scrolls the page to its share, so the wheel and the
  * playlist always agree. Not held (it does not fit, reduced motion), choosing
- * is the only way. Without JavaScript every step's credits are listed.
+ * is the only way. The credits and the count on the screen swap their text
+ * (useTextSwap). Without JavaScript every step's credits are listed.
  * Contract: docs/INFORMATION_ARCHITECTURE.md §3.
  */
 export function LinerNotes() {
@@ -46,9 +48,10 @@ export function LinerNotes() {
   // chosen on the playlist that the page is still scrolling to.
   const hold = useRef<HoldState | null>(null);
   const chosen = useRef<{ index: number; timer: number } | null>(null);
-  const step = processSteps[selected];
+  // The song whose text is on screen: it follows the selection through the swap.
+  const [shown, swap] = useTextSwap(selected, !animate);
 
-  // Every change of song goes through here; `change` plays the credits' change-over.
+  // Every change of song goes through here; without `change` the text changes at once.
   // Focus on the playlist follows the song, so its one Tab stop stays the selected tab.
   const show = useCallback((index: number, change = true) => {
     if (index === current.current) return;
@@ -141,7 +144,9 @@ export function LinerNotes() {
           <div className="process__screen">
             <p className="process__screen-bar" aria-hidden="true">
               <span>{ui.process.playlist}</span>
-              <span className="mono">{step.number} / {total}</span>
+              <span className="mono">
+                <span data-swap={swap}>{processSteps[shown].number}</span> / {total}
+              </span>
             </p>
             <div
               className="process__tracks"
@@ -176,8 +181,8 @@ export function LinerNotes() {
           </div>
         </div>
 
-        {/* Every step is in the HTML; with JavaScript only the selected one shows. */}
-        <div className="process__credits" data-animate={animate || undefined}>
+        {/* Every step is in the HTML; with JavaScript only the one on screen shows. */}
+        <div className="process__credits" data-swap={swap}>
           {processSteps.map((item, index) => (
             <div
               key={item.number}
@@ -185,13 +190,11 @@ export function LinerNotes() {
               className="process__step"
               role="tabpanel"
               aria-labelledby={tabId(item.number)}
-              data-active={index === selected || undefined}
+              data-active={index === shown || undefined}
             >
-              <h3 className="process__title">
-                <span className="process__line"><span>{item.title}</span></span>
-              </h3>
-              <p className="process__text" style={{ '--row': 0 } as CSSProperties}>{item.body}</p>
-              <p className="process__note" style={{ '--row': 1 } as CSSProperties}>
+              <h3 className="process__title">{item.title}</h3>
+              <p className="process__text">{item.body}</p>
+              <p className="process__note">
                 {item.note.text}{' '}
                 <a
                   className="process__source"

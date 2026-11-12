@@ -81,18 +81,6 @@
   overflow-wrap: anywhere;
 }
 
-/* Each word is a line; the clip hides a word rising into it from below and
-   leaves room above for accents and below for descenders (the g, p, y of
-   Poppins reach ~0.3em under the tight line box). */
-.quick-resume__line {
-  display: block;
-  clip-path: inset(-0.5em -0.5em -0.35em -0.5em);
-}
-
-.quick-resume__line > span {
-  display: block;
-}
-
 .quick-resume__text {
   /* Three lines held (the longest tagline wraps to three) on narrow screens, for the same reason as the title. */
   min-height: 3lh;
@@ -142,36 +130,6 @@
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
   color: var(--foreground);
-}
-
-/* The change-over: the new title rises line by line, the rows follow. The
-   old text has already gone (the block is re-keyed), so no stale credit ever
-   sits beside the new disc. */
-@media (prefers-reduced-motion: no-preference) {
-  .quick-resume[data-animate] .quick-resume__line > span {
-    animation: resume-rise var(--dur-slow) var(--ease-out) both;
-    animation-delay: calc(var(--line, 0) * var(--stagger));
-  }
-
-  .quick-resume[data-animate] .quick-resume__text,
-  .quick-resume[data-animate] .quick-resume__stack {
-    animation: resume-fade var(--dur-base) var(--ease-out-soft) both;
-    animation-delay: calc((var(--row, 0) + 1) * var(--stagger));
-  }
-}
-
-@keyframes resume-rise {
-  from {
-    /* Below the clip's extended bottom edge, so the word starts unseen. */
-    translate: 0 150%;
-  }
-}
-
-@keyframes resume-fade {
-  from {
-    opacity: 0;
-    translate: 0 0.4rem;
-  }
 }
 
 /* ---- The gallery ------------------------------------------------------------

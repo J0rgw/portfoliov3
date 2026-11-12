@@ -23,16 +23,19 @@ or a new library needs an entry in this file first.
 **Level 1, identity** (hero and page transitions only)
 - Hero: the disc turns slowly on its own centre and the scene plays an *editorial separation* with
   scroll (§2.1). CSS-only entrance on first paint.
-- Index → case study: the cover disc morphs between pages (cross-document View Transitions).
+- Index → case study: the cover disc morphs between pages (cross-document View Transitions);
+  the pages themselves slide side by side (§2.7).
 
 **Level 2, narrative** (chapter structure)
-- Reveal on entering the viewport (fade and rise, or mask), staggered inside a group.
-- Proceso (ADR-001, 2026-11-10): selecting a step on the iPod's playlist changes the credits
-  over like the gallery's: the title rises out of its clip (`--dur-slow`, `--ease-out`), the
-  line and the decision fade up after it (`--stagger`); keyed by the selection, not on first
-  load, none under reduced motion. The booklet and its page turn were removed with the booklet.
+- Reveal on entering the viewport (fade and rise, or mask), staggered inside a group. Chapter
+  headings and their ledes rise into focus (§2.7).
+- Proceso (ADR-001, 2026-11-10): selecting a step on the iPod's playlist swaps the credits and
+  the count on the iPod's screen, like the gallery's (the text swap, §2.6, since 2026-11-12; it
+  replaced a title rising out of its clip with the lines fading up after it); not on first
+  load. The booklet and its page turn were removed with the booklet.
   Since 2026-11-11 the scroll selects too: the chapter's hold is the iPod's wheel (§2.5), and
-  the selection bar slides to the selected song (`--dur-fast`, `--ease-out`, a transform).
+  the selection bar slides to the selected song (`--dur-ui`, `--ease-smooth-out`, a transform;
+  transitions.dev's tabs since 2026-11-12, §2.7).
 - Chapter hold: the marker underlines the chapter's phrase as the hold is used up (§2.5).
 - Header compact (2026-11-11): when the hero's pinned run ends (`.hero__clear` leaves the
   header's middle line), the strip fades in and lifts to 56 px while the controls rise 8 px and
@@ -45,8 +48,26 @@ or a new library needs an entry in this file first.
 - Menu panel open and close (GSAP stagger, kept from the original component).
 - Projects disc gallery: drag with inertia and snapping along an arc, buttons and keys, a pen
   loop round the hovered disc (§2.2). Replaced the project-row marquee on 2026-10-30.
+- Case study, next track (2026-11-11, Jorge's requests; it replaced a 45° tilt): when a mouse, a
+  pen or keyboard focus arrives on the row, the disc spins up like a drive waking with nothing to
+  read (his reference: the Wii's Disc Channel with no disc, references.md #19). Three turns
+  clockwise from rest, faster and faster, then it eases to a stop, upright again
+  (`case-disc-spin-up`, `--dur-spin-up` 2.5 s): constant acceleration for 1.5 s (quadratic
+  ease-in, 750°), then a cubic ease-out for 1 s (330°); they meet at the same speed, 167 rpm,
+  so nothing jolts at the handover. `useSpinOnce` (§4) lets a spin under way finish, so leaving
+  halfway never snaps the disc back, and never restarts it; the next arrival plays it again.
+  Measured at 1440 × 900, rpm per 100 ms: 6, 18, 30 … 151, 162 up to 1.5 s, then 144, 114, 88,
+  66, 46, 30, 19, 9, 3, 0; the turns end at 1.03, 1.47 and 2.38 s. Three versions came before
+  it the same night: one turn with the hero's landing curve (it read as a disc flicked), a disc
+  that played at 45 rpm while pointed at (Jorge wanted it to stop), and this spin-up with a
+  0.35 s brake ("too abrupt").
 - Buttons sink 1 px on press; links thicken their underline; focus rings appear instantly.
-- Copy-email feedback.
+- Copy-email feedback: "Copiar email" swaps to "Email copiado" and back (§2.6), its icon turns
+  into a check, and a copy the browser refuses shakes the button (§2.7).
+- Technology marks (Projects' credits, the index, a case study's cover) lift under the pointer
+  and show their names in a tag that travels between them (§2.7).
+- The menu toggle's words swap between "Menú" and "Cerrar" (§2.6, 2026-11-12); they used to
+  roll through both words twice, from the original StaggeredMenu.
 
 The vocabulary also includes bounded float, drift and rotate gestures in design/motion.css.
 They are opt-in, not perpetual background animation. Existing spin/hover/draw and page
@@ -77,8 +98,8 @@ the disc's lamp highlight turns round it (16° / 6°), the way a reflection foll
 sticker lifts under the pointer like the other handled cut-outs.
 
 **Disc turn.** One turn per `--dur-spin` (75 s, the brief allows 60–90 s), clockwise, starting
-upright, linear, no motion blur. It lives on its own element (`.hero__disc-spin`), apart from
-the pointer's lean on its parent. It eases to a stop (≈0.6 s, `playbackRate`, never a jump)
+upright, linear, no motion blur. It lives on its own element (`.hero__disc-spin`), inside a
+body that never moves. It eases to a stop (≈0.6 s, `playbackRate`, never a jump)
 while a mouse or pen rests on the disc and eases back on leave; a tap or click on the disc holds
 it still until the next one (touch has no hover); it pauses while off-screen. Keyboards get a
 **Pausar / Reanudar giro del disco** button that stays out of sight until it has focus (the brief
@@ -100,17 +121,20 @@ so it's static when scrolling", keeping the rest of the stickers and assets movi
 slid out of the sleeve (−6 % `--d` x, −3 % y), came back while it grew to 106 % (in portrait it
 went to the frame's centre instead), then lifted 24 % `--d` faster than the page while it shrank to
 96 %: out and back, larger then smaller. Its body (`.hero__disc-body`) no longer reads
-`--scene-*`; only the pointer leans it. The sleeve, the hand and the cut-outs are unchanged
-(their positions measured identical at every scroll step, at five sizes). Wheel input through
-Lenis and the snap at 1512 × 734: during the pinned run the disc used to move 26 px across,
-13 px up and down and 27 px in size, and 87 px against the frame while it left; now 0 px on each.
+`--scene-*`. The sleeve, the hand and the cut-outs are unchanged (their positions measured
+identical at every scroll step, at five sizes). Wheel input through Lenis and the snap at
+1512 × 734: during the pinned run the disc used to move 26 px across, 13 px up and down and 27 px
+in size, and 87 px against the frame while it left; now 0 px on each. Later that night he asked to
+"remove the cd bouncing while following the mouse, just the cd": the body no longer reads
+`--px` / `--py` either (it leaned 0.25 of the reach, ±5.6 px), so it never moves; the label turns
+and its lamp highlight still follows the pointer (Reflections, above).
 
 The sleeve only ever moves down and outwards, so the frame's edges keep hiding the end of the
 forearm. Measured on 2026-11-10 at 1024 × 768, 1280 × 800, 1440 × 900, 1512 × 734 and
 1920 × 1080: the sleeve has left the frame when solo ends. With the disc still, its distance from
 the name's glyphs is the resting one through the whole pinned run (2026-11-11: 96, 71, 87, 31 and
-129 px at those sizes; a fine pointer can bring it 5.6 px closer) and only grows while the credit
-runs ahead on the exit. The split used to bring it down to 14 px at 1512 × 734.
+129 px at those sizes; the pointer moves neither) and only grows while the credit runs ahead on
+the exit. The split used to bring it down to 14 px at 1512 × 734.
 
 - **JavaScript, motion allowed and a viewport at least 34 rem tall:** the hero grows by
   `--scene-run` (100 svh; 80 svh below 768 px) and the whole frame is sticky at the top of the
@@ -152,12 +176,13 @@ loop and "!!" left with the small credit).
 
 - **Pointer depth** (`usePointerDepth`, fine pointers only): `--px` / `--py` ease towards the
   pointer's place in the viewport (8 % of the distance per frame, frames only until settled);
-  layers lean by depth × 1.4 rem: disc 0.25, sleeve 0.5, headphones 0.7, knob 1.
-  The credit never moves with the pointer (reading comes first).
+  layers lean by depth × 1.4 rem: sleeve 0.5, headphones 0.7, knob 1.
+  The credit never moves with the pointer (reading comes first), nor, since 2026-11-11, the disc
+  (it leaned 0.25; Jorge read it as a bounce).
 - **Hover** (fine pointers): the headphones and the knob lift (`scale` 1.035, −1.2°, the
   shadow falls further, `--dur-base`).
 - **Weight on the GPU**: the cut-outs get `will-change` only inside the pinned-scene media query,
-  like the disc and the sleeve; their shadows are static filters on their own boxes, never
+  like the sleeve (the disc's body never moves, so it has none); their shadows are static filters on their own boxes, never
   animated on scroll.
 
 ### 2.2 Projects disc gallery (2026-10-30)
@@ -200,8 +225,10 @@ discs all go through it, so the selection, the credits and the discs can never d
 - **Click**: on the selected disc, a link to the case study (new-tab modifiers and keyboard or
   screen-reader activation always follow the link); a pointer click on another disc brings it
   forward first.
-- **Credits**: re-keyed per project, so the old text disappears at once and the new title rises
-  line by line (`--dur-slow`, `--stagger`) with the rows fading up after it. Not on first load.
+- **Credits**: the text swap (§2.6): the old project's credits leave before the new ones arrive,
+  so two projects' texts are never on screen together, and the count between the keys swaps with
+  them. Not on first load, nor for a disc restored on the way back from a case study. Until
+  2026-11-12 the block was re-keyed and the new title rose line by line (`--dur-slow`).
 - **Annotation**: hidden while the row moves; when it comes to rest Jorge's arrow (the original
   image) is laid at the new disc like a cut-out: it fades in from 4° off and 0.5 rem low and
   settles (`--dur-slow`, `--ease-out`). It is not redrawn, so it does not pretend to draw itself.
@@ -219,8 +246,9 @@ discs all go through it, so the selection, the credits and the discs can never d
 - **Printed singles**: the label (with its cut-outs, grain and wear) turns with the face; the
   hub, the rim and the lamp's streak stay still.
 - **Reduced motion**: drag still follows the pointer (direct manipulation); every other change
-  is instant, no change-over on the credits, the arrow is simply there, the phone simply hangs
-  there, and the hover loop appears whole and still.
+  is instant except the credits and the count, which fade out and in without the shift and the
+  blur (§2.6); the arrow is simply there, the phone simply hangs there, and the hover loop
+  appears whole and still.
 - **No JavaScript**: the first disc is selected and the rest stay where the server put them; the
   buttons (and the `01 / 06` count between them) are hidden and a text list links every case
   study.
@@ -337,12 +365,12 @@ scroll inside a hold visibly does something, and the stroke is complete when the
 song and therefore the text"). The chapter's hold is 200svh (`.chapter-hold:has(> .process)` in
 LinerNotes.css) instead of 60svh, and every song owns an equal share of it (40svh with five
 songs; more songs would share the same length). Scrolling through it changes the song, the
-selection bar slides to it and its credits change over; scrolling back runs the songs back.
+selection bar slides to it and its credits swap (§2.6); scrolling back runs the songs back.
 Before the hold the first song plays, after it the last.
 
 - `useChapterHold` sends its state to the chapter (`onHold`: progress, the hold's start and
   length, or `null` once it is not held), only when it changes. LinerNotes maps the progress to
-  a song (`floor(progress × songs)`), with no change-over for the first state on load.
+  a song (`floor(progress × songs)`), with no swap for the first state on load.
 - Choosing a song (click, tap, arrows, Home, End) while held selects it at once and scrolls the
   page to the middle of its share (`scrollToOffset`), so the wheel and the playlist agree; the
   songs passed on the way are ignored until the page arrives, or for `motion.playlist.arriveMs`
@@ -365,6 +393,106 @@ Before the hold the first song plays, after it the last.
   horizontal overflow at 320, 390, 768, 1024, 1280, 1440 and 1512 px in both themes; no console
   errors.
 
+### 2.6 Text that changes in place (owner's request, 2026-11-12)
+
+Jorge brought a "text states swap" component (a library card where "Transaction processing…"
+becomes "Transaction completed") and asked for its motion wherever text changes on the home page,
+starting with Proceso's credits as the scroll turns the iPod. Kept from it: the timing, the curve,
+the distances and the reduced-motion fallback.
+
+- **The swap**: the text on screen leaves, rising 4 px (`--swap-shift`) as it blurs to 2 px
+  (`--swap-blur`) and fades out; then the new text is set 4 px below, blurred and transparent,
+  and eases up into place, sharp and opaque. Each half takes `--dur-swap` (150 ms) on CSS's own
+  `ease-in-out` (`--ease-swap`, softer than `--ease-in-out`), 300 ms in all; the new text arrives
+  once the old one has gone, so the two never overlap.
+- **Mechanics**: `useTextSwap(value, instant)` returns the value to render and the phase to set
+  as `data-swap` (`idle`, `out`, `in`); motion.css does the rest. A change sets `out`; after
+  `--dur-swap` (read from the token, so CSS is its only source) the hook renders the new value
+  under `in`, which has no transition, forces one layout and goes back to `idle`, so the new text
+  transitions in. Changes that arrive while the old text is leaving are not queued: the latest
+  is the one that arrives (a fast double press on the gallery goes from 03 to 05 without showing
+  04), and a change back to the text still on screen cancels the swap. `instant` changes apply at
+  once: the first song on load inside Proceso's hold, a disc restored on the way back from a case
+  study. Inline text becomes `inline-block` (through `:where()`, so any component rule wins) so it
+  can move.
+- **Where**: Proceso's credits and the count on the iPod's screen, by scroll or playlist (§2.5);
+  Projects' credits and the count between the keys (§2.2); the copy button ("Copiar email",
+  "Email copiado"); the menu toggle ("Menú", "Cerrar", on every page); the hero's focus-revealed
+  pause control, its icon and words together ("Pausar" and "Reanudar giro del disco"). Not the
+  gallery's annotation, which is laid in again with the arrow when the row comes to rest (§2.2).
+- **Not tied to the scroll**: the blur is a filter, which §6 keeps off scroll-linked motion. This
+  one is a 150 ms transition that runs once after a change, whatever caused it, on one block of
+  text at a time; scroll position never scrubs it, and at rest the element has no filter.
+- **Reduced motion**: the fade alone, without the shift and the blur, as in the original
+  component. It is the one transition spared base.css's backstop: cut to 0.01 ms, its fade would
+  leave the text invisible for 150 ms instead.
+- **No JavaScript**: nothing changes; `data-swap` stays `idle`.
+- Checked 2026-11-12 on the production build in Chrome, every frame sampled. At 1512 × 734 the
+  wheel turned the five songs down and back up: eight swaps of the credits and the count, each
+  half 150 ms to within a frame (148–169 ms as sampled; a change made by the scroll waits one
+  frame for React's effect), opacity down to 0, the blur up to 2 px, the text from −3.6 to +4 px
+  (−4 falls between frames), one step on screen at a time. The gallery's next key, the copy
+  button, the menu toggle and the pause control: 148–152 ms a half. Reduced motion: opacity only,
+  shift and blur 0. At 390 × 844 in dark: the same, with Proceso held. Every element the swap
+  touches has the same box as before at 1512 × 734, 1440 × 900, 1024 × 768, 768 × 1024, 390 × 844
+  and 320 × 640, with and without JavaScript; no horizontal overflow, no console errors; long
+  frames while the wheel turns the songs are the same as before the change.
+
+### 2.7 Transitions from transitions.dev (owner's request, 2026-11-12)
+
+After the text swap (§2.6), Jorge asked for every transition in the transitions.dev library that
+this site can use. Of its 44 (8 of them paid, with no public code), seven fit something the site
+already does; the rest belong to interfaces it does not have. Their values come from the
+library's published motion scale (its duration, easing, distance, blur and scale tokens, each
+annotated with the transitions that use it) and its React snippets. Its per-transition CSS (the
+"CSS" tab) was not read, so a few values are inferred from those; they are marked *inferred*.
+
+| transitions.dev | Here | Motion |
+|-----------------|------|--------|
+| Side-by-side page slide | Every page change (the root of the cross-document view transition) | The page you leave drifts 8 px back, blurring to 3 px as it fades; the next arrives from 8 px ahead into focus; both at once, 250 ms (`--dur-ui`) on `--ease-smooth-out`. Going back (to a shallower page, or the browser's back) runs the other way: the inline script in `index.html` names the transition `back` on `pagereveal` (Chromium; elsewhere it always slides forward). The header and the discs keep names of their own: the header stays put and the disc morphs (600 ms, unchanged). |
+| Icon swap | The copy button (copy to a check while "Email copiado" shows) and the hero's pause control (pause and play) | The icon leaving shrinks to 0.5 (*inferred*) blurring 2 px and fading while the other grows in, together, 250 ms `ease-in-out` (`data-icon-swap`). The words still swap as text (§2.6). |
+| Input shake on error | The copy button when the browser refuses the clipboard | 8 px each way in two 80 ms beats, then 6 px and back in two of 60 ms, 280 ms in all (the order of the beats is *inferred*). No words change on the button; the live region says why. |
+| Avatar group hover spring | Rows of technology marks: Projects' credits, the index cards, a case study's cover (`MarkRow`) | The mark under the pointer rises 4 px and grows 5 %; each step away keeps 0.45 of the lift (1.8 px, then 0.81 px). Up on `--ease-smooth-out`; let go, on `--ease-spring-back`, which dips as far below rest as it rose before settling; 350 ms (`--dur-lift`, *inferred*). |
+| Tooltip open/close | The same rows: each mark's name, which was the browser's own `title` tooltip | One tag per row, in the page's inverted ink, shows 80 ms after the pointer arrives and fades and scales in from 0.98 over 150 ms `ease-out`; it travels from mark to mark while the pointer stays on the row (150 ms, *inferred*) and goes at once when it leaves. Mouse and pen only. The mark's `title` is held back while hovered (so the browser's tooltip does not show too) and stays in the HTML for no-JS. |
+| Tabs sliding | The iPod's selection bar (§2.5) | 250 ms on `--ease-smooth-out` (it was 180 ms on `--ease-out`). |
+| Texts reveal | Every chapter's heading and lede (`ChapterHeading`) | Each line rises 12 px out of a 3 px blur as it fades in, 500 ms (`--dur-rise`) `ease-in-out`, the lede 40 ms after the heading (*inferred*: the library's stagger step). `data-reveal="rise"`; it replaces `up` (2 rem, 800 ms) there. |
+
+Not used, with the reason: card resize, notification badge, toast and banner stacking (nothing
+here resizes or notifies); menu dropdown, plus-to-menu morph, modal and panel reveal (no dropdowns
+or dialogs besides the menu, which keeps its own choreography); success check (the copy button
+has the icon swap, one effect per state); input clear, skeleton, checkbox and toggle (no inputs,
+loading states or switches); like button; accordion (nothing collapses); thinking states,
+reasoning stream, streaming text and the matrix loader (AI states); shimmer text ("en
+preparación" already says so, and a loop would need a pause); learn-more hover (drawn for a
+chevron; the arrows here already shift on hover); 3D tilt (the case study's cover is a disc half
+out of its sleeve: tilting the sleeve breaks it, tilting both needs a glare that follows two
+shapes); number pop-in, reel counter and subtle number change (the only numbers that change are
+the two counts, which swap as text at Jorge's request, §2.6).
+
+- **Blur**: the page slide and the rising headings blur by 3 px, the icon swap by 2 px, like the
+  text swap: transitions of 150 to 500 ms that run once after a change or an arrival, never
+  scrubbed by scroll position; nothing keeps a filter at rest.
+- **Reduced motion**: the icon swap is a cross-fade (no scale, no blur; spared the backstop like
+  the text swap); the marks do not lift and their tag appears without its scale; no shake; the
+  headings are simply there; no page slide (view transitions are off).
+- **No JavaScript**: the marks keep their `title` tooltips; headings are there; page changes are
+  plain navigations.
+- Checked 2026-11-12 on the production build in Chrome at 1512 × 734, every frame sampled. Page
+  slide: index to a case study is `forward` (the new root from 8 px, blur 3 px, opacity 0, the old
+  to −8 px, 250 ms on `cubic-bezier(0.22, 1, 0.36, 1)`); its back link to `/#proyectos` and the
+  browser's back are `back` (`--page-dir` −1, from −8 px, to 8 px). Copy: sampled from just
+  before the click, the check is whole at 322 ms, halfway at 0.44 opacity, 0.72 scale and 1.1 px
+  of blur. A refused copy:
+  one `shake` of 280 ms, −7.9 to +7.9 to −6 px, its class cleared at the end. Marks: −4 px at
+  1.05, −1.8 px and −0.81 px beside it; let go, the hovered mark dips to +4.0 px about 130 ms later
+  and is at rest by 330 ms; the tag shows 74 ms after the pointer, whole at 224 ms, travels in nine
+  frames without fading, and is gone the next frame after the pointer leaves; titles held back and
+  restored. The bar: `translate 0.25s cubic-bezier(0.22, 1, 0.36, 1)`. Servicios' heading: opacity
+  0, 12 px and 3 px of blur when revealed, 0.5, 6 px and 1.5 px at 250 ms, at rest by 500 ms, the
+  lede a step behind. Reduced motion: as above, measured. Element boxes identical to the build
+  before at 1512 × 734, 1024 × 768 and 390 × 844 on home, the index and a case study, with and
+  without JavaScript; no horizontal overflow; no console errors.
+
 ---
 
 ## 3. Tokens (`src/design/tokens.css`)
@@ -378,12 +506,23 @@ Before the hold the first song plays, after it the last.
 | `--dur-reveal` | 800 ms | Reveal on scroll |
 | `--dur-identity` | 1100 ms | Hero entrance, page morph |
 | `--dur-spin` | 75 s | One turn of the hero disc (§2.1) |
+| `--dur-spin-up` | 2500 ms | The next track's spin-up: three turns, faster and faster, then an eased stop (§2) |
 | `--dur-orbit` | 10 s | One turn of the pen loop round a hovered gallery disc (§2.2) |
 | `--ease-out` | `cubic-bezier(0.19, 1, 0.22, 1)` | Default (expo out, already used by the rows) |
 | `--ease-out-soft` | `cubic-bezier(0.25, 1, 0.5, 1)` | Reveals |
 | `--ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Morphs |
 | `--ease-press` | `cubic-bezier(0.2, 0, 0, 1)` | Button press |
 | `--stagger` | 70 ms | Delay step inside a revealed group |
+| `--dur-swap` | 150 ms | Each half of the text swap (§2.6); `useTextSwap` reads it |
+| `--ease-swap` | `ease-in-out` | The text swap: CSS's own curve, softer than `--ease-in-out` |
+| `--swap-shift`, `--swap-blur` | 4 px, 2 px | How far swapped text moves and how far out of focus it goes |
+| `--dur-ui` | 250 ms | transitions.dev's UI step: page slide, icon swap, the iPod's bar (§2.7) |
+| `--dur-lift` | 350 ms | A mark lifting and springing back (§2.7) |
+| `--dur-rise` | 500 ms | A chapter heading rising in (§2.7) |
+| `--dur-tip-delay` | 80 ms | Before a mark's name tag shows (§2.7) |
+| `--ease-smooth-out` | `cubic-bezier(0.22, 1, 0.36, 1)` | transitions.dev's smooth decel: page slide, the bar, a mark lifting |
+| `--ease-spring-back` | `cubic-bezier(0.34, 3.85, 0.64, 1)` | A mark let go: dips past rest, then settles |
+| `--ease-tip` | `ease-out` | The name tag |
 
 GSAP code uses the same values (`expo.out`, `power4.out`) and durations within ±20 %.
 
@@ -403,7 +542,14 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 | Spin | `src/components/ui/motion/useSpin.ts` | Drives a CSS keyframe loop: pauses it off-screen, eases `playbackRate` to 0 on mouse/pen hover and back, holds it while a `paused` flag is set. Does nothing under reduced motion (the CSS declares no loop). |
 | Disc carousel | `src/components/ui/motion/useDiscCarousel.ts` | Drag with inertia and snapping for a row of items (§2.2): one position, one selection, a stable controller (`goTo`, `step`, `index`), `render(position)` at most once per frame, `onIndex` / `onMotion` callbacks for React. No loop while idle; instant under reduced motion. |
 | Scroll spy | `src/components/ui/motion/useScrollSpy.ts` | Returns the id of the section currently being read. |
+| Spin once | `src/components/ui/motion/useSpinOnce.ts` | Sets `data-spinning` on a target when a mouse or pen enters its trigger or keyboard focus arrives; the end of the CSS animation it names clears it. A spin under way finishes and is never restarted. Nothing on touch, under reduced motion or without JavaScript. |
 | Chapter hold | `src/components/ui/motion/ChapterHold.tsx`, `useChapterHold.ts` | The home chapter's hold wrapper; writes `--hold` (0 → 1 through the hold) on the chapter, sends the same state to it (`onHold`, Proceso's playlist) and marks the wrapper `data-unheld` when the chapter is taller than the window (§2.5). One passive listener, one `ResizeObserver`, one frame per scroll, nothing beyond a viewport away or under reduced motion. |
+| Text swap | `src/components/ui/motion/useTextSwap.ts`, `src/design/motion.css` (`[data-swap]`) | `useTextSwap(value, instant)` returns the value on screen and the phase for `data-swap`: the old text leaves (up, blurred, transparent), then the new one arrives from below (§2.6). The latest change wins, nothing is queued; `instant` skips it. Reduced motion keeps the fade. |
+| Mark row | `src/components/ui/MarkRow/MarkRow.tsx`, `src/components/ui/motion/useMarkGroup.ts` | A list of technology marks that lift under the pointer, the nearest most, and share one name tag that travels between them (§2.7). Mouse and pen only; the marks' `title` stays for no-JS. |
+| Icon swap | `src/design/motion.css` (`[data-icon-swap]`) | Two icons in one place, `a` or `b` showing: the other shrinks out of focus as this one grows in (§2.7). Reduced motion: a cross-fade. |
+| Shake | `src/design/motion.css` (`.is-shaking`) | A refusal: 8 px each way, then 6 px, 280 ms (§2.7). Replay by removing and re-adding the class; none under reduced motion. |
+| Rise | `src/design/motion.css` (`data-reveal="rise"`) | A reveal for a heading and its lede: 12 px out of a 3 px blur, 500 ms, 40 ms apart (§2.7). |
+| Page slide | `src/design/motion.css` (`::view-transition-old/new(root)`), `index.html` | The root of every page change slides 8 px, forward or `back` (§2.7). |
 | Pen mark | `src/components/graphics/PenMark/PenMark.tsx` | A marker underline under one phrase, drawn by `--hold`; drawn outright where nothing sets it (§2.5). |
 | Reduced-motion hook | `src/components/ui/motion/useReducedMotion.ts` | Live `prefers-reduced-motion` value for effects (never for markup). |
 | GSAP on demand | `src/components/ui/motion/gsap.ts` | `loadGsap()` / `prefetchGsap()`: GSAP is a separate chunk fetched on idle or first use. Closed and resting states live in CSS so nothing waits for it. |
@@ -423,7 +569,8 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 ### How scroll-linked motion stays cheap
 
 - Only `transform` and `opacity` animate. No layout properties, no filters on scroll, no
-  `background-position` loops.
+  `background-position` loops. (The short blurs of the swaps, the rising headings and the page
+  slide run once after a change or an arrival, never with the scroll position: §2.6, §2.7.)
 - `--scene-*` values are written once per frame, only while the element intersects the viewport,
   from a passive listener. Geometry (anchors, pin run) is measured on resize, not on scroll.
 - Components read them in CSS (`calc()` inside the individual `translate` / `rotate` / `scale`
@@ -445,16 +592,24 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 - Menu: opens and closes instantly, focus behaviour unchanged. (The global backstop gives every
   element a 0.01 ms transition, so inherited `visibility` reaches the panel's links a few frames
   late; the menu retries `focus()` each frame until it lands.)
-- Projects gallery: instant changes, no change-over, the arrow already drawn (§2.2).
+- Projects gallery: instant changes; the credits and the count fade out and in (§2.6); the
+  arrow already drawn (§2.2).
+- Case study: the next track's disc does not spin; its title still takes the hover colour.
 - Header: turns compact at once, without the fade or the lift.
-- Chapter marks: drawn and still (`--hold` is never written); Process's credits change without
-  the change-over, and its songs are chosen on the playlist only (there is no hold to turn
+- Chapter marks: drawn and still (`--hold` is never written); Process's credits and count fade
+  out and in (§2.6), and its songs are chosen on the playlist only (there is no hold to turn
   them); the selection bar jumps.
+- Text that changes in place (the copy button, the menu toggle): the fade alone, without the
+  shift and the blur (§2.6). The hero's pause control is not there to swap (above).
+- The transitions from transitions.dev (§2.7): icons cross-fade, marks do not lift and their tag
+  appears without its scale, a refused copy does not shake, chapter headings are simply there,
+  and pages change without a slide.
 - Smooth scrolling, chapter snap, chapter hold and parallax: off (native scroll, plain flow,
   layers at rest).
 
 The global rule in `src/design/base.css` is a backstop, not the mechanism: each primitive
-checks the preference itself so no JavaScript loop keeps running behind a frozen CSS rule.
+checks the preference itself so no JavaScript loop keeps running behind a frozen CSS rule. The
+text swap's fade is the one transition it spares (§2.6).
 
 ---
 
@@ -469,7 +624,9 @@ checks the preference itself so no JavaScript loop keeps running behind a frozen
   own compositor layer (`will-change: rotate`), so it costs no main-thread work; it still pauses
   off-screen and can be paused by the visitor.
 - Animate `transform` and `opacity` only. Never animate `width`, `height`, `top`, `left`,
-  `filter` or `box-shadow` on scroll.
+  `filter` or `box-shadow` on scroll. The filters that animate are the short blurs of the
+  transitions.dev set (2 px on the text and icon swaps, 3 px on the rising headings and the page
+  slide): 150 to 500 ms after a change or an arrival, never per scroll frame (§2.6, §2.7).
 - New animation libraries require a measured reason. GSAP is reserved for the menu and is never
   imported statically: use `loadGsap()`. Lenis (2026-11-09, §2.3) is likewise a dynamic import
   (7.4 kB gzip with its snap), for eased wheel input and proximity snap that CSS scroll-snap

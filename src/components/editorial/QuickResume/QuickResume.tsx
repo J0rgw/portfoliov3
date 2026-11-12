@@ -1,30 +1,30 @@
 import { ThemeImage } from '../../graphics/ThemeImage/ThemeImage';
 import { ui } from '../../../config/ui';
 import { techLogo } from '../../../config/technologies';
-import { type CSSProperties } from 'react';
 import type { ProjectSummary } from '../../../config/types';
+import MarkRow from '../../ui/MarkRow/MarkRow';
+import type { SwapPhase } from '../../ui/motion/useTextSwap';
 
 interface QuickResumeProps {
   project: ProjectSummary;
-  /** Plays the change-over (only after the visitor changes the disc). */
-  animate: boolean;
+  /** The swap's phase when the project changes (useTextSwap, motion.css). */
+  swap: SwapPhase;
 }
 
 /**
  * The selected disc's credits, top left, printed straight on the page like
  * a disc's back insert: the name, a tight line of description under it and
- * the stack as marks (a technology without a mark is set as a mono chip).
- * Rendered with `key={slug}` so a change swaps the whole block at once: the
- * old project's text is never on screen next to the new disc.
+ * the stack as marks (a technology without a mark is set as a mono chip),
+ * which lift under the pointer and show their names (MarkRow). A change of
+ * project swaps the whole block: the old credits leave before the new ones
+ * arrive, so two projects' texts are never on screen together.
  */
-export function QuickResume({ project, animate }: QuickResumeProps) {
+export function QuickResume({ project, swap }: QuickResumeProps) {
   return (
-    <div className="quick-resume" data-animate={animate || undefined}>
-      <h3 className="quick-resume__title">
-        <span className="quick-resume__line"><span>{project.title}</span></span>
-      </h3>
-      <p className="quick-resume__text" style={{ '--row': 0 } as CSSProperties}>{project.shortDescription}</p>
-      {project.stack.length > 0 && <ul className="quick-resume__stack" aria-label={ui.labels.stack} style={{ '--row': 1 } as CSSProperties}>
+    <div className="quick-resume" data-swap={swap}>
+      <h3 className="quick-resume__title">{project.title}</h3>
+      <p className="quick-resume__text">{project.shortDescription}</p>
+      {project.stack.length > 0 && <MarkRow className="quick-resume__stack" label={ui.labels.stack}>
         {project.stack.map((tech) => {
           const logo = techLogo(tech);
           return (
@@ -46,7 +46,7 @@ export function QuickResume({ project, animate }: QuickResumeProps) {
             </li>
           );
         })}
-      </ul>}
+      </MarkRow>}
     </div>
   );
 }

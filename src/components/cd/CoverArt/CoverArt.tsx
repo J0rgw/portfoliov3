@@ -10,7 +10,8 @@ interface CoverArtProps {
   cover: ProjectCover;
   assets?: ProjectAssets;
   title: string;
-  track: string;
+  /** Printed at the sleeve's foot; a case study passes none (2026-11-11: no numbers on its page). */
+  track?: string;
   catalog: string;
   /** `disc` keeps text clear of the hub and the cut corners. */
   shape?: 'sleeve' | 'disc';
@@ -264,7 +265,7 @@ export function CoverArt({
         </text>
       )}
       {/* A printed single carries no number on its disc: only the sleeve does. */}
-      {!rim && !(collage && shape === 'disc') && (
+      {track && !rim && !(collage && shape === 'disc') && (
         <text x="200" y="378" textAnchor="middle" className="cover__mono" style={{ fill: cover.ink }} fontSize="12" opacity="0.8">
           {track}
         </text>

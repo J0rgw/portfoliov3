@@ -132,16 +132,16 @@ export interface Project {
   year: string;
   technologies: string[];
   services: ServiceId[];
+  /* The case study's sections: prose, one paragraph per string. No lists or
+     numbered items (2026-11-11); the stack is named inside the architecture's
+     sentences. */
   overview: string[];
   context?: string[];
   challenge?: string[];
   goals?: string[];
   responsibilities?: string[];
-  architecture?: {
-    summary: string[];
-    stack: { label: string; items: string[] }[];
-  };
-  decisions?: { title: string; body: string }[];
+  architecture?: string[];
+  decisions?: string[];
   outcome?: string[];
   /** Real screenshots, command excerpts, diagrams and state tables. */
   evidence?: Evidence[];
