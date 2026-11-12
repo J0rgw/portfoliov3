@@ -304,11 +304,13 @@
   --radius-card: 18px;
   --radius-round: 999px;
   --hairline: 1px;
-  /* A link's underline (the header's "Hablemos", ui/LinkCue): a hairline 0.35em under body
-     text; under large type thicker and closer, a line under the word, not a rule below it.
-     Unregistered, so `em` is the font size of the link that reads them. */
-  --link-underline: max(var(--hairline), 0.045em);
-  --link-underline-offset: min(0.35em, 0.12em + 0.25rem);
+  /* A link's underline (the header's "Hablemos", ui/LinkCue), as heavy as the type it is under
+     (Jorge, 2026-11-12: bolder, to fit Poppins): 2 px under semibold body text, whose stems are
+     about as thick, and 0.1em under large type (3.2 px under the Projects heading); 0.3em under
+     body text, closer under large type. Unregistered, so `em` is the font size of the link
+     that reads them. */
+  --link-underline: max(2px, 0.1em);
+  --link-underline-offset: min(0.3em, 0.06em + 0.25rem);
 
   /* ---- Depth: physical objects only --------------------------------------- */
   --shadow-object: 0 1px 1px rgb(17 19 24 / 0.08), 0 14px 30px -12px rgb(17 19 24 / 0.32),

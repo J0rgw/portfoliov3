@@ -33,7 +33,8 @@ case study, after the next track and "Todos los proyectos".
    1280 px).
 3. **The pen circles the link (Q54: E).** Where an arrow was a link's only cue, the words wear
    `ui/LinkCue`: the header's "Hablemos" underline at rest (tokens `--link-underline` and
-   `--link-underline-offset`, which the header now reads too), and the gallery's pen loop
+   `--link-underline-offset`, which the header now reads too; made bolder the same day at
+   Jorge's request, `max(2px, 0.1em)`, so the line is as heavy as the type), and the gallery's pen loop
    (`graphics/HandCircle`, new `stretch` option) drawn round them while the link is pointed at
    (hovering devices only) or focused. Geometry and motion: MOTION_SYSTEM §2.8.
 4. **Everywhere an arrow was the only cue (Q55: S2).** The Projects heading ("Proyectos" over

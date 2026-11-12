@@ -231,8 +231,10 @@ scrolling feel cheap and broke the rest of the page's aesthetic
 ([ADR-002](docs/adr/ADR-002-links-without-arrows.md)).
 **A link's cue** (ADR-002, Jorge's pick of eight rendered options, 2026-11-12): where an arrow
 was the only sign that words were a link, the words wear `ui/LinkCue` instead: at rest the
-header's "Hablemos" underline (`--link-underline`, `--link-underline-offset`, a hairline 0.35em
-under body text), and while the link is pointed at or focused the gallery's HandCircle drawn
+header's "Hablemos" underline (`--link-underline`, `--link-underline-offset`), as heavy as the
+type it is under (bolder at Jorge's request the same day, to fit Poppins: 2 px 0.3em under the
+semibold body links, 0.1em under large type), and while the link is pointed at or focused the
+gallery's HandCircle drawn
 round them in the accent's ink, the way you circle a track on a printed tracklist. The Projects
 heading, Proceso's evidence links, Servicios' enquiries, the footer's full index and, on a case
 study, the next track and "Todos los proyectos" wear it. Arrows that say something else stay:

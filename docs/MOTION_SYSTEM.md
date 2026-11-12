@@ -510,10 +510,13 @@ compared eight, rendered on the real build (words only, the header's "Hablemos" 
 line redrawn, the line tightening, a highlighter, the pen loop, the words rolling, a small
 CD-R), and chose the pen loop: `ui/LinkCue` round the link's words.
 
-- **At rest**: the header's "Hablemos" underline, in the words' colour (`--link-underline`, a
-  hairline, and `--link-underline-offset`, 0.35em under body text; under large type thicker and
-  closer, `max(1px, 0.045em)` and `min(0.35em, 0.12em + 0.25rem)`). The header reads the same
-  tokens. A phone sees only this.
+- **At rest**: the header's "Hablemos" underline, in the words' colour, as heavy as the type
+  (`--link-underline`, `max(2px, 0.1em)`: 2 px under the 17 px semibold links, whose stems are
+  about as thick, 3.2 px under the Projects heading, 8.6 px under the next track's title at
+  1512 px; `--link-underline-offset`, `min(0.3em, 0.06em + 0.25rem)`: 5 px under body text,
+  closer in proportion under large type). It was a 1 px hairline 0.35em down until Jorge asked,
+  the same day, for it bolder to fit the font, chosen from rendered weights. The header reads
+  the same tokens. A phone sees only this.
 - **Pointed at or focused**: the gallery's pen loop (`graphics/HandCircle`, stretched into an
   oval with `stretch`, a 1.7 px non-scaling stroke in `--accent`) is drawn round the words,
   `stroke-dashoffset` 1 → 0 over `--dur-slow` on `--ease-out-soft` while it fades in over
@@ -526,8 +529,10 @@ CD-R), and chose the pen loop: `ui/LinkCue` round the link's words.
   `--link-cue-head` (`min(0.95em, 1rem)`) over the first line's capitals and ends
   `--link-cue-foot` (`clamp(0.3rem, 0.5em, 0.45rem)`) under the last line's underline, and
   reaches `--link-cue-side` (`min(0.45em, 0.75rem)`) past the words. The margins stop growing
-  with large type, so round the next track's 104 px title it passes 3 px under "Siguiente pista",
-  clears the tagline and stays off the disc. The Projects heading sets "Proyectos" over
+  with large type, so round the next track's title (86 px at 1512 px, 104 px at 1920 px) it
+  passes 3 to 5 px under "Siguiente pista" and stays off the disc; since the line got bolder the
+  tagline sits 8 px further down (`margin-top`), so the line ends 9 to 12 px above it and the loop
+  clears it. The Projects heading sets "Proyectos" over
   "seleccionados" at every width (`width: min-content`) with a wider side (1.4em), so the oval
   clears the corners of the two lines.
 - **Where**: the Projects heading, Proceso's evidence links, Servicios' enquiries, the footer's

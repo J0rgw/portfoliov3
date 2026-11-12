@@ -1225,7 +1225,7 @@ with Playwright so he can choose. Decision record: [ADR-002](adr/ADR-002-links-w
 - Done: `PenMark` deleted with its CSS, its five phrases in config and their `test:config`
   check; Proceso's `--pen` and the hook's `--hold` property gone (`onHold` stays for Proceso);
   Servicios without its number column or its arrows, each enquiry underlined like the header's
-  "Hablemos" (1 px, 0.35em, in the words' colour; the accent on hover).
+  "Hablemos" (in the words' colour; the accent on hover).
 - Chosen from renders (Q54–Q56; overlays over the build, a video and side-by-side stills per
   option, a launcher to try each live, all in the session scratchpad): E, S2 and H2. Built:
   `ui/LinkCue` (words underlined with the new `--link-underline` tokens, the gallery's
@@ -1252,3 +1252,11 @@ with Playwright so he can choose. Decision record: [ADR-002](adr/ADR-002-links-w
   overflow, no console errors, every heading and lede the same box except the Projects heading
   between about 640 and 900 px (two lines where it fitted one, +30 px at 768 × 1024). Holds and
   the cue measured as in ADR-002 and MOTION_SYSTEM §2.5 and §2.8.
+- Then, at Jorge's request ("make the underscore bolder to fit the font aesthetic"): the shared
+  underline tokens went from a 1 px hairline 0.35em down to `max(2px, 0.1em)` at
+  `min(0.3em, 0.06em + 0.25rem)`, chosen from four weights rendered on the build (2 px under the
+  17 px semibold links and the header's "Hablemos", 3.2 px under the Projects heading, 8.6 px
+  under the next track's 86 px title at 1512 px). The one layout change: the next track's
+  tagline sits 8 px further down (`margin-top`), because at 1920 px the 10 px bar ended 1 px
+  above it; now the line ends 9 to 12 px above the tagline at 390, 1512 and 1920 px and the pen
+  loop clears it. The loop's foot follows the line, so it still encloses it; no console errors.

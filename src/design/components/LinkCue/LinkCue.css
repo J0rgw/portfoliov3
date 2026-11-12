@@ -11,8 +11,8 @@
    baseline, so the loop starts --link-cue-head over the capitals of the first
    line and ends --link-cue-foot under the underline of the last, whatever the
    line height. The margins stop growing with large type, so round the next
-   track's 104 px title it still passes between the title and the lines above
-   and below it. */
+   track's title (86 to 104 px) it still passes between the title and the
+   lines above and below it. */
 
 .link-cue {
   --link-cue-side: min(0.45em, 0.75rem);
