@@ -1,5 +1,4 @@
 import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
-import PenMark from '../../components/graphics/PenMark/PenMark';
 import { ArrowRight, ArrowUpRight } from '../../components/ui/Icon/Icon';
 import { chapterById } from '../../config/navigation';
 import { library } from '../../config/library';
@@ -20,7 +19,7 @@ export function BonusTrack() {
       <div className="container frame bonus__frame">
         <ChapterHeading
           id="bonus-title"
-          title={<PenMark text={library.heading} mark={library.mark} />}
+          title={library.heading}
           lede={library.body}
         />
 

@@ -178,8 +178,8 @@ html.menu-open .site-header :focus-visible {
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
   text-decoration: underline;
-  text-decoration-thickness: var(--hairline);
-  text-underline-offset: 0.35em;
+  text-decoration-thickness: var(--link-underline);
+  text-underline-offset: var(--link-underline-offset);
   text-shadow: var(--nav-halo);
   transform: translateY(var(--nav-rise));
   transition: transform var(--dur-base) var(--ease-out);

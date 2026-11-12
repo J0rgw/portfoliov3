@@ -2,7 +2,8 @@ import { ui } from '../../../config/ui';
 import { chapters, chapterHref } from '../../../config/navigation';
 import { projectHref, projects } from '../../../config/projects';
 import { site, socials } from '../../../config/site';
-import { ArrowRight, ArrowUp } from '../Icon/Icon';
+import { ArrowUp } from '../Icon/Icon';
+import LinkCue from '../LinkCue/LinkCue';
 import Barcode from '../../graphics/Barcode/Barcode';
 import '../../../design/components/SiteFooter/SiteFooter.css';
 
@@ -46,11 +47,10 @@ export function SiteFooter({ contact = true }: { contact?: boolean }) {
                 </a>
               </li>
             ))}
-            {/* A page, not a track: an arrow like the site's other "go there" links. */}
+            {/* A page, not a track: underlined and circled like the site's other "go there" links. */}
             <li>
               <a className="site-footer__more" href="/proyectos/">
-                {ui.navigation.fullIndex}
-                <ArrowRight size={16} aria-hidden="true" />
+                <LinkCue>{ui.navigation.fullIndex}</LinkCue>
               </a>
             </li>
           </ol>

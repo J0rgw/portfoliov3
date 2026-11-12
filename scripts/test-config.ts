@@ -4,11 +4,6 @@ import { projectCatalog, projects, selectProjects, projectBySlug, nextProject, p
 import { chapters, chapterHref } from '../src/config/navigation';
 import { matchRoute, prerenderPaths, normalizePath } from '../src/routes';
 import { hero } from '../src/config/hero';
-import { processIntro } from '../src/config/process';
-import { servicesIntro } from '../src/config/services';
-import { aboutIntro } from '../src/config/about';
-import { library } from '../src/config/library';
-import { ui } from '../src/config/ui';
 
 assert.equal(new Set(projectCatalog.map((p) => p.id)).size, projectCatalog.length, 'IDs must be unique');
 assert.equal(new Set(projectCatalog.map((p) => p.slug)).size, projectCatalog.length, 'Slugs must be unique');
@@ -42,12 +37,4 @@ if (projects.length) assert.equal(nextProject(projects.at(-1)!.slug)?.id, projec
 assert.equal(chapterHref('unknown'), '/#inicio');
 assert.equal(hero.nameLines.join(' '), hero.name, 'The hero name lines must spell the full name');
 assert.equal(new Set(chapters.map((chapter) => chapter.id)).size, chapters.length);
-// The marker underlines a phrase of the copy (graphics/PenMark): it must still be in it.
-for (const [text, mark] of [
-  [processIntro.lede, processIntro.mark],
-  [servicesIntro.lede, servicesIntro.mark],
-  [aboutIntro.heading, aboutIntro.mark],
-  [library.heading, library.mark],
-  [ui.projects.heading, ui.projects.headingMark],
-]) assert.ok(text.includes(mark), `Pen mark "${mark}" must be part of "${text}"`);
-console.log('Config: IDs, slugs, ordering, visibility, empty/single catalogues, source parity, routes, social assets, navigation and pen marks passed.');
+console.log('Config: IDs, slugs, ordering, visibility, empty/single catalogues, source parity, routes, social assets and navigation passed.');

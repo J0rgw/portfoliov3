@@ -27,7 +27,7 @@ Borrow the *quality*, never the assets, layouts or branding. Nothing here is cop
 | # | Reference | Primary target | Borrowed quality (one line) | Priority | Status |
 |---|-----------|----------------|------------------------------|----------|--------|
 | 1 | [Cool Interaction](https://coolinteraction.framer.website/) | Projects, header | Index numeral with total (`01 /06`), credits columns, persistent inquiry link | High | Implemented (tracklist numerals, credits) |
-| 2 | [A24 by Ravi Klaassens](https://www.awwwards.com/sites/a24) | Projects, case studies, hero object | The disc as cover object, credits table, rim text, index ↔ detail morph, **the disc gallery** | **Highest (projects)** | Implemented (Disc, credits, view transition; hero disc is Jorge's printed CD since 2026-10-29; chapter 01 rebuilt as A24's disc gallery on 2026-10-30; arc path and hover pen loop in TASK 01 the same day; 2026-11-09: credits unboxed and moved to the bottom left, stack as marks, keys under the selected disc, one previous disc only; the same day the discs became photographic printed singles with Jorge's cut-outs, #18) |
+| 2 | [A24 by Ravi Klaassens](https://www.awwwards.com/sites/a24) | Projects, case studies, hero object | The disc as cover object, credits table, rim text, index ↔ detail morph, **the disc gallery** | **Highest (projects)** | Implemented (Disc, credits, view transition; hero disc is Jorge's printed CD since 2026-10-29; chapter 01 rebuilt as A24's disc gallery on 2026-10-30; arc path and hover pen loop in TASK 01 the same day (since 2026-11-12 the same loop circles a link's words, ADR-002); 2026-11-09: credits unboxed and moved to the bottom left, stack as marks, keys under the selected disc, one previous disc only; the same day the discs became photographic printed singles with Jorge's cut-outs, #18) |
 | 3 | [Matt Jinn](https://www.awwwards.com/sites/matt-jinn) | Hero, bonus teaser | Type laid over the image, one clear action at the foot of the hero | High (hero) | Superseded in the hero (2026-10-29: Jorge's sketch has no headline or CTA; type sits beside the object, not over it). Promo-card idea kept for the bonus |
 | 4 | [Kyoosang Choi](https://www.awwwards.com/sites/kyoosang-choi) | About, contact, voice | Personal material culture as narrative objects; handwriting as voice | **Highest (concept)** | Implemented (handwriting layer, back cover, hero hand gripping the sleeve; since ADR-001, 2026-11-10, Jorge's portrait as a cut-out in About instead of the pass) |
 | 5 | [Gianluca Boccia, Still Drawing](https://www.awwwards.com/sites/gianluca-boccia-still-drawing) | About, liner notes | One continuous thread through the story; accessible no-animation path | Medium | Partial (reduced-motion parity; the thread left with the booklet, ADR-001) |
@@ -110,6 +110,14 @@ name themselves, the iPod's bar slides on its timing and chapter headings rise i
 Measured at 1512 × 734 with and without reduced motion; element boxes identical to the previous
 build on home, the index and a case study at 1512 × 734, 1024 × 768 and 390 × 844, with and
 without JavaScript (plan, "Transitions from transitions.dev").
+The next morning, at Jorge's request, the marker the chapter hold drew under each chapter's
+phrase was removed (it made the scroll feel cheap), and Servicios lost its track numbers. From
+renders of eight cues drawn from these references he chose A24's pen loop (#2) to replace every
+arrow that was a link's only cue: the words are underlined like the header's "Hablemos" and the
+pen circles them when pointed at. He also chose to keep only Proceso's hold, the one with a job
+([ADR-002](docs/adr/ADR-002-links-without-arrows.md)). Checked at 320 to 1512 px with and
+without JavaScript, in the dark theme and with reduced motion at 1512 × 734, and the holds up to
+1920 × 1080.
 
 Supporting resources: [SVGL](https://svgl.app/) (technology logos; the files in
 `public/images/logo/` follow that source), [Fontpair](https://fontpair.co/) (not needed, the

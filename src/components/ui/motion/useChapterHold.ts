@@ -25,12 +25,10 @@ export function onHold(chapter: HTMLElement, listener: (hold: HoldState | null) 
 }
 
 /**
- * The chapter hold's job (docs/MOTION_SYSTEM.md §2.5). Writes `--hold` on the
- * held chapter: 0 when its top meets the viewport's (the snap point, where
- * the hold starts) and 1 when the hold is used up and the chapter moves on.
- * CSS draws with it (graphics/PenMark), so scrolling through a hold always
- * changes something on screen. The same state is sent to the chapter
- * (`onHold`): Proceso turns its playlist with it.
+ * Follows a home chapter through its hold (docs/MOTION_SYSTEM.md §2.5) and
+ * sends the chapter where it is (`onHold`): 0 when its top meets the
+ * viewport's (the snap point, where the hold starts), 1 when the hold is used
+ * up and the chapter moves on. Proceso turns its playlist with it.
  *
  * A chapter is held only when it fits the viewport (ADR-001): one taller than
  * the window would be frozen half-read, so its wrapper is marked
@@ -40,19 +38,21 @@ export function onHold(chapter: HTMLElement, listener: (hold: HoldState | null) 
  *
  * The hold's length is the wrapper's spacer, the wrapper's height minus the
  * chapter's. Where layout.css holds nothing (no JavaScript, reduced motion,
- * short viewports, the last chapter, an unheld chapter) it is 0 and nothing is
- * written, so the CSS default (drawn) stays.
+ * short viewports, the last chapter, an unheld chapter) it is 0 and the
+ * chapter hears `null`.
  *
  * One passive listener, at most one frame per scroll event, nothing while the
- * chapter is more than a viewport away, nothing at all under reduced motion.
+ * chapter is more than a viewport away, nothing at all under reduced motion or
+ * for a chapter that does not hold (`holds` false: only Proceso holds since
+ * 2026-11-12, ADR-002).
  */
-export function useChapterHold<T extends HTMLElement>(ref: RefObject<T | null>) {
+export function useChapterHold<T extends HTMLElement>(ref: RefObject<T | null>, holds = true) {
   const reduced = useReducedMotion();
 
   useEffect(() => {
     const hold = ref.current;
     const chapter = hold?.firstElementChild;
-    if (!hold || !(chapter instanceof HTMLElement) || reduced) return;
+    if (!holds || !hold || !(chapter instanceof HTMLElement) || reduced) return;
     let frame = 0;
     let near = false;
     let sent: HoldState | null = null;
@@ -75,13 +75,11 @@ export function useChapterHold<T extends HTMLElement>(ref: RefObject<T | null>) 
       frame = 0;
       const length = hold.offsetHeight - chapter.offsetHeight;
       if (length < 1) {
-        chapter.style.removeProperty('--hold');
         send(null);
         return;
       }
       const top = hold.getBoundingClientRect().top;
       const progress = Math.min(Math.max(-top / length, 0), 1);
-      chapter.style.setProperty('--hold', progress.toFixed(3));
       send({ progress, start: top + window.scrollY, length });
     };
 
@@ -94,7 +92,7 @@ export function useChapterHold<T extends HTMLElement>(ref: RefObject<T | null>) 
       schedule();
     };
 
-    // Watch from a viewport away, so a mark is never seen drawn as its chapter arrives.
+    // Watch from a viewport away, so the chapter knows its place before it arrives.
     const intersection = new IntersectionObserver(
       ([entry]) => {
         near = entry.isIntersecting;
@@ -117,9 +115,8 @@ export function useChapterHold<T extends HTMLElement>(ref: RefObject<T | null>) 
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', refit);
       if (frame) cancelAnimationFrame(frame);
-      chapter.style.removeProperty('--hold');
       hold.removeAttribute('data-unheld');
       send(null);
     };
-  }, [ref, reduced]);
+  }, [ref, reduced, holds]);
 }

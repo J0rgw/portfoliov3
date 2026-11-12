@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
 import Cutout from '../../components/graphics/Cutout/Cutout';
-import PenMark from '../../components/graphics/PenMark/PenMark';
 import { aboutBio, aboutIntro, instruments, milestones } from '../../config/about';
 import { chapterById } from '../../config/navigation';
 import { site } from '../../config/site';
@@ -26,7 +25,7 @@ export function About() {
   return (
     <section id={chapter.id} className="chapter chapter--frame about" aria-labelledby="about-title">
       <div className="container frame about__frame">
-        <ChapterHeading id="about-title" title={<PenMark text={aboutIntro.heading} mark={aboutIntro.mark} />} />
+        <ChapterHeading id="about-title" title={aboutIntro.heading} />
 
         <div className="about__portrait" data-reveal="fade">
           <Cutout id="jorge" sizes="(min-width: 1024px) and (orientation: landscape) min(23rem, 26vw), 11rem" />

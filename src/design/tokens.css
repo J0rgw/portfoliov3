@@ -293,7 +293,8 @@
   --margin: clamp(1rem, 0.2rem + 3.6vw, 3.5rem);
   --content-max: 90rem;
   --header-h: 4.5rem;
-  /* Extra scroll a home chapter stays held at the top for (layout.css, MOTION_SYSTEM §2.5). */
+  /* Extra scroll a holding home chapter stays at the top for (layout.css, MOTION_SYSTEM §2.5);
+     only Proceso holds since 2026-11-12, for its own 200svh (LinerNotes.css). */
   --chapter-hold: 60svh;
 
   /* ---- Shape -------------------------------------------------------------- */
@@ -303,6 +304,11 @@
   --radius-card: 18px;
   --radius-round: 999px;
   --hairline: 1px;
+  /* A link's underline (the header's "Hablemos", ui/LinkCue): a hairline 0.35em under body
+     text; under large type thicker and closer, a line under the word, not a rule below it.
+     Unregistered, so `em` is the font size of the link that reads them. */
+  --link-underline: max(var(--hairline), 0.045em);
+  --link-underline-offset: min(0.35em, 0.12em + 0.25rem);
 
   /* ---- Depth: physical objects only --------------------------------------- */
   --shadow-object: 0 1px 1px rgb(17 19 24 / 0.08), 0 14px 30px -12px rgb(17 19 24 / 0.32),

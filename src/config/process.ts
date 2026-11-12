@@ -11,8 +11,6 @@ import { projectHref } from './projects';
 export const processIntro = {
   heading: 'Cómo trabajo',
   lede: 'Así es como materializo una conversación en un producto real.',
-  /** The phrase the marker underlines while the chapter holds (graphics/PenMark). */
-  mark: 'producto real',
 };
 
 export const processSteps: ProcessStep[] = [

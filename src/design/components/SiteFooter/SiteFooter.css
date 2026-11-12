@@ -47,9 +47,15 @@
 }
 
 /* The full index follows the projects as a link to a page, not as one more
-   track: an arrow like the site's other "go there" links. */
+   track: its words are underlined and circled when pointed at, like the site's
+   other "go there" links (ui/LinkCue, ADR-002). The cue carries the line, so
+   the link draws none of its own. */
 .site-footer__list .site-footer__more {
   align-items: center;
+}
+
+.site-footer__list .site-footer__more:hover {
+  text-decoration: none;
 }
 
 .site-footer__detail {

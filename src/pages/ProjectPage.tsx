@@ -13,6 +13,7 @@ import { mailto, site } from '../config/site';
 import type { Project } from '../config/types';
 import { useScrollSpy } from '../components/ui/motion/useScrollSpy';
 import { useSpinOnce } from '../components/ui/motion/useSpinOnce';
+import LinkCue from '../components/ui/LinkCue/LinkCue';
 import { rememberProject } from '../components/cd/DiscGallery/selection';
 import '../design/pages/ProjectPage.css';
 
@@ -195,10 +196,11 @@ export function ProjectPage({ slug }: { slug: string }) {
             <span className="case-next__label">
               {ui.detail.nextTrack}
             </span>
-            <span className="case-next__title">{next.title}</span>
+            <span className="case-next__title">
+              <LinkCue>{next.title}</LinkCue>
+            </span>
             <span className="case-next__tagline">{next.tagline}</span>
           </span>
-          <ArrowRight className="case-next__arrow" size={28} aria-hidden="true" />
         </a>
       </nav>}
 
@@ -214,8 +216,7 @@ export function ProjectPage({ slug }: { slug: string }) {
               <ArrowRight aria-hidden="true" />
             </a>
             <a className="case-link" href="/proyectos/">
-              {ui.actions.allProjects}
-              <ArrowRight size={18} aria-hidden="true" />
+              <LinkCue>{ui.actions.allProjects}</LinkCue>
             </a>
           </div>
         </div>

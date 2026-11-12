@@ -94,6 +94,11 @@
   text-decoration: underline;
 }
 
+/* A link whose words carry the cue (ui/LinkCue) draws no line of its own. */
+.case-link:has(> .link-cue):hover {
+  text-decoration: none;
+}
+
 .case-link:hover svg {
   translate: 0.15em -0.15em;
 }
@@ -220,7 +225,7 @@
 
 .case-next__link {
   display: grid;
-  grid-template-columns: clamp(5rem, 9vw, 8rem) 1fr auto;
+  grid-template-columns: clamp(5rem, 9vw, 8rem) 1fr;
   align-items: center;
   gap: var(--space-6);
   padding-block: var(--space-8);
@@ -248,14 +253,6 @@
 
 .case-next__tagline {
   color: var(--muted-foreground);
-}
-
-.case-next__arrow {
-  transition: transform var(--dur-base) var(--ease-out);
-}
-
-.case-next__link:hover .case-next__arrow {
-  transform: translateX(6px);
 }
 
 .case-next__link:hover .case-next__title {
@@ -343,10 +340,6 @@
 @media (max-width: 559px) {
   .case-next__link {
     grid-template-columns: 4.5rem 1fr;
-  }
-
-  .case-next__arrow {
-    display: none;
   }
 
 }

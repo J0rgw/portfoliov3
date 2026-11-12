@@ -7,14 +7,9 @@
 
 /* The hold is the iPod's wheel (MOTION_SYSTEM §2.5): long enough for every
    song to get a share of scroll (40svh each with five songs; more songs share
-   the same length). The marker under the lede is drawn in the first 40svh,
-   while the heading is read, and the rest of the hold turns the songs. */
+   the same length). */
 .chapter-hold:has(> .process) {
   --chapter-hold: 200svh;
-}
-
-.process {
-  --pen: min(1, var(--hold, 1) * 5);
 }
 
 /* ---- The iPod ------------------------------------------------------------------ */
@@ -225,26 +220,13 @@ html:not(.js) .process__frame .process__credits {
   line-height: 1.45;
 }
 
+/* The evidence: its words, underlined, circled by the pen when pointed at
+   (ui/LinkCue, ADR-002). */
 .process__source {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
   font-weight: var(--weight-semibold);
   color: var(--accent-functional);
   text-decoration: none;
   white-space: nowrap;
-}
-
-.process__source svg {
-  transition: translate var(--dur-fast) var(--ease-out);
-}
-
-.process__source:hover {
-  text-decoration: underline;
-}
-
-.process__source:hover svg {
-  translate: 0.2em 0;
 }
 
 /* ---- Wide landscape: one frame ------------------------------------------------------

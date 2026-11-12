@@ -26,24 +26,26 @@
 }
 
 /* Chapter hold (home, MOTION_SYSTEM §2.5, after atlaxia.es's sticky stages):
-   the wrapper is the chapter plus --chapter-hold of extra scroll, and the
+   a holding chapter's wrapper (`data-holds`; only Proceso's since 2026-11-12,
+   ADR-002) is the chapter plus --chapter-hold of extra scroll, and the
    chapter sticks to the top while that extra scroll is used up, then leaves
    with the page. At least one viewport tall, so nothing empty shows under a
-   short chapter while it is held. The last chapter runs into the footer and
-   is not held. Without JavaScript, with reduced motion or on short viewports
-   (landscape phones, where a held chapter would hide its own lower half for
-   too long) the page is a plain flow. A chapter taller than the viewport is
-   not held either (`data-unheld`, useChapterHold; ADR-001): it would be
-   frozen half-read. */
+   short chapter while it is held. The other wrappers only mark the chapters'
+   snap points. The last chapter runs into the footer and is never held.
+   Without JavaScript, with reduced motion or on short viewports (landscape
+   phones, where a held chapter would hide its own lower half for too long)
+   the page is a plain flow. A chapter taller than the viewport is not held
+   either (`data-unheld`, useChapterHold; ADR-001): it would be frozen
+   half-read. */
 @media (prefers-reduced-motion: no-preference) and (min-height: 34rem) {
   /* A spacer, not padding: sticky travels inside its container's content box. */
-  .js .chapter-hold:not(:last-child, [data-unheld])::after {
+  .js .chapter-hold[data-holds]:not(:last-child, [data-unheld])::after {
     content: '';
     display: block;
     height: var(--chapter-hold);
   }
 
-  .js .chapter-hold:not(:last-child, [data-unheld]) > .chapter {
+  .js .chapter-hold[data-holds]:not(:last-child, [data-unheld]) > .chapter {
     position: sticky;
     top: 0;
     min-height: 100svh;

@@ -41,7 +41,6 @@ export const ui = {
   },
   "projects": {
     "heading": "Proyectos seleccionados",
-    "headingMark": "seleccionados",
     "allTracks": "Todas las pistas",
     "discs": "Discos de los proyectos",
     "hint": "Haz clic para saber más",

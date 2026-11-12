@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import ChapterHeading from '../../components/editorial/ChapterHeading/ChapterHeading';
+import LinkCue from '../../components/ui/LinkCue/LinkCue';
 import Cutout from '../../components/graphics/Cutout/Cutout';
-import PenMark from '../../components/graphics/PenMark/PenMark';
-import { ArrowRight } from '../../components/ui/Icon/Icon';
 import { scrollToOffset } from '../../components/ui/motion/SmoothScroll';
 import { onHold, type HoldState } from '../../components/ui/motion/useChapterHold';
 import { useTextSwap } from '../../components/ui/motion/useTextSwap';
@@ -130,7 +129,7 @@ export function LinerNotes() {
         <ChapterHeading
           id="process-title"
           title={processIntro.heading}
-          lede={<PenMark text={processIntro.lede} mark={processIntro.mark} />}
+          lede={processIntro.lede}
         />
 
         <div className="process__player" data-reveal="fade">
@@ -201,8 +200,7 @@ export function LinerNotes() {
                   href={item.note.source.href}
                   {...(item.note.source.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
-                  {item.note.source.label}
-                  <ArrowRight size={14} aria-hidden="true" />
+                  <LinkCue>{item.note.source.label}</LinkCue>
                 </a>
               </p>
             </div>

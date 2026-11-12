@@ -8,8 +8,6 @@ import { mailto } from './site';
  */
 export const library = {
   heading: 'Una librería de componentes React, en preparación',
-  /** The phrase the marker underlines while the chapter holds (graphics/PenMark). */
-  mark: 'en preparación',
   // Scope and name are still open (implementation plan, open question 7): describe only what is known.
   body: 'Todavía sin nombre ni fecha. Para equipos que construyen interfaces con React y quieren una base consistente.',
   /** The oversized word that is the action itself; the footnote's asterisk follows it. */

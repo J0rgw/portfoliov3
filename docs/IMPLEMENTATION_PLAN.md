@@ -518,7 +518,7 @@ These are kept **off the site** until confirmed:
 38. ~~Disc resolution~~: answered 2026-11-10, Jorge supplied the disc at 1200 px (Phase D5).
 39. ~~The marked phrases~~: answered 2026-11-10, keep them for now; Jorge will rework the
     Projects section and the projects page himself (so the Projects heading's mark, the gallery
-    and its credits are his next pass).
+    and its credits are his next pass). Removed on 2026-11-12 at his request (ADR-002).
 40. ~~Trayectoria order~~: answered 2026-11-10, newest first (Phase F4).
 41. ~~Logo loop and Instrumentos~~: answered 2026-11-10, the strip is dropped (Phase F4). Its
     files (`components/ui/LogoLoop`, `design/components/LogoLoop`) are left unused because they
@@ -559,6 +559,10 @@ These are kept **off the site** until confirmed:
 53. **MoneyMan's status**: Proceso now says "Ahora es una app que todo mi entorno usa", while its
     case study says "En desarrollo, sin desplegar" and its README "Not deployed yet". Update the
     case study (and the README) if it is in use, or tell me how to word the sentence.
+54. ~~What replaces the arrow~~: answered 2026-11-12, E: the pen loop round the words, over the
+    header's "Hablemos" underline (`ui/LinkCue`, ADR-002).
+55. ~~Where the new cue applies~~: answered 2026-11-12, S2: every → that was a link's only cue.
+56. ~~The hold without its marker~~: answered 2026-11-12, H2: only Proceso holds.
 
 ---
 
@@ -1209,3 +1213,42 @@ its transitions this site can use.
   1512 × 734, 1024 × 768 and 390 × 844, with and without JavaScript; the marks keep their
   `title` without JavaScript; no horizontal overflow; no console errors. A recording lives in the
   session scratchpad, not in the repo.
+
+## No marker, no numbers, no arrows — 2026-11-12
+
+Brief: Jorge asked to delete the underlines the chapter hold drew ("the scroll animation and the
+entire scroll sensation feel cheap… kinda crunky and break the entire aesthetic"), every one of
+Servicios' numbers and the arrows after its enquiries, then to see many ways, drawn from the
+references, of showing that words are a link ("maybe the same underscore as Hablemos"), rendered
+with Playwright so he can choose. Decision record: [ADR-002](adr/ADR-002-links-without-arrows.md).
+
+- Done: `PenMark` deleted with its CSS, its five phrases in config and their `test:config`
+  check; Proceso's `--pen` and the hook's `--hold` property gone (`onHold` stays for Proceso);
+  Servicios without its number column or its arrows, each enquiry underlined like the header's
+  "Hablemos" (1 px, 0.35em, in the words' colour; the accent on hover).
+- Chosen from renders (Q54–Q56; overlays over the build, a video and side-by-side stills per
+  option, a launcher to try each live, all in the session scratchpad): E, S2 and H2. Built:
+  `ui/LinkCue` (words underlined with the new `--link-underline` tokens, the gallery's
+  `HandCircle` drawn round them on hover and focus; `stretch` added to HandCircle) on the Projects
+  heading, Proceso's evidence links, Servicios' enquiries, the footer's full index, a case
+  study's next track and "Todos los proyectos", their arrows removed; the header's "Hablemos"
+  reads the same tokens (same rendering); `ChapterHold holds` with `HomePage` passing it for
+  Proceso alone, layout.css holding only `[data-holds]`.
+- On the way: `src/config/projects.ts` had the picks' text ("Link cue E, scope S2, hold H2")
+  pasted in front of its first import (10:41, outside this work), which broke the type check; the
+  pasted text was removed and the file is back to its committed state.
+- Docs: DESIGN.md ("Palette and material", "Graphics and assets", "Composition", "Motion",
+  "Decisions"), MOTION_SYSTEM §2, §2.5, new §2.8, §4 and §5, INFORMATION_ARCHITECTURE §3, §4 and
+  §5, references.md (#2 and status), AGENTS.md, ADR-002.
+- Validation: `npm run build` passes (architecture, config, assets, types, client + SSR,
+  prerender, SEO; the Moon and Sun warnings predate this). Against the previous build, with and
+  without JavaScript, at 1512 × 734, 1440 × 900, 1280 × 720, 1024 × 768, 768 × 1024, 390 × 844
+  and 320 × 640: every chapter heading and lede has the same box (the marked phrase no longer
+  refuses to wrap, and no line broke differently); only Servicios changed height, 22 px shorter
+  at 390 px and 222 px at 320 px (its titles take the number's column); the page is otherwise
+  the same height; no horizontal overflow; no console errors.
+- Validation after the picks, same build checks and browser, on home, the index and a case study
+  at the seven sizes above with and without JavaScript: no arrow left on the S2 links, no
+  overflow, no console errors, every heading and lede the same box except the Projects heading
+  between about 640 and 900 px (two lines where it fitted one, +30 px at 768 × 1024). Holds and
+  the cue measured as in ADR-002 and MOTION_SYSTEM §2.5 and §2.8.

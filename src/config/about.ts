@@ -12,8 +12,6 @@ import type { Milestone } from './types';
  */
 export const aboutIntro = {
   heading: 'Sobre mí',
-  /** The word the marker underlines while the chapter holds (graphics/PenMark). */
-  mark: 'mí',
 };
 
 export const aboutBio =

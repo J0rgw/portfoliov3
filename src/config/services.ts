@@ -14,8 +14,6 @@ import { projectHref } from './projects';
 export const servicesIntro = {
   heading: 'Qué puedo construir para ti',
   lede: 'Empiezo siempre por el problema que tienes, no por la tecnología que me apetece usar.',
-  /** The phrase the marker underlines while the chapter holds (graphics/PenMark). */
-  mark: 'el problema que tienes',
 };
 
 export const services: Service[] = [

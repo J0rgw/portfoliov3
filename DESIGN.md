@@ -100,7 +100,7 @@ is handwriting, so, like the marker arrow, it has a generated orange file (it le
 **Accent rules.** `--accent` is for marks and grounds, never for text or a sole indicator: in
 light it measures 2.8:1 on the ground. Anything people read or operate takes
 `--accent-functional`, including Estrella words and footnote glyphs. Links are underlined as
-well as coloured. Text on an accent ground takes `--on-accent`. `--border` is decoration only;
+well as coloured (a link that stands alone, without an arrow, wears `ui/LinkCue`). Text on an accent ground takes `--on-accent`. `--border` is decoration only;
 a control or state indicator that must be seen uses `--control-border` (≥ 3:1) or ink.
 
 **Measured contrast** (WCAG 2.2 AA; ratios on the role's ground, light / dark): foreground
@@ -183,15 +183,15 @@ screens (`clamp(40rem, 100svh, 64rem)`), the heading in the top-left corner at P
 heading size (Poppins 800, `--text-xl`) with at most a one-line lede, one dominant element, and
 the copy at the foot, short and printed straight on the ground (Proceso's sits at eye level,
 below). No paper, card, pass, sticker or
-spec table; rules only between real rows. A chapter is held only when it fits (MOTION_SYSTEM §2.5).
+spec table; rules only between real rows. Only Proceso holds, and only when it fits (MOTION_SYSTEM §2.5).
 Process: Jorge's iPod (a photographed cut-out) with the five steps as its playlist, live HTML on
 its screen in the object's own inks and the accent's selection bar; the selected step's credits
 (title, the step, one real decision linked to its evidence) at eye level in a column up to 40rem,
 and the iPod centred in the room that column leaves, never nearer than 4rem (at the frame's
 right edge where the room runs out), changing over like the gallery's (2026-11-11: Jorge moved
 the iPod right so his longer copy fits where the eye is, and picked this place from two). Services: the four offers as a tracklist printed on the page, one row
-each (number, title large, one line on what you get, where it was done, the enquiry); two by
-two below 1280 px. About: Jorge's portrait (the pass's photo) as a cut-out standing on the
+each (title large, one line on what you get, where it was done, the enquiry, its words the
+link cue; no number and no arrow since 2026-11-12); two by two below 1280 px. About: Jorge's portrait (the pass's photo) as a cut-out standing on the
 frame's lower edge, one paragraph signed "Jorge", and the credits on shared columns (the
 timeline newest first, one line per milestone; the instruments and languages after it). Bonus:
 the oversized "Avísame*" is the mailto link itself, its footnote and privacy line under it, the
@@ -220,16 +220,26 @@ Mobile reassembles the layers in reading order; no essential content outside the
 
 ## Graphics and assets
 
-Use `graphics/HandCircle`, `MarkerArrow`, `Barcode`, `Cutout`, `PenMark` and `ThemeImage` for distinct jobs.
+Use `graphics/HandCircle`, `MarkerArrow`, `Barcode`, `Cutout` and `ThemeImage` for distinct jobs.
 `Paper` and `Sticker` (CSS treatments of live content) are no longer used on any page since
 ADR-001; neither is the `ProfileCard` pass. Their files stay until Jorge commits (they carry
 uncommitted edits).
 HandCircle and Barcode are existing generated vectors; they are not scans of Jorge's drawing.
-PenMark (2026-11-10) is one too: a fast marker underline under one phrase of a chapter's title
-or lede (the phrase lives in config), in `--accent`, behind the glyphs, its weight following
-the type (never under 2.4 px). The chapter hold draws it (Motion, below).
+PenMark, a generated marker underline the chapter hold drew under one phrase of five chapters
+(2026-11-10), was removed on 2026-11-12 at Jorge's request: drawn by the scroll, it made
+scrolling feel cheap and broke the rest of the page's aesthetic
+([ADR-002](docs/adr/ADR-002-links-without-arrows.md)).
+**A link's cue** (ADR-002, Jorge's pick of eight rendered options, 2026-11-12): where an arrow
+was the only sign that words were a link, the words wear `ui/LinkCue` instead: at rest the
+header's "Hablemos" underline (`--link-underline`, `--link-underline-offset`, a hairline 0.35em
+under body text), and while the link is pointed at or focused the gallery's HandCircle drawn
+round them in the accent's ink, the way you circle a track on a printed tracklist. The Projects
+heading, Proceso's evidence links, Servicios' enquiries, the footer's full index and, on a case
+study, the next track and "Todos los proyectos" wear it. Arrows that say something else stay:
+↗ for a link that leaves the site, ← back, ↑ to the top, the gallery's keys and the arrows
+inside the oversized "Hablemos", "Avísame*" and "Escríbeme".
 MarkerArrow renders the supplied raster stroke (and its generated dark-theme ink); HandCircle
-draws in `currentColor`, the accent in the gallery. Paper and Sticker are CSS treatments of live
+draws in `currentColor`, the accent in the gallery and round a link's words. Paper and Sticker are CSS treatments of live
 content, not claims of authentic scanned resources. Do not redraw supplied illustrations.
 
 **Jorge's cut-out set** (supplied 2026-11-09; originals in `private/originals/assets/`, git-ignored): tape, a barcode
@@ -268,15 +278,14 @@ page-transition vocabulary is owned by `design/motion.ts` and `design/motion.css
 Float/drift are short bounded gestures, not automatic infinite background decoration.
 The hero turn and interactive gallery keep pause/reduced-motion/off-screen behavior. Layers
 move like handled objects; no scroll blocking, abrupt layout shifts or animation-gated copy.
-The chapter hold has a job (2026-11-10): while a chapter holds, the marker underlines what it
-is about ("seleccionados", "producto real", "el problema que tienes", "mí", "en
-preparación"), so scrolling through a hold always changes something on screen; at the snap
-point the stroke is not there yet, at the end of the hold it is complete, and without the hold
-(no JavaScript, reduced motion, short viewports, a chapter taller than the window) it is simply
-drawn (MOTION_SYSTEM §2.5). Process's credits change like the gallery's; the booklet's page
+The chapter hold's marker (2026-11-10: a stroke the scroll drew under what each chapter is
+about) was removed on 2026-11-12 at Jorge's request, and with it the holds it gave a job to:
+only Process holds now, because its hold has its own job; every other chapter scrolls straight
+on, its top still a snap point (ADR-002, his pick from rendered options). Process's credits
+change like the gallery's; the booklet's page
 turn left with the booklet (ADR-001). In Process the hold is the iPod's wheel (2026-11-11): every
 song owns a share of it, so scrolling changes the song, the selection bar slides to it and its
-credits change; the marker is drawn in the hold's first stretch, while the heading is read.
+credits change.
 Text that changes in place swaps (2026-11-12, Jorge's request, MOTION_SYSTEM §2.6): the old
 words rise 4 px out of focus and fade, then the new ones come up from 4 px below into focus,
 150 ms each, never both on screen at once. It is the one way text changes on the site: the
@@ -307,6 +316,8 @@ between rules; a square uppercase button where the word itself can be the link; 
 unattributed quote that reads like a testimonial.
 Also poor (2026-11-11): a fade under a fixed header, which leaves whatever passes there
 half-erased; the header's strip cuts straight.
+Also poor (2026-11-12, Jorge): a mark the scroll draws while a chapter holds; the services'
+track numbers; an arrow as the only sign that words are a link (ADR-002).
 Before adding a line, a box, a tag or a sentence, name what it tells the visitor that nothing
 near it already does. Rules mark real divisions (rows of a table or a tracklist, an object's
 edge); states (selection, the step being read, availability, focus) keep their markers.

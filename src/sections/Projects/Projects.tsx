@@ -1,11 +1,10 @@
 import { ui } from '../../config/ui';
 import { useCallback, useRef, useState } from 'react';
-import { ArrowRight } from '../../components/ui/Icon/Icon';
 import { chapterById } from '../../config/navigation';
 import { projectSummaries } from '../../config/projects';
 import { site } from '../../config/site';
 import DiscGallery from '../../components/cd/DiscGallery/DiscGallery';
-import PenMark from '../../components/graphics/PenMark/PenMark';
+import LinkCue from '../../components/ui/LinkCue/LinkCue';
 import QuickResume from '../../components/editorial/QuickResume/QuickResume';
 import { useParallax } from '../../components/ui/motion/useParallax';
 import { useTextSwap } from '../../components/ui/motion/useTextSwap';
@@ -19,8 +18,9 @@ const chapter = chapterById('proyectos');
  * Ravi Klaassens (composition, credits, discs on an arc, the pen loop on
  * hover); the blue marker arrow is Jorge's own image (public/images/gallery/).
  *
- * The heading links the full index (/proyectos/). The private work is the
- * last disc (a broken one, linking Contact), not a line under the gallery.
+ * The heading links the full index (/proyectos/): its words are the cue
+ * (LinkCue, ADR-002). The private work is the last disc (a broken one,
+ * linking Contact), not a line under the gallery.
  *
  * The credits (QuickResume) follow the selected disc, swapping their text when
  * it changes (useTextSwap); the gallery owns the selection and reports it
@@ -49,8 +49,7 @@ export function Projects() {
         <header className="projects__info">
           <h2 id="projects-title" className="projects__heading">
             <a className="projects__heading-link" href="/proyectos/" title={ui.actions.projectIndex}>
-              <PenMark text={ui.projects.heading} mark={ui.projects.headingMark} />{' '}
-              <ArrowRight className="projects__heading-arrow" size={20} aria-hidden="true" />
+              <LinkCue>{ui.projects.heading}</LinkCue>
             </a>
           </h2>
           {project ? <QuickResume project={project} swap={swap} /> : <p className="lede">{ui.projects.empty}</p>}

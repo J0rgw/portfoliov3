@@ -8,7 +8,8 @@ import '../../../design/components/HandCircle/HandCircle.css';
  *
  * Geometry only. Lay it over the object with the object's centre at the
  * box's centre and the box 1.2 times the object's diameter: the loop then
- * clears the rim by 5–27 % of the radius. The path has `pathLength="1"`, so
+ * clears the rim by 5–27 % of the radius. `stretch` lets the box pull it into
+ * an oval, round a link's words (ui/LinkCue). The path has `pathLength="1"`, so
  * the consumer draws it with `stroke-dashoffset` (1 → 0) and turns it with
  * `rotate`; this component sets no motion of its own. The stroke is
  * `currentColor`.
@@ -21,11 +22,19 @@ const LOOP =
 
 interface HandCircleProps {
   className?: string;
+  /** Fill the box whatever its proportions (an oval round words) instead of staying round. */
+  stretch?: boolean;
 }
 
-export function HandCircle({ className = '' }: HandCircleProps) {
+export function HandCircle({ className = '', stretch = false }: HandCircleProps) {
   return (
-    <svg className={`hand-circle ${className}`.trim()} viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+    <svg
+      className={`hand-circle ${className}`.trim()}
+      viewBox="0 0 200 200"
+      preserveAspectRatio={stretch ? 'none' : undefined}
+      aria-hidden="true"
+      focusable="false"
+    >
       <path className="hand-circle__stroke" pathLength={1} d={LOOP} />
     </svg>
   );

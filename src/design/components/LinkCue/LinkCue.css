@@ -1,0 +1,81 @@
+/* A link's words and their pen loop (ui/LinkCue, ADR-002, MOTION_SYSTEM §2.8).
+
+   At rest the header's "Hablemos" underline (--link-underline, tokens.css), in
+   the words' colour, so it follows the link's hover colour. Pointed at or
+   focused, the gallery's pen loop is drawn round the words in the accent's
+   ink and retraced when the pointer leaves. The loop never takes the pointer
+   and never moves the layout.
+
+   Its box is set from the type, not from the line box: Poppins' baseline sits
+   0.5lh + 0.35em under the top of a line and its capitals stand 0.7em over the
+   baseline, so the loop starts --link-cue-head over the capitals of the first
+   line and ends --link-cue-foot under the underline of the last, whatever the
+   line height. The margins stop growing with large type, so round the next
+   track's 104 px title it still passes between the title and the lines above
+   and below it. */
+
+.link-cue {
+  --link-cue-side: min(0.45em, 0.75rem);
+  --link-cue-head: min(0.95em, 1rem);
+  --link-cue-foot: clamp(0.3rem, 0.5em, 0.45rem);
+  position: relative;
+  display: inline-block;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--link-underline);
+  text-underline-offset: var(--link-underline-offset);
+}
+
+.link-cue__loop {
+  position: absolute;
+  left: calc(-1 * var(--link-cue-side));
+  top: calc(0.5lh - 0.35em - var(--link-cue-head));
+  /* An SVG is a replaced element: placed by its edges it keeps its own size,
+     so the size is given. */
+  width: calc(100% + 2 * var(--link-cue-side));
+  height: calc(100% - 1lh + 0.7em + var(--link-cue-head) + var(--link-underline-offset) + var(--link-underline) + var(--link-cue-foot));
+  max-width: none;
+  /* The pen loop is part of the handwriting layer: the accent's ink. */
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.link-cue__loop .hand-circle__stroke {
+  /* Pulled into an oval, the loop keeps a pen's width. */
+  stroke-width: 1.7px;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset var(--dur-base) var(--ease-in-out);
+}
+
+/* The pointer: only where it can hover, so a tap never leaves a loop behind. */
+@media (hover: hover) {
+  :is(a, button):hover .link-cue__loop {
+    opacity: 1;
+    transition-duration: var(--dur-fast);
+  }
+
+  :is(a, button):hover .link-cue__loop .hand-circle__stroke {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset var(--dur-slow) var(--ease-out-soft);
+  }
+}
+
+:is(a, button):focus-visible .link-cue__loop {
+  opacity: 1;
+  transition-duration: var(--dur-fast);
+}
+
+:is(a, button):focus-visible .link-cue__loop .hand-circle__stroke {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out-soft);
+}
+
+/* Reduced motion: the loop is simply there while the link is pointed at, as in the gallery. */
+@media (prefers-reduced-motion: reduce) {
+  .link-cue__loop .hand-circle__stroke {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}

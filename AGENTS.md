@@ -56,7 +56,9 @@ space. The same check fails on a middot in any string or JSX text, document titl
 site's name included (2026-11-11); its allowlist (object print, social cards, the console's
 hidden track, the project data's quoted README output) lives in the script and grows only with
 a stated reason. No category tags, status chips or rules that restate what is
-next to them (DESIGN.md "Decisions").
+next to them (DESIGN.md "Decisions"). No arrow as a link's only cue: a link that stands alone
+wraps its words in `ui/LinkCue` (ADR-002); arrows stay only where they say something else (↗
+leaves the site, ← back, ↑ top).
 Functional components/hooks, explicit TypeScript types, no new `any`, deterministic SSR.
 Do not read browser globals or time/random values during render. Use effects and clean up.
 Config/design never import a component. Shared components never import sections or pages.

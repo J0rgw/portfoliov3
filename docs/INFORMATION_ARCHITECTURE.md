@@ -135,7 +135,9 @@ Every chapter below must keep its contract when edited.
   pointer and their names show on a tag that travels between them (MOTION_SYSTEM §2.7). Position `03 / 06` between the
   previous/next keys, which sit centred under the selected disc. The arrow's label sits at the
   free end of its tail. No foot (removed 2026-11-09): the chapter heading links the full index
-  (`/proyectos/`, with an arrow). Without JavaScript, a text list of every
+  (`/proyectos/`); since 2026-11-12 its words are the link cue (`ui/LinkCue`, ADR-002:
+  underlined, circled by the pen when pointed at; no arrow), "Proyectos" over "seleccionados" at
+  every width. Without JavaScript, a text list of every
   case study.
 - References: A24 by Ravi Klaassens (primary: composition, credits, the arc of discs, the pen loop
   on hover; its title change-over until 2026-11-12), Jorge's marker arrow, the original image
@@ -147,10 +149,10 @@ Every chapter below must keep its contract when edited.
   §2.6, 2026-11-12); the arrow is laid again at rest; a
   pen loop turns round the hovered disc. No wheel capture: the wheel scrolls the page everywhere.
   Scroll parallax (§2.4): credits trail the page, the gallery runs ahead, both at rest when the
-  chapter's top meets the viewport's (its snap point). Like every home chapter but the last, it
-  is held at the top for 60svh of scroll when it fits the window (MOTION_SYSTEM §2.5), while the
-  marker underlines "seleccionados" in the heading (`PenMark`, config
-  `ui.projects.headingMark`). On phones and portrait tablets it is taller than the window and
+  chapter's top meets the viewport's (its snap point). Since 2026-11-12 it is not held (ADR-002:
+  the marker that underlined "seleccionados" through its 60svh hold went, then the hold); its top
+  stays a snap point (MOTION_SYSTEM §2.3, §2.5). On
+  phones and portrait tablets it is taller than the window and
   flows instead (ADR-001, applied to Projects on 2026-11-11), so its keys are never kept under
   the fold.
 - Responsive: one viewport-high frame on wide landscape screens (chapter heading top left,
@@ -173,18 +175,20 @@ Every chapter below must keep its contract when edited.
 **Chapters 02–06 share one frame** (2026-11-10, [ADR-001](adr/ADR-001-chapter-frames.md)). On
 wide landscape screens each is one viewport high (`clamp(40rem, 100svh, 64rem)`, `.frame` in
 layout.css), with the heading in the top-left corner where Projects' heading sits and its copy
-at the foot (Proceso's at eye level since 2026-11-11), so the chapter hold shows it whole. Measured on the production build at 1512 × 734,
-1280 × 720, 1024 × 768, 1440 × 900 and 1920 × 1080: every chapter fits and is held. On phones a
-chapter that does not fit flows instead (`data-unheld`, MOTION_SYSTEM §2.5). Copy was distilled
+at the foot (Proceso's at eye level since 2026-11-11), so a chapter reads whole when its top
+settles at the top. Measured on the production build at 1512 × 734, 1280 × 720, 1024 × 768,
+1440 × 900 and 1920 × 1080: every chapter fits. Since 2026-11-12 only Proceso is held (ADR-002);
+on phones it flows instead when it does not fit (`data-unheld`, MOTION_SYSTEM §2.5). Copy was distilled
 from the earlier contracts' own text: no new facts. Each chapter's heading and lede rise into
 focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 
 **02 · Proceso** (`src/sections/LinerNotes`)
 - Purpose: show how Jorge works and why the process is trustworthy.
 - Content: heading "Cómo trabajo" and a one-line lede, "Así es como materializo una
-  conversación en un producto real." (marked phrase "producto real"); five steps (entendiendo,
+  conversación en un producto real."; five steps (entendiendo,
   definiendo, construyendo, probando y publicando, manteniendo y mejorando), each a title, a
-  text on the step and one real decision with a link to its evidence (see §6). The copy is
+  text on the step and one real decision with a link to its evidence (see §6), its words the
+  link cue (`ui/LinkCue`; no arrow since 2026-11-12). The copy is
   Jorge's (2026-11-11; only spelling and punctuation were touched). The steps are the playlist
   on Jorge's iPod (a photographed cut-out, `cutouts.ipod`): live HTML on its screen, "Proceso"
   and the count in the title bar, the selected step on the accent bar. The selected step's
@@ -206,8 +210,7 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 - Motion: Level 2. The selection bar slides to the selected song; the credits and the count on
   the iPod's screen swap their text like the gallery's (Jorge's request, 2026-11-12, MOTION_SYSTEM
   §2.6: the old text rises out of focus, then the new one comes up into place; not on first
-  load; a fade under reduced motion); the hold's marker under "producto real" is drawn in the
-  first 40svh of the hold, while the heading is read (MOTION_SYSTEM §2.5).
+  load; a fade under reduced motion).
 - Responsive: wide landscape, the credits in a column up to 40rem at body size, centred under
   the heading (eye level); the cell keeps the longest step's height and every step starts at
   its top, so the title never moves. The iPod whole, turned 3°, centred in the room the column
@@ -228,22 +231,24 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 
 **03 · Servicios** (`src/sections/Services`)
 - Purpose: translate skills into understandable offers, organised by client problem.
-- Content: heading "Qué puedo construir para ti" and the lede (marked phrase "el problema que
-  tienes"); four offers as a tracklist printed on the page, one row each: the number (mono,
-  `aria-hidden`), the title (h3, large), one line on what the client gets (also the offer's
-  JSON-LD description), "Lo he hecho en:" with links to the evidence, and an enquiry link with a
-  prefilled subject. Rows are parted by a hairline, nothing inside a row. Removed by ADR-001: the
+- Content: heading "Qué puedo construir para ti" and the lede; four offers as a tracklist
+  printed on the page, one row each: the title (h3, large), one line on what the client gets
+  (also the offer's JSON-LD description), "Lo he hecho en:" with links to the evidence, and an
+  enquiry link with a prefilled subject, its words the link cue (`ui/LinkCue`: the header's
+  "Hablemos" underline, circled by the pen when pointed at). Rows are parted by a hairline,
+  nothing inside a row. Removed on 2026-11-12 at Jorge's request (ADR-002): the track numbers
+  and the enquiries' arrows. Removed by ADR-001: the
   paper insert, the quoted client problem (an unattributed quote read like a testimonial) and
   the four-line scope (its key terms went into the one line).
 - Responsive: four columns per row from 1280 px; two by two from 768 to 1279 px; one column
   below.
-- Motion: reveal only, plus the hold's marker. This chapter stays the calmest and most readable.
+- Motion: reveal only. This chapter stays the calmest and most readable.
 - SEO: the commercial phrases live here as real headings and copy, not stuffed elsewhere.
 - Conversion: one enquiry link per service.
 
 **04 · Sobre mí** (`src/sections/About`)
 - Purpose: personal connection and credibility.
-- Content: heading "Sobre mí" (marked word "mí"); Jorge's portrait (the pass's photo, a cut-out
+- Content: heading "Sobre mí"; Jorge's portrait (the pass's photo, a cut-out
   with a scissor margin, `cutouts.jorge`) standing on the frame's lower edge at the right; one
   paragraph, signed "Jorge" in Estrella (`aria-hidden`); the credits on shared columns: the
   timeline newest first, one line per milestone (period, role, place; `kind` stays in the data),
@@ -253,12 +258,12 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
   detail lines.
 - References: Kyoosang Choi (his own artefacts: his photo, his signature), A24 (credits), Huy
   Phan (positioning).
-- Motion: reveal; the hold's marker under "mí".
+- Motion: reveal.
 - Conversion: the header's "Hablemos"; LinkedIn and GitHub are on the back cover right after.
 
 **05 · Bonus track** (`src/sections/BonusTrack`)
 - Purpose: introduce the upcoming React component library without competing with services.
-- Content: the heading with its status ("en preparación", the marked phrase); one line: no name
+- Content: the heading with its status ("en preparación"); one line: no name
   or date yet, and who it is for; the oversized "Avísame*" as the mailto link itself (named
   "Avísame por email"), its footnote and a one-line privacy note; the DevFest 2025 talk it grew
   from as the one link out. **No fake subscription form.** Removed by ADR-001: the tinted card,
@@ -326,7 +331,9 @@ One coherent system: **a conventional information architecture dressed as a trac
 - **Case-study table of contents**: sticky on wide screens, with scroll-spy; the section in view
   is set in ink and semibold. No dash or number beside the entries (2026-11-11, Jorge's request).
 - **Footer**: the full tracklist (site map) with every case study, as rows of links (ADR-001),
-  without track numbers since 2026-11-11 (on every page, the footer being one component).
+  without track numbers since 2026-11-11 (on every page, the footer being one component). The
+  full index after the case studies is the one link that leads to a page rather than a track:
+  its words are the link cue (`ui/LinkCue`; its arrow went on 2026-11-12, ADR-002).
 - Links to home chapters are absolute (`/#proyectos`) so they work from every page; on the home
   page they are intercepted and scrolled smoothly (instant under reduced motion), and focus moves
   to the target.
@@ -376,7 +383,10 @@ rules), the stack as marks with the rest named in words (`editorial/StackMarks`;
 and name themselves on hover, MOTION_SYSTEM §2.7), one back link
 and no visible breadcrumb trail (it stays in the JSON-LD). Since 2026-11-11 (Jorge's request)
 the page carries **no numbers and no lists**: no number on a section, a decision, a step of the
-flow diagram, the next track or the sleeve's print, and no dash in the table of contents. Every
+flow diagram, the next track or the sleeve's print, and no dash in the table of contents. Since
+2026-11-12 (ADR-002) the next track's title and "Todos los proyectos" are the link cue
+(`ui/LinkCue`) instead of being followed by an arrow; "Escríbeme" keeps its arrow, like the
+back cover's "Hablemos", and "Ver el código" its ↗. Every
 section is prose in Castilian Spanish, one paragraph per string, joined with commas and
 semicolons the way Spanish writes rather than set as bullets; the stack is named inside the
 architecture's sentences (the cover's marks still show it at a glance), and each technical
@@ -394,9 +404,7 @@ opens with "Volver a proyectos" (`/#proyectos`, the gallery reopens on that disc
 shortDescription (tagline), stack (first three technologies), year, href and optional assets.
 No colour, geometry, motif or React type belongs in the editorial model.
 Shared labels and functional messages are in `ui.ts`; identity, hero, contact and SEO have
-named config files. A chapter's intro may name a `mark` (`processIntro`, `servicesIntro`,
-`aboutIntro`, `library`; `ui.projects.headingMark`): the phrase of its title or lede that the
-hold's marker underlines. `npm run test:config` fails if a mark is no longer part of its copy. `assets.ts` contains reusable original/derived asset references.
+named config files. `assets.ts` contains reusable original/derived asset references.
 
 ---
 

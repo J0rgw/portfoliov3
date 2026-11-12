@@ -36,7 +36,8 @@ or a new library needs an entry in this file first.
   Since 2026-11-11 the scroll selects too: the chapter's hold is the iPod's wheel (§2.5), and
   the selection bar slides to the selected song (`--dur-ui`, `--ease-smooth-out`, a transform;
   transitions.dev's tabs since 2026-11-12, §2.7).
-- Chapter hold: the marker underlines the chapter's phrase as the hold is used up (§2.5).
+- Chapter hold: Proceso stays at the top while the scroll turns its playlist (§2.5). Since
+  2026-11-12 no other chapter holds: their marker went, then their holds (ADR-002).
 - Header compact (2026-11-11): when the hero's pinned run ends (`.hero__clear` leaves the
   header's middle line), the strip fades in and lifts to 56 px while the controls rise 8 px and
   the monogram scales to 28 px (320 ms, transform and opacity only), so the name exits under
@@ -62,6 +63,8 @@ or a new library needs an entry in this file first.
   that played at 45 rpm while pointed at (Jorge wanted it to stop), and this spin-up with a
   0.35 s brake ("too abrupt").
 - Buttons sink 1 px on press; links thicken their underline; focus rings appear instantly.
+- Link cue (2026-11-12, §2.8): a link whose words are its only cue (no arrow) is circled by the
+  gallery's pen loop while it is pointed at or focused.
 - Copy-email feedback: "Copiar email" swaps to "Email copiado" and back (§2.6), its icon turns
   into a check, and a copy the browser refuses shakes the button (§2.7).
 - Technology marks (Projects' credits, the index, a case study's cover) lift under the pointer
@@ -311,11 +314,14 @@ measured composition), 1 a viewport later. Layers multiply it by their own depth
 scene `length` viewports tall whose 100svh stage is `sticky; top: 0`; no snapping, no wheel
 capture. Here, in CSS only (`layout.css`):
 
-- `HomePage` wraps every chapter in `.chapter-hold`. The wrapper ends in a `::after` spacer of
-  `--chapter-hold` (60svh; a spacer, because sticky travels inside the content box, so padding
-  does not count) and the chapter is `sticky; top: 0; min-height: 100svh`. When its top meets
-  the viewport's it stays for 60svh of scroll, then leaves with the page. Taller chapters then
-  read on normally; shorter ones fill the viewport while held, so nothing empty shows under them.
+- `HomePage` wraps every chapter in `.chapter-hold`; since 2026-11-12 only a wrapper marked
+  `data-holds` holds (`ChapterHold holds`), and only Proceso's is (ADR-002, below). A holding
+  wrapper ends in a `::after` spacer of `--chapter-hold` (60svh by default, Proceso's 200svh; a
+  spacer, because sticky travels inside the content box, so padding does not count) and the
+  chapter is `sticky; top: 0; min-height: 100svh`. When its top meets the viewport's it stays
+  for the spacer's length of scroll, then leaves with the page. Taller chapters then read on
+  normally; shorter ones fill the viewport while held, so nothing empty shows under them. The
+  other wrappers only mark their chapter's snap point.
 - The last chapter (Contacto) runs into the footer and is not held. The hero keeps its own pin.
 - The snap points are the wrappers (§2.3), so a wheel that stops near a chapter settles on the
   start of its hold. Projects' parallax (§2.4) reads 0 through the whole hold.
@@ -340,26 +346,32 @@ gallery's keys) is no longer kept under the fold through the hold; while it flow
 Proceso and the bonus are held while Projects, Servicios and Sobre mí flow; at 768 × 1024 only
 Projects flows; at 320 × 640 every chapter flows.
 
-**The hold's job** (2026-11-10, after the critique: "scroll that does nothing", five times per
-visit; Jorge chose to give it a job rather than shorten it). While a chapter holds, Jorge's
-marker underlines what it is about: "seleccionados" (Projects), "producto real" (Proceso; "decisiones reales" until 2026-11-11),
-"el problema que tienes" (Servicios), "mí" (Sobre mí), "en preparación" (Librería). So every
-scroll inside a hold visibly does something, and the stroke is complete when the page moves on.
+**The hold's job, and its removal** (2026-11-10 to 2026-11-12). After the critique ("scroll
+that does nothing", five times per visit) Jorge chose to give the hold a job rather than shorten
+it: while a chapter held, a marker stroke (`graphics/PenMark`, drawn by a `--hold` property from
+0 to 1) underlined what it was about, "seleccionados", "producto real", "el problema que
+tienes", "mí" and "en preparación". On 2026-11-12 he had it removed: drawn by the scroll, it
+made scrolling feel cheap and broke the rest of the page's aesthetic
+([ADR-002](adr/ADR-002-links-without-arrows.md)). `--hold` and the component went with it.
+Without the stroke, the holds of Projects, Servicios, Sobre mí and Librería changed nothing on
+screen again, so, from three rendered options (keep them, drop them, 20svh), he chose to drop
+them: only Proceso holds, because its hold has its own job (below). The others scroll straight
+on; a wheel that stops near a chapter's top still settles on it (§2.3).
 
-- `ChapterHold` (`components/ui/motion`) is the wrapper; its hook `useChapterHold` writes
-  `--hold` on the held chapter: 0 when its top meets the viewport's (the snap point), 1 when the
-  hold is used up. The hold's length is the wrapper's spacer (wrapper height minus chapter
-  height), so where layout.css holds nothing it is 0 and nothing is written.
-- `graphics/PenMark` draws with it: `stroke-dashoffset` from `--hold` (pathLength 1), a 320 ms
-  ease-out smoothing keyboard and scrollbar jumps. At the snap point the stroke is not there
-  yet, which leaves the snapped composition complete; unset (no JavaScript, reduced motion,
-  short viewports, the hook not run yet) it is drawn.
+- Measured 2026-11-12 on the production build: at 1512 × 734, 1920 × 1080 and 390 × 844 only
+  Proceso's wrapper has a spacer (1,468, 2,160 and 1,688 px) and a sticky chapter; the home page
+  is 1,761 px shorter at 1512 × 734 (four holds of 440 px); one wheel notch 120 px above
+  Servicios settles exactly on its top; Proceso's songs still change every third notch. At
+  1920 × 1080 a frame is 64rem (1,024 px), so the next chapter's empty top shows under it by
+  55 px, where a held chapter used to fill the window.
+
+- `ChapterHold` (`components/ui/motion`) is the wrapper; its hook `useChapterHold` follows the
+  held chapter and sends it its place (`onHold`): 0 when its top meets the viewport's (the snap
+  point), 1 when the hold is used up. The hold's length is the wrapper's spacer (wrapper height
+  minus chapter height), so where layout.css holds nothing it is 0 and the chapter hears `null`.
 - Cost: one passive scroll listener per held chapter, a frame at most per scroll event, only
-  while the chapter is within a viewport of the screen (one read of the wrapper's box, then one
-  custom-property write); a bounded decorative SVG stroke (AGENTS.md allows stroke drawing).
-- Checked 2026-11-10 at 1512 × 734: `--hold` 0.000 at the snap point, 0.455 and 0.909 after two
-  and four wheel ticks inside the Projects hold, 1 at its end, the stroke growing to match;
-  every chapter's stroke complete at the end of its hold; drawn statically without JavaScript.
+  while the chapter is within a viewport of the screen (one read of the wrapper's box); an
+  event to the chapter only when its place changes.
 
 **Proceso's hold turns the playlist** (Jorge's request, 2026-11-11: "the scroll changes the
 song and therefore the text"). The chapter's hold is 200svh (`.chapter-hold:has(> .process)` in
@@ -376,15 +388,13 @@ Before the hold the first song plays, after it the last.
   songs passed on the way are ignored until the page arrives, or for `motion.playlist.arriveMs`
   (1.5 s) if another scroll takes over, after which the scroll leads again. Focus on the
   playlist follows the song, so its one Tab stop is always the selected tab.
-- The marker under "producto real" reads `--pen` (`min(1, --hold × 5)`, PenMark.css falls
-  back to `--hold`): it is drawn in the first 40svh, while the heading is read.
 - Not held (taller than the window, reduced motion, under 34rem of height, no JavaScript): no
   event, the songs are chosen on the playlist only.
 - Cost: no new listener (the hold's own), one custom event per changed frame near the chapter,
   one React render per song change; the bar is a transform.
 - Checked 2026-11-11 on the production build at 1512 × 734 (wheel ticks of 100 px): the songs
-  change at `--hold` 0.2, 0.4, 0.6 and 0.8, about three ticks (294 px) a song, in both
-  directions; the marker complete by 0.2; a click on song 4 at the hold's start shows it at
+  change at a hold progress of 0.2, 0.4, 0.6 and 0.8, about three ticks (294 px) a song, in
+  both directions; a click on song 4 at the hold's start shows it at
   once and lands at 0.700 with no other song shown on the way; ↓, End, Home and a wrapping ↓
   move selection, focus and page together; a click followed at once by the wheel hands over to
   the scroll after 1.5 s; the menu's Proceso link lands on the first song from Contact and from
@@ -493,6 +503,47 @@ the two counts, which swap as text at Jorge's request, §2.6).
   before at 1512 × 734, 1024 × 768 and 390 × 844 on home, the index and a case study, with and
   without JavaScript; no horizontal overflow; no console errors.
 
+### 2.8 Link cue (Jorge's pick, 2026-11-12)
+
+When the arrows went (ADR-002), a link with nothing else to say it is one needed a cue. Jorge
+compared eight, rendered on the real build (words only, the header's "Hablemos" underline, the
+line redrawn, the line tightening, a highlighter, the pen loop, the words rolling, a small
+CD-R), and chose the pen loop: `ui/LinkCue` round the link's words.
+
+- **At rest**: the header's "Hablemos" underline, in the words' colour (`--link-underline`, a
+  hairline, and `--link-underline-offset`, 0.35em under body text; under large type thicker and
+  closer, `max(1px, 0.045em)` and `min(0.35em, 0.12em + 0.25rem)`). The header reads the same
+  tokens. A phone sees only this.
+- **Pointed at or focused**: the gallery's pen loop (`graphics/HandCircle`, stretched into an
+  oval with `stretch`, a 1.7 px non-scaling stroke in `--accent`) is drawn round the words,
+  `stroke-dashoffset` 1 → 0 over `--dur-slow` on `--ease-out-soft` while it fades in over
+  `--dur-fast`; when the pointer leaves, it fades over `--dur-base` on `--ease-out` while it is
+  retraced, so it is gone well before the retrace ends (as the gallery's loop is). The words take the link's hover colour (`--accent-functional`), and the line with them.
+  Pointer hover only where the device can hover (`@media (hover: hover)`), so a tap leaves no
+  loop; keyboard focus draws it as well, beside the focus ring.
+- **Geometry**: the loop's box is set from the type, not from the line box (Poppins' baseline
+  sits 0.5lh + 0.35em under a line's top, its capitals 0.7em over the baseline): it starts
+  `--link-cue-head` (`min(0.95em, 1rem)`) over the first line's capitals and ends
+  `--link-cue-foot` (`clamp(0.3rem, 0.5em, 0.45rem)`) under the last line's underline, and
+  reaches `--link-cue-side` (`min(0.45em, 0.75rem)`) past the words. The margins stop growing
+  with large type, so round the next track's 104 px title it passes 3 px under "Siguiente pista",
+  clears the tagline and stays off the disc. The Projects heading sets "Proyectos" over
+  "seleccionados" at every width (`width: min-content`) with a wider side (1.4em), so the oval
+  clears the corners of the two lines.
+- **Where**: the Projects heading, Proceso's evidence links, Servicios' enquiries, the footer's
+  full index, and on a case study the next track's title and "Todos los proyectos". The link
+  draws no underline of its own, which would double the line.
+- **Reduced motion**: the loop is there at once, undrawn (as in the gallery). **No JavaScript**:
+  the same; the cue is CSS.
+- Cost: one SVG path per link, no script, no listener; the dash offset and the opacity are the
+  only properties that move.
+- Measured 2026-11-12 on the production build in Chrome at 1512 × 734, sampled every frame on a
+  Servicios enquiry: the dash offset is 0.42 at 125 ms, 0.17 at 225 ms, 0.05 at 325 ms and 0 by
+  526 ms, the opacity 0.99 by 125 ms; leaving, the opacity is 0.14 at 96 ms and 0 by 200 ms.
+  Every loop (heading, Proceso, Servicios, footer, next track, "Todos los proyectos") ends at
+  opacity 1, offset 0 and a 1.7 px stroke. Under reduced motion it is whole at 120 ms. At
+  390 × 844 `(hover: hover)` does not match, so a tap draws nothing.
+
 ---
 
 ## 3. Tokens (`src/design/tokens.css`)
@@ -543,14 +594,13 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 | Disc carousel | `src/components/ui/motion/useDiscCarousel.ts` | Drag with inertia and snapping for a row of items (§2.2): one position, one selection, a stable controller (`goTo`, `step`, `index`), `render(position)` at most once per frame, `onIndex` / `onMotion` callbacks for React. No loop while idle; instant under reduced motion. |
 | Scroll spy | `src/components/ui/motion/useScrollSpy.ts` | Returns the id of the section currently being read. |
 | Spin once | `src/components/ui/motion/useSpinOnce.ts` | Sets `data-spinning` on a target when a mouse or pen enters its trigger or keyboard focus arrives; the end of the CSS animation it names clears it. A spin under way finishes and is never restarted. Nothing on touch, under reduced motion or without JavaScript. |
-| Chapter hold | `src/components/ui/motion/ChapterHold.tsx`, `useChapterHold.ts` | The home chapter's hold wrapper; writes `--hold` (0 → 1 through the hold) on the chapter, sends the same state to it (`onHold`, Proceso's playlist) and marks the wrapper `data-unheld` when the chapter is taller than the window (§2.5). One passive listener, one `ResizeObserver`, one frame per scroll, nothing beyond a viewport away or under reduced motion. |
+| Chapter hold | `src/components/ui/motion/ChapterHold.tsx`, `useChapterHold.ts` | The wrapper round every home chapter (its snap point). When it `holds` (Proceso only), it sends the chapter its place in the hold, 0 → 1 (`onHold`, Proceso's playlist), and marks the wrapper `data-unheld` when the chapter is taller than the window (§2.5); otherwise the hook does nothing. One passive listener, one `ResizeObserver`, one frame per scroll, nothing beyond a viewport away or under reduced motion. |
 | Text swap | `src/components/ui/motion/useTextSwap.ts`, `src/design/motion.css` (`[data-swap]`) | `useTextSwap(value, instant)` returns the value on screen and the phase for `data-swap`: the old text leaves (up, blurred, transparent), then the new one arrives from below (§2.6). The latest change wins, nothing is queued; `instant` skips it. Reduced motion keeps the fade. |
 | Mark row | `src/components/ui/MarkRow/MarkRow.tsx`, `src/components/ui/motion/useMarkGroup.ts` | A list of technology marks that lift under the pointer, the nearest most, and share one name tag that travels between them (§2.7). Mouse and pen only; the marks' `title` stays for no-JS. |
 | Icon swap | `src/design/motion.css` (`[data-icon-swap]`) | Two icons in one place, `a` or `b` showing: the other shrinks out of focus as this one grows in (§2.7). Reduced motion: a cross-fade. |
 | Shake | `src/design/motion.css` (`.is-shaking`) | A refusal: 8 px each way, then 6 px, 280 ms (§2.7). Replay by removing and re-adding the class; none under reduced motion. |
 | Rise | `src/design/motion.css` (`data-reveal="rise"`) | A reveal for a heading and its lede: 12 px out of a 3 px blur, 500 ms, 40 ms apart (§2.7). |
 | Page slide | `src/design/motion.css` (`::view-transition-old/new(root)`), `index.html` | The root of every page change slides 8 px, forward or `back` (§2.7). |
-| Pen mark | `src/components/graphics/PenMark/PenMark.tsx` | A marker underline under one phrase, drawn by `--hold`; drawn outright where nothing sets it (§2.5). |
 | Reduced-motion hook | `src/components/ui/motion/useReducedMotion.ts` | Live `prefers-reduced-motion` value for effects (never for markup). |
 | GSAP on demand | `src/components/ui/motion/gsap.ts` | `loadGsap()` / `prefetchGsap()`: GSAP is a separate chunk fetched on idle or first use. Closed and resting states live in CSS so nothing waits for it. |
 | View transitions | `src/design/motion.css` | `@view-transition { navigation: auto }` and the named elements. |
@@ -596,9 +646,9 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
   arrow already drawn (§2.2).
 - Case study: the next track's disc does not spin; its title still takes the hover colour.
 - Header: turns compact at once, without the fade or the lift.
-- Chapter marks: drawn and still (`--hold` is never written); Process's credits and count fade
-  out and in (§2.6), and its songs are chosen on the playlist only (there is no hold to turn
-  them); the selection bar jumps.
+- Link cue: the pen loop is simply there while a link is pointed at or focused; nothing is drawn.
+- Proceso: its credits and count fade out and in (§2.6), and its songs are chosen on the
+  playlist only (there is no hold to turn them); the selection bar jumps.
 - Text that changes in place (the copy button, the menu toggle): the fade alone, without the
   shift and the blur (§2.6). The hero's pause control is not there to swap (above).
 - The transitions from transitions.dev (§2.7): icons cross-fade, marks do not lift and their tag

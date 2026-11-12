@@ -11,8 +11,7 @@
 
 .service {
   display: grid;
-  grid-template-columns: 2.25rem minmax(0, 1fr);
-  column-gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr);
   row-gap: var(--space-2);
   align-items: baseline;
   padding-block: var(--space-5);
@@ -22,23 +21,12 @@
   border-top: var(--hairline) solid var(--border);
 }
 
-/* The track number: mono, and it is the order on the tracklist. */
-.service__track {
-  font-size: var(--text-sm);
-  color: var(--accent-functional);
-}
-
 .service__title {
   font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
   font-weight: var(--weight-black);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-snug);
   text-wrap: balance;
-}
-
-.service__body,
-.service__cta {
-  grid-column: 2;
 }
 
 .service__outcome {
@@ -52,28 +40,21 @@
   color: var(--muted-foreground);
 }
 
-/* The track's enquiry: a link with its arrow beside its words. */
+/* The track's enquiry: its words, underlined and circled by the pen when
+   pointed at (ui/LinkCue, ADR-002; no arrow since 2026-11-12). */
 .service__cta {
   display: inline-flex;
   align-items: center;
   justify-self: start;
-  gap: var(--space-2);
   min-height: 44px;
   font-weight: var(--weight-semibold);
   text-decoration: none;
   white-space: nowrap;
-}
-
-.service__cta svg {
-  transition: translate var(--dur-base) var(--ease-out);
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
 .service__cta:hover {
   color: var(--accent-functional);
-}
-
-.service__cta:hover svg {
-  translate: 4px 0;
 }
 
 /* The lede is one sentence: let it run to its own width before it wraps. */
@@ -95,7 +76,6 @@
   }
 
   .service {
-    grid-template-columns: 2.25rem minmax(0, 1fr);
     padding-block: var(--space-4);
   }
 
@@ -119,18 +99,13 @@
 }
 
 /* ---- Wide screens: one row per track ----------------------------------------------
-   number, title, what you get (with where it was done), the enquiry. */
+   title, what you get (with where it was done), the enquiry. */
 
 @media (min-width: 1280px) {
   .service {
-    grid-template-columns: 2.5rem minmax(0, 1.12fr) minmax(0, 1fr) max-content;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr) max-content;
     column-gap: var(--gutter);
     padding-block: var(--space-4);
-  }
-
-  .service__body,
-  .service__cta {
-    grid-column: auto;
   }
 
   .service__outcome {
