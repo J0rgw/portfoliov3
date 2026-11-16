@@ -10,7 +10,7 @@ import '../../design/sections/Services/Services.css';
 const chapter = chapterById('servicios');
 
 /**
- * Chapter 03, Servicios (ADR-001): the four offers as a tracklist printed
+ * Servicios (ADR-001), the chapter that opens /servicios/ since ADR-003: the four offers as a tracklist printed
  * straight on the page, one row each: the offer's title large, one line on
  * what the client gets, where Jorge has done it and the enquiry, its words
  * the cue (LinkCue: underlined, circled by the pen when pointed at; no
@@ -18,12 +18,13 @@ const chapter = chapterById('servicios');
  * Still the calmest chapter: reveal only. Contract:
  * docs/INFORMATION_ARCHITECTURE.md §3.
  */
-export function Services() {
+export function Services({ level = 2 }: { level?: 1 | 2 }) {
   return (
     <section id={chapter.id} className="chapter chapter--frame services" aria-labelledby="services-title">
       <div className="container frame services__frame">
         <ChapterHeading
           id="services-title"
+          level={level}
           title={servicesIntro.heading}
           lede={servicesIntro.lede}
         />

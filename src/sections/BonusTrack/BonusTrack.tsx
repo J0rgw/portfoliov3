@@ -7,18 +7,19 @@ import '../../design/sections/BonusTrack/BonusTrack.css';
 const chapter = chapterById('libreria');
 
 /**
- * Chapter 05, the bonus track (ADR-001). A small, honest teaser: the status
+ * The bonus track (ADR-001); since ADR-003 its own page, /libreria/ (Q60). A small, honest teaser: the status
  * in the heading, who it is for in one line, and the action as the
  * oversized word itself ("Avísame*", a mailto link, never a fake form), its
  * footnote and the privacy note under it. The talk it grew from is the one
  * link out. References: CollectUI Subscribe, Matt Jinn's promo card.
  */
-export function BonusTrack() {
+export function BonusTrack({ level = 1 }: { level?: 1 | 2 }) {
   return (
     <section id={chapter.id} className="chapter chapter--frame bonus" aria-labelledby="bonus-title">
       <div className="container frame bonus__frame">
         <ChapterHeading
           id="bonus-title"
+          level={level}
           title={library.heading}
           lede={library.body}
         />

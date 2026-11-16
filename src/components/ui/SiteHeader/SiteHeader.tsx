@@ -2,7 +2,7 @@ import { ui, messages } from '../../../config/ui';
 import { useEffect, useRef, useState } from 'react';
 import Monogram from '../../graphics/Monogram/Monogram';
 import StaggeredMenu from '../StaggeredMenu/StaggeredMenu';
-import { chapters, chapterHref } from '../../../config/navigation';
+import { chapterHref, chapters, pages } from '../../../config/navigation';
 import { site } from '../../../config/site';
 import '../../../design/components/SiteHeader/SiteHeader.css';
 
@@ -14,12 +14,9 @@ interface Behind {
   night: boolean;
   /** A `[data-header-clear]` zone (the hero's pinned run) on the middle line: full size, no strip. */
   clear: boolean;
-  /** The home chapter on the middle line, marked in the menu. */
-  chapter?: string;
 }
 
 const GROUNDS = '[data-ground], .on-night, [data-header-clear]';
-const CHAPTER_IDS = new Set(chapters.map((chapter) => chapter.id));
 
 /** The strip's ground: the innermost ground on its bottom edge. */
 function readGround(crossing: Set<Element>): Pick<Behind, 'ground' | 'night'> {
@@ -31,17 +28,16 @@ function readGround(crossing: Set<Element>): Pick<Behind, 'ground' | 'night'> {
   return { ground: night ? undefined : inner.dataset.ground, night };
 }
 
-/** Where the header is: over the hero's pinned run, in which chapter. */
-function readPlace(crossing: Set<Element>): Pick<Behind, 'clear' | 'chapter'> {
-  const list = [...crossing];
-  return {
-    clear: list.some((element) => element.hasAttribute('data-header-clear')),
-    chapter: list.find((element) => CHAPTER_IDS.has(element.id))?.id,
-  };
+/** Where the header is: over the hero's pinned run or not. */
+function readPlace(crossing: Set<Element>): Pick<Behind, 'clear'> {
+  return { clear: [...crossing].some((element) => element.hasAttribute('data-header-clear')) };
 }
 
-const sameBehind = (a: Behind, b: Behind) =>
-  a.ground === b.ground && a.night === b.night && a.clear === b.clear && a.chapter === b.chapter;
+const sameBehind = (a: Behind, b: Behind) => a.ground === b.ground && a.night === b.night && a.clear === b.clear;
+
+/** The page a path belongs to: a case study belongs to Proyectos. */
+const pageOf = (path: string) =>
+  pages.find((page) => (page.path === '/' ? path === '/' : path.startsWith(page.path)));
 
 /**
  * Persistent header on every page: the JA monogram (home, back to the top), the
@@ -55,8 +51,9 @@ const sameBehind = (a: Behind, b: Behind) =>
  * the strip always matches what shows right below it: an `.on-night` section
  * (back cover, footer) sets `data-tone="night"` (paper ink), any other
  * `[data-ground]` section names its ground in `data-nav-ground`. The hero's run
- * and, on home, the chapter marked in the menu are read on the header's middle
- * line. Two IntersectionObservers whose roots are those one-pixel lines; no
+ * is read on the header's middle line. The menu lists the pages (ADR-003) and
+ * marks the one being read; Proyectos and Servicios also stand beside Hablemos
+ * as words (Jorge's pick, Q58), the one being read underlined. Two IntersectionObservers whose roots are those one-pixel lines; no
  * scroll listener, no layout reads while scrolling.
  */
 export function SiteHeader({ path }: { path: string }) {
@@ -68,10 +65,6 @@ export function SiteHeader({ path }: { path: string }) {
     const header = headerRef.current;
     if (!header) return;
     const targets = new Set<HTMLElement>(document.querySelectorAll<HTMLElement>(GROUNDS));
-    for (const chapter of chapters) {
-      const section = document.getElementById(chapter.id);
-      if (section) targets.add(section);
-    }
     if (!targets.size) {
       setBehind({ night: false, clear: false });
       return;
@@ -131,14 +124,14 @@ export function SiteHeader({ path }: { path: string }) {
     };
   }, []);
 
+  const contact = chapters.find((chapter) => chapter.id === 'contacto');
   const menuItems = [
-    { label: ui.navigation.home, href: '/#inicio' },
-    ...chapters.map((chapter) => ({ label: chapter.label, href: chapterHref(chapter.id) })),
+    ...pages.map((page) => ({ label: page.label, href: page.path })),
+    ...(contact ? [{ label: contact.label, href: chapterHref(contact.id) }] : []),
   ];
-
-  const onHome = path === '/';
-  const current = onHome ? chapters.find((chapter) => chapter.id === behind.chapter) : undefined;
-  const currentChapterHref = !onHome ? undefined : behind.clear ? '/#inicio' : current ? chapterHref(current.id) : undefined;
+  const current = pageOf(path);
+  // The words beside Hablemos: the pages after the home (the bonus stays in the menu and the footer).
+  const words = pages.filter((page) => page.id === 'proyectos' || page.id === 'servicios');
 
   return (
     <header
@@ -153,9 +146,19 @@ export function SiteHeader({ path }: { path: string }) {
           <Monogram className="site-header__mark" />
         </a>
         <div className="site-header__actions">
+          {words.map((page) => (
+            <a
+              key={page.id}
+              className="site-header__page"
+              href={page.path}
+              aria-current={page === current ? 'page' : undefined}
+            >
+              {page.label}
+            </a>
+          ))}
           <a className="site-header__cta" href={chapterHref('contacto')}>{ui.navigation.talk} </a>
           <a className="site-header__index" href="#tracklist">{ui.navigation.index} </a>
-          <StaggeredMenu items={menuItems} currentHref={currentChapterHref} />
+          <StaggeredMenu items={menuItems} currentHref={current?.path} />
         </div>
       </div>
     </header>

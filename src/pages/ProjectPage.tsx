@@ -7,12 +7,12 @@ import Disc from '../components/cd/Disc/Disc';
 import Evidence from '../components/editorial/Evidence/Evidence';
 import StackMarks from '../components/editorial/StackMarks/StackMarks';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from '../components/ui/Icon/Icon';
-import { chapterHref } from '../config/navigation';
-import { nextProject, projectBySlug, projectHref } from '../config/projects';
+import NextTrack from '../components/editorial/NextTrack/NextTrack';
+import { chapterById } from '../config/navigation';
+import { galleryProjects, nextProject, projectBySlug, projectHref } from '../config/projects';
 import { mailto, site } from '../config/site';
 import type { Project } from '../config/types';
 import { useScrollSpy } from '../components/ui/motion/useScrollSpy';
-import { useSpinOnce } from '../components/ui/motion/useSpinOnce';
 import LinkCue from '../components/ui/LinkCue/LinkCue';
 import { rememberProject } from '../components/cd/DiscGallery/selection';
 import '../design/pages/ProjectPage.css';
@@ -88,11 +88,11 @@ export function ProjectPage({ slug }: { slug: string }) {
   const sections = buildSections(project);
   const activeId = useScrollSpy(sections.map((section) => section.id));
   const next = nextProject(slug);
-  // The next track's disc spins up under the pointer: three turns, faster each time, then stops.
-  const spin = useSpinOnce('case-disc-spin-up');
 
-  // "Volver a proyectos" reopens the home gallery on this disc.
+  // "Volver a proyectos" reopens the gallery on this disc; a release that is
+  // not in the gallery is found in the list under it (ADR-003).
   useEffect(() => rememberProject(slug), [slug]);
+  const backHref = galleryProjects.some((item) => item.slug === slug) ? '/proyectos/' : `/proyectos/#${slug}`;
 
   const credits: CreditRow[] = [
     { label: ui.labels.role, value: project.role },
@@ -108,7 +108,7 @@ export function ProjectPage({ slug }: { slug: string }) {
         <div className="container case-cover__grid">
           <div className="case-cover__text">
             {/* One way back (the breadcrumb trail lives in the page's JSON-LD). */}
-            <a className="case-back" href={chapterHref('proyectos')}>
+            <a className="case-back" href={backHref}>
               <ArrowLeft size={16} aria-hidden="true" />
               {ui.actions.backProjects}
             </a>
@@ -185,26 +185,22 @@ export function ProjectPage({ slug }: { slug: string }) {
         </div>
       </div>
 
-      {next && next.id !== project.id && <nav className="case-next" aria-label={ui.projects.next}>
-        <a className="container case-next__link" href={projectHref(next.slug)} {...spin.trigger}>
-          <span className="case-next__disc" aria-hidden="true" {...spin.target}>
+      {next && next.id !== project.id && (
+        <NextTrack
+          href={projectHref(next.slug)}
+          label={ui.projects.next}
+          note={ui.detail.nextTrack}
+          title={next.title}
+          tagline={next.tagline}
+          disc={
             <Disc variant="pressed" transitionName={`disc-${next.slug}`}>
               <CoverArt cover={projectTheme(next.id)} assets={next.assets} title={next.title} catalog={site.catalog} shape="disc" artSize="8rem" />
             </Disc>
-          </span>
-          <span className="case-next__text">
-            <span className="case-next__label">
-              {ui.detail.nextTrack}
-            </span>
-            <span className="case-next__title">
-              <LinkCue>{next.title}</LinkCue>
-            </span>
-            <span className="case-next__tagline">{next.tagline}</span>
-          </span>
-        </a>
-      </nav>}
+          }
+        />
+      )}
 
-      <section className="case-contact on-night" aria-labelledby="case-contact-title">
+      <section id={chapterById('contacto').id} className="case-contact on-night" aria-labelledby="case-contact-title">
         <div className="container case-contact__inner">
           <div>
             <h2 id="case-contact-title" className="case-contact__title">{ui.detail.contactHeading} </h2>

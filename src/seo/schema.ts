@@ -27,16 +27,15 @@ const person = () => ({
   knowsLanguage: personSeo.languages,
   sameAs: socials.filter((social) => social.href.startsWith('http')).map((social) => social.href),
   knowsAbout: personSeo.topics,
-  makesOffer: services.map((service) => ({
-    '@type': 'Offer',
-    itemOffered: {
-      '@type': 'Service',
-      name: service.title,
-      description: service.outcome,
-      provider: { '@id': personId },
-    },
-  })),
 });
+
+/** The offers, with the page that prints them (/servicios/, ADR-003). */
+const offers = () => services.map((service) => ({
+  '@type': 'Service',
+  name: service.title,
+  description: service.outcome,
+  provider: { '@id': personId },
+}));
 
 const breadcrumb = (items: { name: string; path: string }[]) => ({
   '@type': 'BreadcrumbList',
@@ -82,6 +81,31 @@ export const schemaFor = (route: Route): object[] => {
           },
         },
         { '@context': 'https://schema.org', ...breadcrumb([{ name: ui.navigation.home, path: '/' }, { name: ui.navigation.projects, path: '/proyectos/' }]) },
+      ];
+    case 'services':
+      return [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: seoTemplates.servicesTitle(site.name),
+          url: url('/servicios/'),
+          inLanguage: site.lang,
+          about: { '@id': personId },
+          mainEntity: { '@type': 'ItemList', itemListElement: offers().map((offer, index) => ({ '@type': 'ListItem', position: index + 1, item: offer })) },
+        },
+        { '@context': 'https://schema.org', ...breadcrumb([{ name: ui.navigation.home, path: '/' }, { name: ui.navigation.services, path: '/servicios/' }]) },
+      ];
+    case 'library':
+      return [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: seoTemplates.libraryTitle,
+          url: url('/libreria/'),
+          inLanguage: site.lang,
+          author: { '@id': personId },
+        },
+        { '@context': 'https://schema.org', ...breadcrumb([{ name: ui.navigation.home, path: '/' }, { name: ui.navigation.bonus, path: '/libreria/' }]) },
       ];
     case 'project': {
       const project = projectBySlug(route.slug)!;

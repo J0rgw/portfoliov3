@@ -563,6 +563,18 @@ These are kept **off the site** until confirmed:
     header's "Hablemos" underline (`ui/LinkCue`, ADR-002).
 55. ~~Where the new cue applies~~: answered 2026-11-12, S2: every → that was a link's only cue.
 56. ~~The hold without its marker~~: answered 2026-11-12, H2: only Proceso holds.
+57. ~~The home after Sobre mí~~: answered 2026-11-12, R: "Siguiente pista", Proyectos, with the
+    gallery's first disc (ADR-003).
+58. ~~The header~~: answered 2026-11-12, R: Proyectos and Servicios as words beside Hablemos from
+    768 px.
+59. ~~The other releases on /proyectos/~~: answered 2026-11-12, C0: the index's cards with their
+    discs.
+60. ~~Where the bonus lives~~: answered 2026-11-12, R: its own page, `/libreria/`, in the menu and
+    the footer.
+61. ~~The gallery's size~~: answered 2026-11-12, R: three releases and the private disc.
+62. **Which releases the gallery holds** (answered 2026-11-12: Jorge chooses, with the
+    `featured` flag in `config/projects.ts`, not the dates). Set to the first three of his
+    earlier `order` (MoneyMan, Client Leads, Mathgeon) until he names his three.
 
 ---
 
@@ -1260,3 +1272,37 @@ with Playwright so he can choose. Decision record: [ADR-002](adr/ADR-002-links-w
   tagline sits 8 px further down (`margin-top`), because at 1920 px the 10 px bar ended 1 px
   above it; now the line ends 9 to 12 px above the tagline at 390, 1512 and 1920 px and the pen
   loop clears it. The loop's foot follows the line, so it still encloses it; no console errors.
+
+## The album in pages — 2026-11-12
+
+[ADR-003](adr/ADR-003-pages.md). Jorge asked for a short index (hero, Sobre mí, footer) with
+everything else on pages of its own, researched in the references by Haiku agents, the project
+treated as the adversary of the idea, and the options rendered to choose from. He picked R, R,
+C0, R, R and the `featured` flag (Q57–Q62).
+
+- Pages: `/` (hero, Sobre mí, the next track), `/proyectos/` (the gallery of the featured
+  releases as the page's h1 "Proyectos seleccionados", then "Otros lanzamientos" as the index's
+  cards), `/servicios/` (Servicios as the h1, then Proceso with its hold), `/libreria/` (the
+  bonus). `PageShell` closes every page with the back cover; a case study keeps its contact band
+  as `#contacto`. The menu lists the pages and marks the one being read; the header has Proyectos
+  and Servicios as words from 768 px. The footer's tracklist lists every chapter where it lives.
+- Config: `SitePage`, `pages`, each chapter's `page` and `opens`, `chapterHref` by page;
+  `Project.date` (each repository's first commit) and `Project.featured`; `selectProjects` puts the
+  featured first, newest first within each group; `galleryProjects` and `earlierProjects`.
+- Components: `editorial/NextTrack` (the case study's next track, moved unchanged, now on the home
+  too); `ChapterHeading` and the sections that open a page take a heading level. The offers'
+  JSON-LD moved to `/servicios/`.
+- Rendering the options: each was its own production build (a build-time switch, removed after
+  the picks); 15 videos and 32 stills on a comparison page in the session's scratchpad.
+- Measured on the production build at 1512 × 734: home 7,631 → 3,506 px (10.4 → 4.8 screens),
+  390 × 844: 9,404 → 4,192 px (11.1 → 5.0); `/proyectos/` 2,613 px (3.6 screens), `/servicios/`
+  3,958 px (5.4), `/libreria/` 1,754 px (2.4). Words on the home without the back cover: 453 → 141.
+- Validation: typecheck, architecture, config tests, assets, client + SSR build, prerender (11
+  pages) and SEO pass. In Chrome on the production build: no horizontal overflow at 320, 390, 768,
+  1024, 1280, 1440 and 1512 px in light and dark on the home, both new pages, `/proyectos/`, two case
+  studies and the 404; no console errors; without JavaScript every page has one h1, its content,
+  the back cover and the header's index link; under reduced motion no smooth scroller and
+  "Hablemos" lands the back cover at the top; the header's words clear the hero's name from 768 to
+  1512 px; Tab goes skip link, monogram, Proyectos, Servicios, Hablemos, Menú.
+- Open: Q62's three releases; social cards for `/servicios/` and `/libreria/` (they share the
+  home's, as `/proyectos/` does).

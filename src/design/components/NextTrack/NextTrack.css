@@ -1,0 +1,82 @@
+/* The next track (editorial/NextTrack): the row that closes a case study and,
+   since ADR-003, the home page: the next disc beside its title, the title as
+   the link cue (ui/LinkCue). Moved here from ProjectPage.css unchanged. */
+
+.next-track {
+  border-top: var(--hairline) solid var(--border);
+}
+
+.next-track__link {
+  display: grid;
+  grid-template-columns: clamp(5rem, 9vw, 8rem) 1fr;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+  text-decoration: none;
+}
+
+.next-track__text {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.next-track__label {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+
+.next-track__title {
+  font-size: clamp(2rem, 1.2rem + 4.4vw, 6.5rem);
+  overflow-wrap: anywhere;
+  font-weight: var(--weight-black);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+/* The title's underline is as heavy as the title (ui/LinkCue): the tagline
+   steps a little further down, so the line and the pen loop round it clear it. */
+.next-track__tagline {
+  margin-top: var(--space-2);
+  color: var(--muted-foreground);
+}
+
+.next-track__link:hover .next-track__title {
+  color: var(--accent-functional);
+}
+
+@media (max-width: 559px) {
+  .next-track__link {
+    grid-template-columns: 4.5rem 1fr;
+  }
+}
+
+/* The next track spins up when a mouse, a pen or keyboard focus arrives on its row, like a
+   disc drive waking with nothing to read (Jorge's reference: the Wii's Disc Channel with no
+   disc): three turns clockwise, faster and faster, then it eases to a stop, upright again.
+   useSpinOnce sets data-spinning and lets the spin finish; reduced motion declares none. */
+@media (prefers-reduced-motion: no-preference) {
+  .next-track__disc[data-spinning] {
+    animation: case-disc-spin-up var(--dur-spin-up);
+  }
+}
+
+/* Constant acceleration from rest (quadratic ease-in, 750° in 1.5 s), then a cubic ease-out
+   that glides to a stop (330° in 1 s). They meet at the same speed, 1000°/s (167 rpm): the
+   ease-in ends at slope 2 and the ease-out starts at slope 1 / 0.33, so change one curve and
+   the angles must change with it. The turns take about 1.04 s, 0.43 s and 1.03 s. */
+@keyframes case-disc-spin-up {
+  from {
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.11, 0, 0.5, 0);
+  }
+
+  60% {
+    rotate: 750deg;
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  to {
+    rotate: 3turn;
+  }
+}

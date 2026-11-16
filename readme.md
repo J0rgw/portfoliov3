@@ -1,7 +1,9 @@
 # Portfolio V3 JRG-003
 
 Portfolio of **Jorge Arcas**, freelance full-stack developer, designed as an album: each chapter a
-track, each project a release with its own cover, credits and liner notes.
+track, each project a release with its own cover, credits and liner notes. Since ADR-003
+(2026-11-12) the album is in pages: the home (cover and Sobre mí), Proyectos, Servicios and the
+bonus, each ending on the back cover.
 
 - Domain: [portfolio.jarcas.dev](https://portfolio.jarcas.dev), deployed from this repository by
   `.github/workflows/deploy.yml` since 2026-11-11 (v2 remains at `j0rgw.github.io/portfoliov2`).
@@ -49,11 +51,11 @@ src/
                  discPose.ts, themes/, components/, sections/, pages/, seo/
   components/
     ui/          Button, Icon, SiteHeader, SiteFooter, StaggeredMenu, motion/
-    editorial/   ChapterHeading, CreditsTable, Evidence, ProfileCard, QuickResume
+    editorial/   ChapterHeading, CreditsTable, Evidence, NextTrack, ProfileCard, QuickResume
     graphics/    HandCircle, MarkerArrow, Monogram, Barcode, Paper, Sticker
     cd/          Disc, CoverArt, DiscGallery (including selection persistence)
   sections/      Hero, Projects, LinerNotes, Services, About, BonusTrack, Contact
-  pages/         HomePage, ProjectsIndexPage, ProjectPage, NotFoundPage, PageShell
+  pages/         HomePage, ProjectsIndexPage, ProjectPage, ServicesPage, LibraryPage, NotFoundPage, PageShell
   seo/           metadata and structured-data builders, social card rendering
 public/images/   original/reusable artwork and separate project-specific assets
 ```
@@ -91,7 +93,10 @@ interaction thresholds are technical implementation, not editorial settings.
 5. Run `npm run build`. Gallery, index, menu, next release, detail route, sitemap and JSON-LD
    follow the same data. No second hand-maintained gallery entry or route is needed.
 
-Change `order` to reorder, `visible` to hide, or remove the entry. Track numbers recalculate.
+Set `featured: true` to put a release in the gallery that opens `/proyectos/` (three of them;
+the rest follow as cards), and its `date` (when it went public, ISO) to place it newest first
+within its group; `order` only breaks ties. `visible` hides it, or remove the entry. Track
+numbers recalculate.
 Hiding removes its detail route from publication. Existing references to a removed/hidden
 release via projectHref land on the index. This is publication visibility, not access control.
 For an intentionally distinct generated theme, the optional adapter is
@@ -112,7 +117,8 @@ motion and no JavaScript; see the TASK 02 report for actual results.
 - `docs/MOTION_SYSTEM.md`: interactions and motion contract.
 - `docs/IMPLEMENTATION_PLAN.md`: historical measurements and remaining content questions.
 - `docs/adr/`: decision records for changes that span several sections, each with its status
-  table (ADR-001: every chapter after Projects as one frame, and the Projects pages).
+  table (ADR-001: every chapter after Projects as one frame, and the Projects pages; ADR-002: links
+  without arrows; ADR-003: the album in pages).
 - `references.md`: research; earlier aesthetic choices are historical, not new restrictions.
 
 ## Credits

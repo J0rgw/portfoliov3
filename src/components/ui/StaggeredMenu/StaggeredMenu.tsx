@@ -14,7 +14,7 @@ export interface StaggeredMenuItem {
 
 export interface StaggeredMenuProps {
   items: StaggeredMenuItem[];
-  /** Href of the home chapter in view (`/#proceso`), to mark it. */
+  /** Href of the page being read (`/servicios/`), to mark it (ADR-003: the rows are pages). */
   currentHref?: string;
 }
 
@@ -23,7 +23,7 @@ type Animation = { kill: () => void };
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
- * The menu panel: the chapters only, as Kerimov-style hairline rows, without
+ * The menu panel: the pages (ADR-003; the chapters until 2026-11-12), as Kerimov-style hairline rows, without
  * numbers (2026-11-11: the project list, the availability line and the social
  * links left the panel). Kept from the original StaggeredMenu: the staggered
  * prelayers, the panel slide and the rising item labels; the toggle's words
@@ -219,9 +219,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({ items, currentHref
   }, []);
 
   /**
-   * Links to home chapters are absolute ("/#proyectos") so they work from any
-   * page. On the home page, close the panel and scroll ourselves: a raw hash
-   * jump would fight the close animation.
+   * Links are pages, or anchors on a page ("/#sobre-mi", "#contacto"). For an
+   * anchor on the page being read, close the panel and scroll ourselves: a
+   * raw hash jump would fight the close animation.
    */
   const handleNavClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -281,15 +281,15 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({ items, currentHref
           data-lenis-prevent
         >
           <div className="sm-panel-inner">
-            {/* No label over the chapters: the rows say what they are. */}
-            <nav aria-label={ui.navigation.chapters}>
+            {/* No label over the pages: the rows say what they are. */}
+            <nav aria-label={ui.navigation.pages}>
               <ol className="sm-panel-list" role="list">
                 {items.map((item) => (
                   <li className="sm-panel-itemWrap" key={item.href}>
                     <a
                       className="sm-panel-item"
                       href={item.href}
-                      aria-current={item.href === currentHref ? 'location' : undefined}
+                      aria-current={item.href === currentHref ? 'page' : undefined}
                       onClick={(event) => handleNavClick(event, item.href)}
                     >
                       <span className="sm-panel-itemLabel">{item.label}</span>

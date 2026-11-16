@@ -10,6 +10,8 @@ import { site } from './config/site';
 export type Route =
   | { page: 'home'; path: '/' }
   | { page: 'projects'; path: '/proyectos/' }
+  | { page: 'services'; path: '/servicios/' }
+  | { page: 'library'; path: '/libreria/' }
   | { page: 'project'; path: string; slug: string }
   | { page: 'not-found'; path: string };
 
@@ -37,6 +39,8 @@ export const matchRoute = (pathname: string): Route => {
   const path = normalizePath(pathname);
   if (path === '/') return { page: 'home', path: '/' };
   if (path === '/proyectos/') return { page: 'projects', path: '/proyectos/' };
+  if (path === '/servicios/') return { page: 'services', path: '/servicios/' };
+  if (path === '/libreria/') return { page: 'library', path: '/libreria/' };
   const match = path.match(/^\/proyectos\/([a-z0-9-]+)\/$/);
   if (match && projectBySlug(match[1])) return { page: 'project', path, slug: match[1] };
   return { page: 'not-found', path };
@@ -73,6 +77,24 @@ export const routeMeta = (route: Route): RouteMeta => {
         imageAlt: seoTemplates.projectsImageAlt(site.name),
         type: 'website',
       };
+    case 'services':
+      return {
+        title: seoTemplates.servicesTitle(site.name),
+        description: seoTemplates.servicesDescription,
+        url: absolute('/servicios/'),
+        image: absolute(site.seo.image),
+        imageAlt: seoTemplates.servicesTitle(site.name),
+        type: 'website',
+      };
+    case 'library':
+      return {
+        title: seoTemplates.libraryTitle,
+        description: seoTemplates.libraryDescription,
+        url: absolute('/libreria/'),
+        image: absolute(site.seo.image),
+        imageAlt: seoTemplates.libraryTitle,
+        type: 'website',
+      };
     case 'project': {
       const project = projectBySlug(route.slug)!;
       return {
@@ -101,6 +123,8 @@ export const routeMeta = (route: Route): RouteMeta => {
 export const prerenderPaths: string[] = [
   '/',
   '/proyectos/',
+  '/servicios/',
+  '/libreria/',
   ...projects.map((project) => projectHref(project.slug)),
   '/404.html',
 ];

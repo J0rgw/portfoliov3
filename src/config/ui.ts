@@ -4,6 +4,8 @@ export const ui = {
     "home": "Inicio",
     "cover": "Portada",
     "projects": "Proyectos",
+    "services": "Servicios",
+    "bonus": "Bonus",
     "contact": "Contacto",
     "talk": "Hablemos",
     "index": "Índice",
@@ -16,6 +18,7 @@ export const ui = {
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
     "chapters": "Capítulos",
+    "pages": "Páginas",
     "pageContents": "En esta página"
   },
   "labels": {
@@ -32,7 +35,6 @@ export const ui = {
     "write": "Escríbeme",
     "contact": "Contactar",
     "allProjects": "Todos los proyectos",
-    "projectIndex": "Índice de proyectos",
     "backProjects": "Volver a proyectos",
     "source": "Código fuente",
     "code": "Ver el código",
@@ -41,6 +43,7 @@ export const ui = {
   },
   "projects": {
     "heading": "Proyectos seleccionados",
+    "earlier": "Otros lanzamientos",
     "allTracks": "Todas las pistas",
     "discs": "Discos de los proyectos",
     "hint": "Haz clic para saber más",
@@ -112,6 +115,10 @@ export const ui = {
   }
 } as const;
 
+/** "A, B y C", the way Spanish writes a list (DESIGN.md "Typography"). */
+const spanishList = (items: string[]) =>
+  items.length > 1 ? `${items.slice(0, -1).join(', ')} y ${items[items.length - 1]}` : items.join('');
+
 export const messages = {
   passLabel: (name: string) => `Pase: ${name}`,
   portrait: (name: string) => `Retrato de ${name}`,
@@ -120,4 +127,6 @@ export const messages = {
   privateLink: (position: number, total: number, title: string) => `${title}, proyecto ${position} de ${total}. Escríbeme para hablarlo`,
   homeLabel: (name: string) => `${name}, inicio`,
   projectSubject: (title: string) => `Proyecto parecido a ${title}`,
+  /** The home's next track (ADR-003): "Lo que he construido, empezando por MoneyMan, Client Leads y Mathgeon." */
+  featuredProjects: (titles: string[]) => `Lo que he construido, empezando por ${spanishList(titles)}.`,
 };

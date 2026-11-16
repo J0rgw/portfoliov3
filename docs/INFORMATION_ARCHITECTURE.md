@@ -20,9 +20,11 @@ The commercial audience comes first. Every chapter ends with a path towards cont
 
 | Route | Page | Indexable | Notes |
 |-------|------|-----------|-------|
-| `/` | Home (the album, chapters 00–06) | Yes | Primary landing page |
-| `/proyectos/` | Project index ("Índice") | Yes | A24-style catalog: each disc with its credits as the gallery prints them (ADR-001) |
+| `/` | Home ("Inicio": the cover, Sobre mí, the next track) | Yes | Primary landing page |
+| `/proyectos/` | Projects: the disc gallery of the featured releases, then the others as the index's cards | Yes | ADR-003; the gallery was the home's chapter 01 until 2026-11-12 |
 | `/proyectos/<slug>/` | Case study | Yes | One per release, see §5 |
+| `/servicios/` | Servicios, then Proceso | Yes | ADR-003 |
+| `/libreria/` | The bonus track | Yes | ADR-003; in the menu and the footer, not the header |
 | `/404.html` | Not found ("Pista no encontrada") | No (`noindex`) | Served by GitHub Pages |
 | `/sitemap.xml`, `/robots.txt` | Generated at build | — | |
 
@@ -56,23 +58,33 @@ Slugs: `moneyman`, `client-leads`, `mathgeon`, `disco-download`, `gitchange`, `p
 
 ---
 
-## 3. Home page: the narrative sequence
+## 3. The album in pages
 
-Each chapter adds something new. Order is intentional: identity → proof → method → offer →
-person → extra → action.
+Since 2026-11-12 ([ADR-003](adr/ADR-003-pages.md), Jorge's brief: "reduce the amount of scroll
+anyone needs to do so they actually read the page") the album is split into short pages, each
+ending on the back cover. The home is the cover and the person; the work, the offer and the
+bonus are pages of their own, reached from the header, the menu, the footer and the home's next
+track. The old narrative order survives across pages: the menu and the footer list them in
+album order (identity and person → proof → offer and method → extra), and every page ends on
+the action.
 
-| # | Chapter (`id`) | Visible H2 | Purpose |
-|---|----------------|-----------|---------|
-| 00 | Cover (`inicio`) | (H1) Jorge Arcas Verdejo, Freelance Software Developer | Who, and the identity as an object |
-| 01 | Projects (`proyectos`) | Proyectos seleccionados | Prove capability |
-| 02 | Liner notes (`proceso`) | Cómo trabajo | Earn trust in the method |
-| 03 | Services (`servicios`) | Qué puedo construir para ti | Turn skills into offers |
-| 04 | About (`sobre-mi`) | Sobre mí | Human connection, credibility |
-| 05 | Bonus track (`libreria`) | Una librería de componentes, en preparación | Introduce the library, honestly |
-| 06 | Back cover (`contacto`) | ¿Tienes un proyecto en mente? | Convert |
+| Page | Chapter (`id`) | Heading | Purpose |
+|------|----------------|---------|---------|
+| `/` | Cover (`inicio`) | (H1) Jorge Arcas Verdejo, Freelance Software Developer | Who, and the identity as an object |
+| `/` | About (`sobre-mi`) | (H2) Sobre mí | Human connection, credibility |
+| `/` | Next track | "Siguiente pista", Proyectos | Hand the visitor on to the work |
+| `/proyectos/` | Projects (`proyectos`) | (H1) Proyectos seleccionados; (H2) Otros lanzamientos | Prove capability |
+| `/servicios/` | Services (`servicios`) | (H1) Qué puedo construir para ti | Turn skills into offers |
+| `/servicios/` | Liner notes (`proceso`) | (H2) Cómo trabajo | Earn trust in the method |
+| `/libreria/` | Bonus track (`libreria`) | (H1) Una librería de componentes React, en preparación | Introduce the library, honestly |
+| every page | Back cover (`contacto`) | (H2) ¿Tienes un proyecto en mente? | Convert |
 
-The chapter list lives in `src/config/navigation.ts` and drives the menu panel
-and the footer tracklist. Array order also controls the rendered chapters; `ready: false` removes the section and its navigation entries. Calls to chapterHref for a hidden chapter safely return to the cover.
+The pages and the chapters live in `src/config/navigation.ts` (each chapter names its page;
+the back cover's page is empty: it closes every page) and drive the menu panel, the header's
+words and the footer tracklist. `ready: false` removes a chapter and its navigation entries;
+`chapterHref` leads to a chapter's page (a chapter that opens its page) or to its anchor there,
+to `#contacto` on the page being read for the back cover, and home for a hidden chapter. A
+chapter that opens its page carries the page's h1 (`ChapterHeading` level).
 
 ### Section contracts
 
@@ -120,38 +132,42 @@ Every chapter below must keep its contract when edited.
 - Conversion: the header's "Hablemos" (always visible) and the menu; the hero itself has no CTA,
   by the owner's brief.
 
-**01 · Projects** (`src/sections/Projects`), rebuilt 2026-10-30 from Jorge's brief
+**01 · Projects** (`src/sections/Projects`), rebuilt 2026-10-30 from Jorge's brief; since
+ADR-003 (2026-11-12) it opens `/proyectos/`, its heading the page's h1
 - Purpose: prove capability through selected releases, handled like a collection of discs.
-- Content: one disc per release (six), then the private work as the seventh and last disc
+- Content: one disc per featured release (three; Jorge chooses them with the `featured` flag,
+  Q61–Q62), then the private work as the last disc
   (2026-11-09, Jorge's brief): a photographed broken disc cut out on a transparent ground
   (`public/images/projects/private/broken-disc.webp`, from `private/originals/assets/f098…jpg`), no
-  print, rim or stack; it opens Contact, and its annotation reads "pregúntame"; on wide frames,
+  print, rim or stack; it opens the back cover, and its annotation reads "pregúntame"; on wide frames,
   once selected, Jorge's cut-out phone hangs in beside it (a pointer-only duplicate of its link).
   Every release disc is a printed single (2026-11-09): field, title and the release's cut-out
   (config `assets.label`), with the hero disc's real hub and rim and real wear; no rim credits.
   The selected disc's credits, unboxed (2026-11-09), in the bottom-left corner on wide screens, their last line level with the keys: title,
   short description (the tagline) tight under it, stack (first three technologies) as logo marks
   from `config/technologies.ts`, a mono chip where no mark exists; the marks lift under the
-  pointer and their names show on a tag that travels between them (MOTION_SYSTEM §2.7). Position `03 / 06` between the
+  pointer and their names show on a tag that travels between them (MOTION_SYSTEM §2.7). Position `02 / 04` between the
   previous/next keys, which sit centred under the selected disc. The arrow's label sits at the
-  free end of its tail. No foot (removed 2026-11-09): the chapter heading links the full index
-  (`/proyectos/`); since 2026-11-12 its words are the link cue (`ui/LinkCue`, ADR-002:
-  underlined, circled by the pen when pointed at; no arrow), "Proyectos" over "seleccionados" at
-  every width. Without JavaScript, a text list of every
-  case study.
+  free end of its tail. No foot (removed 2026-11-09). The heading, "Proyectos" over
+  "seleccionados" at every width, is the page's h1 and no longer a link: it was the way to the
+  full index, which is now the page itself (ADR-003). The other releases follow on the page under
+  "Otros lanzamientos" (h2) as the index's cards (ADR-001: the disc and its credits; Q59), each
+  card's id its slug, so a case study's "Volver a proyectos" lands on it. Without JavaScript, the
+  gallery's releases as a text list, then the cards.
 - References: A24 by Ravi Klaassens (primary: composition, credits, the arc of discs, the pen loop
   on hover; its title change-over until 2026-11-12), Jorge's marker arrow, the original image
   (references.md #17), Cool Interaction (numeral with total).
 - Components: `DiscGallery`, `QuickResume`, `discPose` (section: the path, `TRACK`), `Disc`,
-  `CoverArt`, `Cutout`, `MarkerArrow`, `HandCircle`, `useDiscCarousel`. Data: `projectSummaries` (§5).
+  `CoverArt`, `Cutout`, `MarkerArrow`, `HandCircle`, `useDiscCarousel`. Data: `projectSummaries`
+  (the gallery) and `earlierProjects` (the cards), §5.
 - Motion: Level 3 (MOTION_SYSTEM §2.2): drag with inertia and snapping along an arc,
   previous/next buttons, arrow keys; the credits and the count swap their text (MOTION_SYSTEM
   §2.6, 2026-11-12); the arrow is laid again at rest; a
   pen loop turns round the hovered disc. No wheel capture: the wheel scrolls the page everywhere.
   Scroll parallax (§2.4): credits trail the page, the gallery runs ahead, both at rest when the
   chapter's top meets the viewport's (its snap point). Since 2026-11-12 it is not held (ADR-002:
-  the marker that underlined "seleccionados" through its 60svh hold went, then the hold); its top
-  stays a snap point (MOTION_SYSTEM §2.3, §2.5). On
+  the marker that underlined "seleccionados" through its 60svh hold went, then the hold); since
+  ADR-003 it opens its page, so it is at rest when the page loads (§2.4; no snap off the home). On
   phones and portrait tablets it is taller than the window and
   flows instead (ADR-001, applied to Projects on 2026-11-11), so its keys are never kept under
   the fold.
@@ -161,18 +177,20 @@ Every chapter below must keep its contract when edited.
   and narrow screens, the title (two lines) and description (three) hold their height so the discs never jump (ART_DIRECTION
   §5.2, MOTION_SYSTEM §2.2). No horizontal overflow: the section clips its discs.
 - SEO: every disc is a real link to `/proyectos/<slug>/` with descriptive text ("MoneyMan,
-  proyecto 1 de 7. Ver el caso de estudio"; the private disc says "Escríbeme para hablarlo"); the selected title is an `h3` under the chapter
-  `h2`; the no-JS list carries every title and tagline in the HTML.
+  proyecto 1 de 4. Ver el caso de estudio"; the private disc says "Escríbeme para hablarlo"); the selected title is an `h3` under the page's
+  `h1`; the no-JS list carries every featured title and tagline in the HTML, the cards the rest.
 - Accessibility: only the selected disc is in the Tab order (it follows the selection); the
   two icon keys are real buttons named by `aria-label` ("Proyecto anterior", "Siguiente
-  proyecto") with `aria-controls`; each press moves exactly one disc; a polite live region announces "Proyecto 2 de 6: Client Leads" on change;
+  proyecto") with `aria-controls`; each press moves exactly one disc; a polite live region announces "Proyecto 2 de 4: Client Leads" on change;
   at the ends the buttons stay focusable (`aria-disabled`); the annotation (sentence case since
   2026-11-10; "Toca para saber más" on touch screens, `ui.projects.hintTouch`) is a pointer-only
   duplicate (`aria-hidden`, `tabindex=-1`); keyboard, touch and pointer users can do the same
   things, and dragging is never required.
 - Conversion: the case studies, and the private-work disc to contact.
 
-**Chapters 02–06 share one frame** (2026-11-10, [ADR-001](adr/ADR-001-chapter-frames.md)). On
+**Chapters 02–06 share one frame** (2026-11-10, [ADR-001](adr/ADR-001-chapter-frames.md); since
+ADR-003 on their pages: Sobre mí on the home, Servicios and Proceso on `/servicios/`, the bonus
+on `/libreria/`, the back cover at the end of every page). On
 wide landscape screens each is one viewport high (`clamp(40rem, 100svh, 64rem)`, `.frame` in
 layout.css), with the heading in the top-left corner where Projects' heading sits and its copy
 at the foot (Proceso's at eye level since 2026-11-11), so a chapter reads whole when its top
@@ -227,9 +245,10 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 - SEO: every step's title (h3) and text are in the HTML; links from each decision to its case
   study.
 - Conversion: the decisions link the case studies; contact is the header's "Hablemos" and the
-  chapters that follow.
+  back cover that closes the page.
 
-**03 · Servicios** (`src/sections/Services`)
+**03 · Servicios** (`src/sections/Services`); since ADR-003 it opens `/servicios/`, its heading
+the page's h1, with Proceso after it
 - Purpose: translate skills into understandable offers, organised by client problem.
 - Content: heading "Qué puedo construir para ti" and the lede; four offers as a tracklist
   printed on the page, one row each: the title (h3, large), one line on what the client gets
@@ -243,7 +262,8 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 - Responsive: four columns per row from 1280 px; two by two from 768 to 1279 px; one column
   below.
 - Motion: reveal only. This chapter stays the calmest and most readable.
-- SEO: the commercial phrases live here as real headings and copy, not stuffed elsewhere.
+- SEO: the commercial phrases live here as real headings and copy, not stuffed elsewhere; the
+  offers' JSON-LD lives on this page (§7).
 - Conversion: one enquiry link per service.
 
 **04 · Sobre mí** (`src/sections/About`)
@@ -259,9 +279,13 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 - References: Kyoosang Choi (his own artefacts: his photo, his signature), A24 (credits), Huy
   Phan (positioning).
 - Motion: reveal.
-- Conversion: the header's "Hablemos"; LinkedIn and GitHub are on the back cover right after.
+- Conversion: the header's "Hablemos"; since ADR-003 the home's next track follows it ("Siguiente
+  pista", Proyectos, with the gallery's first disc, `editorial/NextTrack`; "Lo que he construido,
+  empezando por MoneyMan, Client Leads y Mathgeon.", from the featured titles), then the back
+  cover with LinkedIn and GitHub.
 
-**05 · Bonus track** (`src/sections/BonusTrack`)
+**05 · Bonus track** (`src/sections/BonusTrack`); since ADR-003 the page `/libreria/` (Q60), its
+heading the page's h1, listed in the menu and the footer, never in the header
 - Purpose: introduce the upcoming React component library without competing with services.
 - Content: the heading with its status ("en preparación"); one line: no name
   or date yet, and who it is for; the oversized "Avísame*" as the mailto link itself (named
@@ -273,7 +297,10 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
 - Conversion: secondary; the primary action stays contact.
 
 **06 · Back cover / contact + footer** (`src/sections/Contact`, `components/SiteFooter`)
-- Purpose: convert interest into an enquiry and close the narrative.
+- Purpose: convert interest into an enquiry and close every page (ADR-003: `PageShell` renders it
+  at the end of every page's `main`, so the header's "Hablemos", `#contacto`, stays on the page
+  being read). A case study keeps its own contact band ("¿Necesitas algo parecido?"), which takes
+  the same anchor.
 - Content: heading "¿Tienes un proyecto en mente?" and its lede; the oversized "Hablemos" with
   the CD-R set between the word and an arrow, as the primary email link of the whole site
   (named "Hablemos por email"); one line of details: the address with a copy button (its words
@@ -281,10 +308,11 @@ focus as it arrives (`ChapterHeading`, MOTION_SYSTEM §2.7, 2026-11-12).
   the browser refuses shakes it; feedback in a polite live region), LinkedIn, GitHub, availability (the green dot beside its words). Removed
   by ADR-001: the two square buttons and the spec table (Estado, Base, Idiomas, LinkedIn, GitHub
   in small capitals between rules); the languages are in About, the base in the footer.
-- Footer (every page): rows of links with their name in the margin: the full tracklist (site
-  map), every case study and the full index, and, off home, the contact links; then one line of
-  print: barcode and catalog number, the credits, the copyright, back to top. No column headings
-  over rules. On home the contact row is dropped (`SiteFooter contact={false}`).
+- Footer (every page): rows of links with their name in the margin: the tracklist (site map:
+  every chapter where it lives, in album order: Portada, Sobre mí, Proyectos, Servicios, Proceso,
+  Bonus, Contacto), every case study and the full index, and, on a case study only, the contact
+  links (elsewhere the back cover right above lists them); then one line of print: barcode and
+  catalog number, the credits, the copyright, back to top. No column headings over rules.
 - References: The Romans (oversized type, an object between words), Kyoosang (contact as an
   object), Huy Phan.
 - Motion: reveal only; the CD-R turns a little under the pointer. The last chapter is not held.
@@ -299,7 +327,11 @@ One coherent system: **a conventional information architecture dressed as a trac
 - **Header** (every page, `components/SiteHeader`): the JA monogram (link home, named "Jorge
   Arcas…" for assistive technology, and the way back to the top; it replaced the "Jorgw"
   wordmark on 2026-11-10, and since 2026-11-11 it is in ink, taking the links' hover colour on
-  hover and focus), `Hablemos` (contact action) and the **Menú** toggle (its word swaps to
+  hover and focus), the pages **Proyectos** and **Servicios** as words (from 768 px; ADR-003,
+  Jorge's pick of two rendered headers, Q58: the page being read, a case study counting as
+  Proyectos, is underlined and `aria-current="page"`; phones keep them in the menu),
+  `Hablemos` (contact action: `#contacto`, the back cover of the page being read) and the
+  **Menú** toggle (its word swaps to
   "Cerrar" while the menu is open, MOTION_SYSTEM §2.6), words in sentence case at body size
   (2026-11-11), as type over the page with no rule, blur or shadow
   (ART_DIRECTION §9); no theme switch since 2026-11-10, and no track readout beside the
@@ -318,25 +350,30 @@ One coherent system: **a conventional information architecture dressed as a trac
   header mirrors it as `data-nav-ground`, because `data-ground` itself would paint the header's
   box (it did, over Projects, until 2026-11-11). The strip takes the pointer; below it the page
   keeps it. Two IntersectionObservers: the strip's bottom edge for the ground and the ink, the
-  header's middle line for the hero's run and the chapter marked in the menu.
-- **Menu panel** (`components/StaggeredMenu`, kept and restyled): the chapter links only, as
-  Kerimov's hairline rows, with no label over them (2026-11-10: the rows name themselves) and no
-  numbers (2026-11-11). On 2026-11-11, at Jorge's request, the project list with taglines, the
-  availability line and the contact and social links left the panel; the projects stay in
-  chapter 01, `/proyectos/` and the footer, contact and availability in chapter 06 and the
+  header's middle line for the hero's run.
+- **Menu panel** (`components/StaggeredMenu`, kept and restyled): the pages (Inicio, Proyectos,
+  Servicios, Bonus) and Contacto (ADR-003, 2026-11-12; the chapters until then), as Kerimov's
+  hairline rows, with no label over them (2026-11-10: the rows name themselves) and no numbers
+  (2026-11-11). On 2026-11-11, at Jorge's request, the project list with taglines, the
+  availability line and the contact and social links left the panel; the projects stay on
+  `/proyectos/` and in the footer, contact and availability on the back cover and in the
   footer. Behaves as a modal dialog: focus moves in, Tab is contained, Escape closes and returns
-  focus, the panel is `inert` when closed. Works with reduced motion. On home, the chapter under
-  the header's middle line is marked (`aria-current="location"`, 2026-11-10): the accent and a
-  small `▸` at the row's end, so the state does not rest on colour alone.
+  focus, the panel is `inert` when closed. Works with reduced motion. The page being read is
+  marked (`aria-current="page"`; until ADR-003 the home's chapter under the header): the accent
+  and a small `▸` at the row's end, so the state does not rest on colour alone.
 - **Case-study table of contents**: sticky on wide screens, with scroll-spy; the section in view
   is set in ink and semibold. No dash or number beside the entries (2026-11-11, Jorge's request).
-- **Footer**: the full tracklist (site map) with every case study, as rows of links (ADR-001),
-  without track numbers since 2026-11-11 (on every page, the footer being one component). The
-  full index after the case studies is the one link that leads to a page rather than a track:
-  its words are the link cue (`ui/LinkCue`; its arrow went on 2026-11-12, ADR-002).
-- Links to home chapters are absolute (`/#proyectos`) so they work from every page; on the home
-  page they are intercepted and scrolled smoothly (instant under reduced motion), and focus moves
-  to the target.
+- **Footer**: the tracklist (site map: every chapter where it lives, ADR-003) with every case
+  study, as rows of links (ADR-001), without track numbers since 2026-11-11 (on every page, the
+  footer being one component). The full index after the case studies is the one link that leads
+  to a page rather than a track: its words are the link cue (`ui/LinkCue`; its arrow went on
+  2026-11-12, ADR-002).
+- **Next track**: the home ends on "Siguiente pista", Proyectos, the gallery's first disc beside
+  it (`editorial/NextTrack`, the case studies' row); a case study ends on the next release.
+- Links to chapters are absolute (`/#sobre-mi`, `/servicios/#proceso`; a chapter that opens its
+  page is linked as the page) so they work from every page; the back cover is `#contacto` on the
+  page being read. On the page that holds the target they are intercepted and scrolled smoothly
+  (instant under reduced motion), and focus moves to the target.
 
 ---
 
@@ -348,7 +385,7 @@ never hard-code copy that a content editor would change.
 | File | Holds |
 |------|-------|
 | `site.ts` | Identity, contact, socials, catalog number, availability, base URL, default SEO |
-| `navigation.ts` | Home chapters (id, number, label, readiness) |
+| `navigation.ts` | Pages (id, label, path) and chapters (id, number, label, readiness, page) |
 | `projects.ts` | Releases and case-study content |
 | `services.ts` | Offers |
 | `process.ts` | Liner-notes steps |
@@ -358,8 +395,8 @@ never hard-code copy that a content editor would change.
 **Project schema** (`Project` in `types.ts`, abridged):
 
 ```ts
-id, slug, order, visible, title, tagline, summary,
-projectType, typeLabel, role, team?, status: { kind, label }, year,
+id, slug, order, visible, featured, title, tagline, summary,
+projectType, typeLabel, role, team?, status: { kind, label }, year, date,
 technologies[], services[], assets?: { disc?, sleeve?, social? },
 overview[], context?[], challenge?[], goals?[], responsibilities?[],
 architecture?[], decisions?[],
@@ -367,7 +404,11 @@ outcome?[], evidence?: Evidence[], links: { repo?, live? }, seo: { title, descri
 ```
 
 `projectCatalog` is editable; `selectProjects` filters/sorts without mutation and derives track
-numbers. `projects`, `projectSummaries`, routes, menu, index, schema and OG keys share this selection.
+numbers: the featured releases first (`featured`, Jorge's choice: the gallery that opens
+`/proyectos/`, three of them; the newest three if none is featured), then the rest, newest
+first within each by `date` (when the release went public, §6), `order` breaking ties (ADR-003).
+`projects`, `galleryProjects`, `earlierProjects`, `projectSummaries` (the gallery's discs and
+the private one), routes, menu, index, schema and OG keys share this selection.
 Hidden/removed releases have no public detail route. References through projectHref fall back to
 the index, so old process/service evidence links do not become dead local URLs. Private work
 has its own `visible` flag; when visible it is appended to `projectSummaries` as a
@@ -398,7 +439,8 @@ Since 2026-10-30 the template's core always appears (Jorge's brief: placeholders
 guesses): "Contexto y problema" when neither `context` nor `challenge` exists, "Mi papel"
 without `responsibilities`, "Solución" without `architecture` and `decisions`, each saying
 "Pendiente de documentar." Today only Portfolio v2's "Mi papel" is pending. Every case study
-opens with "Volver a proyectos" (`/#proyectos`, the gallery reopens on that disc).
+opens with "Volver a proyectos": `/proyectos/`, the gallery reopening on that disc, or, for a
+release that is not in the gallery, `/proyectos/#<slug>`, its card (ADR-003).
 
 **Gallery view** (`ProjectSummary`): derived id, slug, track, title,
 shortDescription (tagline), stack (first three technologies), year, href and optional assets.
@@ -432,6 +474,7 @@ claim. Anything unverified goes to "Open questions" in the implementation plan, 
 | Proceso 02: MoneyMan started as a personal project to research fintech; the people around Jorge use it now | Jorge's Proceso copy, 2026-11-11. The case study's status and the repo's README still say it is not deployed (open question 53) |
 | Proceso 04: none of Jorge's websites is published without every image, a title, a description and one h1 per page | Jorge's Proceso copy, 2026-11-11; for this site, `scripts/check-assets.mjs` and `scripts/check-seo.mjs` in the build |
 | Proceso 05: handover with training; documentation in Spanish and English, organised for people and LLMs | Jorge's Proceso copy, 2026-11-11; MoneyMan's repo has `README.md` and `readmeESP.md`, `DESIGN.md`, `PRODUCT.md` and `docs/` |
+| When each release went public (the catalogue's order within the featured releases and the rest) | Each repository's first commit, GitHub API, checked 2026-11-12: myFinancesApp 2026-09-16, clientScrapper 2026-09-15, gitchangeUserCommand 2026-08-03, DiscoDescargas 2026-05-07, mathgeon 2025-05-03; Portfolio v2 by its stated 2023–2024 (its repository is a 2025-06-23 upload). ADR-003, proposed |
 
 ---
 
@@ -444,13 +487,17 @@ claim. Anything unverified goes to "Open questions" in the implementation plan, 
   `https://portfolio.jarcas.dev`, Open Graph and Twitter cards with a 1200×630 image per page.
 - Exactly one `h1` per page; H2 per chapter; H3 per item. Checked at build by
   `scripts/check-seo.mjs`.
-- Structured data (only verified facts): home → `Person` (+ `makesOffer` with `Service` items) and
-  `WebSite`; projects index → `CollectionPage` + `ItemList` + `BreadcrumbList`; case study →
+- Structured data (only verified facts): home → `Person` and `WebSite`; projects →
+  `CollectionPage` + `ItemList` + `BreadcrumbList`; services → `WebPage` with an `ItemList` of
+  `Service` items, their provider the Person (the offers moved there with their content,
+  ADR-003) + `BreadcrumbList`; the bonus → `WebPage` + `BreadcrumbList`; case study →
   `CreativeWork` + `BreadcrumbList`. No `LocalBusiness` (no public address), no `alumniOf`
   (implies graduation), no ratings.
 - Search intent is matched by real content: *desarrollo web a medida*, *desarrollador full-stack
   freelance*, *desarrollo de aplicaciones web*, *integración de CRM*, *automatización de
   procesos*, *landing pages*. Each phrase appears where the matching evidence is.
-- Dedicated service pages were evaluated and **rejected for now**: with today's evidence they would
-  be thin. Revisit when each service has two or more case studies.
+- Dedicated service pages (one per service) were evaluated and **rejected for now**: with
+  today's evidence they would be thin. Revisit when each service has two or more case studies.
+  `/servicios/` (ADR-003) is one page for the four offers and the process, not one per service.
+  `/servicios/` and `/libreria/` share the home's social card, as `/proyectos/` does.
 - `robots.txt` allows everything and points to the sitemap; `404.html` is `noindex`.

@@ -210,3 +210,38 @@ html.menu-open .site-header :focus-visible {
     height: 1.9rem;
   }
 }
+
+/* The pages as words (ADR-003, Jorge's pick of two rendered headers, Q58):
+   Proyectos and Servicios beside Hablemos from 768 px; phones keep them in the menu. In
+   ink like the menu toggle, not underlined: their place says they are the
+   navigation. The page being read (a case study is in Proyectos) wears the
+   underline, as the menu marks its row. */
+.site-header__page {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .site-header__page {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-2);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: inherit;
+    text-decoration: none;
+    text-shadow: var(--nav-halo);
+    transform: translateY(var(--nav-rise));
+    transition: transform var(--dur-base) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+
+  .site-header__page:hover {
+    color: var(--nav-ink-hover);
+  }
+
+  .site-header__page[aria-current] {
+    text-decoration: underline;
+    text-decoration-thickness: var(--link-underline);
+    text-underline-offset: var(--link-underline-offset);
+  }
+}

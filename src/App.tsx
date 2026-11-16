@@ -1,8 +1,10 @@
 import HomePage from './pages/HomePage';
+import LibraryPage from './pages/LibraryPage';
 import NotFoundPage from './pages/NotFoundPage';
 import PageShell from './pages/PageShell';
 import ProjectPage from './pages/ProjectPage';
 import ProjectsIndexPage from './pages/ProjectsIndexPage';
+import ServicesPage from './pages/ServicesPage';
 import { matchRoute } from './routes';
 
 /**
@@ -17,6 +19,8 @@ export default function App({ path }: { path: string }) {
     <PageShell route={route}>
       {route.page === 'home' && <HomePage />}
       {route.page === 'projects' && <ProjectsIndexPage />}
+      {route.page === 'services' && <ServicesPage />}
+      {route.page === 'library' && <LibraryPage />}
       {route.page === 'project' && <ProjectPage slug={route.slug} />}
       {route.page === 'not-found' && <NotFoundPage />}
     </PageShell>

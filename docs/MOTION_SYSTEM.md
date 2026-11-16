@@ -282,7 +282,7 @@ wheel capture, no snapping" rule (references.md, rule 1, amended the same day).
   pushed and focus moves to the target. A held chapter opens at the start of its hold
   (2026-11-11): it is sticky, so from below its box sits at the end of the hold, and a link
   would have opened Proceso on its last song; the target is its hold wrapper's top instead.
-- **Chapter snap** (home only): `main > section` and `[data-snap]` (the hero's end-of-run mark)
+- **Chapter snap** (home only; since ADR-003 the home holds the hero, Sobre mí and the back cover): `main > section` and `[data-snap]` (the hero's end-of-run mark)
   are snap points aligned to the top edge. When the wheel comes to rest (400 ms) within 25 % of
   a viewport of one, the page settles on it in 0.8 s (Lenis' expo-out); anywhere else it stays
   where it stopped, so long chapters and the hero's scrub read freely. Parameters:
@@ -314,7 +314,7 @@ measured composition), 1 a viewport later. Layers multiply it by their own depth
 scene `length` viewports tall whose 100svh stage is `sticky; top: 0`; no snapping, no wheel
 capture. Here, in CSS only (`layout.css`):
 
-- `HomePage` wraps every chapter in `.chapter-hold`; since 2026-11-12 only a wrapper marked
+- Every page wraps its chapters in `.chapter-hold` (until ADR-003 only `HomePage`, which held them all; Proceso now holds on `/servicios/`); since 2026-11-12 only a wrapper marked
   `data-holds` holds (`ChapterHold holds`), and only Proceso's is (ADR-002, below). A holding
   wrapper ends in a `::after` spacer of `--chapter-hold` (60svh by default, Proceso's 200svh; a
   spacer, because sticky travels inside the content box, so padding does not count) and the
@@ -535,7 +535,7 @@ CD-R), and chose the pen loop: `ui/LinkCue` round the link's words.
   clears it. The Projects heading sets "Proyectos" over
   "seleccionados" at every width (`width: min-content`) with a wider side (1.4em), so the oval
   clears the corners of the two lines.
-- **Where**: the Projects heading, Proceso's evidence links, Servicios' enquiries, the footer's
+- **Where** (the Projects heading until ADR-003 made it the h1 of `/proyectos/`; the home's next track since then): Proceso's evidence links, Servicios' enquiries, the footer's
   full index, and on a case study the next track's title and "Todos los proyectos". The link
   draws no underline of its own, which would double the line.
 - **Reduced motion**: the loop is there at once, undrawn (as in the gallery). **No JavaScript**:

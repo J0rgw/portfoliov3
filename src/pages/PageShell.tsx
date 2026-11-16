@@ -1,5 +1,7 @@
 import { ui } from '../config/ui';
 import { useEffect, type ReactNode } from 'react';
+import ChapterHold from '../components/ui/motion/ChapterHold';
+import Contact from '../sections/Contact/Contact';
 import SiteFooter from '../components/ui/SiteFooter/SiteFooter';
 import SiteHeader from '../components/ui/SiteHeader/SiteHeader';
 import { HiddenTrack } from '../components/ui/HiddenTrack/HiddenTrack';
@@ -8,7 +10,9 @@ import { SmoothScroll } from '../components/ui/motion/SmoothScroll';
 import { routeMeta, type Route } from '../routes';
 
 /**
- * Layout shared by every page: skip link, header, main landmark, footer, the
+ * Layout shared by every page: skip link, header, main landmark, the back
+ * cover that closes every page (ADR-003: contact is no longer a chapter of the
+ * home; a case study keeps its own contact band, with the same anchor), footer, the
  * reveal controller, the smooth scroller (chapter snap on home) and the console's
  * hidden track. In
  * production the <head> is prerendered; in development the title is set here
@@ -27,8 +31,13 @@ export function PageShell({ route, children }: { route: Route; children: ReactNo
       <SiteHeader path={route.path} />
       <main id="contenido" tabIndex={-1}>
         {children}
+        {route.page !== 'project' && (
+          <ChapterHold>
+            <Contact />
+          </ChapterHold>
+        )}
       </main>
-      <SiteFooter contact={route.page !== 'home'} />
+      <SiteFooter contact={route.page === 'project'} />
       <RevealController routeKey={route.path} />
       <SmoothScroll snap={route.page === 'home'} />
       <HiddenTrack />

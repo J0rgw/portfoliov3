@@ -170,6 +170,14 @@ edge past the role. The ink loop and "!!" left with the small credit; the tape a
 were removed at Jorge's request. Each cut-out lies at its own depth: it leans under the
 pointer, drifts off as the hand pulls, and leaves through its nearest edge so the disc ends
 alone (MOTION_SYSTEM §2.1).
+**The album in pages** (2026-11-12, [ADR-003](docs/adr/ADR-003-pages.md), from options Jorge
+compared rendered): the home is the cover and Sobre mí, then the next track ("Siguiente pista",
+Proyectos, the gallery's first disc beside it, the case studies' row); `/proyectos/` opens with
+the gallery of the releases Jorge features and lists the others under it as the index's cards
+(the disc and its credits); `/servicios/` is Servicios then Proceso; `/libreria/` is the bonus.
+The back cover closes every page, so every page ends on the action. The header names the pages
+Proyectos and Servicios as words beside Hablemos from 768 px, the page being read underlined, as
+the menu marks its row.
 Projects: preserve the functional arc, original arrow and selection. Credits are printed straight
 on the page, unboxed and unlabelled, in the bottom-left corner level with the keys: a strong Poppins title, the description tight under it and
 the stack as grey marks (mono chips where no mark exists). The keys sit under the selected disc;
@@ -235,9 +243,10 @@ header's "Hablemos" underline (`--link-underline`, `--link-underline-offset`), a
 type it is under (bolder at Jorge's request the same day, to fit Poppins: 2 px 0.3em under the
 semibold body links, 0.1em under large type), and while the link is pointed at or focused the
 gallery's HandCircle drawn
-round them in the accent's ink, the way you circle a track on a printed tracklist. The Projects
-heading, Proceso's evidence links, Servicios' enquiries, the footer's full index and, on a case
-study, the next track and "Todos los proyectos" wear it. Arrows that say something else stay:
+round them in the accent's ink, the way you circle a track on a printed tracklist. Proceso's
+evidence links, Servicios' enquiries, the footer's full index, the home's and a case study's next
+track and "Todos los proyectos" wear it (the Projects heading did until ADR-003 made it the h1 of
+the page it linked). Arrows that say something else stay:
 ↗ for a link that leaves the site, ← back, ↑ to the top, the gallery's keys and the arrows
 inside the oversized "Hablemos", "Avísame*" and "Escríbeme".
 MarkerArrow renders the supplied raster stroke (and its generated dark-theme ink); HandCircle

@@ -12,6 +12,10 @@ export const seoTemplates = {
   projectsDescription: 'Índice de proyectos de Jorge Arcas: aplicaciones web, automatización con CRM, herramientas y frontend, cada uno con su caso de estudio, su papel y su tecnología.',
   projectsImageAlt: (name: string) => `Proyectos de ${name}`,
   projectImageAlt: (title: string) => `Portada del caso de estudio ${title}`,
+  servicesTitle: (name: string) => `Servicios de ${name}`,
+  servicesDescription: 'Webs, aplicaciones web, automatización con CRM y frontend a medida, y cómo trabajo: de entender el problema a publicar y mantener lo que construyo.',
+  libraryTitle: 'Librería de componentes React, en preparación',
+  libraryDescription: 'Una librería de componentes React en preparación, todavía sin nombre ni fecha. Avísame por email y te escribo una sola vez, cuando haya algo que probar.',
   notFoundTitle: 'Pista no encontrada',
   notFoundDescription: 'Esta página no existe. Vuelve a la portada o al índice de proyectos.',
 };

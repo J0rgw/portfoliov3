@@ -198,11 +198,11 @@ html.menu-open {
 
 /* The chapter in view (home, 2026-11-10): the accent, and a marker at the
    row's end so the state does not rest on colour alone. */
-.sm-panel-item[aria-current='location'] .sm-panel-itemLabel {
+.sm-panel-item[aria-current] .sm-panel-itemLabel {
   color: var(--accent-functional);
 }
 
-.sm-panel-item[aria-current='location']::after {
+.sm-panel-item[aria-current]::after {
   content: '▸';
   font-family: var(--font-mono);
   font-size: var(--text-xs);

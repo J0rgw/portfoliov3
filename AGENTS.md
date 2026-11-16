@@ -8,7 +8,9 @@ restrictions; historical references are evidence, not a requirement to copy thei
 ## Project and architecture
 
 Jorge Arcas's Spanish portfolio, catalog JRG-003. Vite 7, React 19, TypeScript strict,
-plain CSS, static prerendering, lazy GSAP. Keep the current seven chapters and routes.
+plain CSS, static prerendering, lazy GSAP. Keep the current chapters, pages and routes
+([ADR-003](docs/adr/ADR-003-pages.md), 2026-11-12: the home is the hero and Sobre mí; Proyectos,
+Servicios and the bonus are pages of their own; the back cover closes every page).
 
 Dependency direction: **CONFIG + DESIGN → COMPONENTS → SECTIONS → PAGES**.
 

@@ -15,6 +15,7 @@ export const projectCatalog: Project[] = [
     slug: 'moneyman',
     order: 1,
     visible: true,
+    featured: true,
     assets: { label: ['barcode'] },
     title: 'MoneyMan',
     tagline: 'Finanzas personales sin conectar el banco ni enviar datos a un servidor',
@@ -25,6 +26,7 @@ export const projectCatalog: Project[] = [
     role: 'Producto, interfaz y desarrollo',
     status: { kind: 'in-progress', label: 'En desarrollo, sin desplegar' },
     year: '2026',
+    date: '2026-09-16',
     technologies: ['React 19', 'TypeScript', 'Vite', 'CSS Modules', 'Motion', 'PapaParse', 'vite-plugin-pwa'],
     services: ['apps', 'frontend'],
 
@@ -92,6 +94,7 @@ export const projectCatalog: Project[] = [
     slug: 'client-leads',
     order: 2,
     visible: true,
+    featured: true,
     assets: { label: ['pin'] },
     title: 'Client Leads',
     tagline: 'Prospección B2B: de Google Maps a Twenty CRM con evidencias y puntuación',
@@ -102,6 +105,7 @@ export const projectCatalog: Project[] = [
     role: 'Diseño y desarrollo completos',
     status: { kind: 'in-progress', label: 'En desarrollo activo' },
     year: '2026',
+    date: '2026-09-15',
     technologies: ['Python 3.11', 'SQLite', 'httpx', 'Apify', 'Twenty CRM', 'pytest'],
     services: ['automation'],
 
@@ -171,6 +175,7 @@ export const projectCatalog: Project[] = [
     slug: 'mathgeon',
     order: 3,
     visible: true,
+    featured: true,
     assets: { label: ['skull'] },
     title: 'Mathgeon',
     tagline: 'Roguelite web para aprender matemáticas jugando',
@@ -182,6 +187,7 @@ export const projectCatalog: Project[] = [
     team: ['Jorge Arcas', 'A31Nesta'],
     status: { kind: 'archived', label: 'Versión funcional' },
     year: '2025',
+    date: '2025-05-03',
     technologies: ['React 19', 'TypeScript', 'Vite', 'React Router', 'Firebase Auth', 'Realtime Database'],
     services: ['apps', 'frontend'],
 
@@ -244,6 +250,7 @@ export const projectCatalog: Project[] = [
     slug: 'disco-download',
     order: 4,
     visible: true,
+    featured: false,
     assets: { label: ['headphones', 'knob'] },
     title: 'Disco Download',
     tagline: 'Audio de YouTube a MP3 o WAV, con el BPM ya en la etiqueta',
@@ -254,6 +261,7 @@ export const projectCatalog: Project[] = [
     role: 'Diseño y desarrollo completos',
     status: { kind: 'working', label: 'Funcional' },
     year: '2026',
+    date: '2026-05-07',
     technologies: ['Python', 'Flask', 'yt-dlp', 'ffmpeg', 'librosa', 'mutagen', 'uv'],
     services: ['automation', 'apps'],
 
@@ -305,6 +313,7 @@ export const projectCatalog: Project[] = [
     slug: 'gitchange',
     order: 5,
     visible: true,
+    featured: false,
     assets: { label: ['hash'] },
     title: 'gitchange',
     tagline: 'Cambia de cuenta de GitHub con un solo comando',
@@ -315,6 +324,7 @@ export const projectCatalog: Project[] = [
     role: 'Diseño y desarrollo',
     status: { kind: 'working', label: 'Funcional' },
     year: '2026',
+    date: '2026-08-03',
     technologies: ['Bash', 'Git', 'OpenSSH', 'GitHub CLI'],
     services: ['automation'],
 
@@ -365,6 +375,7 @@ export const projectCatalog: Project[] = [
     slug: 'portfolio-v2',
     order: 6,
     visible: true,
+    featured: false,
     assets: { label: ['https'] },
     title: 'Portfolio v2',
     tagline: 'La versión anterior de este portfolio: HTML, CSS y JavaScript con GSAP',
@@ -375,6 +386,7 @@ export const projectCatalog: Project[] = [
     role: 'Diseño y desarrollo',
     status: { kind: 'archived', label: 'Sustituido por JRG-003' },
     year: '2023–2024',
+    date: '2024',
     technologies: ['HTML', 'CSS', 'JavaScript', 'GSAP', 'ScrollTrigger', 'jQuery'],
     services: ['web', 'frontend'],
 
@@ -436,14 +448,32 @@ export const privateWork: PrivateWork = {
   visible: true,
 };
 
-/** Stable sorting never mutates the editable catalogue. Tracks are derived, not IDs. */
+/**
+ * The order of the catalogue (ADR-003): the releases Jorge features first, as
+ * the gallery shows them, then the rest; newest first within each, by the
+ * date each went public, then `order`. Stable sorting never mutates the
+ * editable catalogue. Tracks are derived, not IDs.
+ */
 export const selectProjects = (catalog: readonly Project[]) => catalog
   .filter((project) => project.visible)
   .slice()
-  .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id))
+  .sort((a, b) => Number(b.featured) - Number(a.featured) || b.date.localeCompare(a.date) || a.order - b.order || a.id.localeCompare(b.id))
   .map((project, index) => ({ ...project, track: index + 1 }));
 
 export const projects = selectProjects(projectCatalog);
+
+/** How many discs the gallery holds when nothing is featured: the newest (Q61, 2026-11-12). */
+const GALLERY_FALLBACK = 3;
+
+/**
+ * The gallery that opens /proyectos/ holds the releases Jorge features (Q62,
+ * 2026-11-12: his choice, three of them, Q61), or the newest three when none
+ * is; the others follow it on the page.
+ */
+export const galleryProjects = projects.some((project) => project.featured)
+  ? projects.filter((project) => project.featured)
+  : projects.slice(0, GALLERY_FALLBACK);
+export const earlierProjects = projects.filter((project) => !galleryProjects.includes(project));
 
 export const projectBySlug = (slug: string) =>
   projects.find((project) => project.slug === slug);
@@ -475,7 +505,7 @@ export const summarizeProject = (project: (typeof projects)[number]): ProjectSum
   assets: project.assets,
 });
 
-/** The private work closes the gallery as its last track: a broken disc that opens Contact. */
+/** The private work closes the gallery as its last disc: a broken disc that opens the back cover. */
 const privateSummary: ProjectSummary = {
   id: 'private',
   slug: 'privado',
@@ -490,7 +520,8 @@ const privateSummary: ProjectSummary = {
   hint: privateWork.note,
 };
 
+/** The gallery's discs: the featured releases, then the private work. */
 export const projectSummaries: ProjectSummary[] = [
-  ...projects.map(summarizeProject),
+  ...galleryProjects.map(summarizeProject),
   ...(privateWork.visible ? [privateSummary] : []),
 ];

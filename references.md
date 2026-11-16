@@ -118,6 +118,15 @@ pen circles them when pointed at. He also chose to keep only Proceso's hold, the
 ([ADR-002](docs/adr/ADR-002-links-without-arrows.md)). Checked at 320 to 1512 px with and
 without JavaScript, in the dark theme and with reduced motion at 1512 × 734, and the holds up to
 1920 × 1080.
+Later that day, at Jorge's request, the album was split into pages
+([ADR-003](docs/adr/ADR-003-pages.md)) after four agents measured how these references split
+theirs: the home keeps the cover and Sobre mí (A24's and Huy Phan's one-screen homes, The
+Romans' teasers), Proyectos became a page that opens on the disc gallery of the releases he
+features, with the others as the index's cards under it (A24's films listed newest first, Boccia's
+work page), Servicios and Proceso share a page, the bonus has its own off the header (Huy Phan's
+Playground), and the back cover closes every page (The Romans, Matt Jinn). He chose each part from
+rendered options. No reference's layout was copied; checked at 320 to 1512 px in both themes, with
+reduced motion and without JavaScript.
 
 Supporting resources: [SVGL](https://svgl.app/) (technology logos; the files in
 `public/images/logo/` follow that source), [Fontpair](https://fontpair.co/) (not needed, the

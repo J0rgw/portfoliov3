@@ -9,11 +9,11 @@ import '../../../design/components/SiteFooter/SiteFooter.css';
 
 /**
  * The tray card: the back of the album on every page (ADR-001). The full
- * tracklist (site map) and every case study as rows of links, without numbers
- * (2026-11-11), then one line of print: barcode and catalog number, the
- * credits, the copyright, back to top.
- * `contact={false}` drops the contact row where the page has just listed the
- * same links (home: chapter 06, the back cover, sits right above).
+ * tracklist (site map: every chapter where it now lives, ADR-003) and every
+ * case study as rows of links, without numbers (2026-11-11), then one line of
+ * print: barcode and catalog number, the credits, the copyright, back to top.
+ * `contact` adds the contact row where no back cover sits right above with
+ * the same links (a case study, which has its own contact band).
  */
 export function SiteFooter({ contact = true }: { contact?: boolean }) {
   return (
@@ -23,7 +23,7 @@ export function SiteFooter({ contact = true }: { contact?: boolean }) {
           <h2 id="tracklist-title" className="site-footer__heading">{ui.navigation.tracklist}</h2>
           <ol role="list" className="site-footer__list">
             <li>
-              <a href="/#inicio">
+              <a href="/">
                 {ui.navigation.cover}
               </a>
             </li>

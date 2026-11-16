@@ -14,7 +14,7 @@ export interface SocialLink {
 }
 
 export interface Chapter {
-  /** Anchor id on the home page. */
+  /** Anchor id on its page. */
   id: string;
   /** Two-digit track number. */
   number: string;
@@ -22,6 +22,17 @@ export interface Chapter {
   label: string;
   /** Unready chapters are never linked (no dead entries). */
   ready: boolean;
+  /** The page it lives on ('/', '/servicios/'). Empty: it closes every page (the back cover). */
+  page: string;
+  /** It opens its page (its heading is the page's h1): links lead to the page, not to an anchor. */
+  opens?: boolean;
+}
+
+/** One of the site's pages (ADR-003): the menu, the header and the footer list them. */
+export interface SitePage {
+  id: string;
+  label: string;
+  path: string;
 }
 
 /* ---- Evidence --------------------------------------------------------------- */
@@ -117,6 +128,8 @@ export interface Project {
   slug: string;
   order: number;
   visible: boolean;
+  /** In the gallery that opens /proyectos/ (ADR-003, Q62): Jorge's choice, three of them. */
+  featured: boolean;
   assets?: ProjectAssets;
   title: string;
   /** One line, used in rows and the menu. */
@@ -130,6 +143,10 @@ export interface Project {
   team?: string[];
   status: { kind: 'in-progress' | 'working' | 'archived'; label: string };
   year: string;
+  /** When it went public, ISO: its repository's first commit (GitHub, checked 2026-11-12), or
+   *  its stated year when the work predates its repository. Orders the catalogue newest first
+   *  within the featured releases and within the rest (ADR-003); `order` only breaks ties. */
+  date: string;
   technologies: string[];
   services: ServiceId[];
   /* The case study's sections: prose, one paragraph per string. No lists or

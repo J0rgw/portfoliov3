@@ -1,37 +1,44 @@
-import { chapters } from '../config/navigation';
-import type { ComponentType } from 'react';
 import About from '../sections/About/About';
-import BonusTrack from '../sections/BonusTrack/BonusTrack';
 import ChapterHold from '../components/ui/motion/ChapterHold';
-import Contact from '../sections/Contact/Contact';
+import CoverArt from '../components/cd/CoverArt/CoverArt';
+import Disc from '../components/cd/Disc/Disc';
 import Hero from '../sections/Hero/Hero';
-import LinerNotes from '../sections/LinerNotes/LinerNotes';
-import Projects from '../sections/Projects/Projects';
-import Services from '../sections/Services/Services';
-
-const sections: Record<string, ComponentType> = { proyectos: Projects, proceso: LinerNotes, servicios: Services, 'sobre-mi': About, libreria: BonusTrack, contacto: Contact };
-
-/** Chapters whose hold has a job: Proceso's turns the iPod's songs (Jorge, 2026-11-12, ADR-002). */
-const holding = new Set(['proceso']);
+import NextTrack from '../components/editorial/NextTrack/NextTrack';
+import { chapterHref } from '../config/navigation';
+import { galleryProjects } from '../config/projects';
+import { projectTheme } from '../components/cd/CoverArt/projectTheme';
+import { site } from '../config/site';
+import { messages, ui } from '../config/ui';
 
 /**
- * The album, chapters 00–06 (docs/INFORMATION_ARCHITECTURE.md §3). Every
- * chapter's wrapper is a snap point; Proceso's also holds it at the top while
- * the scroll turns its playlist, the rest scroll straight on (MOTION_SYSTEM
- * §2.5).
+ * The cover and the person (ADR-003, 2026-11-12): the hero, then Sobre mí;
+ * the back cover that closes every page follows (PageShell). Everything else
+ * is a page of its own, so the home is read whole. Its next track (Jorge's
+ * pick, Q57) hands the gallery's first disc on to Proyectos, where the
+ * gallery opens on the same disc (its view-transition name travels with it).
  */
 export function HomePage() {
+  const first = galleryProjects[0];
   return (
     <>
       <Hero />
-      {chapters.map((chapter) => {
-        const Section = sections[chapter.id];
-        return Section ? (
-          <ChapterHold key={chapter.id} holds={holding.has(chapter.id)}>
-            <Section />
-          </ChapterHold>
-        ) : null;
-      })}
+      <ChapterHold>
+        <About />
+      </ChapterHold>
+      {first && (
+        <NextTrack
+          href={chapterHref('proyectos')}
+          label={ui.navigation.projects}
+          note={ui.detail.nextTrack}
+          title={ui.navigation.projects}
+          tagline={messages.featuredProjects(galleryProjects.map((project) => project.title))}
+          disc={
+            <Disc variant="pressed" transitionName={`disc-${first.slug}`}>
+              <CoverArt cover={projectTheme(first.id)} assets={first.assets} title={first.title} catalog={site.catalog} shape="disc" artSize="8rem" />
+            </Disc>
+          }
+        />
+      )}
     </>
   );
 }

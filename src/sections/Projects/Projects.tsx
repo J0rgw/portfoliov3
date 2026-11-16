@@ -4,7 +4,6 @@ import { chapterById } from '../../config/navigation';
 import { projectSummaries } from '../../config/projects';
 import { site } from '../../config/site';
 import DiscGallery from '../../components/cd/DiscGallery/DiscGallery';
-import LinkCue from '../../components/ui/LinkCue/LinkCue';
 import QuickResume from '../../components/editorial/QuickResume/QuickResume';
 import { useParallax } from '../../components/ui/motion/useParallax';
 import { useTextSwap } from '../../components/ui/motion/useTextSwap';
@@ -18,9 +17,10 @@ const chapter = chapterById('proyectos');
  * Ravi Klaassens (composition, credits, discs on an arc, the pen loop on
  * hover); the blue marker arrow is Jorge's own image (public/images/gallery/).
  *
- * The heading links the full index (/proyectos/): its words are the cue
- * (LinkCue, ADR-002). The private work is the last disc (a broken one,
- * linking Contact), not a line under the gallery.
+ * Since ADR-003 (2026-11-12) the gallery opens /proyectos/ with the newest
+ * releases only; its heading is the page's h1 and the other releases follow
+ * it on the page. The private work is the last disc (a broken one, linking
+ * the back cover), not a line under the gallery.
  *
  * The credits (QuickResume) follow the selected disc, swapping their text when
  * it changes (useTextSwap); the gallery owns the selection and reports it
@@ -47,11 +47,9 @@ export function Projects() {
     <section id={chapter.id} className="chapter projects" aria-labelledby="projects-title" ref={sectionRef} data-ground="secondary">
       <div className="projects__frame">
         <header className="projects__info">
-          <h2 id="projects-title" className="projects__heading">
-            <a className="projects__heading-link" href="/proyectos/" title={ui.actions.projectIndex}>
-              <LinkCue>{ui.projects.heading}</LinkCue>
-            </a>
-          </h2>
+          <h1 id="projects-title" className="projects__heading">
+            <span className="projects__heading-words">{ui.projects.heading}</span>
+          </h1>
           {project ? <QuickResume project={project} swap={swap} /> : <p className="lede">{ui.projects.empty}</p>}
         </header>
 
