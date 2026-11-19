@@ -1,78 +1,61 @@
 import { ui } from '../../../config/ui';
-import { chapters, chapterHref } from '../../../config/navigation';
+import { pages } from '../../../config/navigation';
 import { projectHref, projects } from '../../../config/projects';
-import { site, socials } from '../../../config/site';
-import { ArrowUp } from '../Icon/Icon';
-import LinkCue from '../LinkCue/LinkCue';
+import { mailto, site, socials } from '../../../config/site';
+import { ArrowUpRight } from '../Icon/Icon';
 import Barcode from '../../graphics/Barcode/Barcode';
 import '../../../design/components/SiteFooter/SiteFooter.css';
 
 /**
- * The tray card: the back of the album on every page (ADR-001). The full
- * tracklist (site map: every chapter where it now lives, ADR-003) and every
- * case study as rows of links, without numbers (2026-11-11), then one line of
- * print: barcode and catalog number, the credits, the copyright, back to top.
- * `contact` adds the contact row where no back cover sits right above with
- * the same links (a case study, which has its own contact band).
+ * The tray card: the back of the album on every page (ADR-001). Deslopped on
+ * 2026-11-16 at Jorge's request: no names in the margin, no rule over it, no
+ * credits line and no "back to top" (the header's monogram is the way up).
+ * The pages as the menu names them, every case study, and, on a case study,
+ * whose contact band carries no details, the address and the two profiles;
+ * then the print: barcode and catalog number, the copyright, the source.
+ * `contact` adds that contact row.
  */
-export function SiteFooter({ contact = true }: { contact?: boolean }) {
+export function SiteFooter({ contact = false }: { contact?: boolean }) {
+  const profiles = socials.filter((social) => social.icon !== 'mail');
+
   return (
     <footer className="site-footer on-night">
       <div className="container site-footer__inner">
-        <nav className="site-footer__row" id="tracklist" aria-labelledby="tracklist-title">
-          <h2 id="tracklist-title" className="site-footer__heading">{ui.navigation.tracklist}</h2>
+        {/* The header's no-JavaScript "Índice" link lands here. */}
+        <nav id="tracklist" aria-label={ui.navigation.pages}>
           <ol role="list" className="site-footer__list">
-            <li>
-              <a href="/">
-                {ui.navigation.cover}
-              </a>
-            </li>
-            {chapters.map((chapter) => (
-              <li key={chapter.id}>
-                <a href={chapterHref(chapter.id)}>
-                  {chapter.label}
-                </a>
+            {pages.map((page) => (
+              <li key={page.id}>
+                <a href={page.path}>{page.label}</a>
               </li>
             ))}
           </ol>
         </nav>
 
-        <nav className="site-footer__row" aria-labelledby="footer-projects-title">
-          <h2 id="footer-projects-title" className="site-footer__heading">{ui.navigation.projects}</h2>
+        <nav aria-label={ui.navigation.projects}>
           <ol role="list" className="site-footer__list">
             {projects.map((project) => (
               <li key={project.slug}>
-                <a href={projectHref(project.slug)}>
-                  {project.title}
-                </a>
+                <a href={projectHref(project.slug)}>{project.title}</a>
               </li>
             ))}
-            {/* A page, not a track: underlined and circled like the site's other "go there" links. */}
-            <li>
-              <a className="site-footer__more" href="/proyectos/">
-                <LinkCue>{ui.navigation.fullIndex}</LinkCue>
-              </a>
-            </li>
           </ol>
         </nav>
 
         {contact && (
-          <div className="site-footer__row">
-            <h2 className="site-footer__heading">{ui.navigation.contact}</h2>
-            <ul role="list" className="site-footer__list">
-              {socials.map((social) => (
-                <li key={social.label}>
-                  <a
-                    href={social.href}
-                    {...(social.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    {social.label}
-                    {social.detail && <span className="site-footer__detail">{social.detail}</span>}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul role="list" className="site-footer__list">
+            <li>
+              <a href={mailto(site.contact.subject, site.contact.body)}>{site.email}</a>
+            </li>
+            {profiles.map((social) => (
+              <li key={social.label}>
+                <a href={social.href} target="_blank" rel="noopener noreferrer">
+                  {social.label}
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
         )}
 
         <div className="site-footer__base">
@@ -80,16 +63,12 @@ export function SiteFooter({ contact = true }: { contact?: boolean }) {
             <Barcode value={site.catalog} className="site-footer__barcode" />
             <p className="mono">{site.catalog}</p>
           </div>
-          <p className="site-footer__credits">
-            {ui.footer.credit} {site.name}{ui.footer.tools}{' '}
-            <a className="text-link" href={site.sourceUrl} target="_blank" rel="noopener noreferrer">{ui.actions.source}</a>
+          <p>
+            © {site.releaseYear} {site.name}
           </p>
-          <p className="site-footer__copy">
-            © {site.releaseYear} {site.name}. {site.location}.
-          </p>
-          <a className="site-footer__top" href="#top">
-            <ArrowUp size={16} aria-hidden="true" />
-            {ui.navigation.backTop}
+          <a className="site-footer__source" href={site.sourceUrl} target="_blank" rel="noopener noreferrer">
+            {ui.actions.source}
+            <ArrowUpRight size={16} aria-hidden="true" />
           </a>
         </div>
       </div>

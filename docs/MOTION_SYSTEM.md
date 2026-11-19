@@ -535,9 +535,9 @@ CD-R), and chose the pen loop: `ui/LinkCue` round the link's words.
   clears it. The Projects heading sets "Proyectos" over
   "seleccionados" at every width (`width: min-content`) with a wider side (1.4em), so the oval
   clears the corners of the two lines.
-- **Where** (the Projects heading until ADR-003 made it the h1 of `/proyectos/`; the home's next track since then): Proceso's evidence links, Servicios' enquiries, the footer's
-  full index, and on a case study the next track's title and "Todos los proyectos". The link
-  draws no underline of its own, which would double the line.
+- **Where** (the Projects heading until ADR-003 made it the h1 of `/proyectos/`; the home's next track since then): Proceso's evidence links, Servicios' enquiries
+  and the next track's title (the footer's full index and "Todos los proyectos" until the
+  footer's deslop, 2026-11-16). The link draws no underline of its own, which would double the line.
 - **Reduced motion**: the loop is there at once, undrawn (as in the gallery). **No JavaScript**:
   the same; the cue is CSS.
 - Cost: one SVG path per link, no script, no listener; the dash offset and the opacity are the

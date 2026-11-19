@@ -80,7 +80,7 @@ Supporting roles: `--on-accent` (carbon text on an accent ground), `--print-dark
 `--scrim`, `--gloss`, `--accent-surface` (the promo insert: accent mixed into the surface by day;
 by night the plain raised stock, since any orange in carbon reads as brown and the 7 % that
 avoided brown cancelled to a dead grey, 2026-11-10) and
-`--success` (`#1F9D55`, the availability dot only, always next to its text).
+`--success` (`#1F9D55`; since the availability dot left the back cover on 2026-11-16, only the unused pass's status).
 
 **Scopes.** `.on-night` is the back cover (Contact, footer, case contact): a dark ground in
 both themes, carbon in light and one step up (`#1B2027`) in dark. Inside it every role is
@@ -205,8 +205,11 @@ timeline newest first, one line per milestone; the instruments and languages aft
 the oversized "Avísame*" is the mailto link itself, its footnote and privacy line under it, the
 talk as the one link out; it stays under "Hablemos" in size. Contact: the heading in the corner,
 the oversized "Hablemos" with the CD-R between word and arrow as the email link (The Romans),
-one line of details at the foot (the address with a copy button, LinkedIn, GitHub,
-availability). The footer is rows of links with their name in the margin and one line of print.
+one line of details at the foot (the address with a copy button, LinkedIn, GitHub; the
+availability line and its green "live" dot went on 2026-11-16 at Jorge's request). The footer is
+rows of links that name themselves (the pages, the case studies) and one line of print (barcode
+and catalog number, the copyright, the source), with no names in the margin, rule, credits line
+or back-to-top link (deslopped 2026-11-16).
 The header stays type over the page; past the hero's pinned run it turns compact on a solid
 56 px strip of the ground behind it, cut straight with no fade, rule, blur or shadow
 (2026-11-11), so headings scrolling beneath (the hero's own name as it leaves included) go
@@ -244,9 +247,9 @@ type it is under (bolder at Jorge's request the same day, to fit Poppins: 2 px 0
 semibold body links, 0.1em under large type), and while the link is pointed at or focused the
 gallery's HandCircle drawn
 round them in the accent's ink, the way you circle a track on a printed tracklist. Proceso's
-evidence links, Servicios' enquiries, the footer's full index, the home's and a case study's next
-track and "Todos los proyectos" wear it (the Projects heading did until ADR-003 made it the h1 of
-the page it linked). Arrows that say something else stay:
+evidence links, Servicios' enquiries and the home's and a case study's next track wear it (the
+Projects heading did until ADR-003 made it the h1 of the page it linked; the footer's full index
+and the case study's "Todos los proyectos" until the footer's deslop, 2026-11-16). Arrows that say something else stay:
 ↗ for a link that leaves the site, ← back, ↑ to the top, the gallery's keys and the arrows
 inside the oversized "Hablemos", "Avísame*" and "Escríbeme".
 MarkerArrow renders the supplied raster stroke (and its generated dark-theme ink); HandCircle
@@ -329,6 +332,9 @@ Also poor (2026-11-11): a fade under a fixed header, which leaves whatever passe
 half-erased; the header's strip cuts straight.
 Also poor (2026-11-12, Jorge): a mark the scroll draws while a chapter holds; the services'
 track numbers; an arrow as the only sign that words are a link (ADR-002).
+Also poor (2026-11-16, Jorge's footer deslop): a green "live" dot or an availability line; a
+name in the margin of a row of links that names itself; a credits line ("Diseño y desarrollo:",
+"Hecho con…") or a back-to-top link in the footer; two links to the same page side by side.
 Before adding a line, a box, a tag or a sentence, name what it tells the visitor that nothing
 near it already does. Rules mark real divisions (rows of a table or a tracklist, an object's
 edge); states (selection, the step being read, availability, focus) keep their markers.

@@ -13,7 +13,6 @@ import { galleryProjects, nextProject, projectBySlug, projectHref } from '../con
 import { mailto, site } from '../config/site';
 import type { Project } from '../config/types';
 import { useScrollSpy } from '../components/ui/motion/useScrollSpy';
-import LinkCue from '../components/ui/LinkCue/LinkCue';
 import { rememberProject } from '../components/cd/DiscGallery/selection';
 import '../design/pages/ProjectPage.css';
 
@@ -210,9 +209,6 @@ export function ProjectPage({ slug }: { slug: string }) {
             <a className="case-contact__write" href={mailto(messages.projectSubject(project.title), site.contact.body)}>
               {ui.actions.write}
               <ArrowRight aria-hidden="true" />
-            </a>
-            <a className="case-link" href="/proyectos/">
-              <LinkCue>{ui.actions.allProjects}</LinkCue>
             </a>
           </div>
         </div>

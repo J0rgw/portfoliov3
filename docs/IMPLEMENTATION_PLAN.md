@@ -1306,3 +1306,27 @@ C0, R, R and the `featured` flag (Q57–Q62).
   1512 px; Tab goes skip link, monogram, Proyectos, Servicios, Hablemos, Menú.
 - Open: Q62's three releases; social cards for `/servicios/` and `/libreria/` (they share the
   home's, as `/proyectos/` does).
+
+## Footer deslop — 2026-11-16
+
+Jorge: "let's deslop the footer, remove the live dot and everything". Applied with the deslop
+brief's questions (`.impeccable/critique/desloping.md`: new information, a decision, an ambiguity
+resolved, accessibility, context lost) to the back cover, the case study's contact band and the
+footer; nothing that names Jorge's identity as an object went (the CD-R in "Hablemos", the
+barcode and catalog number).
+
+- Back cover: the availability line and its green dot (`site.availability`, `ui.contact.closed`
+  and the dot's CSS deleted; the `--success` token stays for the unused pass); "Te respondo
+  personalmente." from the lede.
+- Case study band: "Todos los proyectos" (the footer's Proyectos sits right under it).
+- Footer: the margin names (the lists keep accessible names), the rule over it, "Índice
+  completo", the in-page entries (Sobre mí, Proceso, Contacto), the contact row's labels and
+  handles (`SocialLink.detail` deleted), "Diseño y desarrollo:… Hecho con React, TypeScript y
+  Vite, en Poppins (OFL) y Estrella (Uncarving)" (the font credits stay in the readme, which
+  "Código fuente" opens), "España", "Volver arriba". The pages' row reads Inicio, Proyectos,
+  Servicios, Bonus, as the menu does; the print is the barcode, the catalog number, "© 2026 Jorge
+  Arcas" and "Código fuente ↗". Its top padding went from 4rem to 2rem now that no rule parts it
+  from the back cover: from the last contact link to the first footer link, 80 px at 1512 × 734
+  and 96 px at 390 × 844 on the home, 128 px on a case study.
+- Height of the back cover and footer together: home 1,020 → 962 px at 1512 × 734 and 1,237 → 876
+  px at 390 × 844; a case study 777 → 619 and 1,255 → 832 px.

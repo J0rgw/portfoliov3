@@ -305,14 +305,22 @@ heading the page's h1, listed in the menu and the footer, never in the header
   the CD-R set between the word and an arrow, as the primary email link of the whole site
   (named "Hablemos por email"); one line of details: the address with a copy button (its words
   swap to "Email copiado" and back and its icon turns into a check, MOTION_SYSTEM §2.6–2.7; a copy
-  the browser refuses shakes it; feedback in a polite live region), LinkedIn, GitHub, availability (the green dot beside its words). Removed
+  the browser refuses shakes it; feedback in a polite live region), LinkedIn and GitHub. Removed
   by ADR-001: the two square buttons and the spec table (Estado, Base, Idiomas, LinkedIn, GitHub
-  in small capitals between rules); the languages are in About, the base in the footer.
-- Footer (every page): rows of links with their name in the margin: the tracklist (site map:
-  every chapter where it lives, in album order: Portada, Sobre mí, Proyectos, Servicios, Proceso,
-  Bonus, Contacto), every case study and the full index, and, on a case study only, the contact
-  links (elsewhere the back cover right above lists them); then one line of print: barcode and
-  catalog number, the credits, the copyright, back to top. No column headings over rules.
+  in small capitals between rules); the languages are in About. Removed on 2026-11-16 (Jorge: "deslop
+  the footer, remove the live dot and everything"): the availability line and its green dot, and
+  "Te respondo personalmente." from the lede.
+- Footer (every page), deslopped 2026-11-16: rows of links that name themselves, with no name in
+  the margin and no rule over them (the back cover above is the same night ground; space parts
+  them): the pages as the menu names them (Inicio, Proyectos, Servicios, Bonus), every case
+  study, and, on a case study only, the address and the two profiles (elsewhere the back cover
+  right above lists them); then one line of print: barcode and catalog number, "© 2026 Jorge
+  Arcas", "Código fuente ↗". Removed that day: the margin names (Tracklist, Proyectos,
+  Contacto; the lists keep them as accessible names), the rule, "Índice completo" (the Proyectos
+  page, already in the row above), the in-page entries (Sobre mí, Proceso, Contacto, whose block
+  sits right above), the case-study row's labels and handles, the credits line (the font credits
+  live in the repository's readme, which "Código fuente" opens), "España" and "Volver arriba"
+  (the header's monogram is the way up).
 - References: The Romans (oversized type, an object between words), Kyoosang (contact as an
   object), Huy Phan.
 - Motion: reveal only; the CD-R turns a little under the pointer. The last chapter is not held.
@@ -356,18 +364,17 @@ One coherent system: **a conventional information architecture dressed as a trac
   hairline rows, with no label over them (2026-11-10: the rows name themselves) and no numbers
   (2026-11-11). On 2026-11-11, at Jorge's request, the project list with taglines, the
   availability line and the contact and social links left the panel; the projects stay on
-  `/proyectos/` and in the footer, contact and availability on the back cover and in the
-  footer. Behaves as a modal dialog: focus moves in, Tab is contained, Escape closes and returns
+  `/proyectos/` and in the footer, contact on the back cover and in the footer (the availability
+  line left the site on 2026-11-16). Behaves as a modal dialog: focus moves in, Tab is contained, Escape closes and returns
   focus, the panel is `inert` when closed. Works with reduced motion. The page being read is
   marked (`aria-current="page"`; until ADR-003 the home's chapter under the header): the accent
   and a small `▸` at the row's end, so the state does not rest on colour alone.
 - **Case-study table of contents**: sticky on wide screens, with scroll-spy; the section in view
   is set in ink and semibold. No dash or number beside the entries (2026-11-11, Jorge's request).
-- **Footer**: the tracklist (site map: every chapter where it lives, ADR-003) with every case
-  study, as rows of links (ADR-001), without track numbers since 2026-11-11 (on every page, the
-  footer being one component). The full index after the case studies is the one link that leads
-  to a page rather than a track: its words are the link cue (`ui/LinkCue`; its arrow went on
-  2026-11-12, ADR-002).
+- **Footer**: the pages and every case study, as rows of links (ADR-001) that name themselves
+  (deslopped 2026-11-16: no margin names, no "Índice completo", no back-to-top link), without
+  track numbers since 2026-11-11 (on every page, the footer being one component). The pages' row
+  is `#tracklist`, where the header's no-JavaScript "Índice" link lands.
 - **Next track**: the home ends on "Siguiente pista", Proyectos, the gallery's first disc beside
   it (`editorial/NextTrack`, the case studies' row); a case study ends on the next release.
 - Links to chapters are absolute (`/#sobre-mi`, `/servicios/#proceso`; a chapter that opens its
@@ -384,7 +391,7 @@ never hard-code copy that a content editor would change.
 
 | File | Holds |
 |------|-------|
-| `site.ts` | Identity, contact, socials, catalog number, availability, base URL, default SEO |
+| `site.ts` | Identity, contact, socials, catalog number, base URL, default SEO |
 | `navigation.ts` | Pages (id, label, path) and chapters (id, number, label, readiness, page) |
 | `projects.ts` | Releases and case-study content |
 | `services.ts` | Offers |
@@ -425,8 +432,9 @@ and name themselves on hover, MOTION_SYSTEM §2.7), one back link
 and no visible breadcrumb trail (it stays in the JSON-LD). Since 2026-11-11 (Jorge's request)
 the page carries **no numbers and no lists**: no number on a section, a decision, a step of the
 flow diagram, the next track or the sleeve's print, and no dash in the table of contents. Since
-2026-11-12 (ADR-002) the next track's title and "Todos los proyectos" are the link cue
-(`ui/LinkCue`) instead of being followed by an arrow; "Escríbeme" keeps its arrow, like the
+2026-11-12 (ADR-002) the next track's title is the link cue (`ui/LinkCue`) instead of being
+followed by an arrow ("Todos los proyectos" beside "Escríbeme" went on 2026-11-16: the footer's
+Proyectos sits right under it); "Escríbeme" keeps its arrow, like the
 back cover's "Hablemos", and "Ver el código" its ↗. Every
 section is prose in Castilian Spanish, one paragraph per string, joined with commas and
 semicolons the way Spanish writes rather than set as bullets; the stack is named inside the

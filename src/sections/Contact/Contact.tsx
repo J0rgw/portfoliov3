@@ -15,8 +15,9 @@ const chapter = chapterById('contacto');
  * Chapter 06: the back cover, the primary action of the whole site (ADR-001).
  * The oversized "Hablemos", with the CD-R set inline, is the email link
  * itself (The Romans: an object between words); under it, one line of
- * details: the address with a copy button, LinkedIn, GitHub and whether
- * Jorge is taking work. No spec table, no buttons stacked under a lede.
+ * details: the address with a copy button, LinkedIn and GitHub (the
+ * availability line and its green dot went on 2026-11-16, Jorge's deslop).
+ * No spec table, no buttons stacked under a lede.
  * References: The Romans, Kyoosang Choi (contact as an object), Huy Phan.
  */
 export function Contact() {
@@ -95,10 +96,6 @@ export function Contact() {
               </li>
             ))}
           </ul>
-          <p className="contact__status">
-            {site.availability.open && <span className="contact__dot" aria-hidden="true" />}
-            {site.availability.open ? site.availability.label : ui.contact.closed}
-          </p>
         </div>
 
         <p className="visually-hidden" role="status" aria-live="polite">

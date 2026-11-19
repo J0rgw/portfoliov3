@@ -9,8 +9,6 @@ export interface SocialLink {
   label: string;
   href: string;
   icon: SocialIcon;
-  /** Shown next to the label in lists, e.g. the handle. */
-  detail?: string;
 }
 
 export interface Chapter {

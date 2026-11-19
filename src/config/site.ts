@@ -35,12 +35,6 @@ export const site = {
   portfolioLabel: 'Portfolio',
   languages: 'Español nativo e inglés profesional',
   email,
-  /** Flip `open` to false when not taking new work: copy updates everywhere. */
-  availability: {
-    open: true,
-    label: 'Disponible para nuevos proyectos',
-    short: 'Disponible',
-  },
   /** What he builds, in one line: the Person description in the JSON-LD. */
   summary:
     'Desarrollo webs, aplicaciones y automatizaciones a medida. Convierto necesidades reales en productos digitales claros, rápidos y fáciles de mantener.',
@@ -51,12 +45,7 @@ export const site = {
 };
 
 export const socials: SocialLink[] = [
-  { label: 'Email', href: mailto(site.contact.subject, site.contact.body), icon: 'mail', detail: email },
-  { label: 'GitHub', href: 'https://github.com/J0rgw', icon: 'github', detail: '@J0rgw' },
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/jorge-arcas-verdejo-18ba29255/',
-    icon: 'linkedin',
-    detail: 'Jorge Arcas Verdejo',
-  },
+  { label: 'Email', href: mailto(site.contact.subject, site.contact.body), icon: 'mail' },
+  { label: 'GitHub', href: 'https://github.com/J0rgw', icon: 'github' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jorge-arcas-verdejo-18ba29255/', icon: 'linkedin' },
 ];

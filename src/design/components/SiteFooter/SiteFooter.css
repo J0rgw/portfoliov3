@@ -1,27 +1,17 @@
-/* The tray card (ADR-001): rows of links with their name in the margin, then
-   one line of print. No column headings over rules; the only rule is the
-   footer's own edge. */
+/* The tray card (ADR-001), deslopped on 2026-11-16 at Jorge's request: rows of
+   links that name themselves (no name in the margin and no rule over them: the
+   footer is the same night ground as the back cover above it, so space parts
+   them), then one line of print. */
 
+/* The contact block above ends on its own foot, so the footer starts closer
+   than when a rule parted them. */
 .site-footer {
-  padding-block: var(--space-8) var(--space-6);
-  border-top: var(--hairline) solid var(--border);
+  padding-block: var(--space-6);
 }
 
 .site-footer__inner {
   display: grid;
-  gap: var(--space-5);
-}
-
-.site-footer__row {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.site-footer__heading {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0;
-  color: var(--muted-foreground);
+  gap: var(--space-4);
 }
 
 .site-footer__list {
@@ -30,37 +20,21 @@
   gap: 0 var(--space-5);
 }
 
-.site-footer__list a {
+.site-footer__list a,
+.site-footer__source {
   display: inline-flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 var(--space-2);
+  align-items: center;
+  gap: var(--space-1);
   min-height: 36px;
   padding-block: var(--space-1);
   font-weight: var(--weight-semibold);
   text-decoration: none;
 }
 
-.site-footer__list a:hover {
+.site-footer__list a:hover,
+.site-footer__source:hover {
   color: var(--accent-functional);
   text-decoration: underline;
-}
-
-/* The full index follows the projects as a link to a page, not as one more
-   track: its words are underlined and circled when pointed at, like the site's
-   other "go there" links (ui/LinkCue, ADR-002). The cue carries the line, so
-   the link draws none of its own. */
-.site-footer__list .site-footer__more {
-  align-items: center;
-}
-
-.site-footer__list .site-footer__more:hover {
-  text-decoration: none;
-}
-
-.site-footer__detail {
-  font-weight: var(--weight-regular);
-  color: var(--muted-foreground);
 }
 
 /* ---- The line of print -------------------------------------------------------------- */
@@ -92,31 +66,7 @@
   color: var(--foreground);
 }
 
-.site-footer__credits {
-  max-width: 64ch;
-}
-
-.site-footer__top {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: 44px;
+.site-footer__source {
   margin-left: auto;
-  font-weight: var(--weight-semibold);
   color: var(--foreground);
-  text-decoration: none;
-}
-
-.site-footer__top:hover {
-  color: var(--accent-functional);
-  text-decoration: underline;
-}
-
-/* Wide screens: each row's name in a margin column, its links beside it. */
-@media (min-width: 768px) {
-  .site-footer__row {
-    grid-template-columns: 8rem minmax(0, 1fr);
-    align-items: baseline;
-    gap: var(--gutter);
-  }
 }

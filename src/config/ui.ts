@@ -2,16 +2,12 @@
 export const ui = {
   "navigation": {
     "home": "Inicio",
-    "cover": "Portada",
     "projects": "Proyectos",
     "services": "Servicios",
     "bonus": "Bonus",
     "contact": "Contacto",
     "talk": "Hablemos",
     "index": "Índice",
-    "tracklist": "Tracklist",
-    "fullIndex": "Índice completo",
-    "backTop": "Volver arriba",
     "skip": "Saltar al contenido",
     "menu": "Menú",
     "close": "Cerrar",
@@ -72,12 +68,11 @@ export const ui = {
   },
   "contact": {
     "heading": "¿Tienes un proyecto en mente?",
-    "body": "Cuéntame qué necesitas, en qué punto está y qué plazo tienes. Te respondo personalmente.",
+    "body": "Cuéntame qué necesitas, en qué punto está y qué plazo tienes.",
     "copied": "Email copiado",
     "copy": "Copiar email",
     "copySuccess": "Email copiado al portapapeles",
     "copyFailed": "No se ha podido copiar. Puedes seleccionar la dirección o abrir tu correo.",
-    "closed": "Agenda completa",
     "talkHidden": "por email"
   },
   "hero": {
@@ -103,10 +98,6 @@ export const ui = {
     "heading": "Pista no encontrada",
     "body": "Puede que el enlace haya cambiado o que nunca existiera.",
     "back": "Volver a la portada"
-  },
-  "footer": {
-    "credit": "Diseño y desarrollo:",
-    "tools": ". Hecho con React, TypeScript y Vite, en Poppins (OFL) y Estrella (Uncarving)."
   },
   "media": {
     "logos": "Logos de tecnologías",
