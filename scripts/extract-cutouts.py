@@ -75,9 +75,31 @@ RECIPES = {
     # 2026-11-10 (ADR-001). The iPod, Proceso's object: a product photo on white, its
     # screen left dark (the chapter prints its playlist there). Shown up to ~460 px wide.
     'ipod': dict(src='75b26a489ffd36cad1f8903b662339e4.jpg', key='flood', ground=(255, 255, 255), tol=(0.025, 0.1), edge='paper', margin=0.012, widths=(460, 760, 920), quality=74),
-    # Jorge's portrait (the pass's photo), already cut out: its own matte, with a
-    # scissor margin like the other photos. Sobre mí's object; the source is 457 px wide.
-    'jorge': dict(src=ROOT / 'public/images/brand/avatar.webp', key='alpha', edge='paper', margin=0.022, widths=(320, 480)),
+    # 2026-11-19, the page /sobre-mi/ (ADR-004). Sources in private/originals/me/: Jorge's
+    # own cut-outs (iOS "lift subject", IMG_75xx), and lifted/ for the photos he had not
+    # cut, lifted the same way on a Mac by scripts/lift-subject.swift (the cheque cropped
+    # first, the bucket's chair taken out). Photos and printed things alike get the
+    # scissor margin; the two plain photos are cut by their own frame.
+    # Jorge as on the album's cover (the same photo, Gordale Scar, 2026-10-03), in colour,
+    # and two more takes from that afternoon: the page's easter egg.
+    'jorge-sitting': dict(src=ROOT / 'private/originals/me/IMG_7504.PNG', key='alpha', edge='paper', margin=0.012, widths=(300, 460, 600)),
+    'jorge-laughing': dict(src=ROOT / 'private/originals/me/IMG_7508.PNG', key='alpha', edge='paper', margin=0.012, widths=(300, 460, 600)),
+    'jorge-smiling': dict(src=ROOT / 'private/originals/me/IMG_7507.PNG', key='alpha', edge='paper', margin=0.012, widths=(260, 400, 520)),
+    # Odaiba, 2025-11-17: shading his eyes. He looks up at Godzilla when it is picked up.
+    'jorge-looking': dict(src=ROOT / 'private/originals/me/IMG_7500.PNG', key='alpha', edge='paper', margin=0.016, widths=(160, 320)),
+    'jorge-tongue': dict(src=ROOT / 'private/originals/me/IMG_7599.PNG', key='alpha', edge='paper', margin=0.012, widths=(220, 440)),
+    # The things in the sentence: what each word stands for.
+    # At rest each stands about as tall as a line (≈ 90 px), picked up three times that:
+    # a small file for the line, larger ones fetched once the sentence is played with.
+    'cheque': dict(src=ROOT / 'private/originals/me/lifted/cheque.png', key='alpha', edge='paper', margin=0.02, widths=(160, 320, 496)),
+    'badge': dict(src=ROOT / 'private/originals/me/IMG_7502.PNG', key='alpha', edge='paper', margin=0.014, widths=(100, 200, 400)),
+    'vds': dict(src=ROOT / 'private/originals/me/lifted/vds.png', key='alpha', edge='paper', margin=0.016, widths=(240, 400), quality=78),
+    'godzilla': dict(src=ROOT / 'private/originals/me/lifted/godzilla.png', key='alpha', edge='paper', margin=0.012, widths=(160, 320, 600)),
+    'gundam': dict(src=ROOT / 'private/originals/me/lifted/gundam.png', key='alpha', edge='paper', margin=0.014, widths=(120, 240, 420)),
+    'gundam-valencia': dict(src=ROOT / 'private/originals/me/lifted/gundam-valencia.png', key='alpha', edge='paper', margin=0.016, widths=(240, 400), quality=78),
+    # Leaves and limestone are costly to encode: a lower quality, as the iPod's.
+    'peppers': dict(src=ROOT / 'private/originals/me/lifted/peppers.png', key='alpha', edge='paper', margin=0.012, widths=(160, 320, 600), quality=76),
+    'gordale': dict(src=ROOT / 'private/originals/me/lifted/gordale.png', key='alpha', edge='paper', margin=0.014, widths=(240, 480), quality=74),
 }
 
 

@@ -1,29 +1,81 @@
-import type { Milestone } from './types';
+import type { AboutRun, AboutTake, Milestone } from './types';
 
 /**
- * About chapter. Facts come from Jorge's previous portfolio (live in 2026-10),
- * his public repositories and the V3 brief. The bio is drafted from that public
- * record and must be reviewed by Jorge (docs/IMPLEMENTATION_PLAN.md, open
- * question 6).
+ * Sobre mí, on the home (ADR-004, 2026-11-19; Jorge's brief: "telling more without
+ * writing more", and everything about him on the index, at first glance). One sentence,
+ * his own words; each of his things follows the word it stands for, so the photos say
+ * what the words leave out (the cheque prints the award, the badge his name). Then the
+ * credits. Every fact is in the authenticity register (INFORMATION_ARCHITECTURE §6): his
+ * CV (updated 2026-11-19), his photos and their dates and places, his brief.
  *
- * Distilled on 2026-11-10 (ADR-001): one paragraph instead of three (the second
- * restated the timeline, the third described the site), no principles, and the
- * milestones without their detail lines, so the chapter fits one frame.
+ * Until ADR-004 the chapter was the pass's portrait and one paragraph ("Soy Jorge Arcas,
+ * desarrollador full-stack en España. Construyo webs, aplicaciones y herramientas a
+ * medida…"), quoted whole in the ADR.
  */
-export const aboutIntro = {
+const statement: AboutRun[] = [
+  '¡Hola! Soy Jorge, programo desde Murcia, estoy en el equipo fundador de ',
+  { words: 'ATLAXIA', thing: { cutout: 'cheque', caption: 'Premio Santander X al Proyecto Emprendedor, 2026' } },
+  ' y el resto del tiempo lo reparto entre ',
+  { words: 'eventos', thing: { cutout: 'badge', hidden: 'vds', caption: 'DIATIC26 en Murcia y VDS 2026 en Valencia' } },
+  ', ',
+  { words: 'viajes', thing: { cutout: 'godzilla', hidden: 'jorge-looking', caption: 'Shinjuku, Tokio, noviembre de 2025' } },
+  ', ',
+  { words: 'Gundam', thing: { cutout: 'gundam', hidden: 'gundam-valencia', caption: 'Valencia, septiembre de 2026' } },
+  ' y ',
+  { words: 'el campo', thing: { cutout: 'peppers', caption: 'Pimientos y pepinos de agosto' } },
+  '.',
+];
+
+/** The album's cover photo, in colour, and two more takes from that afternoon: each
+ *  tap on him brings the next. */
+const takes: AboutTake[] = [
+  { cutout: 'jorge-sitting', caption: 'La foto de la portada, en Gordale Scar (Yorkshire)' },
+  { cutout: 'jorge-laughing', caption: 'Otra toma de aquella tarde' },
+  { cutout: 'jorge-smiling', caption: 'Y otra más' },
+];
+
+export const aboutChapter = {
   heading: 'Sobre mí',
+  statement,
+  takes,
+  /** Completes the accessible name of Jorge's photo, which is a button. */
+  nextTake: 'Ver otra toma',
+  credits: 'Créditos',
 };
 
-export const aboutBio =
-  'Soy Jorge Arcas, desarrollador full-stack en España. Construyo webs, aplicaciones y herramientas a medida, donde la ingeniería se encuentra con la experiencia: interfaces que se sienten bien y sistemas que aguantan el uso real.';
+/**
+ * The chapter's hidden track (ADR-004): printed in the console after the site's own. His
+ * Letterboxd favourites (his screenshot, 2026-07-27), in their Spanish titles, and a hint
+ * for the Konami code.
+ */
+export const aboutHiddenTrack = [
+  'Cara B de Sobre mí',
+  'Mis cuatro películas favoritas: Retrato de una mujer en llamas, La vida de Brian, Todo a la vez en todas partes y Nicky, la aprendiz de bruja.',
+  'Si te sabes el código Konami, aquí funciona.',
+];
 
-/** Newest first (2026-11-10): clients and recruiters read the latest first. */
+/** The Konami code (↑ ↑ ↓ ↓ ← → ← → B A), as KeyboardEvent.key values, lower case. */
+export const konamiCode = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+
+/**
+ * Newest first (2026-11-10): clients and recruiters read the latest first. From Jorge's
+ * CV as updated on 2026-11-19 (ADR-004), plus his talk. His own releases ("Proyectos
+ * propios") left on 2026-11-19 at his request: they are Proyectos' page.
+ */
 export const milestones: Milestone[] = [
+  { period: '2026 – hoy', title: 'Ingeniero de software freelance', org: 'ATLAXIA, equipo fundador', kind: 'work' },
+  { period: '2026 – hoy', title: 'Grado en Ingeniería Informática', org: 'UCAM, en curso', kind: 'education' },
   {
     period: '2026',
-    title: 'Proyectos propios',
-    org: 'MoneyMan, Client Leads, Disco Download y gitchange',
-    kind: 'projects',
+    title: 'Secure Coding: Building Cyber Resilience',
+    org: 'INFO y CAETRA, 50 horas',
+    kind: 'education',
+  },
+  {
+    period: '2025 – 2026',
+    title: 'Analista y desarrollador de software',
+    org: 'Digital4tech',
+    kind: 'work',
   },
   {
     period: '2025',
@@ -32,32 +84,32 @@ export const milestones: Milestone[] = [
     kind: 'talk',
   },
   {
-    period: '2025',
-    title: 'Desarrollador full-stack',
-    org: 'Grupo Fuertes',
-    kind: 'work',
+    period: '2022 – 2025',
+    title: 'Coorganizador',
+    org: 'Google Developer Group Murcia y Cartagena',
+    kind: 'community',
   },
-  { period: '2023 – 2025', title: 'Desarrollo Web', org: 'UCAM', kind: 'education' },
+  { period: '2025', title: 'Desarrollador full-stack en prácticas', org: 'Altaico Seguridad', kind: 'work' },
+  { period: '2025', title: 'Desarrollador full-stack en prácticas', org: 'Grupo Fuertes, Lab19', kind: 'work' },
+  {
+    period: '2023 – 2025',
+    title: 'Técnico Superior en Desarrollo de Aplicaciones Web',
+    org: 'UCAM',
+    kind: 'education',
+  },
   {
     period: '2023 – 2024',
     title: 'Lead',
     org: 'Google Developer Student Clubs',
     kind: 'community',
   },
-  {
-    period: '2022 – hoy',
-    title: 'Organizador',
-    org: 'Google Developer Group',
-    kind: 'community',
-  },
-  { period: '2021 – 2023', title: 'Ingeniería Informática', org: 'UCAM', kind: 'education' },
 ];
 
-/** "Instruments": the stack as album credits. */
+/** "Instruments": the stack as album credits; the CV's core skills (2026-11-19) included. */
 export const instruments: { label: string; items: string[] }[] = [
-  { label: 'Interfaz', items: ['TypeScript', 'JavaScript', 'React', 'Vite', 'GSAP', 'CSS'] },
-  { label: 'Servidor y datos', items: ['Node.js', 'Python', 'Flask', 'FastAPI', 'Java', 'Spring Boot', 'Firebase', 'Supabase', 'SQLite'] },
-  { label: 'Herramientas', items: ['Git', 'GitHub', 'Figma', 'Swift'] },
+  { label: 'Interfaz', items: ['TypeScript', 'JavaScript', 'React', 'Next.js', 'Angular', 'Vite', 'Styled Components', 'GSAP', 'CSS'] },
+  { label: 'Servidor y datos', items: ['Node.js', 'Python', 'Flask', 'FastAPI', 'Java', 'Spring Boot', 'PostgreSQL', 'SQLite', 'Firebase', 'Firestore', 'Supabase'] },
+  { label: 'Herramientas', items: ['Git', 'GitHub', 'Docker', 'Figma', 'Swift'] },
 ];
 
 /** Technology marks; config/technologies.ts builds the Projects credits' stack from them. */

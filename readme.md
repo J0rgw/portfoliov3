@@ -3,7 +3,8 @@
 Portfolio of **Jorge Arcas**, freelance full-stack developer, designed as an album: each chapter a
 track, each project a release with its own cover, credits and liner notes. Since ADR-003
 (2026-11-12) the album is in pages: the home (cover and Sobre mí), Proyectos, Servicios and the
-bonus, each ending on the back cover.
+bonus, each ending on the back cover; since ADR-004 (2026-11-19) the home tells the person whole:
+one sentence in his words with his own things in it, his credits, and a few easter eggs.
 
 - Domain: [portfolio.jarcas.dev](https://portfolio.jarcas.dev), deployed from this repository by
   `.github/workflows/deploy.yml` since 2026-11-11 (v2 remains at `j0rgw.github.io/portfoliov2`).
@@ -25,7 +26,8 @@ npm run build        # asset check → types → client + SSR builds → prerend
 npm run preview      # serve dist/ locally
 npm run og           # regenerate social cards (needs: npm i --no-save playwright-core)
 node scripts/generate-theme-variants.mjs   # dark-theme variants of the blue raster art (same need)
-uv run scripts/extract-cutouts.py          # key Jorge's cut-outs (private/originals/assets/) into public/images/cutouts/
+uv run scripts/prepare-about-art.py        # Sobre mí's sources from Jorge's photos (macOS: lifts with Vision via scripts/lift-subject.swift)
+uv run scripts/extract-cutouts.py          # key Jorge's cut-outs (private/originals/assets/, me/) into public/images/cutouts/
 uv run scripts/generate-disc-finish.py     # the printed discs' real hub, rim and wear (public/images/disc/)
 ```
 
@@ -54,7 +56,7 @@ src/
     editorial/   ChapterHeading, CreditsTable, Evidence, NextTrack, ProfileCard, QuickResume
     graphics/    HandCircle, MarkerArrow, Monogram, Barcode, Paper, Sticker
     cd/          Disc, CoverArt, DiscGallery (including selection persistence)
-  sections/      Hero, Projects, LinerNotes, Services, About, BonusTrack, Contact
+  sections/      Hero, Projects, LinerNotes, Services, About, AboutCredits, BonusTrack, Contact
   pages/         HomePage, ProjectsIndexPage, ProjectPage, ServicesPage, LibraryPage, NotFoundPage, PageShell
   seo/           metadata and structured-data builders, social card rendering
 public/images/   original/reusable artwork and separate project-specific assets
@@ -118,7 +120,8 @@ motion and no JavaScript; see the TASK 02 report for actual results.
 - `docs/IMPLEMENTATION_PLAN.md`: historical measurements and remaining content questions.
 - `docs/adr/`: decision records for changes that span several sections, each with its status
   table (ADR-001: every chapter after Projects as one frame, and the Projects pages; ADR-002: links
-  without arrows; ADR-003: the album in pages).
+  without arrows; ADR-003: the album in pages; ADR-004: Sobre mí, told in his own things,
+  with the audit of his photos).
 - `references.md`: research; earlier aesthetic choices are historical, not new restrictions.
 
 ## Credits

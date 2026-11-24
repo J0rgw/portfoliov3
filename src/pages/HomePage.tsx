@@ -1,4 +1,5 @@
 import About from '../sections/About/About';
+import AboutCredits from '../sections/AboutCredits/AboutCredits';
 import ChapterHold from '../components/ui/motion/ChapterHold';
 import CoverArt from '../components/cd/CoverArt/CoverArt';
 import Disc from '../components/cd/Disc/Disc';
@@ -11,7 +12,9 @@ import { site } from '../config/site';
 import { messages, ui } from '../config/ui';
 
 /**
- * The cover and the person (ADR-003, 2026-11-12): the hero, then Sobre mí;
+ * The cover and the person (ADR-003, 2026-11-12): the hero, then Sobre mí and,
+ * since ADR-004 (2026-11-19), the person whole at first glance: his sentence told in
+ * his own things, then his credits;
  * the back cover that closes every page follows (PageShell). Everything else
  * is a page of its own, so the home is read whole. Its next track (Jorge's
  * pick, Q57) hands the gallery's first disc on to Proyectos, where the
@@ -24,6 +27,9 @@ export function HomePage() {
       <Hero />
       <ChapterHold>
         <About />
+      </ChapterHold>
+      <ChapterHold>
+        <AboutCredits />
       </ChapterHold>
       {first && (
         <NextTrack

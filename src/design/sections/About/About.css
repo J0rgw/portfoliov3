@@ -1,38 +1,320 @@
-/* Chapter 04, Sobre mí (ADR-001). One frame: the heading top left, Jorge's
-   portrait cut-out standing on the frame's lower edge at the right, the
-   signed paragraph under the heading and the credits (timeline, instruments)
-   in the bottom-left corner, as Projects keeps its credits. Type on the
-   ground: no pass, no rules, no small capitals. */
+/* Sobre mí, on the home (ADR-004, 2026-11-19). One frame: the heading in the corner,
+   then one sentence set big, signed, with Jorge's things standing between its words
+   (The Romans' type with an object inside it, as the back cover's "Hablemos"), and
+   Jorge himself as on the album's cover, the words wrapping round him. Type on the
+   ground: no card, no paper behind the copy; the things are cut-outs with their own
+   scissor margin and shadow (graphics/Cutout). The credits follow (AboutCredits.css). */
 
-.about__portrait {
-  position: relative;
-  z-index: 1;
-  align-self: flex-end;
-  width: min(44%, 11rem);
-  /* Phones: level with the heading's line, at the right. */
-  margin-top: calc(-1 * var(--space-7));
-  rotate: 2.5deg;
+/* The things' height, in px where it is set, so their tags (set in their own small
+   type) can measure from it. */
+@property --thing-h {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
 }
 
-.about__notes {
-  position: relative;
-  z-index: 2;
-  max-width: 36rem;
-  margin-top: var(--space-4);
+/* No title over it since 2026-11-19 (Jorge's request; the h2 is visually hidden):
+   the sentence and Jorge open the chapter. */
+.about__body {
+  /* Holds Jorge's float. */
+  display: flow-root;
 }
 
-.about__bio {
-  font-size: var(--text-lg);
-  line-height: 1.5;
+/* ---- The sentence ---------------------------------------------------------------- */
+
+/* Not positioned: its block box spans Jorge's float, and only its words (painted over
+   floats) may take the pointer there, so he stays pointable. */
+.about__statement {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-black);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-tight);
   text-wrap: pretty;
 }
 
-/* The notes are signed (Estrella: letters only). A readable word, so the
-   functional accent (DESIGN.md, accent rules). */
+/* A word and its thing never part at the end of a line, nor the thing and the comma
+   after it, which tucks in over the cut-out's paper margin. */
+.about__pair {
+  white-space: nowrap;
+}
+
+.about__punct {
+  margin-left: -0.1em;
+}
+
+/* ---- A thing: a button the size of a word, standing in the line -------------------- */
+
+.thing {
+  --thing-h: 1.5em;
+  /* How much it grows when picked up, and the room its tag needs under it (px,
+     usePeekRoom). */
+  --peek-scale: 3.2;
+  --peek-tag: 44;
+  position: relative;
+  display: inline-block;
+  height: var(--thing-h);
+  aspect-ratio: var(--thing-ratio);
+  margin-inline: 0.22em 0.08em;
+  /* Centred on the lower-case letters, so the line only grows a little. */
+  vertical-align: -0.44em;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  rotate: var(--thing-tilt, -3deg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Each lies at its own angle, as if dropped there. */
+.thing[data-thing='cheque'] { --thing-tilt: -4deg; }
+.thing[data-thing='badge'] { --thing-tilt: 6deg; }
+.thing[data-thing='godzilla'] { --thing-tilt: -2deg; }
+.thing[data-thing='gundam'] { --thing-tilt: 4deg; }
+.thing[data-thing='peppers'] { --thing-tilt: -5deg; }
+
+.thing__object {
+  position: absolute;
+  inset: 0;
+  transition: transform var(--dur-lift) var(--ease-smooth-out);
+}
+
+.thing__cutout {
+  position: absolute;
+  inset: 0;
+}
+
+/* What a thing hides: out of sight until it is picked up. */
+.thing__hidden {
+  position: absolute;
+  opacity: 0;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    translate var(--dur-lift) var(--ease-smooth-out);
+}
+
+/* The VDS print, behind the DIATIC badge: it slides out to the upper left. */
+.thing[data-thing='badge'] .thing__hidden {
+  z-index: -1;
+  left: -78%;
+  top: -14%;
+  width: 104%;
+  rotate: -9deg;
+  translate: 55% 12%;
+}
+
+/* Jorge on Odaiba, shading his eyes: he steps in front of Godzilla's jaws to look up. */
+.thing[data-thing='godzilla'] .thing__hidden {
+  z-index: 1;
+  right: -24%;
+  bottom: -20%;
+  width: 36%;
+  rotate: 4deg;
+  translate: -20% 30%;
+}
+
+/* The Gundam's photo with the building behind it: out from behind, to the upper right. */
+.thing[data-thing='gundam'] .thing__hidden {
+  z-index: -1;
+  left: 34%;
+  top: -26%;
+  width: 150%;
+  rotate: 7deg;
+  translate: -38% 14%;
+}
+
+/* The caption, in the page's inverted ink like the technology marks' tag
+   (MarkRow), under the thing once it has grown. */
+.thing__tag {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  z-index: 2;
+  margin-top: calc(var(--thing-h) * (var(--peek-scale) - 1) / 2 + var(--space-2));
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  letter-spacing: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  translate: calc(-50% + var(--peek-dx, 0px)) var(--peek-dy, 0px);
+  opacity: 0;
+  transition: opacity var(--dur-swap) var(--ease-tip);
+}
+
+/* Picked up: by a fine pointer resting on it, by keyboard focus, or by a click or a tap
+   (aria-expanded) until the next one. It grows where it lies, straightens a little and
+   lifts off the page; the usePeekRoom shift keeps it inside the frame. */
+.thing:focus-visible,
+.thing[aria-expanded='true'] {
+  z-index: 4;
+  outline: none;
+}
+
+.thing:focus-visible .thing__object,
+.thing[aria-expanded='true'] .thing__object {
+  transform: translate(var(--peek-dx, 0px), var(--peek-dy, 0px)) rotate(calc(var(--thing-tilt, 0deg) * -0.6)) scale(var(--peek-scale));
+}
+
+/* Its shadow grows with it; the resting one, three times larger, reads as lifted. */
+
+.thing:focus-visible .thing__hidden,
+.thing[aria-expanded='true'] .thing__hidden {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.thing:focus-visible .thing__tag,
+.thing[aria-expanded='true'] .thing__tag {
+  opacity: 1;
+  transition-delay: var(--dur-tip-delay);
+}
+
+/* Focus shows on the tag: the thing itself has no box to ring. */
+.thing:focus-visible .thing__tag {
+  outline: 2px solid var(--accent-functional);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .thing:hover {
+    z-index: 4;
+  }
+
+  .thing:hover .thing__object {
+    transform: translate(var(--peek-dx, 0px), var(--peek-dy, 0px)) rotate(calc(var(--thing-tilt, 0deg) * -0.6)) scale(var(--peek-scale));
+  }
+
+  .thing:hover .thing__hidden {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .thing:hover .thing__tag {
+    opacity: 1;
+    transition-delay: var(--dur-tip-delay);
+  }
+}
+
+/* ---- Jorge, as on the album's cover --------------------------------------------- */
+
+.about__jorge {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: min(42svh, 21rem);
+  aspect-ratio: var(--take-ratio);
+  /* Phones and portrait screens: at the right, over the sentence. */
+  margin: 0 0 var(--space-5) auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.about__take {
+  position: absolute;
+  inset: 0;
+}
+
+/* Another take is slapped down where the last one was (motion.css, paper-slap). */
+@media (prefers-reduced-motion: no-preference) {
+  .about__take[data-again] .cutout__img {
+    animation: paper-slap var(--dur-slow) var(--ease-out) backwards;
+  }
+
+  /* The chapter sits under the hero, so Jorge and his things are slapped down when it
+     arrives (RevealController marks the body), not when the page loads: until then they
+     wait out of sight. Only once the controller runs (.reveal-ready), so without it they
+     are simply there. */
+  .reveal-ready .about__body[data-reveal]:not([data-revealed]) [data-gesture='slap'] {
+    opacity: 0;
+    animation: none;
+  }
+
+  .about__body [data-gesture='slap'] {
+    animation-delay: calc(var(--slap-index, 0) * 110ms + 160ms);
+  }
+}
+
+/* The photo the cover was cut from: behind him, out of sight until he is pointed at
+   or focused. */
+.about__place {
+  position: absolute;
+  z-index: -1;
+  top: 2%;
+  right: -14%;
+  width: 72%;
+  opacity: 0;
+  rotate: 7deg;
+  translate: -18% 10%;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    translate var(--dur-lift) var(--ease-smooth-out),
+    rotate var(--dur-lift) var(--ease-smooth-out);
+}
+
+.about__tag {
+  position: absolute;
+  left: 0;
+  bottom: var(--space-4);
+  z-index: 2;
+  max-width: 16rem;
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
+  text-align: left;
+  pointer-events: none;
+  translate: -12% 0;
+  opacity: 0;
+  transition: opacity var(--dur-swap) var(--ease-tip);
+}
+
+.about__jorge:focus-visible {
+  outline: none;
+}
+
+.about__jorge:focus-visible .about__tag {
+  outline: 2px solid var(--accent-functional);
+  outline-offset: 2px;
+}
+
+.about__jorge:focus-visible .about__place,
+.about__jorge:focus-visible .about__tag {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about__jorge:hover .about__place,
+  .about__jorge:hover .about__tag {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .about__jorge:hover .about__place {
+    rotate: 5deg;
+  }
+}
+
+/* ---- Signed, like the liner notes ---------------------------------------------------- */
+
+/* Estrella: letters only. A readable word, so the functional accent (DESIGN.md). */
 .about__signature {
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
   font-size: clamp(2.25rem, 1.8rem + 1.4vw, 3.25rem);
-  line-height: 1;
   color: var(--accent-functional);
   rotate: -5deg;
   transform-origin: left bottom;
@@ -40,108 +322,71 @@
   user-select: none;
 }
 
-/* ---- Credits: the timeline, then the instruments and languages ----------------------
-   One block on shared columns: when (or what), the role, where. */
+/* ---- The Konami code ------------------------------------------------------------------ */
 
-.about__credits {
-  position: relative;
-  z-index: 2;
-  margin-top: var(--space-7);
-  --about-label: 6.5rem;
+/* He looks in from the bottom of the window, then goes. Decorative and brief. */
+.about__tongue {
+  position: fixed;
+  right: max(var(--margin), 6vw);
+  bottom: 0;
+  z-index: var(--z-header);
+  width: min(14rem, 40vw);
+  pointer-events: none;
+  animation: tongue-out 2.8s var(--ease-in-out) both;
 }
 
-.about__subhead {
-  margin-bottom: var(--space-3);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0;
-  color: var(--muted-foreground);
+@keyframes tongue-out {
+  0% { translate: 0 105%; rotate: 9deg; }
+  16% { translate: 0 14%; rotate: -4deg; }
+  24% { translate: 0 18%; rotate: 0deg; }
+  82% { translate: 0 18%; rotate: 0deg; }
+  100% { translate: 0 105%; rotate: 6deg; }
 }
 
-.about__milestones {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.about__milestone,
-.about__instrument-group {
-  display: grid;
-  grid-template-columns: var(--about-label) minmax(0, 1fr);
-  column-gap: var(--space-4);
-  align-items: baseline;
-  font-size: var(--text-sm);
-  line-height: 1.4;
-}
-
-.about__milestone-period {
-  grid-row: span 2;
-  font-size: var(--text-xs);
-  color: var(--muted-foreground);
-}
-
-.about__milestone-title {
-  font-weight: var(--weight-semibold);
-}
-
-/* Where, beside or under the role: weight and colour tell them apart. */
-.about__milestone-org {
-  color: var(--muted-foreground);
-}
-
-.about__instruments {
-  display: grid;
-  gap: var(--space-2);
-  margin-top: var(--space-5);
-}
-
-.about__instrument-group dt {
-  color: var(--muted-foreground);
-}
-
-.about__instrument-group dd {
-  font-weight: var(--weight-semibold);
-}
-
-/* ---- Wide screens: one line per milestone ----------------------------------------- */
-
-@media (min-width: 768px) {
-  .about__milestone {
-    grid-template-columns: var(--about-label) minmax(0, 0.75fr) minmax(0, 1.25fr);
+@media (prefers-reduced-motion: reduce) {
+  @keyframes tongue-out {
+    0% { opacity: 0; translate: 0 18%; }
+    10% { opacity: 1; translate: 0 18%; }
+    88% { opacity: 1; translate: 0 18%; }
+    100% { opacity: 0; translate: 0 18%; }
   }
 
-  .about__milestone-period {
-    grid-row: auto;
-  }
-
-  .about__milestones {
-    row-gap: var(--space-1);
+  .thing__object,
+  .thing__hidden,
+  .about__place {
+    transition: none;
   }
 }
 
-/* One frame: the portrait stands on the frame's lower edge at the right (its
-   scissor-cut foot runs past it, under the clip), the notes under the heading,
-   the credits at the foot of the left side, clear of the portrait. */
+/* ---- Wide landscape screens: one frame ------------------------------------------- */
+
 @media (min-width: 1024px) and (orientation: landscape) {
   .about__frame {
-    --portrait-w: min(23rem, 26vw);
+    --take-h: min(64svh, 34rem);
   }
 
-  .about__portrait {
-    position: absolute;
-    right: var(--margin);
-    bottom: calc(-1 * var(--space-5));
-    width: var(--portrait-w);
-    margin: 0;
-    rotate: 2deg;
-  }
-
-  .about__notes {
-    max-width: 44rem;
-  }
-
-  .about__credits {
-    width: min(100% - var(--portrait-w) - var(--space-8), 56rem);
-    margin-top: auto;
+  .about__body {
+    margin-block: auto;
     padding-top: var(--space-5);
+  }
+
+  /* Jorge floats at the right and the sentence wraps round his outline: the shape is
+     his photo's alpha (shape-outside, written per take by the section), its scissor
+     margin and a little air. */
+  .about__jorge {
+    float: right;
+    height: var(--take-h);
+    margin: 0 0 0 var(--space-5);
+    shape-margin: var(--space-4);
+    shape-image-threshold: 0.3;
+  }
+
+  .thing {
+    --peek-scale: 3;
+  }
+
+  .about__statement {
+    /* Room for the things to grow into above the first line. */
+    padding-top: var(--space-2);
   }
 }

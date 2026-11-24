@@ -10,7 +10,9 @@ restrictions; historical references are evidence, not a requirement to copy thei
 Jorge Arcas's Spanish portfolio, catalog JRG-003. Vite 7, React 19, TypeScript strict,
 plain CSS, static prerendering, lazy GSAP. Keep the current chapters, pages and routes
 ([ADR-003](docs/adr/ADR-003-pages.md), 2026-11-12: the home is the hero and Sobre mí; Proyectos,
-Servicios and the bonus are pages of their own; the back cover closes every page).
+Servicios and the bonus are pages of their own; the back cover closes every page;
+[ADR-004](docs/adr/ADR-004-about-page.md), 2026-11-19: Sobre mí tells the person whole on the
+home, his sentence with his own things in it, then his credits).
 
 Dependency direction: **CONFIG + DESIGN → COMPONENTS → SECTIONS → PAGES**.
 
@@ -30,6 +32,8 @@ Dependency direction: **CONFIG + DESIGN → COMPONENTS → SECTIONS → PAGES**.
   resemble a directory diagram. `config/assets.ts` registers reusable asset references.
   Vite publishes all of `public/`, so only files the built site requests live there; the
   originals `scripts/` regenerators read live in `private/originals/` (git-ignored, never served).
+  Photos carry the places they were taken (GPS): they never go in `public/` as they are; publish
+  re-encoded cut-outs (`scripts/extract-cutouts.py`) instead (ADR-004).
 
 ## Content editing
 

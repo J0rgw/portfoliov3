@@ -3,9 +3,9 @@ import type { Chapter, SitePage } from './types';
 /**
  * The site's pages (ADR-003, 2026-11-12): the album split into short pages so
  * each one is read, every one ending on the back cover. In album order: the
- * cover with the person, the releases, the offer with the method, the bonus
- * (a page listed in the menu and the footer, never in the header). Drives the
- * menu panel, the header and the footer tracklist.
+ * cover with the person (all of him since ADR-004, 2026-11-19), the releases,
+ * the offer with the method, the bonus (a page listed in the menu and the footer,
+ * never in the header). Drives the menu panel, the header and the footer tracklist.
  */
 export const pages: SitePage[] = [
   { id: 'inicio', label: 'Inicio', path: '/' },

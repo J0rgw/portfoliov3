@@ -102,11 +102,86 @@ export const cutouts: Record<CutoutId, Cutout> = {
     srcSet: '/images/cutouts/ipod-460.webp 460w, /images/cutouts/ipod-760.webp 760w, /images/cutouts/ipod-920.webp 920w',
     width: 920, height: 1513,
   },
-  /** Sobre mí's object (ADR-001): Jorge's portrait, the pass's photo, with a scissor margin. */
-  jorge: {
-    src: '/images/cutouts/jorge-320.webp',
-    srcSet: '/images/cutouts/jorge-320.webp 320w, /images/cutouts/jorge-480.webp 480w',
-    width: 480, height: 565,
+  /* Sobre mí (ADR-004, 2026-11-19): from Jorge's photos and his own cut-outs
+     (private/originals/me/; the audit of every one is in the ADR). The pass's portrait that
+     stood in the chapter until then (`jorge`) left with it. */
+  /** The album's cover photo, in colour (Gordale Scar, 2026-10-03). */
+  'jorge-sitting': {
+    src: '/images/cutouts/jorge-sitting-300.webp',
+    srcSet: '/images/cutouts/jorge-sitting-300.webp 300w, /images/cutouts/jorge-sitting-460.webp 460w, /images/cutouts/jorge-sitting-600.webp 600w',
+    width: 600, height: 1099,
+  },
+  /** Two more takes from the cover's afternoon: the page's first easter egg. */
+  'jorge-laughing': {
+    src: '/images/cutouts/jorge-laughing-300.webp',
+    srcSet: '/images/cutouts/jorge-laughing-300.webp 300w, /images/cutouts/jorge-laughing-460.webp 460w, /images/cutouts/jorge-laughing-600.webp 600w',
+    width: 600, height: 1165,
+  },
+  'jorge-smiling': {
+    src: '/images/cutouts/jorge-smiling-260.webp',
+    srcSet: '/images/cutouts/jorge-smiling-260.webp 260w, /images/cutouts/jorge-smiling-400.webp 400w, /images/cutouts/jorge-smiling-520.webp 520w',
+    width: 520, height: 1245,
+  },
+  /** Odaiba, 2025-11-17, shading his eyes: he comes out to look up at Godzilla. */
+  'jorge-looking': {
+    src: '/images/cutouts/jorge-looking-160.webp',
+    srcSet: '/images/cutouts/jorge-looking-160.webp 160w, /images/cutouts/jorge-looking-320.webp 320w',
+    width: 320, height: 417,
+  },
+  /** For whoever types the Konami code. */
+  'jorge-tongue': {
+    src: '/images/cutouts/jorge-tongue-220.webp',
+    srcSet: '/images/cutouts/jorge-tongue-220.webp 220w, /images/cutouts/jorge-tongue-440.webp 440w',
+    width: 440, height: 684,
+  },
+  /** ATLAXIA's Santander X Award (UCAM HiTech, 2026-06-25), cut out of the group photo. */
+  cheque: {
+    src: '/images/cutouts/cheque-160.webp',
+    srcSet: '/images/cutouts/cheque-160.webp 160w, /images/cutouts/cheque-320.webp 320w, /images/cutouts/cheque-467.webp 467w',
+    width: 467, height: 302,
+  },
+  /** His DIATIC26 badge, in his hand (Murcia, 2026-05-14). */
+  badge: {
+    src: '/images/cutouts/badge-100.webp',
+    srcSet: '/images/cutouts/badge-100.webp 100w, /images/cutouts/badge-200.webp 200w, /images/cutouts/badge-400.webp 400w',
+    width: 400, height: 554,
+  },
+  /** VDS 2026 at the Ciudad de las Artes y las Ciencias (Valencia, 2026-10-21): a print. */
+  vds: {
+    src: '/images/cutouts/vds-240.webp',
+    srcSet: '/images/cutouts/vds-240.webp 240w, /images/cutouts/vds-400.webp 400w',
+    width: 400, height: 526,
+  },
+  /** The Godzilla head over Shinjuku (2025-11-17), without the cinema sign under it. */
+  godzilla: {
+    src: '/images/cutouts/godzilla-160.webp',
+    srcSet: '/images/cutouts/godzilla-160.webp 160w, /images/cutouts/godzilla-320.webp 320w, /images/cutouts/godzilla-600.webp 600w',
+    width: 600, height: 554,
+  },
+  /** The Gundam at the Ciudad de las Artes y las Ciencias (Valencia, 2026-09-05), Jorge's
+   *  photo: its head lifted against the sky, cut by the photo's frame at the sides and foot. */
+  gundam: {
+    src: '/images/cutouts/gundam-120.webp',
+    srcSet: '/images/cutouts/gundam-120.webp 120w, /images/cutouts/gundam-240.webp 240w, /images/cutouts/gundam-420.webp 420w',
+    width: 420, height: 541,
+  },
+  /** The same Gundam a few seconds before, with the building behind it: a print, hidden. */
+  'gundam-valencia': {
+    src: '/images/cutouts/gundam-valencia-240.webp',
+    srcSet: '/images/cutouts/gundam-valencia-240.webp 240w, /images/cutouts/gundam-valencia-400.webp 400w',
+    width: 400, height: 304,
+  },
+  /** August's peppers and cucumbers in their bucket (2026-08-11), the chair taken out. */
+  peppers: {
+    src: '/images/cutouts/peppers-160.webp',
+    srcSet: '/images/cutouts/peppers-160.webp 160w, /images/cutouts/peppers-320.webp 320w, /images/cutouts/peppers-600.webp 600w',
+    width: 600, height: 534,
+  },
+  /** Where the cover was taken: the whole photo, as a print. */
+  gordale: {
+    src: '/images/cutouts/gordale-240.webp',
+    srcSet: '/images/cutouts/gordale-240.webp 240w, /images/cutouts/gordale-480.webp 480w',
+    width: 480, height: 633,
   },
   /** Mathgeon's own win screen sprite, not a supplied cut-out. */
   skull: {

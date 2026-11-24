@@ -178,6 +178,20 @@ the gallery of the releases Jorge features and lists the others under it as the 
 The back cover closes every page, so every page ends on the action. The header names the pages
 Proyectos and Servicios as words beside Hablemos from 768 px, the page being read underlined, as
 the menu marks its row.
+**Sobre mí, told in his own things** (2026-11-19, [ADR-004](docs/adr/ADR-004-about-page.md), Jorge's
+brief: "telling more without writing more", something to remember, everything about him on the
+home at first glance): one sentence in his words, signed, set big on the ground ("¡Hola! Soy
+Jorge, programo desde Murcia, estoy en el equipo fundador de ATLAXIA y el resto del tiempo lo
+reparto entre eventos, viajes, Gundam y el campo."), each of his things standing right after its
+word, a line high and at its own small angle, the way the back cover sets the CD-R between
+"Hablemos" and its arrow (The Romans). The words stay general and the things specific: the cheque
+prints the award, the badge his name. Jorge sits beside it as on the album's cover, the same photo
+in colour right after the cover itself, and on wide landscape screens the words wrap round his
+outline; elsewhere he sits over the sentence. No title over it (its h2 is visually hidden). Picked up (pointer, focus, tap), a thing grows where
+it lies with its caption in the marks' inverted tag, and what it hides comes out; nothing else in
+the chapter carries a caption, a card or a rule. The credits follow as A24's, printed straight on
+the page. Easter eggs (the cover's other takes, the photo behind the cover, Godzilla's roar, the
+Konami code, the console's "Cara B") are for whoever plays; nothing depends on them.
 Projects: preserve the functional arc, original arrow and selection. Credits are printed straight
 on the page, unboxed and unlabelled, in the bottom-left corner level with the keys: a strong Poppins title, the description tight under it and
 the stack as grey marks (mono chips where no mark exists). The keys sit under the selected disc;
@@ -199,9 +213,9 @@ and the iPod centred in the room that column leaves, never nearer than 4rem (at 
 right edge where the room runs out), changing over like the gallery's (2026-11-11: Jorge moved
 the iPod right so his longer copy fits where the eye is, and picked this place from two). Services: the four offers as a tracklist printed on the page, one row
 each (title large, one line on what you get, where it was done, the enquiry, its words the
-link cue; no number and no arrow since 2026-11-12); two by two below 1280 px. About: Jorge's portrait (the pass's photo) as a cut-out standing on the
-frame's lower edge, one paragraph signed "Jorge", and the credits on shared columns (the
-timeline newest first, one line per milestone; the instruments and languages after it). Bonus:
+link cue; no number and no arrow since 2026-11-12); two by two below 1280 px. About: his sentence with his things in it and Jorge beside it as
+on the cover (above, ADR-004; the pass's portrait and the paragraph until then), then the credits
+on shared columns, the timeline newest first and the instruments and languages after it. Bonus:
 the oversized "Avísame*" is the mailto link itself, its footnote and privacy line under it, the
 talk as the one link out; it stays under "Hablemos" in size. Contact: the heading in the corner,
 the oversized "Hablemos" with the CD-R between word and arrow as the email link (The Romans),
@@ -280,6 +294,19 @@ its own sprite. A project without a label falls back to the generated motif, so 
 one still needs no theme edit. The THIS IS NOT AI sticker is Jorge's own statement, placed at
 his request. Rights to the downloaded originals are an open question (IMPLEMENTATION_PLAN §4).
 
+**Jorge's photos** (supplied 2026-11-19 for Sobre mí, ADR-004; originals in
+`private/originals/me/`, git-ignored: they carry the places they were taken). Forty-one files,
+audited one by one in the ADR; thirteen are used, seven of them only when someone plays. His own
+phone cut-outs (iOS "lift subject") go through `scripts/extract-cutouts.py` as they are; the photos
+he had not cut are lifted the same way on a Mac (`scripts/lift-subject.swift`, Apple's Vision)
+by `scripts/prepare-about-art.py`, which also crops the cheque out of its group photo and takes
+the chair out from under the bucket. Every one gets the scissor margin; the three plain photos
+(the VDS hall, the cover's rock, the Gundam with its building) are printed whole, cut by their own
+frame. No one else's face, no film poster and no number plate reaches the page; the published
+files are re-encoded pixels, with no place or time in them. The cover's photo in colour and its
+other takes are Jorge's portrait on the home now; the pass's photo left the site with the old
+chapter.
+
 **The hidden track** (2026-11-10): like the unlisted song at the end of a 2000s CD, an ASCII
 disc (generated, `config/hiddenTrack.ts`) and a short note are printed once in the browser
 console on every page (`ui/HiddenTrack`), in the functional accent. Nothing on the page depends
@@ -335,10 +362,15 @@ track numbers; an arrow as the only sign that words are a link (ADR-002).
 Also poor (2026-11-16, Jorge's footer deslop): a green "live" dot or an availability line; a
 name in the margin of a row of links that names itself; a credits line ("Diseño y desarrollo:",
 "Hecho con…") or a back-to-top link in the footer; two links to the same page side by side.
+Good (2026-11-19, ADR-004): a sentence whose nouns are shown by the person's own things; a photo
+that tells what the words leave out. Poor: every photo of a folder in a grid; a caption that is
+always on; someone else's face in a personal story.
 Before adding a line, a box, a tag or a sentence, name what it tells the visitor that nothing
 near it already does. Rules mark real divisions (rows of a table or a tracklist, an object's
 edge); states (selection, the step being read, availability, focus) keep their markers.
 Banned: eyebrow tags, a small uppercase label (with or without a marker stroke) set above a
-heading, such as `PISTA 01 · SELECCIÓN`. Every chapter and page opens with its heading.
+heading, such as `PISTA 01 · SELECCIÓN`. Every chapter and page opens with its heading; one
+exception, at Jorge's request (2026-11-19): Sobre mí's heading is visually hidden and its
+sentence opens it, the h2 kept for assistive technology and the outline.
 The reference matrix is historical research. Preserve its useful interaction ideas while
 letting this portfolio's own musical identity determine the overall composition.

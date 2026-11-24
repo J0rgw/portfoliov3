@@ -64,15 +64,17 @@ Since 2026-11-12 ([ADR-003](adr/ADR-003-pages.md), Jorge's brief: "reduce the am
 anyone needs to do so they actually read the page") the album is split into short pages, each
 ending on the back cover. The home is the cover and the person; the work, the offer and the
 bonus are pages of their own, reached from the header, the menu, the footer and the home's next
-track. The old narrative order survives across pages: the menu and the footer list them in
+track. Since ADR-004 (2026-11-19) the person is told whole on the home, at first glance: Sobre mí
+(his sentence and his things), then his credits. The old narrative order survives across pages: the menu and the footer list them in
 album order (identity and person → proof → offer and method → extra), and every page ends on
 the action.
 
 | Page | Chapter (`id`) | Heading | Purpose |
 |------|----------------|---------|---------|
 | `/` | Cover (`inicio`) | (H1) Jorge Arcas Verdejo, Freelance Software Developer | Who, and the identity as an object |
-| `/` | About (`sobre-mi`) | (H2) Sobre mí | Human connection, credibility |
+| `/` | About (`sobre-mi`) | (H2) Sobre mí | The person, remembered: one sentence and his things (ADR-004) |
 | `/` | Next track | "Siguiente pista", Proyectos | Hand the visitor on to the work |
+| `/` | Credits (`creditos`) | (H2) Créditos | The timeline, the instruments, the languages (ADR-004) |
 | `/proyectos/` | Projects (`proyectos`) | (H1) Proyectos seleccionados; (H2) Otros lanzamientos | Prove capability |
 | `/servicios/` | Services (`servicios`) | (H1) Qué puedo construir para ti | Turn skills into offers |
 | `/servicios/` | Liner notes (`proceso`) | (H2) Cómo trabajo | Earn trust in the method |
@@ -266,23 +268,57 @@ the page's h1, with Proceso after it
   offers' JSON-LD lives on this page (§7).
 - Conversion: one enquiry link per service.
 
-**04 · Sobre mí** (`src/sections/About`)
-- Purpose: personal connection and credibility.
-- Content: heading "Sobre mí"; Jorge's portrait (the pass's photo, a cut-out
-  with a scissor margin, `cutouts.jorge`) standing on the frame's lower edge at the right; one
-  paragraph, signed "Jorge" in Estrella (`aria-hidden`); the credits on shared columns: the
-  timeline newest first, one line per milestone (period, role, place; `kind` stays in the data),
-  then "Instrumentos" (every tool, as a list) and "Idiomas". Removed by ADR-001: the backstage
-  pass (and its status, handle and catalog line), the second and third paragraphs (the timeline
-  says the first, the second described the site), the three principles and the milestones'
+**04 · Sobre mí** (`src/sections/About`, then `src/sections/AboutCredits`; rebuilt by ADR-004,
+2026-11-19)
+- Purpose: the person, at first glance and remembered. Jorge's brief: "telling more without
+  writing more", from his photos (what he did this year, his interests), every photo audited (the
+  ADR's table), easter eggs for whoever plays, and everything about him on the home, no teaser.
+- Content: heading "Sobre mí" (h2), visually hidden since 2026-11-19 at Jorge's request ("remove
+  the about me title"), so the sentence opens the chapter while the outline and the section's name
+  keep it; one sentence in his words, signed "Jorge" in Estrella
+  (`aria-hidden`), set at `--text-2xl`: "¡Hola! Soy Jorge, programo desde Murcia, estoy en el
+  equipo fundador de ATLAXIA y el resto del tiempo lo reparto entre eventos, viajes, Gundam y el
+  campo." Each thing stands right after its word, a line high (`config/about.ts`,
+  `aboutChapter.statement`): the Santander X cheque, the DIATIC26 badge in his hand (the VDS hall
+  hidden behind it), Godzilla's head over Shinjuku for "viajes" (Jorge on Odaiba hidden at its
+  jaws), his Gundam in Valencia (its photo with the building hidden behind it), the bucket of
+  peppers. Each is a button named by its caption (what, where, when), so nothing it shows is only
+  seen. Jorge sits beside the sentence as on the album's cover (the same photo, in colour, right
+  after the cover itself); on wide landscape screens the words wrap round his outline
+  (`shape-outside`), elsewhere he sits beside the heading. No card, paper or rule. Removed by
+  ADR-004: the pass's portrait and the paragraph (quoted in the ADR). Removed by ADR-001: the
+  backstage pass, the second and third paragraphs, the three principles and the milestones'
   detail lines.
-- References: Kyoosang Choi (his own artefacts: his photo, his signature), A24 (credits), Huy
-  Phan (positioning).
-- Motion: reveal.
-- Conversion: the header's "Hablemos"; since ADR-003 the home's next track follows it ("Siguiente
-  pista", Proyectos, with the gallery's first disc, `editorial/NextTrack`; "Lo que he construido,
-  empezando por MoneyMan, Client Leads y Mathgeon.", from the featured titles), then the back
-  cover with LinkedIn and GitHub.
+- Then **Créditos** (`sections/AboutCredits`, h2): the timeline newest first, one line per
+  milestone (period, role, place; `kind` stays in the data), then "Instrumentos" (every tool, as a
+  list) and "Idiomas", on shared columns; A24's credits, no rules or small capitals. From his CV as
+  updated on 2026-11-19 (§6).
+- Interaction: a thing pointed at (fine pointers), focused or tapped is picked up (MOTION_SYSTEM
+  §2.9): it grows three times where it lies (3.2 on narrow screens), kept inside the frame by
+  `usePeekRoom`, its caption comes up under it in inverted ink, what it hides comes out. A tap or
+  click keeps it up (`aria-expanded`) until another thing, a tap elsewhere or Escape. Jorge is a
+  button too: each tap brings another take of the cover's afternoon, its caption swapping
+  (`useTextSwap`); pointed at or focused, the photo he was cut from comes out behind him.
+- Easter eggs (nothing depends on them): the takes, the photo behind the cover, Godzilla's roar
+  (the shake) when picked up by hand, the Konami code (`useKeySequence`: his face, tongue out, in
+  from the bottom of the window for 2.8 s), and the console's "Cara B de Sobre mí" after the
+  site's hidden track (his four favourite films, a hint for the code).
+- References: The Romans (type with an object inside the statement), Kyoosang Choi (his own
+  artefacts, a hand holding one), Gianluca Boccia (one plain sentence, whole without animation),
+  A24 (credits), Jorge's cut-out set (#18), transitions.dev (the tag, the text swap).
+- Motion: the sentence rises into focus (`data-reveal="rise"`); Jorge and the things wait out of
+  sight until the chapter arrives, then are slapped down one by one (the hero's gesture);
+  picking up is Level 3. Reduced motion: no slap, no shake, no travel; the Konami face fades.
+- Responsive: one frame on wide landscape screens, the sentence and Jorge centred in it; below
+  1024 px or in portrait, Jorge at the right and the sentence under him. Measured from 320 × 640
+  to 1920 × 1080 (ADR-004).
+- Performance: lazy under the hero; each thing loads a line-sized file; the peek's larger files,
+  the other takes and the hidden photos load once someone plays with the frame (a pointer over
+  it, focus in it, a touch).
+- Conversion: the header's "Hablemos"; then the home's next track ("Siguiente pista", Proyectos,
+  with the gallery's first disc, `editorial/NextTrack`; "Lo que he construido, empezando por
+  MoneyMan, Client Leads y Mathgeon.", from the featured titles), then the back cover with LinkedIn
+  and GitHub.
 
 **05 · Bonus track** (`src/sections/BonusTrack`); since ADR-003 the page `/libreria/` (Q60), its
 heading the page's h1, listed in the menu and the footer, never in the header
@@ -396,7 +432,7 @@ never hard-code copy that a content editor would change.
 | `projects.ts` | Releases and case-study content |
 | `services.ts` | Offers |
 | `process.ts` | Liner-notes steps |
-| `about.ts` | Bio (one paragraph), milestones, tools (ADR-001: the principles went) |
+| `about.ts` | Bio (one paragraph), milestones, tools (ADR-001: the principles went); Sobre mí's sentence and its things, Jorge's takes, the console note and the Konami code (ADR-004) |
 | `library.ts` | Bonus track copy and status |
 
 **Project schema** (`Project` in `types.ts`, abridged):
@@ -465,10 +501,10 @@ claim. Anything unverified goes to "Open questions" in the implementation plan, 
 
 | Claim | Source (checked 2026-10-26) |
 |-------|------------------------------|
-| Full-stack Developer, Grupo Fuertes, Mar–Jun 2025 | Jorge's live v2 site (portfolio.jarcas.dev) |
-| Google Developer Group organiser since Nov 2022 | Live v2 site |
+| Full-stack Developer, Grupo Fuertes, Mar–Jun 2025 | Jorge's live v2 site (portfolio.jarcas.dev); an internship (his CV and his answer, 2026-11-19) |
+| Google Developer Group organiser since Nov 2022 | Live v2 site; until Nov 2025 (his CV, 2026-11-19) |
 | Google Developer Student Clubs lead, Jun 2023 – Jun 2024 | Live v2 site |
-| Studies: Computer Engineering, UCAM, 2021–2023; Web Development, UCAM, 2023–2025 | Live v2 site. **No degree completion is claimed.** |
+| Studies: Computer Engineering, UCAM, 2021–2023; Web Development, UCAM, 2023–2025 | Live v2 site. Superseded on 2026-11-19 by his updated CV (below): the credits show the degree in progress and the DAW as completed; 2021–2023 is not in the CV and left the site |
 | Spanish native, English professional | Live v2 site |
 | Talk "Deja de copiar y pegar componentes" (CDD with React + TypeScript), DevFest 2025 Santiago de Compostela | `J0rgw/PonenciaCDD` repo description and README |
 | Freelance full-stack developer, Spain | Owner's V3 brief |
@@ -482,6 +518,14 @@ claim. Anything unverified goes to "Open questions" in the implementation plan, 
 | Proceso 02: MoneyMan started as a personal project to research fintech; the people around Jorge use it now | Jorge's Proceso copy, 2026-11-11. The case study's status and the repo's README still say it is not deployed (open question 53) |
 | Proceso 04: none of Jorge's websites is published without every image, a title, a description and one h1 per page | Jorge's Proceso copy, 2026-11-11; for this site, `scripts/check-assets.mjs` and `scripts/check-seo.mjs` in the build |
 | Proceso 05: handover with training; documentation in Spanish and English, organised for people and LLMs | Jorge's Proceso copy, 2026-11-11; MoneyMan's repo has `README.md` and `readmeESP.md`, `DESIGN.md`, `PRODUCT.md` and `docs/` |
+| Programs from Murcia; Software Engineer (freelance) in ATLAXIA's founding team (2026 – today); Software Analyst & Developer at Digital4tech (Dec 2025 – Sep 2026); full-stack developer intern at Altaico Seguridad (Jul – Oct 2025) and at Grupo Fuertes' Lab19 (Mar – Jun 2025); BSc in Computer Engineering at UCAM, in progress (2026 – 2029); Higher Technician in Web Application Development (DAW) at UCAM, completed (2023 – 2025); certification "Secure Coding: Building Cyber Resilience" (INFO and CAETRA, 50 hours, 2026); Google Developer Group Murcia y Cartagena co-organiser (Nov 2022 – Nov 2025); GDSC lead (Jul 2023 – Jul 2024); the core skills in the instruments | Jorge's CV as updated on 2026-11-19 (`~/Desktop/docs importantes/Jorge_Arcas_CV.docx.pdf`), read the same day (ADR-004). It supersedes the v2 site's rows above on his roles, studies and community (the earlier CV called him ATLAXIA's co-founder); Grupo Fuertes as an internship is also his answer to Q65 |
+| ATLAXIA won the Santander X Award, Proyecto Emprendedor 2026 (2.000 €) | The cheque in Jorge's photo at UCAM HiTech, 2026-06-25 (`private/originals/me/`, ADR-004) |
+| Attended DIATIC26 (Murcia, 2026-05-14) and VDS 2026 (Valencia, October 2026) | His badge with his name (photo, GPS Murcia) and his photos of the VDS hall and backdrop (GPS Valencia, 2026-10-21 and -22); his brief ("asisting the vds") |
+| Travels ("viajes"): Japan in November 2025, Godzilla in Shinjuku, Odaiba | His photos, 2025-11-10 to -17 (GPS Osaka and Tokyo); the brief names travelling, Gundam and Japan as interests; the sentence is his (2026-11-19) |
+| His Gundam in Valencia, September 2026 | His photos `IMG_6418` and `IMG_6420` (iPhone, 2026-09-05, GPS at the Ciudad de las Artes y las Ciencias) |
+| Peppers and cucumbers in August; "el campo" | His photos, 2026-08-11 (a private place, not named); the brief names agriculture |
+| The album's cover photo was taken at Gordale Scar, Yorkshire | `IMG_6984.HEIC` is the same photo as the cover (compared 2026-11-19), GPS 54.072, -2.132, 2026-10-03 |
+| His four favourite films (Retrato de una mujer en llamas, La vida de Brian, Todo a la vez en todas partes, Nicky, la aprendiz de bruja), in the console | His Letterboxd favourites, screenshot 2026-07-27 |
 | When each release went public (the catalogue's order within the featured releases and the rest) | Each repository's first commit, GitHub API, checked 2026-11-12: myFinancesApp 2026-09-16, clientScrapper 2026-09-15, gitchangeUserCommand 2026-08-03, DiscoDescargas 2026-05-07, mathgeon 2025-05-03; Portfolio v2 by its stated 2023–2024 (its repository is a 2025-06-23 upload). ADR-003, proposed |
 
 ---

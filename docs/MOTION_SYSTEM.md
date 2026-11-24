@@ -67,6 +67,8 @@ or a new library needs an entry in this file first.
   gallery's pen loop while it is pointed at or focused.
 - Copy-email feedback: "Copiar email" swaps to "Email copiado" and back (§2.6), its icon turns
   into a check, and a copy the browser refuses shakes the button (§2.7).
+- Sobre mí's things are picked up where they lie, Jorge's photo changes take, and a few easter
+  eggs wait for whoever plays (§2.9, ADR-004, 2026-11-19).
 - Technology marks (Projects' credits, the index, a case study's cover) lift under the pointer
   and show their names in a tag that travels between them (§2.7).
 - The menu toggle's words swap between "Menú" and "Cerrar" (§2.6, 2026-11-12); they used to
@@ -549,6 +551,46 @@ CD-R), and chose the pen loop: `ui/LinkCue` round the link's words.
   opacity 1, offset 0 and a 1.7 px stroke. Under reduced motion it is whole at 120 ms. At
   390 × 844 `(hover: hover)` does not match, so a tap draws nothing.
 
+### 2.9 Picking things up, and the easter eggs (Sobre mí, 2026-11-19)
+
+Sobre mí, on the home ([ADR-004](adr/ADR-004-about-page.md)), is one sentence with Jorge's things
+standing between its words, a line high (`sections/About`). Level 3: nothing moves until someone
+plays.
+
+- **Entrance**: the sentence rises into focus (`data-reveal="rise"`, §2.7); Jorge, then each
+  thing in the sentence's order, is slapped down after it (`data-gesture="slap"`, the hero's
+  gesture, 110 ms apart from 160 ms). The chapter is under the hero, so they wait out of sight
+  until the reveal controller marks the chapter's body (`data-reveal="slap"`, which hides nothing
+  itself): only once the controller runs (`.reveal-ready`), so without it they are simply there.
+  None under reduced motion.
+- **Picked up**: a thing under a fine pointer (`(hover: hover) and (pointer: fine)`), with
+  keyboard focus (`:focus-visible`) or tapped or clicked (`aria-expanded`, kept until another
+  thing, a tap elsewhere or Escape) grows where it lies: `transform` scale 3 (3.2 on narrow
+  screens), turning back 60 % of its tilt, in `--dur-lift` on `--ease-smooth-out`; its shadow is
+  the resting one, which grows with it. `usePeekRoom` writes `--peek-dx` / `--peek-dy` so the
+  grown thing and its tag stay inside the frame's content box, below the header (layout read on
+  mount, on resize, when the fonts arrive and when Jorge's take changes; never while scrolling).
+  Its caption, the technology marks' tag (inverted ink, `--text-xs`), fades up under it after
+  `--dur-tip-delay`. What it hides comes out with it: the VDS print slides from behind the badge
+  to its upper left; Jorge on Odaiba, mirrored, steps in front of Godzilla's jaws. Godzilla picked
+  up by hand also roars: the shake (`.is-shaking`, §2.7), replayed by class.
+- **Jorge** (the cover's photo, a button): each tap or click brings the next take of that afternoon
+  (three, in a loop), slapped down at once (`paper-slap`, no delay); the words re-wrap round the
+  new outline (user-initiated, so no layout-shift penalty) and the caption swaps (`useTextSwap`,
+  §2.6). Pointed at or focused, the photo he was cut from slides out behind him (`translate` and
+  `rotate`, `--dur-lift`) with his caption.
+- **The Konami code** (`useKeySequence`, any page focus but a field): his face rises from the
+  bottom of the window, tilts and settles, holds and drops back (`tongue-out`, 2.8 s,
+  `--ease-in-out`), then unmounts at the animation's end. Reduced motion: it fades in and out in
+  place, same length.
+- **Cost**: no listener while idle besides one `keydown` on the page; CSS transitions on
+  `transform`, `opacity` and `translate` only. The things load a line-sized file; the larger ones,
+  the other takes and the hidden photos load once someone plays with the frame (a pointer over it,
+  focus in it, a touch), when `sizes` switches to the grown size.
+- **Reduced motion**: things still grow (it is how they are read), at once, with no travel for
+  what they hide; no slap, no shake. **No JavaScript**: hover and focus grow them from CSS alone;
+  taps, takes and the Konami code need the script.
+
 ---
 
 ## 3. Tokens (`src/design/tokens.css`)
@@ -606,6 +648,8 @@ GSAP code uses the same values (`expo.out`, `power4.out`) and durations within �
 | Shake | `src/design/motion.css` (`.is-shaking`) | A refusal: 8 px each way, then 6 px, 280 ms (§2.7). Replay by removing and re-adding the class; none under reduced motion. |
 | Rise | `src/design/motion.css` (`data-reveal="rise"`) | A reveal for a heading and its lede: 12 px out of a 3 px blur, 500 ms, 40 ms apart (§2.7). |
 | Page slide | `src/design/motion.css` (`::view-transition-old/new(root)`), `index.html` | The root of every page change slides 8 px, forward or `back` (§2.7). |
+| Peek room | `src/components/ui/motion/usePeekRoom.ts` | Writes `--peek-dx` / `--peek-dy` on every `[data-peek]` in a frame, the shift that keeps it inside the frame's content box once it grows by its `--peek-scale`, with `--peek-tag` px for its tag (§2.9). Reads layout on mount, on resize, when the fonts arrive and when its `version` changes. |
+| Key sequence | `src/components/ui/motion/useKeySequence.ts` | Calls back when the last keys pressed on the page are a given sequence (the Konami code, §2.9); keys typed into fields never count. One `keydown` listener. |
 | Reduced-motion hook | `src/components/ui/motion/useReducedMotion.ts` | Live `prefers-reduced-motion` value for effects (never for markup). |
 | GSAP on demand | `src/components/ui/motion/gsap.ts` | `loadGsap()` / `prefetchGsap()`: GSAP is a separate chunk fetched on idle or first use. Closed and resting states live in CSS so nothing waits for it. |
 | View transitions | `src/design/motion.css` | `@view-transition { navigation: auto }` and the named elements. |

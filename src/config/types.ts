@@ -96,7 +96,20 @@ export type CutoutId =
   | 'barcode'
   | 'skull'
   | 'ipod'
-  | 'jorge';
+  // Sobre mí (ADR-004, 2026-11-19): Jorge, the things in his sentence and what they hide.
+  | 'jorge-sitting'
+  | 'jorge-laughing'
+  | 'jorge-smiling'
+  | 'jorge-looking'
+  | 'jorge-tongue'
+  | 'cheque'
+  | 'badge'
+  | 'vds'
+  | 'godzilla'
+  | 'gundam'
+  | 'gundam-valencia'
+  | 'peppers'
+  | 'gordale';
 
 export interface Cutout {
   /** The smallest file; `srcSet` lists every width. */
@@ -226,5 +239,27 @@ export interface Milestone {
   title: string;
   org: string;
   kind: 'education' | 'community' | 'work' | 'talk' | 'projects';
+}
+
+/* ---- Sobre mí, the page (ADR-004) ---------------------------------------------- */
+
+/** One of Jorge's things, set right after the word it stands for in his sentence. */
+export interface AboutThing {
+  /** The cut-out shown in the sentence. */
+  cutout: CutoutId;
+  /** What it is, where and when: the button's name, and the tag shown when it is picked up. */
+  caption: string;
+  /** A second cut-out that only comes out when the thing is picked up. */
+  hidden?: CutoutId;
+}
+
+/** A run of the sentence: plain words, or a word with its thing after it. */
+export type AboutRun = string | { words: string; thing: AboutThing };
+
+/** One take of Jorge from the cover's afternoon (the easter egg cycles them). */
+export interface AboutTake {
+  cutout: CutoutId;
+  /** Read by assistive technology, and shown in the tag. */
+  caption: string;
 }
 

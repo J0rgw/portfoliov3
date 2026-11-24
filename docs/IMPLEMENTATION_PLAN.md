@@ -402,7 +402,10 @@ These are kept **off the site** until confirmed:
    repo allowed? (Designer field: "Uncarving".)
 2. **Atlaxia**: several public repos (corporate site, SCADA dashboard demo) and `client-leads`
    modules reference ATLAXIA. Should it appear, and what is the relationship (client, employer,
-   co-founder)? `client-leads` is described without naming the company until then.
+   co-founder)? `client-leads` is described without naming the company until then. 2026-11-19:
+   Jorge supplied the Santander X cheque for Sobre mí and his CV, updated that day, says
+   "Software Engineer (Freelance), Founding Team" (an earlier version said co-founder), so the
+   home names it ("estoy en el equipo fundador de ATLAXIA"); the wording is Q69.
 3. **Mathgeon context**: was it academic (course, hackathon)? It is described as a two-person
    project with Jorge's own share, from the commit history.
 4. **Services not evidenced yet**: WordPress / WooCommerce, booking systems. Not advertised.
@@ -575,6 +578,27 @@ These are kept **off the site** until confirmed:
 62. **Which releases the gallery holds** (answered 2026-11-12: Jorge chooses, with the
     `featured` flag in `config/projects.ts`, not the dates). Set to the first three of his
     earlier `order` (MoneyMan, Client Leads, Mathgeon) until he names his three.
+63. ~~**The sentence**~~: answered 2026-11-19 by Jorge: "¡Hola! Soy Jorge, programo desde
+    Murcia," and the rest as drafted, Godzilla changed to travelling ("viajes", the noun the list
+    needs, for his "traveling/viajando"). The ATLAXIA clause is Q69.
+64. ~~**The Gundam photo**~~: answered 2026-11-19: his own photos replaced `IMG_6337.jpg`
+    (`IMG_6418` and `IMG_6420`, Valencia, 2026-09-05).
+65. ~~**Credits his CV disagrees with**~~: answered 2026-11-19: his updated CV is the source
+    (`~/Desktop/docs importantes/Jorge_Arcas_CV.docx.pdf`), Grupo Fuertes as an internship. The
+    credits show the degree in progress and the DAW; the v2 site's 2021 – 2023 left them.
+66. **Two photos left out for want of a caption**: `IMG_7597`, beside the Android robot at a
+    Google event (which one? the DevFest 2025 talk?), and `IMG_7598`, prints of a graduation
+    photo (the DAW?). Either could join the chapter once named.
+67. ~~**Sobre mí in the header**~~: moot since Q68; the page is gone.
+68. ~~**The home's Sobre mí**~~: answered 2026-11-19 by Jorge: everything about him on the home,
+    at first glance, no teaser; `/sobre-mi/` and "Más sobre mí" removed.
+69. **ATLAXIA's wording**: his CV says "Software Engineer (Freelance), Founding Team"; he did not
+    know what to say about it, so the sentence says "estoy en el equipo fundador de ATLAXIA" and
+    the credits "Ingeniero de software freelance, ATLAXIA, equipo fundador". Confirm or rewrite;
+    and whether its work belongs in Proyectos.
+70. **His photos of others' characters**: Godzilla's head in Shinjuku and the Gundam in Valencia
+    are statues photographed in public, shown as his souvenirs; the VDS hall is his photo of the
+    venue. Low risk for a personal portfolio; say if any should go.
 
 ---
 
@@ -1330,3 +1354,34 @@ barcode and catalog number).
   and 96 px at 390 × 844 on the home, 128 px on a case study.
 - Height of the back cover and footer together: home 1,020 → 962 px at 1512 × 734 and 1,237 → 876
   px at 390 × 844; a case study 777 → 619 and 1,255 → 832 px.
+
+## Sobre mí, told in his own things — 2026-11-19
+
+[ADR-004](adr/ADR-004-about-page.md). Jorge asked for a more interesting about, "telling more
+without writing more", from a folder of his photos (what he did this year, his interests:
+agriculture, Gundam, Godzilla, Japan, the VDS), every photo audited, built on the references,
+memorable, with easter eggs. Built first as `/sobre-mi/` with a teaser on the home; the same day
+he asked for all of it on the home, answered Q63–Q65 and Q68 and sent his updated CV.
+
+- The folder: 39 files moved from `public/images/me/` to `private/originals/me/` first (144 MB
+  copied into every build, twelve with GPS positions), then his two Gundam photos from
+  `public/images/`. Audited one by one in the ADR: thirteen of 41 used, seven only when someone
+  plays.
+- Home: Sobre mí is one sentence in his words with his things between them (cheque, badge,
+  Godzilla for "viajes", his Gundam, bucket), picked up in place with their captions; Jorge as on
+  the cover, in colour, the words wrapping round him. Créditos follows, from his updated CV.
+  The pass's portrait and the paragraph went; so did `/sobre-mi/`, its metadata, its JSON-LD and
+  its menu and footer entries.
+- Easter eggs: the cover's other takes, the photo behind the cover, Godzilla's roar and who looks
+  up at it, the VDS hall behind the badge, the Gundam's building behind it, the Konami code, the
+  console's "Cara B".
+- Code: `sections/About` (rebuilt), `sections/AboutCredits`, `ui/motion/useKeySequence`,
+  `ui/motion/usePeekRoom`; `config/about.ts` (`aboutChapter`, `aboutHiddenTrack`, `konamiCode`,
+  the milestones and instruments from the CV); thirteen cut-outs (the pass's `jorge` retired);
+  `scripts/lift-subject.swift`, `scripts/prepare-about-art.py`.
+- Measured against the last commit: home 3,448 → 4,259 px at 1512 × 734 and 3,831 → 4,853 px at
+  390 × 844; images landing on Sobre mí 224 → 256 kB (1×), 360 → 516 kB (2×), 360 → 435 kB (3×);
+  main script 109.1 → 112.0 kB gzip. No horizontal overflow from 320 to 1920 px; light, dark,
+  reduced motion, without JavaScript, mouse, keyboard and touch. Typecheck, architecture, config,
+  build (11 pages) and SEO pass.
+- Open: Q66, Q69, Q70.
