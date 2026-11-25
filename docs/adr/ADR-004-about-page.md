@@ -97,8 +97,9 @@ photos, a timeline with pictures, any card or paper behind the copy (ADR-001).
 - Godzilla picked up by hand roars (the site's shake), and Jorge, shading his eyes on Odaiba,
   steps in front of its jaws to look up at it.
 - The badge hides the VDS hall; the Gundam hides its photo with the building behind it.
-- The Konami code (↑ ↑ ↓ ↓ ← → ← → B A) brings his face in from the bottom of the window, tongue
-  out, for about three seconds.
+- The Konami code (↑ ↑ ↓ ↓ ← → ← → B A) brings his face, tongue out, popping out of the window's
+  bottom-right corner for about three seconds, the side his photo was cut on against the window's
+  edge (2026-11-25, at his request; it used to stop short of the edge).
 - The console, after the site's hidden track: "Cara B de Sobre mí", his four favourite films in
   their Spanish titles, and a hint for the Konami code.
 

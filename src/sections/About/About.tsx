@@ -252,7 +252,8 @@ export function About() {
         </div>
       </div>
 
-      {/* For whoever types the Konami code: he looks in from the bottom of the window. */}
+      {/* For whoever types the Konami code: he pops out of the window's bottom-right corner,
+          the side his photo was cut on against the window's edge. */}
       {tongueOut && (
         <span
           className="about__tongue"

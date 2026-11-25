@@ -324,23 +324,28 @@
 
 /* ---- The Konami code ------------------------------------------------------------------ */
 
-/* He looks in from the bottom of the window, then goes. Decorative and brief. */
+/* He pops out of the window's bottom-right corner, then goes back into it (2026-11-25, Jorge:
+   "it looks like it pops out of the corner"). The photo is cut by its own frame at its right
+   side and its foot: that side lies against the window's right edge, a little past it so its
+   paper margin hides there, and he swings up on that corner. Decorative and brief. */
 .about__tongue {
+  --tongue-w: min(14rem, 40vw);
   position: fixed;
-  right: max(var(--margin), 6vw);
+  right: calc(var(--tongue-w) * -0.03);
   bottom: 0;
   z-index: var(--z-header);
-  width: min(14rem, 40vw);
+  width: var(--tongue-w);
+  transform-origin: 100% 100%;
   pointer-events: none;
   animation: tongue-out 2.8s var(--ease-in-out) both;
 }
 
 @keyframes tongue-out {
-  0% { translate: 0 105%; rotate: 9deg; }
-  16% { translate: 0 14%; rotate: -4deg; }
+  0% { translate: 0 105%; rotate: 16deg; }
+  16% { translate: 0 14%; rotate: -3deg; }
   24% { translate: 0 18%; rotate: 0deg; }
   82% { translate: 0 18%; rotate: 0deg; }
-  100% { translate: 0 105%; rotate: 6deg; }
+  100% { translate: 0 105%; rotate: 12deg; }
 }
 
 @media (prefers-reduced-motion: reduce) {

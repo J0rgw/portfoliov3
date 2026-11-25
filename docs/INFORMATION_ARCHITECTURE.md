@@ -300,8 +300,8 @@ the page's h1, with Proceso after it
   button too: each tap brings another take of the cover's afternoon, its caption swapping
   (`useTextSwap`); pointed at or focused, the photo he was cut from comes out behind him.
 - Easter eggs (nothing depends on them): the takes, the photo behind the cover, Godzilla's roar
-  (the shake) when picked up by hand, the Konami code (`useKeySequence`: his face, tongue out, in
-  from the bottom of the window for 2.8 s), and the console's "Cara B de Sobre mí" after the
+  (the shake) when picked up by hand, the Konami code (`useKeySequence`: his face, tongue out, popping
+  out of the window's bottom-right corner for 2.8 s), and the console's "Cara B de Sobre mí" after the
   site's hidden track (his four favourite films, a hint for the code).
 - References: The Romans (type with an object inside the statement), Kyoosang Choi (his own
   artefacts, a hand holding one), Gianluca Boccia (one plain sentence, whole without animation),

@@ -579,10 +579,11 @@ plays.
   new outline (user-initiated, so no layout-shift penalty) and the caption swaps (`useTextSwap`,
   §2.6). Pointed at or focused, the photo he was cut from slides out behind him (`translate` and
   `rotate`, `--dur-lift`) with his caption.
-- **The Konami code** (`useKeySequence`, any page focus but a field): his face rises from the
-  bottom of the window, tilts and settles, holds and drops back (`tongue-out`, 2.8 s,
-  `--ease-in-out`), then unmounts at the animation's end. Reduced motion: it fades in and out in
-  place, same length.
+- **The Konami code** (`useKeySequence`, any page focus but a field): his face pops out of the
+  window's bottom-right corner (2026-11-25, Jorge's request), the side his photo was cut on just
+  past the window's right edge, swinging up on that corner (`transform-origin` at its bottom right:
+  16° to −3° to rest), holds and drops back (`tongue-out`, 2.8 s, `--ease-in-out`), then unmounts
+  at the animation's end. Reduced motion: it fades in and out in place, same length.
 - **Cost**: no listener while idle besides one `keydown` on the page; CSS transitions on
   `transform`, `opacity` and `translate` only. The things load a line-sized file; the larger ones,
   the other takes and the hidden photos load once someone plays with the frame (a pointer over it,
