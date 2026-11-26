@@ -26,8 +26,10 @@ const sizesAt = (wide: number, narrow: number) => (id: CutoutId, share = 1) =>
 const restSizes = sizesAt(REST_WIDE, REST_NARROW);
 const peekSizes = sizesAt(PEEK_WIDE, PEEK_NARROW);
 
-/** Jorge stands as tall as the frame allows (About.css): his width follows. */
-const JORGE_SIZES = '(min-width: 1024px) and (orientation: landscape) calc(min(64vh, 34rem) * 0.55), 46vw';
+/** Jorge stands as tall as the frame allows (About.css): his width follows. On phones he is
+ *  a third of the screen's height, beside the greeting. */
+const JORGE_SIZES =
+  '(max-width: 639px) calc(min(30vh, 15rem) * 0.55), (min-width: 1024px) and (orientation: landscape) calc(min(64vh, 34rem) * 0.55), 46vw';
 
 const chapter = chapterById('sobre-mi');
 
@@ -112,7 +114,10 @@ function Thing({ thing, index, primed, open, onToggle }: ThingProps) {
  * sentence in his words, signed, set big (The Romans: type with things between the
  * words); every thing in it is his own (Kyoosang Choi), so the photos say what the words
  * leave out. Jorge sits beside it as on the album's cover, in colour, and the words wrap
- * round him. Easter eggs for whoever plays: more takes of the cover's afternoon, Godzilla's
+ * round him. On phones the sentence is cut after its greeting (2026-11-26): the greeting is
+ * a headline beside his photo and the rest runs at full width underneath, so nothing wraps
+ * round him there (About.css); everywhere else the greeting is just the sentence's first
+ * words. Easter eggs for whoever plays: more takes of the cover's afternoon, Godzilla's
  * roar and who looks up at it, the Konami code, and a note in the console. The credits
  * follow (sections/AboutCredits). Contract: INFORMATION_ARCHITECTURE §3.
  */
@@ -224,6 +229,8 @@ export function About() {
           </button>
 
           <p className="about__statement" data-reveal="rise">
+            {/* No styles outside phones: it is the sentence's first words, inline. */}
+            <span className="about__greeting">{aboutChapter.greeting}</span>
             {aboutChapter.statement.map((run, index) => {
               if (typeof run === 'string') {
                 // Punctuation right after a thing went into its pair.

@@ -140,6 +140,12 @@ cover object, unchanged): Jorge's own hero disc reprinted for it, black with ATL
 symbol and wordmark, under the pressed disc's real hub, rim and wear, with its case study told
 in prose (IMPLEMENTATION_PLAN "ATLAXIA, the lead single"). Mathgeon moved to the cards. Checked at
 390, 768, 1024 and 1440 px in both themes, with reduced motion and without JavaScript.
+On 2026-11-26, at Jorge's request, Sobre mí on phones (under 640 px) lost the oversized portrait
+above the sentence: the sentence is cut after its greeting, which sits beside his photo as a
+headline while the rest runs at full width underneath (The Romans' type with an object, Boccia's one
+plain sentence; ADR-004 addendum). He chose it from rendered options measured at 320, 360, 393 and
+430 px over all three takes of his photo; tablets and desktop are unchanged (identical to the
+previous build at nine sizes in both themes).
 The same day, at his request, a case study's "Volver a proyectos" took A24's pen loop (#2) like
 every other link, its ← kept ([ADR-002](docs/adr/ADR-002-links-without-arrows.md), amendment).
 

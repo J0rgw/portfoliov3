@@ -12,8 +12,15 @@ import type { AboutRun, AboutTake, Milestone } from './types';
  * desarrollador full-stack en España. Construyo webs, aplicaciones y herramientas a
  * medida…"), quoted whole in the ADR.
  */
+
+/** The sentence's opening, kept apart from the rest so that on phones it can sit beside his
+ *  photo as a headline while the long part runs at full width underneath (ADR-004, 2026-11-26).
+ *  Everywhere else it is the sentence's first words, set inline: the two parts read as one. */
+const greeting = '¡Hola! Soy Jorge,';
+
+/** The rest of the sentence, from the space after the greeting. */
 const statement: AboutRun[] = [
-  '¡Hola! Soy Jorge, programo desde Murcia, estoy en el equipo fundador de ',
+  ' programo desde Murcia, estoy en el equipo fundador de ',
   { words: 'ATLAXIA', thing: { cutout: 'cheque', caption: 'Premio Santander X al Proyecto Emprendedor, 2026' } },
   ' y el resto del tiempo lo reparto entre ',
   { words: 'eventos', thing: { cutout: 'badge', hidden: 'vds', caption: 'DIATIC26 en Murcia y VDS 2026 en Valencia' } },
@@ -36,6 +43,7 @@ const takes: AboutTake[] = [
 
 export const aboutChapter = {
   heading: 'Sobre mí',
+  greeting,
   statement,
   takes,
   /** Completes the accessible name of Jorge's photo, which is a button. */

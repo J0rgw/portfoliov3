@@ -395,3 +395,42 @@
     padding-top: var(--space-2);
   }
 }
+
+/* ---- Phones: the greeting beside him, the rest at full width ------------------------------- */
+
+/* Below 640 px the sentence is cut after its greeting (About.tsx; ADR-004, 2026-11-26): "¡Hola!
+   Soy Jorge," is a headline beside his photo and the rest of the sentence runs under both at the
+   full width of the screen. Nothing wraps round him, so there is no zigzag along his outline and
+   no narrow column of words (the rest of the sentence is one straight-edged column). He floats
+   left against the screen's edge, a third of its height tall; the greeting is a block that sits
+   beside the float and is as tall as it is, its words centred on him, one to a line. Tablets,
+   landscape screens and desktop keep the layouts above: there the greeting is just the
+   sentence's first words, inline. */
+@media (max-width: 639px) {
+  .about__body {
+    --jorge-h: min(30svh, 15rem);
+  }
+
+  .about__jorge {
+    float: left;
+    height: var(--jorge-h);
+    /* The container's margin pulled back puts him against the screen's edge; then a gap before
+       the greeting. */
+    margin: 0 var(--space-4) 0 calc(var(--margin) * -1);
+    /* About.tsx sets his silhouette inline for the desktop float; here only the greeting sits
+       beside him, as a block that keeps clear of his box. */
+    shape-outside: none !important;
+  }
+
+  .about__greeting {
+    /* A block-level box beside a float (it keeps clear of the float's box), at least as tall as
+       him so the rest of the sentence starts under both. */
+    display: flex;
+    align-items: center;
+    width: min-content;
+    min-height: var(--jorge-h);
+    margin-bottom: var(--space-5);
+    font-size: var(--text-3xl);
+    line-height: 1.05;
+  }
+}

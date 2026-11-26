@@ -76,8 +76,9 @@ of his things stands right after the word it is for, a line high: the cheque, th
 the Gundam, the bucket. The words are general, the things are specific (the cheque prints the
 award, the badge his name), so the photos say what the words leave out. Jorge sits beside the
 sentence as on the album's cover, in colour, right after the cover itself, and on wide landscape
-screens the words wrap round his outline (`shape-outside`, his photo's own alpha); on phones and
-portrait screens he sits over the sentence. A thing pointed at, focused or tapped is picked up:
+screens the words wrap round his outline (`shape-outside`, his photo's own alpha); on tablets and
+portrait screens he sits over the sentence; on phones (under 640 px) see the 2026-11-26 addendum
+below. A thing pointed at, focused or tapped is picked up:
 it grows three times where it lies, its caption comes up under it in the page's inverted ink (the
 technology marks' tag), and what it hides comes out. Captions: "Premio Santander X al Proyecto
 Emprendedor, 2026", "DIATIC26 en Murcia y VDS 2026 en Valencia", "Shinjuku, Tokio, noviembre de
@@ -170,6 +171,47 @@ and are slapped down then (checked: opacity 0 at load, 1 once revealed).
   (budget 20), against the last commit.
 - `npm run typecheck`, `check:architecture`, `test:config` and `build` (11 pages, SEO checks)
   pass.
+
+## Addendum, 2026-11-26: the sentence on phones
+
+**Context.** Reported at 393 × 852 (iPhone 16): his photo was 336 px tall (39 % of the screen) and
+183 px wide above the sentence, leaving about 175 px empty beside it; the words started 448 px
+down. Measured over 320 to 600 px wide, the layout was only comfortable at 420 to 463 and 548 to
+600; worst at 364 to 390 (iPhone 12 to 15 at 390) because each word, its photo and its comma are
+kept together (`.about__pair`) and lines end early; and the inline photos made every line that
+held one about 10 px taller.
+
+**Decision.** Below 640 px the sentence is cut after its greeting (`aboutChapter.greeting`, then
+`statement`; no word changed). "¡Hola! Soy Jorge," is a headline (`--text-3xl`, one word per line)
+beside his photo, which floats left against the screen's edge at `min(30svh, 15rem)`; the rest runs
+under both at the full width of the screen. Nothing wraps round him, so there is no zigzag and no
+narrow column. It is one `<p>`: the greeting is an inline `<span>` with no styles outside phones,
+so tablets, landscape screens and desktop render exactly as before (checked, see below). His image
+`sizes` gained a phone clause (a third of the height, not 46vw).
+
+**Tried and dropped** (rendered over the real page at 320, 360, 393 and 430 wide, all three takes of
+his photo): his photo smaller above the sentence (the empty band stays); the sentence wrapping
+beside him, by box, by his outline (the browser's own `shape-outside: url()` lets words touch his
+head and arm below ~300 px tall, and clips the shape and its `shape-margin` to the margin box) and
+by outlines read from his photos' pixels (the left edge zigzags 4 to 15 px per line, and the column
+is about 230 px wide, so 1 to 4 lines have one word); a straight edge (calm, but the same narrow
+column). Moving the long part off his side is what removes both: 0 one-word lines and 0 overlaps
+at every width and take.
+
+**Measured** (dev server, Chromium, 2x). Chapter height at 393 × 852: 997 → 861 px; the words start
+at 88 px instead of 448. Heights at 320, 360, 393 and 430: 861, 881, 861 and 831 px (the
+alternative that wrapped beside him was 757 at 393: about 100 px less, with short lines). No
+horizontal overflow, no console errors. Desktop and tablet: the chapter at 1920 × 1080,
+1440 × 900, 1280 × 720, 1024 × 768, 1180 × 820, 1024 × 1366, 768 × 1024, 844 × 390 and 640 × 900,
+in both colour schemes, is byte-for-byte identical to the build before the change (18 of 18
+images); only 639 × 900 and below differ. `typecheck`, `check:architecture`, `test:config` and
+`build` (12 pages, SEO checks) pass.
+
+**Open.** The greeting ends with a comma and the rest starts in lower case, as in his sentence; a
+full stop and a capital would read more naturally as two blocks, but they are his words and were
+not changed. At 320 and 360 px a few lines of the long part stay short because of `.about__pair`
+(the tamed inline photos, 1.2 em aligned to the baseline with `line-height: 1.28`, clear them at
+393 and 430; not applied, awaiting his decision).
 
 ## Questions (plan §4)
 

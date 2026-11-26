@@ -286,7 +286,11 @@ the page's h1, with Proceso after it
   peppers. Each is a button named by its caption (what, where, when), so nothing it shows is only
   seen. Jorge sits beside the sentence as on the album's cover (the same photo, in colour, right
   after the cover itself); on wide landscape screens the words wrap round his outline
-  (`shape-outside`), elsewhere he sits beside the heading. No card, paper or rule. Removed by
+  (`shape-outside`), on tablets and portrait screens he sits over the sentence, and on phones
+  (under 640 px) the sentence is cut after its greeting: "¡Hola! Soy Jorge," is a headline beside
+  his photo (flush against the screen's edge, a third of its height) and the rest runs at full
+  width underneath, so nothing wraps round him there (`config/about.ts` `greeting` + `statement`;
+  one element, the greeting inline everywhere else). No card, paper or rule. Removed by
   ADR-004: the pass's portrait and the paragraph (quoted in the ADR). Removed by ADR-001: the
   backstage pass, the second and third paragraphs, the three principles and the milestones'
   detail lines.
