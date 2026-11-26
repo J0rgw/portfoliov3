@@ -12,16 +12,20 @@ for (const project of projectCatalog) {
   assert.ok(project.title && project.summary && project.overview.length && project.seo.description);
   assert.ok(existsSync(`public${project.assets?.social ?? `/images/og/${project.slug}.jpg`}`), 'Social artwork must exist');
 }
-// ADR-003: featured releases first, newest first within each group, `order` breaks ties.
+// ADR-003: the lead single first whatever its date (2026-11-25), then featured releases,
+// newest first within each group, `order` breaks ties.
 const source = [
-  { ...projectCatalog[0], id: 'older', slug: 'older', featured: false, date: '2025-01-01', order: 1 },
-  { ...projectCatalog[1], id: 'hidden', slug: 'hidden', featured: true, visible: false, date: '2027-01-01', order: 0 },
-  { ...projectCatalog[2], id: 'tie-b', slug: 'tie-b', featured: false, date: '2026-03-01', order: 20 },
-  { ...projectCatalog[3], id: 'tie-a', slug: 'tie-a', featured: false, date: '2026-03-01', order: 10 },
-  { ...projectCatalog[4], id: 'picked', slug: 'picked', featured: true, date: '2020-01-01', order: 30 },
+  { ...projectCatalog[0], id: 'older', slug: 'older', featured: false, lead: false, date: '2025-01-01', order: 1 },
+  { ...projectCatalog[1], id: 'hidden', slug: 'hidden', featured: true, lead: false, visible: false, date: '2027-01-01', order: 0 },
+  { ...projectCatalog[2], id: 'tie-b', slug: 'tie-b', featured: false, lead: false, date: '2026-03-01', order: 20 },
+  { ...projectCatalog[3], id: 'tie-a', slug: 'tie-a', featured: false, lead: false, date: '2026-03-01', order: 10 },
+  { ...projectCatalog[4], id: 'picked', slug: 'picked', featured: true, lead: false, date: '2020-01-01', order: 30 },
+  { ...projectCatalog[5], id: 'main', slug: 'main', featured: true, lead: true, date: '2019-01-01', order: 40 },
 ];
 const snapshot = JSON.stringify(source);
-assert.deepEqual(selectProjects(source).map((p) => [p.id, p.track]), [['picked', 1], ['tie-a', 2], ['tie-b', 3], ['older', 4]]);
+assert.deepEqual(selectProjects(source).map((p) => [p.id, p.track]), [['main', 1], ['picked', 2], ['tie-a', 3], ['tie-b', 4], ['older', 5]]);
+assert.ok(projectCatalog.filter((p) => p.lead).length <= 1, 'One lead single at most');
+assert.ok(projectCatalog.every((p) => !p.lead || p.featured), 'The lead single is in the gallery');
 assert.equal(JSON.stringify(source), snapshot, 'Selection must not mutate editorial data');
 assert.deepEqual(selectProjects([]), []);
 assert.deepEqual(selectProjects(source.map((p) => ({ ...p, visible: false }))), []);

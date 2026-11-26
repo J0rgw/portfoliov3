@@ -198,7 +198,12 @@ the stack as grey marks (mono chips where no mark exists). The keys sit under th
 the arrow's label sits at its tail, so it reads label, loop, disc (2026-11-09). Every release
 disc is a printed single (2026-11-09): a field, the title, and one of Jorge's cut-outs printed
 over it, like the photo in front of "ARCAS" on the hero cover; no rim credits, middots or
-track numbers on a disc. When the broken disc is selected, the phone hangs in beside it.
+track numbers on a disc. The lead single is the exception (ATLAXIA, 2026-11-25, Jorge's brief):
+the hero disc reprinted for it in the print black, ATLAXIA's symbol and wordmark in the print
+white where the JA mark and the name sit, the same small print, volume and halftone along the
+rim; an SVG print generated from ATLAXIA's own marks (`scripts/generate-atlaxia-print.py`) under
+the pressed disc's real hub, rim and wear, and a matching sleeve. When the broken disc is
+selected, the phone hangs in beside it.
 **One frame per chapter** (2026-11-10, [ADR-001](docs/adr/ADR-001-chapter-frames.md)). Every
 chapter after Projects is composed like Projects: one viewport-high frame on wide landscape
 screens (`clamp(40rem, 100svh, 64rem)`), the heading in the top-left corner at Projects'
@@ -265,7 +270,9 @@ evidence links, Servicios' enquiries and the home's and a case study's next trac
 Projects heading did until ADR-003 made it the h1 of the page it linked; the footer's full index
 and the case study's "Todos los proyectos" until the footer's deslop, 2026-11-16). Arrows that say something else stay:
 ↗ for a link that leaves the site, ← back, ↑ to the top, the gallery's keys and the arrows
-inside the oversized "Hablemos", "Avísame*" and "Escríbeme".
+inside the oversized "Hablemos", "Avísame*" and "Escríbeme". Since 2026-11-25 (Jorge's request)
+a case study's "Volver a proyectos" wears it too, its ← kept before the words and 12 px from
+them so the loop stays off the arrow.
 MarkerArrow renders the supplied raster stroke (and its generated dark-theme ink); HandCircle
 draws in `currentColor`, the accent in the gallery and round a link's words. Paper and Sticker are CSS treatments of live
 content, not claims of authentic scanned resources. Do not redraw supplied illustrations.

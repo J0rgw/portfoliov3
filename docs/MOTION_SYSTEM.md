@@ -539,7 +539,10 @@ CD-R), and chose the pen loop: `ui/LinkCue` round the link's words.
   clears the corners of the two lines.
 - **Where** (the Projects heading until ADR-003 made it the h1 of `/proyectos/`; the home's next track since then): Proceso's evidence links, Servicios' enquiries
   and the next track's title (the footer's full index and "Todos los proyectos" until the
-  footer's deslop, 2026-11-16). The link draws no underline of its own, which would double the line.
+  footer's deslop, 2026-11-16), and since 2026-11-25 a case study's "Volver a proyectos", whose
+  ← stays outside the loop: the gap after it went from 8 to 12 px, so the loop, which reaches
+  about 10 px past the words, passes 8 px from the arrow nudged back on hover (1 to 3 px at the
+  old gap). The link draws no underline of its own, which would double the line.
 - **Reduced motion**: the loop is there at once, undrawn (as in the gallery). **No JavaScript**:
   the same; the cue is CSS.
 - Cost: one SVG path per link, no script, no listener; the dash offset and the opacity are the

@@ -29,6 +29,7 @@ node scripts/generate-theme-variants.mjs   # dark-theme variants of the blue ras
 uv run scripts/prepare-about-art.py        # Sobre mí's sources from Jorge's photos (macOS: lifts with Vision via scripts/lift-subject.swift)
 uv run scripts/extract-cutouts.py          # key Jorge's cut-outs (private/originals/assets/, me/) into public/images/cutouts/
 uv run scripts/generate-disc-finish.py     # the printed discs' real hub, rim and wear (public/images/disc/)
+uv run scripts/generate-atlaxia-print.py   # ATLAXIA's disc and sleeve: the hero disc reprinted with its marks (needs private/originals/atlaxia/)
 ```
 
 `npm run build` fails if a referenced image or font is missing, or if any page lacks a title,
@@ -88,7 +89,8 @@ interaction thresholds are technical implementation, not editorial settings.
    architecture, decisions, outcome and evidence fields. Optional fields may be omitted.
 3. Put original images under `public/images/projects/<slug>/`. For custom packaging add
    `assets: { disc: { src, width, height }, sleeve: { src, width, height } }`; either artwork
-   falls back to the other. Without either, a neutral generated theme renders automatically.
+   falls back to the other (ATLAXIA's are SVG prints on CoverArt's 400 × 400 grid). Without
+   either, a neutral generated theme renders automatically.
 4. Add a 1200×630 social image at `public/images/og/<slug>.jpg` (or set `assets.social`).
    To generate it using existing tooling, run the client/SSR builds, `npm run og`, then the
    full build. `npm run og` needs playwright-core and local Chrome; no runtime dependency.
@@ -97,7 +99,8 @@ interaction thresholds are technical implementation, not editorial settings.
 
 Set `featured: true` to put a release in the gallery that opens `/proyectos/` (three of them;
 the rest follow as cards), and its `date` (when it went public, ISO) to place it newest first
-within its group; `order` only breaks ties. `visible` hides it, or remove the entry. Track
+within its group; `order` only breaks ties. `lead: true` on one featured release opens the
+gallery and the whole tracklist with it whatever its date (ATLAXIA, Jorge's main project). `visible` hides it, or remove the entry. Track
 numbers recalculate.
 Hiding removes its detail route from publication. Existing references to a removed/hidden
 release via projectHref land on the index. This is publication visibility, not access control.

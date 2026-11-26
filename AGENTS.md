@@ -41,6 +41,8 @@ Edit text in config, never JSX. **Do not hardcode project copy in components.**
 `projects.ts` is the single source for gallery, index, detail, menu, sitemap and SEO.
 Add a typed entry to `projectCatalog` with unique immutable `id`, unique URL-safe `slug`,
 `order`, `visible`, title/tagline/summary/overview, technology, credits, links and SEO.
+`featured` puts a release in the gallery; `lead` (one release, ATLAXIA since 2026-11-25) puts
+it first everywhere whatever its date.
 Optional evidence/case sections/artwork go on that same entry. Case-study sections are prose,
 one paragraph per string, in Castilian Spanish that does not read as translated: no bullet
 lists, numbered items or label-and-colon fragments, and nothing numbered on the page

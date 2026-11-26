@@ -575,9 +575,9 @@ These are kept **off the site** until confirmed:
 60. ~~Where the bonus lives~~: answered 2026-11-12, R: its own page, `/libreria/`, in the menu and
     the footer.
 61. ~~The gallery's size~~: answered 2026-11-12, R: three releases and the private disc.
-62. **Which releases the gallery holds** (answered 2026-11-12: Jorge chooses, with the
-    `featured` flag in `config/projects.ts`, not the dates). Set to the first three of his
-    earlier `order` (MoneyMan, Client Leads, Mathgeon) until he names his three.
+62. ~~**Which releases the gallery holds**~~ (answered 2026-11-12: Jorge chooses, with the
+    `featured` flag in `config/projects.ts`, not the dates). Answered 2026-11-25: ATLAXIA first
+    (the new `lead` flag), then MoneyMan and Client Leads; Mathgeon moves to the cards.
 63. ~~**The sentence**~~: answered 2026-11-19 by Jorge: "¡Hola! Soy Jorge, programo desde
     Murcia," and the rest as drafted, Godzilla changed to travelling ("viajes", the noun the list
     needs, for his "traveling/viajando"). The ATLAXIA clause is Q69.
@@ -599,6 +599,20 @@ These are kept **off the site** until confirmed:
 70. **His photos of others' characters**: Godzilla's head in Shinjuku and the Gundam in Valencia
     are statues photographed in public, shown as his souvenirs; the VDS hall is his photo of the
     venue. Low risk for a personal portfolio; say if any should go.
+71. **"The burned CD"**: read as the hero's printed CD (the one with his name and the JA mark),
+    reprinted for ATLAXIA in black with its white marks. If he meant the silver CD-R of the back
+    cover and the 404, say so: the print script and the disc's variant are the only things to change.
+72. **The words on ATLAXIA's disc**: the small print is atlaxia.es's headline, shortened
+    ("Tecnología para entender / sistemas industriales"), and the volume "Vol. 02 / 2026" (the
+    web's second version). Keep, or give his own.
+73. **Credits on ATLAXIA's case study**: David Palazón is named as atlaxia.es names him (Mathgeon
+    credits A31Nesta by handle; his is dpalazon-dev), and the split of the work is read from the
+    commits; whatever was done before version 2's initial commit (2026-10-08, by Jorge) is not in
+    the history. Confirm both. His title there, "CMO y desarrollo full-stack" on atlaxia.es, is
+    left out in favour of what he does (Q69).
+74. **The LinkedIn post**: its figures are on the case study, its images are not, and a project
+    has no field for a third link; say if the post should be linked (a `links.post` field) or its
+    breakdown shown.
 
 ---
 
@@ -1385,3 +1399,33 @@ he asked for all of it on the home, answered Q63–Q65 and Q68 and sent his upda
   reduced motion, without JavaScript, mouse, keyboard and touch. Typecheck, architecture, config,
   build (11 pages) and SEO pass.
 - Open: Q66, Q69, Q70.
+
+## ATLAXIA, the lead single — 2026-11-25
+
+Jorge asked for atlaxia.es as his main project, the first disc, with Mathgeon moved to the cards
+below, the disc made from "the burned cd" with ATLAXIA's logo and name, black with the logo white,
+and the context in Spanish ("i'll retouch everything later on if needed"). Sources: atlaxia.es,
+`J0rgw/AtlaxiaBussinessWeb` and his LinkedIn post of 2026-11-18 with its twelve-image breakdown.
+
+- Order: `Project.lead` (one featured release) sorts before everything; ATLAXIA is track 01 in the
+  gallery, the tracklist, the home's next track and the social cards; MoneyMan and Client Leads
+  follow; Mathgeon is no longer featured: track 06, among the cards.
+- The disc: the hero disc's layout reprinted for ATLAXIA, its symbol and wordmark in the print
+  white on the print black, small print and volume in Poppins outlines, the halftone along the rim;
+  `scripts/generate-atlaxia-print.py` writes `public/images/projects/atlaxia/disc.svg` (15.1 kB,
+  5.5 kB gzip) and `sleeve.svg` from ATLAXIA's SVGs (`private/originals/atlaxia/`). The pressed
+  disc puts its real hub, rim and wear over it. CoverArt's artwork image now honours `loading`.
+- The case study, in prose and sourced (IA §6): what ATLAXIA is, the brief of version 2, who did
+  what by commit (Jorge's version 1, the base, the illustrations and the first performance fix;
+  David Palazón's scenes engine, chapters, team and the audit), the architecture, the performance
+  work and its figures. Evidence: three captures of atlaxia.es (browser and phone frames), the
+  inheritance fix as code, the deploy as a diagram. Next.js joins the stack marks (Devicon, with a
+  dark file). Social cards regenerated: every track moved by one.
+- Measured on `vite preview` (uncompressed), against the last commit: `/proyectos/` at 1440 × 900
+  31 → 33 requests, 422.6 → 450.6 kB (images 180.6 → 205.3 kB); at 390 × 844 (3×) 26 → 27 requests,
+  422.4 → 431.4 kB; the case study's first load 287.5 kB (MoneyMan's 282.5); `/proyectos/` at
+  1512 × 734 2,556 → 3,103 px (four cards, two rows); main script 111.9 → 115.1 kB gzip (the copy).
+  No horizontal overflow at 390, 768, 1024 and 1440 px; light and dark; reduced motion; without
+  JavaScript the disc and its links are in the HTML; no console errors. Typecheck, architecture,
+  config (with the lead's ordering), assets, build (12 pages, 11 in the sitemap) and SEO pass.
+- Open: Q71–Q74, and Q69 still.

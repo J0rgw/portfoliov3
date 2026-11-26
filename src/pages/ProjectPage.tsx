@@ -7,6 +7,7 @@ import Disc from '../components/cd/Disc/Disc';
 import Evidence from '../components/editorial/Evidence/Evidence';
 import StackMarks from '../components/editorial/StackMarks/StackMarks';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from '../components/ui/Icon/Icon';
+import LinkCue from '../components/ui/LinkCue/LinkCue';
 import NextTrack from '../components/editorial/NextTrack/NextTrack';
 import { chapterById } from '../config/navigation';
 import { galleryProjects, nextProject, projectBySlug, projectHref } from '../config/projects';
@@ -106,10 +107,12 @@ export function ProjectPage({ slug }: { slug: string }) {
       <header className="case-cover" data-ground="paper">
         <div className="container case-cover__grid">
           <div className="case-cover__text">
-            {/* One way back (the breadcrumb trail lives in the page's JSON-LD). */}
+            {/* One way back (the breadcrumb trail lives in the page's JSON-LD). The
+                ← says which way; its words circle like every other link's
+                (LinkCue, Jorge, 2026-11-25). */}
             <a className="case-back" href={backHref}>
               <ArrowLeft size={16} aria-hidden="true" />
-              {ui.actions.backProjects}
+              <LinkCue>{ui.actions.backProjects}</LinkCue>
             </a>
             <h1 id="case-title" className="case-cover__title enter enter--still">
               {project.title}

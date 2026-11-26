@@ -5,11 +5,122 @@ import type { PrivateWork, Project, ProjectSummary } from './types';
  * Releases and their case studies.
  *
  * Every statement below comes from the project's public README, its commit
- * history or the repository contents (checked 2026-10-26). If you add a claim,
- * add its source to docs/INFORMATION_ARCHITECTURE.md §6. No invented metrics,
- * clients, quotes or outcomes.
+ * history or the repository contents (checked 2026-10-26); ATLAXIA's also from
+ * atlaxia.es and Jorge's LinkedIn post of 2026-11-18 with its image breakdown
+ * (checked 2026-11-25). If you add a claim, add its source to
+ * docs/INFORMATION_ARCHITECTURE.md §6. No invented metrics, clients, quotes or
+ * outcomes.
  */
 export const projectCatalog: Project[] = [
+  {
+    id: 'atlaxia',
+    slug: 'atlaxia',
+    order: 0,
+    visible: true,
+    featured: true,
+    lead: true,
+    // The hero disc reprinted for ATLAXIA (scripts/generate-atlaxia-print.py).
+    assets: {
+      disc: { src: '/images/projects/atlaxia/disc.svg', width: 400, height: 400 },
+      sleeve: { src: '/images/projects/atlaxia/sleeve.svg', width: 400, height: 400 },
+    },
+    title: 'ATLAXIA',
+    tagline: 'La web de una empresa de software industrial, con escenas isométricas que avanzan con el scroll',
+    summary:
+      'La web de ATLAXIA, una spin-off de la UCAM que hace software para entender qué ocurre en una planta industrial y en cuyo equipo fundador estoy. La versión actual la hicimos entre dos, y en Lighthouse saca 99 de rendimiento en móvil y 100 en escritorio.',
+    projectType: 'team',
+    typeLabel: 'Web corporativa',
+    role: 'Primera versión, base de la segunda, ilustraciones isométricas y despliegue',
+    team: ['Jorge Arcas', 'David Palazón'],
+    status: { kind: 'working', label: 'Publicada en atlaxia.es' },
+    year: '2026',
+    date: '2026-05-05',
+    technologies: ['Next.js 16', 'React 19', 'TypeScript', 'CSS Modules', 'Lenis', 'Storybook', 'Vitest', 'Playwright', 'Caddy', 'GitHub Actions'],
+    services: ['web', 'frontend'],
+
+    overview: [
+      'ATLAXIA hace software para ver lo que ocurre en una planta, entender por qué y decidir a tiempo. Empieza por las plantas de agua, y todo funciona en un equipo instalado en la propia planta, así que los datos no salen de ella.',
+      'Su web tiene que contarlo a quien opera una planta, pero también a la universidad, a posibles socios y a inversores. Lo hace con escenas: ilustraciones isométricas que se van montando a medida que bajas y que cuentan de dónde parte la empresa y hacia dónde va. Está en español y en inglés.',
+    ],
+    context: [
+      'ATLAXIA nació en la UCAM. Su tecnología viene de TRUEDATA, un proyecto de la compra pública precomercial de INCIBE que se probó en tres instalaciones reales de agua, y hoy está en fase de comercialización.',
+      'Estoy en su equipo fundador; allí desarrollo la plataforma y llevo el marketing, la estrategia comercial y la relación con los clientes.',
+    ],
+    challenge: [
+      'La empresa tenía que explicar algo abstracto, cómo se comporta una planta y cuándo se sale de lo normal, a gente que no tiene por qué saber qué es una red neuronal de grafos. Tampoco podía presentarse como su primer producto: la web debía contar antes qué es ATLAXIA y por qué existe, y estar preparada para pasar de «Qué estamos construyendo» a un catálogo de productos sin rehacer su identidad.',
+    ],
+    goals: [
+      'Ninguna afirmación podía ir sin una prueba visual al lado, ni ningún movimiento estar ahí solo para adornar: las animaciones tenían que explicar, orientar o responder a algo, y nada de los recursos de siempre de las empresas de inteligencia artificial. La web debía poder usarse con teclado y con el movimiento reducido, ir ligera en el móvil y tener el español y el inglés separados de los componentes, que se desarrollaron aislados en Storybook para poder sacarlos algún día a una librería propia.',
+    ],
+    responsibilities: [
+      'La primera versión, entre mayo y junio de 2026, la hice yo solo: una landing en Next.js publicada en GitHub Pages con el dominio de la empresa. En la segunda monté la base que subí al repositorio en octubre y diseñé las ilustraciones isométricas de Visión con un generador propio, junto con el reproductor que las hace avanzar con el scroll, sus tests y la primera corrección de rendimiento; también llevé el relato de la empresa a Qué hacemos, ajusté la galería del equipo y la navegación y preparé el despliegue que sustituyó a la web anterior.',
+      'De David Palazón, CTO de ATLAXIA, son el motor de escenas coreografiadas, las portadas de capítulo, Quiénes somos, el equipo y El producto hoy, la revisión de fluidez del 17 de octubre y la auditoría responsive con sus diecisiete correcciones.',
+    ],
+    architecture: [
+      'Es una exportación estática de Next.js 16 con React 19 y TypeScript, estilos en CSS Modules y Lenis para el scroll con inercia. Los componentes viven aislados en Storybook, con su complemento de accesibilidad, y se prueban con Vitest y Testing Library; los textos en español y en inglés tienen exactamente las mismas claves, y un test lo comprueba.',
+      'Las ilustraciones no se dibujan a mano. Un generador en Node compone cada escena a partir de piezas, como la placa sobre la que se apoya la maqueta, las válvulas, los soportes o los instrumentos que lee ATLAXIA, y exporta un SVG y su línea de tiempo en JSON; en la web, un reproductor las pide cuando la página está ociosa y las hace avanzar con el scroll.',
+      'Cada push a main lanza un job de GitHub Actions que entra por SSH en el servidor, ejecuta el contenedor de build y recarga Caddy, que sirve los archivos con compresión zstd. Todas las peticiones de la home van a atlaxia.es, y la página no escribe cookies ni almacenamiento local.',
+    ],
+    decisions: [
+      'Cuando las escenas daban tirones al hacer scroll rápido, medimos antes de tocar nada. Las trazas de Chrome, con una pantalla de móvil y la CPU cuatro veces más lenta, señalaron cinco causas; la principal era que la variable de progreso se heredaba, así que en cada frame se recalculaba el estilo de los 3.275 elementos de la primera escena. Al dejar de heredarla, el recálculo de estilo de todo el recorrido bajó de 1.426 a 588 ms.',
+      'Las máscaras SVG de las líneas animadas se componían en cada repintado aunque la línea ya estuviera dibujada; ahora la máscara de cada línea solo existe mientras se dibuja. También dejamos de cargar ilustraciones a mitad de escena, que provocaba frames de más de cien milisegundos: se piden con la página ociosa y entran una a una, ya colocadas.',
+      'Para que ninguna corrección rompiera otra cosa, cada una tiene sus tests, como el que comprueba que todas las escenas se miden antes de que ninguna publique su progreso o el que exige que las ilustraciones lleguen en orden. La maquetación pasó además por una auditoría con Playwright de unas 650 capturas, de 320 × 568 a 2560 × 1440 píxeles, en los dos idiomas, con el movimiento reducido y solo con teclado; encontró diecisiete incidencias.',
+    ],
+    outcome: [
+      'La segunda versión se publicó en atlaxia.es en octubre de 2026 y sustituyó a la primera. En Lighthouse 13.6, la home saca 99 de rendimiento en móvil y 100 en accesibilidad, buenas prácticas y SEO, y en escritorio 100 en las cuatro categorías; el LCP queda en 1,4 segundos en móvil y en 0,3 en escritorio.',
+      'Ningún frame pasa ya de 50 ms al recorrer las escenas, cuando antes lo hacían veintisiete, y las veintidós tareas largas del principio han desaparecido. Lo que queda, unos 33 ms por frame con la CPU cuatro veces más lenta, es el coste de pintar miles de trazados que cambian con el scroll; bajar de ahí exigiría ilustraciones con menos elementos.',
+    ],
+    evidence: [
+      {
+        kind: 'image',
+        src: '/images/projects/atlaxia/hero-desktop.webp',
+        width: 1440,
+        height: 900,
+        alt: 'Portada de atlaxia.es en escritorio: el símbolo de ATLAXIA trazado como un plano técnico y el titular «Tecnología para entender sistemas industriales complejos».',
+        caption: 'La portada en escritorio. Captura del sitio publicado (noviembre de 2026).',
+      },
+      {
+        kind: 'image',
+        src: '/images/projects/atlaxia/water-scene.webp',
+        width: 1440,
+        height: 900,
+        alt: 'Escena «Empezamos por el agua»: la maqueta isométrica de una planta de agua, con un depósito, una bomba y tuberías, y líneas azules discontinuas que unen sus sensores.',
+        caption: 'Una de las escenas isométricas, a mitad de recorrido; las líneas discontinuas son las relaciones entre sensores. Captura del sitio publicado.',
+      },
+      {
+        kind: 'image',
+        src: '/images/projects/atlaxia/hero-mobile.webp',
+        width: 390,
+        height: 844,
+        alt: 'La portada de atlaxia.es en un móvil, con la barra de navegación abajo.',
+        caption: 'En el móvil, la navegación baja a una barra inferior. Captura del sitio publicado.',
+      },
+      {
+        kind: 'code',
+        title: 'El progreso deja de heredarse',
+        language: 'css',
+        code: '.frame {\n  --scene-progress: initial;\n}\n\n@property --parallax-t {\n  syntax: "<number>";\n  inherits: false;\n  initial-value: 0;\n}',
+        caption: 'La figura deja de heredar el progreso de la escena, y el de cada capa se registra como no heredado. Del repositorio.',
+      },
+      {
+        kind: 'diagram',
+        title: 'De un push a atlaxia.es',
+        steps: [
+          { label: 'Push a main', detail: 'GitHub' },
+          { label: 'GitHub Actions', detail: 'Entra por SSH en el servidor' },
+          { label: 'Contenedor de build', detail: 'Exportación estática de Next.js' },
+          { label: 'Caddy', detail: 'Recarga y sirve con zstd' },
+        ],
+        caption: 'El despliegue, como lo describe el desglose en imágenes que publiqué en LinkedIn.',
+      },
+    ],
+    links: { repo: 'https://github.com/J0rgw/AtlaxiaBussinessWeb', live: 'https://atlaxia.es' },
+    seo: {
+      title: 'ATLAXIA, web de una spin-off industrial en Next.js',
+      description:
+        'Caso de estudio: la web de ATLAXIA, spin-off de la UCAM, con Next.js 16 y React 19, escenas isométricas ligadas al scroll y 99 de rendimiento en Lighthouse móvil.',
+    },
+  },
   {
     id: 'moneyman',
     slug: 'moneyman',
@@ -175,7 +286,8 @@ export const projectCatalog: Project[] = [
     slug: 'mathgeon',
     order: 3,
     visible: true,
-    featured: true,
+    // Out of the gallery since ATLAXIA took its place (2026-11-25): first of the earlier releases.
+    featured: false,
     assets: { label: ['skull'] },
     title: 'Mathgeon',
     tagline: 'Roguelite web para aprender matemáticas jugando',
@@ -449,15 +561,16 @@ export const privateWork: PrivateWork = {
 };
 
 /**
- * The order of the catalogue (ADR-003): the releases Jorge features first, as
- * the gallery shows them, then the rest; newest first within each, by the
- * date each went public, then `order`. Stable sorting never mutates the
- * editable catalogue. Tracks are derived, not IDs.
+ * The order of the catalogue (ADR-003): the lead single first (Jorge's main
+ * project, 2026-11-25), then the releases he features, as the gallery shows
+ * them, then the rest; newest first within each, by the date each went public,
+ * then `order`. Stable sorting never mutates the editable catalogue. Tracks are
+ * derived, not IDs.
  */
 export const selectProjects = (catalog: readonly Project[]) => catalog
   .filter((project) => project.visible)
   .slice()
-  .sort((a, b) => Number(b.featured) - Number(a.featured) || b.date.localeCompare(a.date) || a.order - b.order || a.id.localeCompare(b.id))
+  .sort((a, b) => Number(Boolean(b.lead)) - Number(Boolean(a.lead)) || Number(b.featured) - Number(a.featured) || b.date.localeCompare(a.date) || a.order - b.order || a.id.localeCompare(b.id))
   .map((project, index) => ({ ...project, track: index + 1 }));
 
 export const projects = selectProjects(projectCatalog);

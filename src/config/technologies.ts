@@ -13,8 +13,11 @@ export interface TechLogo {
  *  httpx (http-icon) and OpenSSH (ssh-icon): UXWing, free use, no attribution,
  *  redistribution not allowed; their -dark files swap black and white.
  *  yt-dlp: homarr-labs dashboard-icons (Apache-2.0); its original white
- *  prompt is the dark file, the light file prints it dark. */
+ *  prompt is the dark file, the light file prints it dark. Next.js (Devicon
+ *  "original", 2026-11-25): a black disc with a white N, so its -dark file
+ *  swaps the two. */
 const stackLogos: TechLogo[] = [
+  { src: '/images/logo/nextjs.svg', darkSrc: '/images/logo/nextjs-dark.svg', alt: 'Next.js' },
   { src: '/images/logo/bash.svg', darkSrc: '/images/logo/bash-dark.svg', alt: 'Bash' },
   { src: '/images/logo/git.svg', alt: 'Git' },
   { src: '/images/logo/sqlite.svg', darkSrc: '/images/logo/sqlite-dark.svg', alt: 'SQLite' },

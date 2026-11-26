@@ -138,7 +138,8 @@ Every chapter below must keep its contract when edited.
 ADR-003 (2026-11-12) it opens `/proyectos/`, its heading the page's h1
 - Purpose: prove capability through selected releases, handled like a collection of discs.
 - Content: one disc per featured release (three; Jorge chooses them with the `featured` flag,
-  Q61–Q62), then the private work as the last disc
+  Q61–Q62), the lead single first (`lead`, 2026-11-25: ATLAXIA, his main project, printed as the
+  hero disc reprinted in black and white with ATLAXIA's marks), then the private work as the last disc
   (2026-11-09, Jorge's brief): a photographed broken disc cut out on a transparent ground
   (`public/images/projects/private/broken-disc.webp`, from `private/originals/assets/f098…jpg`), no
   print, rim or stack; it opens the back cover, and its annotation reads "pregúntame"; on wide frames,
@@ -317,7 +318,7 @@ the page's h1, with Proceso after it
   it, focus in it, a touch).
 - Conversion: the header's "Hablemos"; then the home's next track ("Siguiente pista", Proyectos,
   with the gallery's first disc, `editorial/NextTrack`; "Lo que he construido, empezando por
-  MoneyMan, Client Leads y Mathgeon.", from the featured titles), then the back cover with LinkedIn
+  ATLAXIA, MoneyMan y Client Leads.", from the featured titles), then the back cover with LinkedIn
   and GitHub.
 
 **05 · Bonus track** (`src/sections/BonusTrack`); since ADR-003 the page `/libreria/` (Q60), its
@@ -438,7 +439,7 @@ never hard-code copy that a content editor would change.
 **Project schema** (`Project` in `types.ts`, abridged):
 
 ```ts
-id, slug, order, visible, featured, title, tagline, summary,
+id, slug, order, visible, featured, lead?, title, tagline, summary,
 projectType, typeLabel, role, team?, status: { kind, label }, year, date,
 technologies[], services[], assets?: { disc?, sleeve?, social? },
 overview[], context?[], challenge?[], goals?[], responsibilities?[],
@@ -447,7 +448,8 @@ outcome?[], evidence?: Evidence[], links: { repo?, live? }, seo: { title, descri
 ```
 
 `projectCatalog` is editable; `selectProjects` filters/sorts without mutation and derives track
-numbers: the featured releases first (`featured`, Jorge's choice: the gallery that opens
+numbers: the lead single first (`lead`, one featured release, Jorge's main project: ATLAXIA
+since 2026-11-25), then the featured releases (`featured`, Jorge's choice: the gallery that opens
 `/proyectos/`, three of them; the newest three if none is featured), then the rest, newest
 first within each by `date` (when the release went public, §6), `order` breaking ties (ADR-003).
 `projects`, `galleryProjects`, `earlierProjects`, `projectSummaries` (the gallery's discs and
@@ -484,7 +486,8 @@ guesses): "Contexto y problema" when neither `context` nor `challenge` exists, "
 without `responsibilities`, "Solución" without `architecture` and `decisions`, each saying
 "Pendiente de documentar." Today only Portfolio v2's "Mi papel" is pending. Every case study
 opens with "Volver a proyectos": `/proyectos/`, the gallery reopening on that disc, or, for a
-release that is not in the gallery, `/proyectos/#<slug>`, its card (ADR-003).
+release that is not in the gallery, `/proyectos/#<slug>`, its card (ADR-003); its ← stays and,
+since 2026-11-25, its words are the link cue (`ui/LinkCue`) like every other link's.
 
 **Gallery view** (`ProjectSummary`): derived id, slug, track, title,
 shortDescription (tagline), stack (first three technologies), year, href and optional assets.
@@ -526,7 +529,12 @@ claim. Anything unverified goes to "Open questions" in the implementation plan, 
 | Peppers and cucumbers in August; "el campo" | His photos, 2026-08-11 (a private place, not named); the brief names agriculture |
 | The album's cover photo was taken at Gordale Scar, Yorkshire | `IMG_6984.HEIC` is the same photo as the cover (compared 2026-11-19), GPS 54.072, -2.132, 2026-10-03 |
 | His four favourite films (Retrato de una mujer en llamas, La vida de Brian, Todo a la vez en todas partes, Nicky, la aprendiz de bruja), in the console | His Letterboxd favourites, screenshot 2026-07-27 |
-| When each release went public (the catalogue's order within the featured releases and the rest) | Each repository's first commit, GitHub API, checked 2026-11-12: myFinancesApp 2026-09-16, clientScrapper 2026-09-15, gitchangeUserCommand 2026-08-03, DiscoDescargas 2026-05-07, mathgeon 2025-05-03; Portfolio v2 by its stated 2023–2024 (its repository is a 2025-06-23 upload). ADR-003, proposed |
+| When each release went public (the catalogue's order within the featured releases and the rest) | Each repository's first commit, GitHub API, checked 2026-11-12: AtlaxiaBussinessWeb 2026-05-05 (checked 2026-11-25), myFinancesApp 2026-09-16, clientScrapper 2026-09-15, gitchangeUserCommand 2026-08-03, DiscoDescargas 2026-05-07, mathgeon 2025-05-03; Portfolio v2 by its stated 2023–2024 (its repository is a 2025-06-23 upload). ADR-003, proposed |
+| ATLAXIA: a UCAM spin-off whose technology comes from TRUEDATA (INCIBE's pre-commercial public procurement, tried in three real water installations), now commercialising; software to see what happens in a plant, understand why and decide in time; it starts with water, runs on equipment installed in the plant and the data never leave it; a graph neural network; Jorge in its founding team, developing the platform and handling marketing, commercial strategy and client relations | atlaxia.es, read 2026-11-25 (h1, hero, Quiénes somos, Equipo fundador). The site titles him "CMO y desarrollo full-stack"; the case study gives what he does, not the title (Q69) |
+| ATLAXIA's web: version 1 (2026-05-05 to 2026-06-30) by Jorge alone, a Next.js landing on GitHub Pages with the company's domain; version 2: its base (initial commit, 2026-10-08), the isometric illustrations with their generator, player and tests, the first performance fix (`--scene-progress: initial` and `@property --parallax-t`, 2026-10-13), the narrative moved to Qué hacemos, the team gallery and navigation adjusted, and the deploy that replaced version 1 (2026-10-21) are Jorge's commits; the choreographed scenes engine, chapter covers, Quiénes somos, Equipo, El producto hoy, the 2026-10-17 fluidity review and the responsive audit with its seventeen fixes are David Palazón's (CTO) | `J0rgw/AtlaxiaBussinessWeb` history, checked 2026-11-25: J0rgw 39 commits, dpalazon-dev 52; the README and docs/DECISIONES.md for the principles (claim plus visual proof, motion with a purpose, ES/EN, Storybook for a future library) |
+| ATLAXIA's web, figures: Lighthouse 13.6 (PageSpeed Insights, 2026-11-17) 99 performance on mobile and 100 for accessibility, best practices and SEO, 100 in all four on desktop, LCP 1,4 s and 0,3 s; frames over 50 ms 27 → 0 and long tasks 22 → 0 (mobile 390 × 844, CPU 4× slower, median of three runs, 2026-10-13); five causes; 3.275 elements restyled per frame; style recalculation 1.426 → 588 ms; masks only while a line draws; illustrations requested at idle (frames of 104–127 ms before); about 600 KB in 22 requests, all to atlaxia.es, no cookies or local storage; deploy by GitHub Actions over SSH, a build container and Caddy with zstd; 169 tests (Vitest, Testing Library); a Playwright audit of about 650 screenshots from 320 × 568 to 2560 × 1440, both languages, reduced motion and keyboard only, seventeen issues (2026-10-20); about 33 ms per frame left with the CPU 4× slower | Jorge's LinkedIn post of 2026-11-18 ("La nueva web de atlaxia.es alcanza 99 puntos…") and its twelve-image breakdown, read 2026-11-25 |
+| ATLAXIA's disc and sleeve: ATLAXIA's symbol and wordmark in the print white on the print black, the small print "Tecnología para entender / sistemas industriales" (atlaxia.es's h1, shortened), "Vol. 02 / 2026" (the web's second version, the case study's) | Jorge's brief, 2026-11-25 ("use the atlaxia logo and name to modify the burned cd and make the cd black and the logo white"); the marks are ATLAXIA's own SVGs (`J0rgw/AtlaxiaBussinessWeb`, `src/assets/brand/svg`), set by `scripts/generate-atlaxia-print.py` in the hero disc's layout |
+| Evidence: atlaxia.es's home on desktop and on a phone, and the "Empezamos por el agua" scene | Captured from the published site, 2026-11-25 (Playwright, Chrome, 1440 × 900 and 390 × 844 at 2×) |
 
 ---
 

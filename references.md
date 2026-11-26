@@ -135,6 +135,13 @@ statement, as the back cover already does; Kyoosang's own artefacts; Boccia's pl
 each picked up in place with the marks' tag (transitions.dev), Jorge beside it as on the cover,
 and the credits as A24's. Thirteen of his 41 photos are used. Checked from 320 to 1920 px in both
 themes, with reduced motion, without JavaScript, and by mouse, keyboard and touch.
+On 2026-11-25, at Jorge's request, ATLAXIA became the gallery's first disc (A24's disc as the
+cover object, unchanged): Jorge's own hero disc reprinted for it, black with ATLAXIA's white
+symbol and wordmark, under the pressed disc's real hub, rim and wear, with its case study told
+in prose (IMPLEMENTATION_PLAN "ATLAXIA, the lead single"). Mathgeon moved to the cards. Checked at
+390, 768, 1024 and 1440 px in both themes, with reduced motion and without JavaScript.
+The same day, at his request, a case study's "Volver a proyectos" took A24's pen loop (#2) like
+every other link, its ← kept ([ADR-002](docs/adr/ADR-002-links-without-arrows.md), amendment).
 
 Supporting resources: [SVGL](https://svgl.app/) (technology logos; the files in
 `public/images/logo/` follow that source), [Fontpair](https://fontpair.co/) (not needed, the

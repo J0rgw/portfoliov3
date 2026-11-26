@@ -1,5 +1,8 @@
 import { mediaThemes, type MediaTheme } from '../../../design/themes/media';
 const themes: Record<string, MediaTheme> = {
+  '/images/projects/atlaxia/hero-desktop.webp': mediaThemes.browser,
+  '/images/projects/atlaxia/water-scene.webp': mediaThemes.browser,
+  '/images/projects/atlaxia/hero-mobile.webp': mediaThemes.phone,
   '/images/projects/moneyman/dashboard-desktop.webp': mediaThemes.browser,
   '/images/projects/moneyman/dashboard-mobile.webp': mediaThemes.phone,
   '/images/projects/mathgeon/book-ui.webp': mediaThemes.pixel,

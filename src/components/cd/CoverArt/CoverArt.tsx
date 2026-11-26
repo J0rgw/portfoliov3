@@ -29,7 +29,9 @@ interface CoverArtProps {
  * A release with label cut-outs (config `assets.label`) is printed like the hero
  * disc: a field, the title, and Jorge's photographed cut-outs in the cover theme's
  * slots (design/themes/covers.ts), in front of the title. Otherwise a generated
- * motif stands in. On a disc the centre (r < 39) is the clear hub and the corners
+ * motif stands in. A release with a print of its own (config `assets.disc` and
+ * `sleeve`, drawn on the same grid: ATLAXIA's) shows that file instead, as it
+ * is. On a disc the centre (r < 39) is the clear hub and the corners
  * are cut, so titles sit in the top band and the rest in the lower one.
  */
 
@@ -243,7 +245,7 @@ export function CoverArt({
   const collage = label.length > 0;
 
   if (artwork) return <img className={`cover cover--${shape} ${className}`.trim()}
-    src={artwork.src} width={artwork.width} height={artwork.height} alt="" aria-hidden="true" loading="lazy" decoding="async" />;
+    src={artwork.src} width={artwork.width} height={artwork.height} alt="" aria-hidden="true" loading={loading} decoding="async" />;
 
   const print = (
     <svg

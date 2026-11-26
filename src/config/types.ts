@@ -141,6 +141,9 @@ export interface Project {
   visible: boolean;
   /** In the gallery that opens /proyectos/ (ADR-003, Q62): Jorge's choice, three of them. */
   featured: boolean;
+  /** The lead single: Jorge's main project, first in the gallery and the whole tracklist
+   *  whatever its date (ATLAXIA, 2026-11-25). One release at most, and a featured one. */
+  lead?: boolean;
   assets?: ProjectAssets;
   title: string;
   /** One line, used in rows and the menu. */

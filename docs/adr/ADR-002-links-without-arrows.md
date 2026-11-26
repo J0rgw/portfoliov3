@@ -120,3 +120,15 @@ numbers, no arrows — 2026-11-12", and MOTION_SYSTEM §2.5 and §2.8):
 
 Not done: the numbers elsewhere (the iPod's playlist and count, the gallery's "01 / 07", the
 index's cards) were not part of the request and stay.
+
+## Amendment, 2026-11-25
+
+Jorge asked for the back link to answer the pointer like the others ("look at what the hover is
+managed everywhere else with the circle, and apply here too"). A case study's "Volver a
+proyectos" now wraps its words in `ui/LinkCue`; its ← stays, as S2 kept it, outside the loop.
+The gap after the arrow went from 8 to 12 px: the loop reaches about 10 px past the words and,
+at 8 px, passed 1 to 3 px from the arrow nudged back on hover; it now passes 8 px from it.
+Checked at 1512 × 734 and 390 × 844, light and dark, with reduced motion, by keyboard and
+without JavaScript: the link stays 44 px tall and 4 px wider, the title under it does not move,
+no horizontal overflow, no console errors. The ↗ links ("Ver el código", "Ver en vivo") keep
+their plain hover underline.
